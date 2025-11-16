@@ -1,39 +1,27 @@
 # Beacon Trading System
 
+Beacon is an exchange, live, simulated. But unique in that you have complete control. End-to-end. You generate market data. Tailor it. Specify the bid-ask spread, volatility factors, trading frequency, or use the intelligent defaults. You want to receive your market data in burst or waves, or a specific speed?  You want the market to halt or even crash? Just tell Beacon. And it will stream this market data to your algorithm via UDP using true NSDQ, CME, or NYSE protocol, just like you've asked. Complete exchange behavior. Isolated from your algorithm via UDP. All highly configurable via .json. 
 
-**A high-performance algorithmic trading system built in modern C++20, with ~4 microsecond tick-to-trade latency.**
+Your algo is met by a blazing-fast market data handler that decodes exchange messages. And this is where you plug in your strategy. Simple TWAP and VWAP are provided to illustrate this process. But, rest-assured, this process is simple.
 
----
+Now, as we all know, proper risk management plays a big parkt in an algo's success. So, Beacon comes with with a 3-tier risk management system: Pnl, Position, and Messaging Freqency. Each of these tiers has 3 levels: Warning, Alert, and Hard-Stop. If the default behavior doesn't suit your needs, then it's easy to plug in your own risk-systemk, or extend the one that has been provided.
 
-## ⚡ Technical Highlights
+When it comes time for your algo to send a message to the exchagnge, the provided exchange encoders will package up your order into the proper exchnage and send it to the exchange via TCP. Your algo will either be expeecting and ACK or a REJECT. Your order will be placed on the exchange's mtching engle, and orders will be executed in a FIFO manner. Should your ordder receive a fill, an execution report will be went back to your algo via exchange protocol where it will be decoded, and you can update your positions and Pnl accordingly.
 
-- **Languages:** C++20, Python (for scripting)
-- **Build System:** CMake - **entire repo and invididual applications**
-- **CI/CD:** GitHub Actions
-- **Testing:** [GoogleTest](https://google.github.io/googletest/)
-- **Networking:** UDP/TCP for all communication
-- **Testing:** Unit tests written using Google Test framework
-- **Configuration:** Intelligent defaults, easily overridden via `.json` config files
-- **Protocol Rollbacks:** Supports protocol version rollbacks (price/orders independently) via simple config changes
+Prepare for chaos and make sure your algorithm reacts intelligently when it matters most.
 
----
 
 ## ⚡ System Requirements
 
-- [Linux](https://www.linux.org/pages/download/) or MacOS
-- C++ 20 Compiler
+- [C++20](https://en.cppreference.com/w/cpp/20) Compiler
 - [CMake](https://cmake.org/download/)
-- [Python](https://www.python.org/downloads/) 
+- [Python 3+](https://www.python.org/downloads/)
+- [Linux](https://www.linux.org/pages/download/) or macOS
 
----
 
 ## 🚀 Quick Start
 
-
-
-
-
-Setting up Beacon is ***super simple!*** Just do the following from a terminal:
+Setting up Beacon is ***straightforward!*** From a terminal:
 
 ```bash
 git clone https://github.com/bryanlcamp/beacon.git
@@ -41,24 +29,34 @@ python3 beacon-build.py
 python3 beacon-run.py
 ```
 
-That's it! This downloads and builds the codebase, and runs Beacon with system defaults. Now you can see Beacon in action!
+That's it! Beacon’s running with system defaults — see it in action before diving deeper.
 
 **→ [Customizing Beacon](docs/getting-started.md)**
 
----
+## 🎯 Key Features
 
-## 📖 Documentation
+✅ **Plug in your algo** — Simple setup. Tailor data. Test. Adjust. Iterate.  
+✅ **Simulate stress** — Burst traffic. Push your algo. Test under pressure.  
+✅ **Manage risk** — PnL, positions, messaging. Plug in your checks.  
+✅ **Master unpredictability** — Halts. Crashes. Network failures. Prepare for chaos.  
+✅ **Protocol support** — **NSDQ**, **NYSE**, **CME**. True compatibility.  
+✅ **Zero setup** — No external network. Local TCP/UDP.  
+✅ **Smart defaults** — Auto-adjust based on prior market data.  
+✅ **Low latency — High-performance design.** **Full reports.**
 
-**Documentation is organized in the [`docs/`](docs/) directory**
+## ⚡ Technologies
 
-- **[Getting Started](docs/getting-started.md)** - Quick start guide *(if available)*
-- **[Architecture](docs/architecture.md)** - System design and components *(if available)*
-- **[Scripts](scripts/README.md)** - All `beacon-*` script documentation *(if available)*
-- **[Testing](tests/README.md)** - GoogleTest suite documentation *(if available)*
+- **Languages:** [C++20](https://en.cppreference.com/w/cpp/20), [Python3](https://www.python.org/)
+- **Build:** [CMake](https://cmake.org/), [GCC](https://gcc.gnu.org/) (Linux), [Clang](https://clang.llvm.org/) (MacOS)
+- **CI/CD:** [GitHub Actions](https://docs.github.com/en/actions) (custom [.yaml](https://yaml.org))
+- **Testing:** [GoogleTest](https://google.github.io/googletest/)
+- **Networking:** [TCP/IP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) & [UDP loopback](https://en.wikipedia.org/wiki/Loopback)
+- **IDE:** [VSCode](https://code.visualstudio.com/) (plug-ins/setup on request)
+- **Configuration:** [.json](https://www.json.org/json-en.html) (available on request)
+- **Source Control:** [GitHub](https://github.com/)
+- **Docs & Issues:** [GitHub Docs](https://docs.github.com/en/github)
+- **Project Management:** [GitHub Projects](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards)
 
-**→ [Documentation Index](docs/README.md)** *(if available)*
-
----
 
 ## 🏗️ Architecture
 
@@ -92,30 +90,6 @@ That's it! This downloads and builds the codebase, and runs Beacon with system d
 - Simple FIFO matching engine, extensible for future enhancements
 - Sends execution reports using proper exchange protocol back to client_algo via TCP
 
----
-
----
-
-## 🎯 Key Features
-
-
-✅ **Built in C++20 for modern performance and safety**
-✅ **Proper exchange protocol support for NSDQ (ITCH/OUCH), NYSE (Pillar), CME (TotalView)**
-✅ **UDP/TCP networking for all components**
-✅ **Straightforward CMake build system**
-✅ **Google Test framework for unit tests**
-✅ **Intelligent defaults, easily overridden in .json config files**
-✅ **Protocol version rollbacks via config**
-✅ **Modular executables—run independently or together**
-✅ **Pluggable rule and algo systems—extend via simple interfaces**
-✅ **Ultra-fast market data handling: lock-free, cache-aware, thread affinity**
-✅ **3-tier risk management built-in**
-✅ **TWAP/VWAP sample algos included**
-✅ **Comprehensive statistics and latency histograms**
-✅ **Competitive HFT performance on a laptop!**
-
----
-
 ## 📊 Performance
 
 **Last Run (MacBook Air):**
@@ -134,8 +108,6 @@ Tick-to-Trade Latency:
 
 **Competitive HFT performance on a laptop!**
 
----
-
 ## 🔧 Scripts
 
 All system scripts are in the `scripts/` directory with consistent `beacon-` naming:
@@ -147,134 +119,3 @@ beacon-kill.py             # Stop all processes
 beacon-previous-prices.py  # Fetch yesterday's market prices
 beacon-test-udp.py         # Test UDP multicast
 ```
-
-**→ [Full Scripts Documentation](scripts/README.md)**
-
----
-
-## 📂 Project Structure
-
-```
-Beacon/
-├── scripts/                   # All beacon-* scripts
-├── docs/                     # Documentation
-├── src/                      # Source code
-│   ├── apps/                # Applications
-│   │   ├── exchange_matching_engine/
-│   │   ├── exchange_market_data_generator/
-│   │   ├── exchange_market_data_playback/
-│   │   └── client_algorithm/     # Your trading algorithms
-│   └── libs/                # Protocol libraries
-│       └── exchange_protocols/   # ITCH, Pillar, MDP, etc.
-├── include/                  # Core HFT libraries
-│   ├── networking/          # UDP/TCP networking
-│   ├── ringbuffer/          # Lock-free data structures
-│   └── concurrency/         # Thread pinning, etc.
-├── tests/                    # GoogleTest suite
-│   ├── core/                # Core component tests
-│   ├── protocols/           # Protocol validation tests
-│   ├── matching_engine/     # Order matching tests
-│   └── integration/         # End-to-end tests
-└── vendor/                   # Third-party dependencies
-    ├── googletest/          # Testing framework
-    └── nlohmann/            # JSON library
-```
-
----
-
-## 🎓 Why Beacon?
-
-The word "Beacon" represents a **guiding light** - a source of clarity for solving complex challenges. This project demonstrates:
-
-- **Low-latency C++ design patterns**
-- **Lock-free concurrent programming**
-- **High-frequency trading architecture**
-- **Professional software engineering practices**
-
-Built as both a **learning platform** and a **portfolio showcase** of production-quality HFT systems.
-
----
-
-## 🤝 Getting Help
-
-- **Documentation:** Check [`docs/beacon/`](docs/beacon/)
-- **Scripts:** See [`scripts/README.md`](scripts/README.md)
-- **App-specific:** Each app has its own README in `src/apps/*/`
-
----
-
-## 📝 License
-
-This is a personal portfolio project.
-
----
-
-## Build Scripts
-- Debug build: `beacon_build/beacon-build-debug.py`
-- Release build: `beacon_build/beacon-build-release.py`
-
-## Release Scripts
-- Create release: `beacon_release_version/beacon-create-release.py`
-- Package release: `beacon_release_version/beacon-package-release.py`
-- Release notes: `beacon_release_version/beacon-release-notes.py`
-
-## Run Scripts
-- Run system: `beacon_run/run_system.py`
-- Beacon run: `beacon_run/beacon-run.py`
-
-## Utility Scripts
-- Kill: `beacon_utils/beacon-kill.py`
-- Previous prices: `beacon_utils/beacon-previous-prices.py`
-- Test UDP: `beacon_utils/beacon-test-udp.py`
-
-## Logs
-- All build logs: `logs/`
-m
----
-
-# Beacon Exchange Market Data Playback
-
-## Overview
-Beacon is a market data playback tool for NSDQ, NYSE, CME binary files. It supports configurable timing, burst, wave, chaos, and safety rules, with modular configuration via JSON.
-
-## Configuration
-- All configs are in `config/playback/`
-- `default.json` references sender, advisor, and authority configs.
-- **Senders:** UDP/TCP/Console, located in `senders/`
-- **Advisors:** Classifiers (priority, burst), located in `advisors/`
-- **Authorities:** Rules (burst, chaos, wave, safety), located in `authorities/`
-
-## Modes
-- **Continuous:** Normal rate playback
-- **Burst:** Bursts of messages at intervals
-- **Wave:** Variable rate playback
-- **Chaos:** Packet loss, jitter, etc.
-
-## Authorities (Rules)
-- BurstRule, ContinuousRule, WaveRule, RateLimitRule, PacketLossRule, JitterRule, etc.
-
-## Advisors (Classifiers)
-- SymbolPriorityClassifier, BurstDetectionClassifier, etc.
-
-## Usage
-```
-./exchange_market_data_playback --config config/playback/default.json <input_file>
-./exchange_market_data_playback --summary <input_file>
-```
-
-## Test Cases
-- Valid/invalid binary file parsing
-- Config file existence and parsing
-- UDP packet sending (rate, format, modes)
-- Console output
-- Placeholder for TCP
-
-## Extending
-Add new sender, advisor, or authority configs and update `default.json` to reference them.
-
-## License
-MIT
-
----
-
-**Built with ❤️ for high-frequency trading**
