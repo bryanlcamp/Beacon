@@ -61,8 +61,6 @@ That's it! Beacon’s running with system defaults — see it in action before d
 ## 🏗️ Architecture
 
 
-**Beacon is a modular HFT trading system with four distinct executable parts, each of which can be run independently:**
-
 ### 1. Generator
 - Creates binary data files containing exchange-formatted messages
 - Control over total messages, symbols, exchanges, open (seed) price, bid-ask spread range, and trading frequency per symbol
