@@ -2,13 +2,13 @@
 
 Beacon is an exchange, live, simulated. But unique in that you have complete control. End-to-end. You generate market data. Tailor it. Specify the bid-ask spread, volatility factors, trading frequency, or use the intelligent defaults. You want to receive your market data in burst or waves, or a specific speed?  You want the market to halt or even crash? Just tell Beacon. And it will stream this market data to your algorithm via UDP using true NSDQ, CME, or NYSE protocol, just like you've asked. Complete exchange behavior. Isolated from your algorithm via UDP. All highly configurable via .json. 
 
-Your algo is met by a blazing-fast market data handler that decodes exchange messages. And this is where you plug in your strategy. Simple TWAP and VWAP are provided to illustrate this process. But, rest-assured, this process is simple.
+Beacon delivers market data at high speed, decoded by a blazing-fast handler. This is where you implement your strategy—using your own logic, with TWAP and VWAP included as guides to illustrate integration. The process is straightforward, so you can focus on building and testing your ideas.
 
-Now, as we all know, proper risk management plays a big parkt in an algo's success. So, Beacon comes with with a 3-tier risk management system: Pnl, Position, and Messaging Freqency. Each of these tiers has 3 levels: Warning, Alert, and Hard-Stop. If the default behavior doesn't suit your needs, then it's easy to plug in your own risk-systemk, or extend the one that has been provided.
+Proper risk management is essential for any successful algorithm. Beacon includes a built-in three-tier risk management system covering PnL, position, and messaging frequency. Each tier operates at three levels: warning, alert, and hard-stop. If you need more control, you can easily extend or replace the default risk system to fit your requirements.
 
-When it comes time for your algo to send a message to the exchagnge, the provided exchange encoders will package up your order into the proper exchnage and send it to the exchange via TCP. Your algo will either be expeecting and ACK or a REJECT. Your order will be placed on the exchange's mtching engle, and orders will be executed in a FIFO manner. Should your ordder receive a fill, an execution report will be went back to your algo via exchange protocol where it will be decoded, and you can update your positions and Pnl accordingly.
+When your algorithm is ready to trade, Beacon’s exchange encoders handle the heavy lifting—your order is formatted, sent via TCP, and processed by the matching engine in true FIFO style. You’ll get a clear response: ACK or REJECT. Fills trigger instant execution reports, so your algo can update positions and PnL in real time.
 
-Prepare for chaos and make sure your algorithm reacts intelligently when it matters most.
+Beacon is built for unpredictable markets. Be ready—your algorithm will need to think fast when conditions change.
 
 
 ## ⚡ System Requirements
@@ -60,7 +60,6 @@ That's it! Beacon’s running with system defaults — see it in action before d
 
 ## 🏗️ Architecture
 
-
 ### 1. Generator
 - Creates binary data files containing exchange-formatted messages
 - Control over total messages, symbols, exchanges, open (seed) price, bid-ask spread range, and trading frequency per symbol
@@ -75,18 +74,16 @@ That's it! Beacon’s running with system defaults — see it in action before d
 - Supports repeated playback of the same file
 
 ### 3. Client Algorithm
-- Receives raw packets from playback via UDP
-- Ultra-fast market-data handler: lock-free data structures, cache-aware padded structs, thread affinity, SPSC queue
-- Hot path constantly polls SPSC queue (mm_pause), pinned to a core, no threading
-- Built-in 3-tier risk checking (warning, alert, hard-stop): per-product position, messaging frequency, PnL
-- Simple TWAP and VWAP algos provided; pluggable algo system—implement your own
-- Sends order messages to matching engine via TCP using proper exchange protocol
-- Handles execution reports; test your algorithm under diverse market conditions
+- Efficiently processes the market data you generate—fast and reliable
+- Built-in risk management keeps your strategy in check, or add your own for total control
+- Example strategies (TWAP, VWAP) show you how—just drop in your own logic and go
+- Sends orders to the matching engine and updates positions and PnL in real time
+
 
 ### 4. Matching Engine
-- Receives raw exchange-protocol order instructions from client_algo via TCP
-- Simple FIFO matching engine, extensible for future enhancements
-- Sends execution reports using proper exchange protocol back to client_algo via TCP
+- Takes your orders over TCP. Strict FIFO.
+- Extending it is straightforward: add your own matching logic if FIFO isn’t enough. Size/Time-Priority, Account for market makers. Extend the existing code, or implement your own via the public interface.
+- Every submit/update/cancel delivers an ack or reject And every fill triggers an execution report, so your algo can update positions and PnL instantly. 
 
 ## 📊 Performance
 
