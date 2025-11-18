@@ -35,6 +35,7 @@ add_executable(generator
     serializers/itch_serializer.cpp
     serializers/nsdq_serializer.cpp
     serializers/nyse_serializer.cpp
+    ConfigFileParser.cpp
 )
 
 # Include directories relative to the Beacon root

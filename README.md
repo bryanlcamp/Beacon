@@ -1,6 +1,6 @@
 # Beacon Trading System
 
-Beacon is an exchange, live, simulated. But unique in that you have complete control. End-to-end. You generate market data. Tailor it. Specify the bid-ask spread, volatility factors, trading frequency, or use the intelligent defaults. You want to receive your market data in burst or waves, or a specific speed?  You want the market to halt or even crash? Just tell Beacon. And it will stream this market data to your algorithm via UDP using true NSDQ, CME, or NYSE protocol, just like you've asked. Complete exchange behavior. Isolated from your algorithm via UDP. All highly configurable via .json. 
+Beacon is an exchange, live, simulated. But unique in that you have complete control. ***End-to-end.*** You generate market data. Tailor it. Specify the bid-ask spread, volatility factors, trading frequency, or use the intelligent defaults. You want to receive your market data in burst or waves, or a specific speed?  You want the market to halt or even crash? Just tell Beacon. And it will stream this market data to your algorithm via UDP using true NSDQ, CME, or NYSE protocol, just like you've asked. Complete exchange behavior. Isolated from your algorithm via UDP. All highly configurable via .json. 
 
 Beacon delivers market data at high speed, decoded by a blazing-fast handler. This is where you implement your strategy—using your own logic, with TWAP and VWAP included as guides to illustrate integration. The process is straightforward, so you can focus on building and testing your ideas.
 
