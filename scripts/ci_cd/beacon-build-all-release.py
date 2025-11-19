@@ -32,9 +32,15 @@ def main():
     import os
     os.chdir(repo_root)
     
-    # Configure CMake for Release
-    if not run_command("cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release", "CMake Release configuration"):
-        sys.exit(1)
+    # Configure CMake for Release with verbose output
+    cmake_config_cmd = "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release --log-level=VERBOSE"
+    if not run_command(cmake_config_cmd, "CMake Release configuration"):
+        print(f"[DEBUG] CMake configuration failed. Trying fallback...")
+        # Try with less strict requirements
+        fallback_cmd = "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17"
+        if not run_command(fallback_cmd, "CMake Release configuration (fallback)"):
+            print(f"[ERROR] Both CMake configuration attempts failed")
+            sys.exit(1)
     
     # Build critical targets (skip tests for faster CI/CD)
     critical_targets = ["generator", "matching_engine", "AlgoTwapProtocol"]

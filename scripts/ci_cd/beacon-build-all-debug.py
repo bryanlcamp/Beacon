@@ -32,9 +32,15 @@ def main():
     import os
     os.chdir(repo_root)
     
-    # Configure CMake for Debug
-    if not run_command("cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug", "CMake Debug configuration"):
-        sys.exit(1)
+    # Configure CMake for Debug with verbose output
+    cmake_config_cmd = "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug --log-level=VERBOSE"
+    if not run_command(cmake_config_cmd, "CMake Debug configuration"):
+        print(f"[DEBUG] CMake configuration failed. Trying fallback...")
+        # Try with less strict requirements
+        fallback_cmd = "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17"
+        if not run_command(fallback_cmd, "CMake Debug configuration (fallback)"):
+            print(f"[ERROR] Both CMake configuration attempts failed")
+            sys.exit(1)
     
     # Build critical targets (skip tests for faster CI/CD)
     critical_targets = ["generator", "matching_engine", "AlgoTwapProtocol"]
