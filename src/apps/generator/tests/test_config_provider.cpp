@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../config_provider.h"
+#include "../ConfigProvider.h"
 
 using namespace beacon::market_data_generator::config;
 

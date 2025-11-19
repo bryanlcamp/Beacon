@@ -4,18 +4,19 @@
     "Exchange": "nsdq"
   },
   "Wave": {
-    "WaveDurationMs": 300000,
-    "WaveAmplitudePercent": 120.0
+    "WaveDurationMs": 2000,
+    "WaveAmplitudePercent": 110.0
   },
   "Burst": {
     "Enabled": true,
-    "BurstIntensityPercent": 300.0,
-    "BurstFrequencyMs": 60000
+    "BurstIntensityPercent": 250.0,
+    "BurstFrequencyMs": 5000
   },
   "Symbols": [
     {
       "SymbolName": "MSFT",
-      "PercentTotalMessages": 60.0,
+      "PercentTotalMessages": 60,
+      "TradeProbability": 0.1,
       "SpreadPercentage": 0.8,
       "PriceRange": {
         "MinPrice": 475.00,
@@ -37,7 +38,8 @@
     },
     {
       "SymbolName": "AAPL",
-      "PercentTotalMessages": 30.0,
+      "PercentTotalMessages": 30,
+      "TradeProbability": 0.2,
       "SpreadPercentage": 0.6,
       "PriceRange": {
         "MinPrice": 220.00,
@@ -59,7 +61,8 @@
     },
     {
       "SymbolName": "GOOG",
-      "PercentTotalMessages": 10.0,
+      "PercentTotalMessages": 10,
+      "TradeProbability": 0.15,
       "SpreadPercentage": 0.3,
       "PriceRange": {
         "MinPrice": 270.00,

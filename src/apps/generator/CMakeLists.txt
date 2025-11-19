@@ -27,23 +27,29 @@ endif()
 
 # Add the executable target
 add_executable(generator
-    main.cpp
-    config_provider.cpp
-    message_generator.cpp
-    stats_manager.cpp
-    serializers/cme_serializer.cpp    
-    serializers/itch_serializer.cpp
-    serializers/nsdq_serializer.cpp
-    serializers/nyse_serializer.cpp
-    ConfigFileParser.cpp
+    src/main.cpp
+    src/ConfigProvider.cpp
+    src/MessageGenerator.cpp
+    src/StatsManager.cpp
+    src/serializers/CmeSerializer.cpp    
+    src/serializers/ItchSerializer.cpp
+    src/serializers/NsdqSerializer.cpp
+    src/serializers/NyseSerializer.cpp
+    src/ConfigFileParser.cpp
+    # src/ConfigFileValidator.cpp  # TODO: Update for PascalCase schema
 )
 
 # Include directories relative to the Beacon root
 target_include_directories(generator PRIVATE
     ${BEACON_ROOT}/vendor
     ${BEACON_ROOT}/src/libs/exchange_protocols
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+# Debug: Print the BEACON_ROOT to verify it's correct
+message(STATUS "BEACON_ROOT is: ${BEACON_ROOT}")
+message(STATUS "Looking for nlohmann at: ${BEACON_ROOT}/vendor/nlohmann/")
 
 # Link any required libraries (if applicable)
 # Example: target_link_libraries(exchange_market_data_generator <library_name>)
