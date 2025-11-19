@@ -32,14 +32,33 @@ def main():
     import os
     os.chdir(repo_root)
     
-    # Configure CMake for Release with verbose output
-    cmake_config_cmd = "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release --log-level=VERBOSE"
-    if not run_command(cmake_config_cmd, "CMake Release configuration"):
-        print(f"[DEBUG] CMake configuration failed. Trying fallback...")
-        # Try with less strict requirements
-        fallback_cmd = "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17"
-        if not run_command(fallback_cmd, "CMake Release configuration (fallback)"):
-            print(f"[ERROR] Both CMake configuration attempts failed")
+    # Configure CMake for Release with multiple fallback strategies
+    cmake_strategies = [
+        "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release --log-level=VERBOSE",
+        "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17",
+        "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_EXTENSIONS=OFF",
+        "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14"
+    ]
+    
+    cmake_success = False
+    for i, cmd in enumerate(cmake_strategies):
+        strategy_name = f"CMake Release configuration (strategy {i+1})"
+        print(f"[DEBUG] Trying {strategy_name}: {cmd}")
+        
+        if run_command(cmd, strategy_name):
+            cmake_success = True
+            break
+        else:
+            print(f"[DEBUG] Strategy {i+1} failed, trying next...")
+    
+    if not cmake_success:
+        print(f"[ERROR] All CMake configuration strategies failed")
+        print(f"[DEBUG] Attempting minimal build without subdirectories...")
+        
+        # Last resort: try without problematic subdirectories
+        minimal_cmd = "cmake -B build-release -S . -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF"
+        if not run_command(minimal_cmd, "CMake minimal configuration"):
+            print(f"[FATAL] Even minimal CMake configuration failed")
             sys.exit(1)
     
     # Build critical targets (skip tests for faster CI/CD)

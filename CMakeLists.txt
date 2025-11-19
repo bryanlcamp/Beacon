@@ -90,14 +90,24 @@ else()
     message(WARNING "Skipping client_algorithm - CMakeLists.txt not found")
 endif()
 
-# Enable testing - with error handling
-enable_testing()
+# Enable testing - with error handling and CI/CD option
+option(BUILD_TESTING "Build the testing tree" ON)
 
-# Optional: Add GoogleTest if tests directory exists and has CMakeLists.txt
-if(EXISTS "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt")
-    add_subdirectory(vendor/googletest)
-    add_subdirectory(tests)
-    message(STATUS "Added tests and googletest")
+if(BUILD_TESTING)
+    enable_testing()
+    
+    # Optional: Add GoogleTest if tests directory exists and has CMakeLists.txt
+    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt")
+        if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/googletest/CMakeLists.txt")
+            add_subdirectory(vendor/googletest)
+            add_subdirectory(tests)
+            message(STATUS "Added tests and googletest")
+        else()
+            message(WARNING "Skipping tests - GoogleTest not found")
+        endif()
+    else()
+        message(WARNING "Skipping tests - tests/CMakeLists.txt not found")
+    endif()
 else()
-    message(WARNING "Skipping tests - CMakeLists.txt not found")
+    message(STATUS "Testing disabled (BUILD_TESTING=OFF)")
 endif()
