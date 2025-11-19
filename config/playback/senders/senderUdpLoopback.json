@@ -1,0 +1,14 @@
+{
+  "multicastAddress": "239.255.0.1",
+  "multicastPort": 12345,
+  "multicastTtl": 1,
+  "mode": "burst",
+  "burstSize": 2000,
+  "burstIntervalMs": 50,
+  "speedFactor": 1.0,
+  "maxRateLimit": 25000,
+  "type": "udp",
+  "address": "239.255.0.1",
+  "port": 12345,
+  "ttl": 1
+}

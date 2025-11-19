@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+"""
+Beacon Playback Test Runner Script
+Runs playback-specific tests only (TestPlaybackState, TestRulesEngine, etc.)
+"""
+
+import subprocess
+import sys
+from pathlib import Path
+
+def main():
+    # Get project root (4 levels up from this script: scripts -> playback -> apps -> src -> root)
+    project_root = Path(__file__).parent.parent.parent.parent.parent
+    build_dir = project_root / "build"
+    
+    if not build_dir.exists():
+        print("❌ Build directory not found. Please build the project first.")
+        print("   Run: python3 beacon-build-debug.py")
+        return 1
+    
+    print("🧪 Running Beacon playback tests...")
+    
+    # Playback-specific test executables in the playback tests directory
+    playback_test_dir = build_dir / "src" / "apps" / "playback" / "tests"
+    
+    if not playback_test_dir.exists():
+        print("❌ Playback tests directory not found.")
+        print("   Playback tests may not be built yet.")
+        return 1
+    
+    # Look for playback test executables (Test*)
+    test_executables = list(playback_test_dir.glob("Test*"))
+    
+    if not test_executables:
+        print("⚠️  No playback test executables found.")
+        print("   Playback tests may need to be built first.")
+        print("   Try: cmake --build build --target TestPlaybackState")
+        return 0
+    
+    print(f"🔍 Found {len(test_executables)} playback test executable(s)")
+    
+    failed_tests = 0
+    passed_tests = 0
+    
+    # Playback test names for better output
+    playback_tests = ["TestPlaybackState", "TestRulesEngine", "TestBinaryInputFileReader", 
+                     "TestMessageSenders", "TestPlaybackIntegration", "TestConfigValidation"]
+    
+    for test_exe in test_executables:
+        if test_exe.is_file() and test_exe.stat().st_mode & 0o111:  # Check if executable
+            test_name = test_exe.name
+            print(f"🧪 Running: {test_name}")
+            try:
+                result = subprocess.run([str(test_exe)], 
+                                      capture_output=True, 
+                                      text=True, 
+                                      cwd=project_root,
+                                      timeout=120)  # 2 minute timeout
+                if result.returncode == 0:
+                    # Count actual tests passed from GoogleTest output
+                    test_output = result.stdout
+                    test_count = "unknown"
+                    
+                    # Look for pattern like "[  PASSED  ] 14 tests."
+                    lines = test_output.split('\n')
+                    for line in lines:
+                        if "[  PASSED  ]" in line and "tests." in line:
+                            parts = line.strip().split()
+                            for i, part in enumerate(parts):
+                                if part == "PASSED" and i + 2 < len(parts) and parts[i + 2] == "tests.":
+                                    test_count = parts[i + 1]
+                                    break
+                            break
+                    
+                    if test_count != "unknown":
+                        print(f"✅ {test_name} PASSED ({test_count} individual tests)")
+                    else:
+                        print(f"✅ {test_name} PASSED")
+                    passed_tests += 1
+                else:
+                    print(f"❌ {test_name} FAILED")
+                    if result.stdout:
+                        print(f"   stdout: {result.stdout[:500]}...")  # Truncate long output
+                    if result.stderr:
+                        print(f"   stderr: {result.stderr[:500]}...")
+                    failed_tests += 1
+            except subprocess.TimeoutExpired:
+                print(f"⏱️  {test_name} TIMEOUT (exceeded 2 minutes)")
+                failed_tests += 1
+            except Exception as e:
+                print(f"💥 Error running {test_name}: {e}")
+                failed_tests += 1
+    
+    print(f"\n📊 Playback Test Summary: {passed_tests} passed, {failed_tests} failed")
+    
+    if failed_tests > 0:
+        print("❌ Some playback tests failed!")
+        return 1
+    else:
+        print("🎉 All playback tests passed!")
+        return 0
+
+if __name__ == "__main__":
+    exit(main())

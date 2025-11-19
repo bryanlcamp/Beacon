@@ -35,6 +35,7 @@ add_executable(generator
     src/serializers/ItchSerializer.cpp
     src/serializers/NsdqSerializer.cpp
     src/serializers/NyseSerializer.cpp
+    src/serializers/CsvSerializer.cpp
     src/ConfigFileParser.cpp
     # src/ConfigFileValidator.cpp  # TODO: Update for PascalCase schema
 )

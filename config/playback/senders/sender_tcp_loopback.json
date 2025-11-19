@@ -1,0 +1,16 @@
+{
+  "type": "tcp",
+  "address": "127.0.0.1", 
+  "port": 12345,
+  "description": "TCP configuration for reliable loopback testing",
+  "loopback_notes": {
+    "purpose": "TCP alternative when UDP multicast loopback doesn't work",
+    "advantages": [
+      "Always works on localhost",
+      "Guaranteed delivery", 
+      "No multicast routing dependencies",
+      "Easier debugging"
+    ],
+    "usage": "Start playbook in TCP mode, then connect client_algorithm"
+  }
+}

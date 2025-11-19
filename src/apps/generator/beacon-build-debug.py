@@ -9,10 +9,14 @@ import shutil
 from pathlib import Path
 
 def main():
-    # Get project root (3 levels up from this script: generator -> apps -> src -> root)
-    project_root = Path(__file__).parent.parent.parent.parent
+    # Get paths relative to this script
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent.parent.parent
     build_dir = project_root / "build-debug"
-    bin_debug_dir = project_root / "bin" / "debug"
+    generator_bin_dir = script_dir / "bin" / "debug"
+    
+    # Also support global bin directory for backward compatibility
+    global_bin_dir = project_root / "bin" / "debug"
     
     print("🧹 Cleaning build directory...")
     if build_dir.exists():
@@ -20,7 +24,8 @@ def main():
     
     # Create directories
     build_dir.mkdir(exist_ok=True)
-    bin_debug_dir.mkdir(parents=True, exist_ok=True)
+    generator_bin_dir.mkdir(parents=True, exist_ok=True)
+    global_bin_dir.mkdir(parents=True, exist_ok=True)
     
     print("🔧 Configuring CMake for Debug build...")
     cmake_args = [
@@ -36,11 +41,16 @@ def main():
     subprocess.run(["cmake", "--build", str(build_dir), "--target", "generator"], 
                    check=True, cwd=project_root)
     
-    # Copy binary to bin/debug
+    # Copy binary to both locations
     generator_binary = build_dir / "src" / "apps" / "generator" / "generator"
     if generator_binary.exists():
-        shutil.copy2(generator_binary, bin_debug_dir / "generator")
-        print(f"✅ Debug binary copied to {bin_debug_dir / 'generator'}")
+        # Copy to generator-specific directory (primary)
+        shutil.copy2(generator_binary, generator_bin_dir / "generator")
+        print(f"✅ Debug binary copied to {generator_bin_dir / 'generator'}")
+        
+        # Copy to global directory (backward compatibility)
+        shutil.copy2(generator_binary, global_bin_dir / "generator")
+        print(f"✅ Debug binary also copied to {global_bin_dir / 'generator'}")
     else:
         print("❌ Generator binary not found!")
         return 1

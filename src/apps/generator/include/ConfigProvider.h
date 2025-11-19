@@ -73,6 +73,10 @@ class ConfigProvider {
     /// @brief Create a serializer based on the exchange type.
     std::unique_ptr<serializers::IMarketDataSerializer> createSerializer() const;
 
+    /// @brief Enable CSV output mode instead of binary exchange format.
+    /// @param csvMode True to enable CSV output, false for binary exchange format.
+    void setCsvMode(bool csvMode);
+
   private:
     std::string _exchangeType; // The type of exchange (e.g., "CME").
     std::string _outputFilePath; // The file path for serialized output.
@@ -86,6 +90,7 @@ class ConfigProvider {
     double _tradeProbability = 0.1; // Default 10% trades.
     size_t _flushInterval = 1000; // Default flush every 1000 messages.
     double _defaultSpreadPercent = 0.5; // Default 0.5% spread.
+    bool _csvMode = false; // True for CSV output, false for binary
     
     // Wave and burst configuration storage
     ::market_data_generator::ConfigFileParser::WaveConfig _waveConfig;

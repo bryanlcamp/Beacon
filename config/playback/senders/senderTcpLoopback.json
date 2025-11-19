@@ -1,0 +1,11 @@
+{
+  "multicastAddress": "127.0.0.1",
+  "multicastPort": 54321,
+  "multicastTtl": 1,
+  "mode": "continuous",
+  "speedFactor": 1.0,
+  "maxRateLimit": 50000,
+  "type": "tcp",
+  "address": "127.0.0.1",
+  "port": 54321
+}

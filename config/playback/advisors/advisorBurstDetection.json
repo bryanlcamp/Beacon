@@ -1,0 +1,7 @@
+{
+  "detectionType": "burstActivity",
+  "thresholdRate": 10000,
+  "windowSizeMs": 1000,
+  "burstDurationMs": 5000,
+  "cooldownPeriodMs": 2000
+}

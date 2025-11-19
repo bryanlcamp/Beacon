@@ -1,0 +1,10 @@
+{
+  "categoryType": "symbolPriority", 
+  "priorityLevels": {
+    "MSFT": "high",
+    "AAPL": "high", 
+    "TSLA": "medium",
+    "default": "low"
+  },
+  "processingMode": "prioritized"
+}

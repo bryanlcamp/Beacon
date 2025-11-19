@@ -18,6 +18,7 @@
 #include "../include/serializers/NsdqSerializer.h"
 #include "../include/serializers/CmeSerializer.h"
 #include "../include/serializers/NyseSerializer.h"
+#include "../include/serializers/CsvSerializer.h"
 
 namespace beacon::market_data_generator::config {
 
@@ -37,6 +38,14 @@ bool ConfigProvider::loadConfig(const std::string& configPath) {
         _messageCount = globalConfig.NumMessages;
         _exchange = globalConfig.Exchange;
         std::transform(_exchange.begin(), _exchange.end(), _exchange.begin(), ::tolower);
+        
+        // Extract optional configuration values
+        if (globalConfig.TradeProbability > 0.0) {
+            _tradeProbability = globalConfig.TradeProbability;
+        }
+        if (globalConfig.FlushInterval > 0) {
+            _flushInterval = globalConfig.FlushInterval;
+        }
         
         // Validate exchange
         if (_exchange != "nsdq" && _exchange != "cme" && _exchange != "nyse") {
@@ -72,6 +81,12 @@ bool ConfigProvider::loadConfig(const std::string& configPath) {
 }
 
 std::unique_ptr<serializers::IMarketDataSerializer> ConfigProvider::createSerializer() const {
+    // If CSV mode is enabled, use CSV serializer regardless of exchange type
+    if (_csvMode) {
+        return std::make_unique<serializers::CsvMarketDataSerializer>(_outputFilePath);
+    }
+    
+    // Otherwise, use exchange-specific binary serializer
     if (_exchange == "nsdq") {
         // Create serializer for NASDAQ with flush interval
         return std::make_unique<serializers::NsdqMarketDataSerializer>(_outputFilePath, _flushInterval);
@@ -115,6 +130,10 @@ const ::market_data_generator::ConfigFileParser::WaveConfig& ConfigProvider::get
 
 const ::market_data_generator::ConfigFileParser::BurstConfig& ConfigProvider::getBurstConfig() const {
     return _burstConfig;
+}
+
+void ConfigProvider::setCsvMode(bool csvMode) {
+    _csvMode = csvMode;
 }
 
 } // namespace beacon::market_data_generator::config

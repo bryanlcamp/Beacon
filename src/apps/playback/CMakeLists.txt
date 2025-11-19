@@ -55,5 +55,5 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(playback PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-# Optionally add tests here
-# add_subdirectory(tests)
+# Add playback tests
+add_subdirectory(tests)

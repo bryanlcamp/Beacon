@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <getopt.h>
 
 #include <nlohmann/json.hpp>
 
@@ -54,28 +55,92 @@ bool isPathWellFormed(const std::string& path) {
     }
 }
 
-// Prints usage information for the program
-void printUsage() {
-    std::cout << "Usage: ./exchange_market_data_generator <config_file> <output_file>\n"
-              << "  <config_file>: Path to the .json configuration file.\n"
-              << "  <output_file>: Path to the output file for serialized data.\n\n"
-              << "Examples:\n"
-              << "  ./exchange_market_data_generator config.json output.itch\n"
-              << "  ./exchange_market_data_generator config.json output.cme\n";
+// Prints professional usage information
+void printUsage(const char* programName) {
+    std::cout << "Beacon Market Data Generator - Professional Exchange Simulator\n\n";
+    std::cout << "USAGE:\n";
+    std::cout << "  " << programName << " -i <config> -o <output> [options]\n\n";
+    std::cout << "REQUIRED OPTIONS:\n";
+    std::cout << "  -i, --input <file>     Configuration file (JSON format)\n";
+    std::cout << "  -o, --output <file>    Output file path\n\n";
+    std::cout << "OUTPUT OPTIONS:\n";
+    std::cout << "  -c, --csv              Generate human-readable CSV output\n";
+    std::cout << "                         (default: binary exchange protocol)\n\n";
+    std::cout << "GENERAL OPTIONS:\n";
+    std::cout << "  -h, --help             Show this help message\n\n";
+    std::cout << "EXAMPLES:\n";
+    std::cout << "  # Generate binary ITCH data (production mode)\n";
+    std::cout << "  " << programName << " -i config.json -o market_data.itch\n\n";
+    std::cout << "  # Generate human-readable CSV for analysis\n";
+    std::cout << "  " << programName << " -i config.json -o data.csv --csv\n\n";
+    std::cout << "  # Short form with CSV output\n";
+    std::cout << "  " << programName << " -i config.json -o data.csv -c\n\n";
+    std::cout << "SUPPORTED EXCHANGE PROTOCOLS:\n";
+    std::cout << "  • NASDAQ ITCH 5.0 (binary)\n";
+    std::cout << "  • CME MDP 3.0 (binary)\n";
+    std::cout << "  • NYSE Pillar (binary)\n";
+    std::cout << "  • CSV (human-readable, all exchanges)\n\n";
 }
 
 int main(int argc, char* argv[]) {
+    std::string configFilePath;
+    std::string outputFilePath;
+    bool csvOutput = false;
+
+    // Define long options
+    static struct option long_options[] = {
+        {"input",  required_argument, 0, 'i'},
+        {"output", required_argument, 0, 'o'},
+        {"csv",    no_argument,       0, 'c'},
+        {"help",   no_argument,       0, 'h'},
+        {0, 0, 0, 0}
+    };
+
+    int opt;
+    int option_index = 0;
+    
+    // Parse command line arguments
+    while ((opt = getopt_long(argc, argv, "i:o:ch", long_options, &option_index)) != -1) {
+        switch (opt) {
+            case 'i':
+                configFilePath = optarg;
+                break;
+            case 'o':
+                outputFilePath = optarg;
+                break;
+            case 'c':
+                csvOutput = true;
+                break;
+            case 'h':
+                printUsage(argv[0]);
+                return 0;
+            case '?':
+                std::cerr << "\n";
+                printUsage(argv[0]);
+                return 1;
+            default:
+                printUsage(argv[0]);
+                return 1;
+        }
+    }
+
+    // Validate required arguments
+    if (configFilePath.empty() || outputFilePath.empty()) {
+        std::cerr << "[Error] Missing required arguments.\n\n";
+        printUsage(argv[0]);
+        return 1;
+    }
+
     try {
-        // Validate the number of arguments
-        if (argc != 3) {
-            std::cerr << "[exchange_market_data_generator] Error: Invalid number of arguments.\n";
-            printUsage();
+        // Validate file paths
+        if (!isPathWellFormed(configFilePath)) {
+            std::cerr << "[Error] Invalid configuration file path: " << configFilePath << "\n";
             return 1;
         }
-
-        // Parse command-line arguments
-        std::string configFilePath = argv[1];
-        std::string outputFilePath = argv[2];
+        if (!isPathWellFormed(outputFilePath)) {
+            std::cerr << "[Error] Invalid output file path: " << outputFilePath << "\n";
+            return 1;
+        }
 
         // Create the ConfigProvider and load the configuration
         beacon::market_data_generator::config::ConfigProvider configProvider("", outputFilePath);
@@ -84,12 +149,23 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        // Get the serializer and proceed with execution
-        auto serializer = configProvider.getSerializer();
+        // Display output format information
+        if (csvOutput) {
+            std::cout << "[Info] Generating human-readable CSV output: " << outputFilePath << "\\n";
+        } else {
+            std::cout << "[Info] Generating binary exchange protocol data: " << outputFilePath << "\\n";
+        }
 
-        // Pass the serializer to the message generator
+        // Configure CSV mode if requested
+        if (csvOutput) {
+            configProvider.setCsvMode(true);
+        }
+        
+        // Create message generator with the configured provider
         beacon::market_data_generator::MessageGenerator generator(configProvider);
         size_t numMessages = generator.getMessageCount();
+        
+        // Generate messages (CSV or binary based on the serializer configured in ConfigProvider)
         generator.generateMessages(outputFilePath, numMessages, configFilePath);
     }
     catch (const std::exception& e) {

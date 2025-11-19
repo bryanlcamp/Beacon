@@ -1,8 +1,8 @@
 {
-  "sender_config": "senders/sender_udp.json",
+  "senderConfig": "senders/senderUdp.json",
   "advisors": [
-    "advisors/advisor_symbol_priority.json",
-    "advisors/advisor_burst_detection.json"
+    "advisors/advisorSymbolPriority.json",
+    "advisors/advisorBurstDetection.json"
   ],
   "authorities": [
     "authorities/authority_burst.json",

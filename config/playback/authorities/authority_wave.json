@@ -1,7 +1,7 @@
 {
   "mode": "wave",
-  "period_ms": 10000,
-  "min_rate": 1000,
-  "max_rate": 50000,
-  "speed_factor": 2.0
+  "periodMs": 10000,
+  "minRate": 1000,
+  "maxRate": 50000,
+  "speedFactor": 2.0
 }

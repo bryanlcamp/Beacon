@@ -94,6 +94,9 @@ beacon_test(test_market_data_generator
     market_data/test_symbol_parameters.cpp
 )
 
+# Add generator-specific tests subdirectory
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/apps/generator/tests generator_tests)
+
 # =============================================================================
 # Client Algorithm Tests
 # =============================================================================

@@ -21,7 +21,7 @@
 #include <IPlaybackMarketData.h> 
 #include <IPlaybackRule.h>
 #include "authorities/rules_engine.h"  // CMake
-#include "binary_input_file_reader.h"
+#include "BinaryFileReplayer.h"
 
 
 namespace rules = playback::rules;
@@ -29,11 +29,11 @@ namespace rules = playback::rules;
 namespace playback::replayer {
 
   struct PlaybackConfig {
-    std::string sender_type;
+    std::string senderType;
     std::string address;
     uint16_t port;
     uint8_t ttl;
-    std::string file_path;
+    std::string filePath;
   };
 
   inline PlaybackConfig loadPlaybackConfig(const std::string& jsonPath) {
@@ -41,11 +41,11 @@ namespace playback::replayer {
     nlohmann::json j;
     f >> j;
     PlaybackConfig cfg;
-    cfg.sender_type = j.value("sender_type", "udp");
+    cfg.senderType = j.value("senderType", "udp");
     cfg.address = j.value("address", "239.255.0.1");
     cfg.port = j.value("port", 12345);
     cfg.ttl = j.value("ttl", 1);
-    cfg.file_path = j.value("file_path", "");
+    cfg.filePath = j.value("filePath", "");
     // ...load other fields...
     return cfg;
   }

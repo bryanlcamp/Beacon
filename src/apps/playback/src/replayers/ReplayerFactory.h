@@ -3,10 +3,10 @@
 #include <memory>
 #include <string>
 #include <IPlaybackMarketData.h>
-#include <replayers/types/udp_replayer.h>
-#include <replayers/types/tcp_replayer.h>
-#include <replayers/types/null_replayer.h>
-#include <replayers/types/console_replayer.h>
+#include <replayers/types/UdpReplayer.h>
+#include <replayers/types/TcpReplayer.h>
+#include <replayers/types/NullReplayer.h>
+#include <replayers/types/ConsoleReplayer.h>
 
 namespace playback::replayer {
 

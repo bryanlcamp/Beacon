@@ -12,10 +12,9 @@
 #include <vector>
 #include <memory>
 
-#include <IPlaybackRule.h>
-#include <IClassifyMessagePriority.h>
-#include "../playback_state.h"
-#include "../advisors/message_priority_classifier.cpp"
+#include "../interfaces/IPlaybackRule.h"
+#include "../interfaces/IClassifyMessagePriority.h"
+#include "../PlaybackState.h"
 
 namespace playback::rules {
 

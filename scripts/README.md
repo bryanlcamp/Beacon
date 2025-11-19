@@ -36,6 +36,73 @@ python3 beacon-run.py 300   # 5 minutes
 
 ---
 
+## 🎬 Playback System Scripts
+
+### `beacon-playback.sh` - **Playback Control Center**
+**Simple interface for the market data playback system.**
+
+```bash
+# Interactive file selection
+./beacon-playback.sh run
+
+# Use specific data file
+./beacon-playback.sh run output.itch
+
+# Use specific file and config
+./beacon-playback.sh run data.bin config/playback/authorities/authority_burst.json
+
+# Run test suite
+./beacon-playback.sh test
+
+# List available files
+./beacon-playback.sh list
+
+# Build playback system
+./beacon-playback.sh build
+```
+
+### `beacon-playback-run.py` - **Advanced Playback Runner**
+Professional playback orchestration with real-time monitoring.
+
+```bash
+# Interactive mode
+python3 beacon-playback-run.py
+
+# Specify files
+python3 beacon-playback-run.py data/market_data.bin
+python3 beacon-playback-run.py output.itch config/playback/burst_mode.json
+```
+
+**Features:**
+- Auto-discovery of binary data files (*.bin, *.itch, *.dat)
+- Interactive file selection if multiple files found
+- Real-time output streaming from playback process
+- Professional startup banners and progress monitoring
+- Supports all playback modes (burst, wave, continuous, chaos)
+
+### `beacon-playback-test.py` - **Playback Test Suite**
+Comprehensive testing for playback configurations and functionality.
+
+```bash
+python3 beacon-playback-test.py
+```
+
+**Test Coverage:**
+- Configuration file syntax validation
+- JSON parsing and field validation
+- Functionality tests with different authority configs
+- Performance throughput measurements
+- Error handling and process management
+
+**Modes Tested:**
+- Default configuration
+- Burst mode (high-frequency bursts)
+- Wave mode (variable rate patterns) 
+- Continuous mode (steady throughput)
+- Chaos mode (packet loss, jitter)
+
+---
+
 ## 🔧 Utility Scripts
 
 ### `beacon-build.py` - Build Everything

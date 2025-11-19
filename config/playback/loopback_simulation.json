@@ -1,0 +1,6 @@
+{
+  "sender_config": "senders/sender_udp_loopback.json",
+  "authorities": [],
+  "simulation_mode": true,
+  "description": "Complete loopback simulation configuration for isolated testing"
+}

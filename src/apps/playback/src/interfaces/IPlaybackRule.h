@@ -13,9 +13,9 @@
 #include <chrono>
 #include <cstddef>
 
-namespace playback::rules {
+#include "../PlaybackState.h"
 
-class PlaybackState; // Forward declaration
+namespace playback::rules {
 
 class IPlaybackRule {
   public:
@@ -51,4 +51,4 @@ class IPlaybackRule {
   virtual void onPlaybackEnd() {}
 };
 
-} // namespace playback::authorities
+} // namespace playback::rules

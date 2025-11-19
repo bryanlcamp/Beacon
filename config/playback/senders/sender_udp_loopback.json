@@ -1,0 +1,17 @@
+{
+  "type": "udp",
+  "address": "239.255.0.1",
+  "port": 12345,
+  "ttl": 1,
+  "description": "UDP multicast configuration for loopback testing",
+  "loopback_notes": {
+    "purpose": "Enables UDP multicast on localhost for isolated testing",
+    "requirements": [
+      "IP_MULTICAST_LOOP=1 (enabled in UdpSocket)",
+      "IP_MULTICAST_IF=INADDR_ANY (uses default interface)", 
+      "Receiver must join multicast group before sender starts",
+      "On macOS, multicast routes via en0, not lo0"
+    ],
+    "testing": "Use beacon-diagnose-loopback.py to verify configuration"
+  }
+}

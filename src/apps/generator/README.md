@@ -1,121 +1,16 @@
 # Beacon Market Data Generator 🚀
 
-A high-performance, production-ready market data generator for simulating realistic exchange trading activity with advanced wave patterns and burst dynamics.
+High-performance market data generator that **drives Beacon's Live Backtester** with realistic exchange protocols and configurable market dynamics.
 
-## 📋 Table of Contents
+## Core Features
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Build System](#build-system)
-- [Running the Generator](#running-the-generator)
-- [Output Formats](#output-formats)
-- [Performance](#performance)
-- [Wave & Burst Dynamics](#wave--burst-dynamics)
-- [Testing](#testing)
-- [Troubleshooting](#troubleshooting)
-- [Development](#development)
-- [API Reference](#api-reference)
+✅ **Binary Exchange Protocols** - Generate NASDAQ, CME, and NYSE data files where Beacon's data-driven architecture begins  
+✅ **Human-Readable CSV Output** - Export data in CSV format for analysis and backtesting with identical market dynamics  
+✅ **Protocol Versioning Integration** - Seamlessly integrates with Beacon's exchange protocol versioning system  
+✅ **Realistic Market Microstructure** - Configurable wave patterns, burst activity, and proper bid-ask spreads  
+✅ **High-Performance Architecture** - Optimized C++20 generating 500K+ messages/second## 1. Configuration
 
-## 🎯 Overview
-
-The Beacon Market Data Generator is a sophisticated C++20 application designed to simulate realistic exchange market data with configurable patterns, bursts, and waves. It supports multiple exchange protocols (NASDAQ ITCH, CME, NYSE) and generates high-fidelity market data for testing, backtesting, and algorithm development.
-
-### Key Capabilities
-
-- **Multi-Exchange Support**: NASDAQ ITCH, CME, NYSE protocols
-- **Realistic Market Dynamics**: Configurable wave patterns and burst activity
-- **High Performance**: Optimized C++20 with SIMD support and memory pooling
-- **Production Ready**: Comprehensive error handling, logging, and monitoring
-- **Flexible Configuration**: JSON-based configuration with validation
-- **Scalable Output**: Binary serialization with configurable compression
-
-## ✨ Features
-
-### Core Features
-- 🏁 **Multi-Protocol Support**: Generate data for NASDAQ, CME, and NYSE exchanges
-- 📊 **Realistic Market Patterns**: Wave-based price movements with configurable amplitude and frequency
-- 💥 **Burst Activity**: Simulate high-volume trading bursts with intensity control
-- 🎯 **Symbol Management**: Multi-symbol configuration with individual characteristics
-- 📈 **Statistics Tracking**: Real-time generation statistics and performance metrics
-- 🔧 **Production Hardened**: Comprehensive error handling and validation
-
-### Advanced Features
-- 🌊 **Wave Dynamics**: Configurable market rhythm with amplitude and duration control
-- ⚡ **Burst Coordination**: Synchronized or independent burst patterns across symbols
-- 📝 **PascalCase Schema**: Modern, consistent JSON configuration format
-- 🚀 **Optimized Performance**: Release builds with LTO and native architecture targeting
-- 🛡️ **Memory Safety**: Address sanitizers and undefined behavior detection in debug builds
-- 📊 **Rich Output**: Detailed generation summaries with per-symbol statistics
-
-## 🏗️ Architecture
-
-### Component Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Market Data Generator                     │
-├─────────────────────────────────────────────────────────────┤
-│  ConfigProvider    │  MessageGenerator  │   StatsManager   │
-│  ├─ ConfigFileParser                    │   ├─ Statistics │
-│  ├─ Validation                          │   ├─ Reporting  │
-│  └─ Schema Management                   │   └─ Metrics    │
-├─────────────────────────────────────────────────────────────┤
-│                       Serializers                          │
-│  NsdqSerializer  │  CmeSerializer   │   NyseSerializer    │
-├─────────────────────────────────────────────────────────────┤
-│                    Wave & Burst Engine                     │
-│  WaveConfig      │  BurstConfig     │   Coordination      │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Key Components
-
-- **ConfigProvider**: Manages configuration loading, validation, and serializer creation
-- **ConfigFileParser**: Parses JSON configuration with comprehensive validation
-- **MessageGenerator**: Core generation engine with wave/burst dynamics
-- **Serializers**: Exchange-specific binary format writers (ITCH, CME, NYSE)
-- **StatsManager**: Real-time statistics collection and reporting
-- **Wave Engine**: Implements market rhythm and amplitude patterns
-- **Burst Engine**: Manages high-intensity trading periods
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **C++20 Compiler**: GCC 10+, Clang 12+, or MSVC 19.29+
-- **CMake**: Version 3.20 or higher
-- **Python 3**: For build and run scripts
-- **nlohmann/json**: Included in vendor directory
-
-### Quick Start
-
-1. **Build Debug Version**:
-   ```bash
-   cd /path/to/beacon
-   python3 src/apps/generator/beacon-build-debug.py
-   ```
-
-2. **Run with Sample Configuration**:
-   ```bash
-   python3 src/apps/generator/scripts/beacon-run-debug.py \
-     config/generator/sample_config.json output.bin
-   ```
-
-3. **Build Release Version** (for production):
-   ```bash
-   python3 src/apps/generator/beacon-build-release.py
-   python3 src/apps/generator/scripts/beacon-run-release.py \
-     config/generator/sample_config.json output.bin
-   ```
-
-## ⚙️ Configuration
-
-### Configuration Schema
-
-The generator uses a PascalCase JSON schema for modern, consistent configuration:
+The generator uses a PascalCase JSON configuration with the following structure:
 
 ```json
 {
@@ -159,125 +54,110 @@ The generator uses a PascalCase JSON schema for modern, consistent configuration
 }
 ```
 
-### Configuration Sections
+### Key Fields
 
-#### Global Configuration
-- **NumMessages**: Total number of messages to generate (must be > 0)
-- **Exchange**: Target exchange protocol (`"nsdq"`, `"cme"`, `"nyse"`)
+- **Global**: Message count, exchange protocol (`nsdq`, `cme`, `nyse`)
+- **Wave**: Market rhythm cycles and price variation intensity  
+- **Burst**: High-volume trading periods with configurable intensity
+- **Symbols**: Trading symbols with price ranges and message distribution
 
-#### Wave Configuration
-- **WaveDurationMs**: Wave cycle duration in milliseconds (> 0)
-- **WaveAmplitudePercent**: Wave intensity (50.0 - 500.0%)
-  - `100%` = Flat market (no wave effect)
-  - `150%` = 1.5x price variation
-  - `50%` = Compressed price range
+## Build Instructions
 
-#### Burst Configuration
-- **Enabled**: Enable/disable burst periods
-- **BurstIntensityPercent**: Message volume multiplier during bursts
-- **BurstFrequencyMs**: Time between burst periods
-
-#### Symbol Configuration
-- **SymbolName**: Trading symbol identifier
-- **PercentTotalMessages**: Percentage of total messages (0.0 - 100.0)
-- **SpreadPercentage**: Bid-ask spread as percentage of price
-- **PriceRange**: Min/max price bounds with weight
-- **QuantityRange**: Order quantity bounds with weight
-- **PrevDay**: Previous day statistics for realistic price anchoring
-
-### Validation Rules
-
-1. **Message Count**: Must be greater than 0
-2. **Exchange**: Must be one of supported exchanges
-3. **Symbol Percentages**: Must sum to exactly 100.0%
-4. **Price Ranges**: MinPrice ≤ MaxPrice, all values ≥ 0
-5. **Wave Amplitude**: Must be between 50.0% and 500.0%
-6. **All Weights**: Must be > 0.0
-
-## 🔨 Build System
-
-### Build Scripts
-
-The generator includes Python build scripts for both debug and release configurations:
-
-#### Debug Build
+Build from generator directory:
 ```bash
-python3 src/apps/generator/beacon-build-debug.py
+./scripts/beacon_build/beacon-build-debug.py generator    # Debug build → bin/debug/generator
+./scripts/beacon_build/beacon-build-release.py generator  # Release → bin/release/generator
 ```
-- **Sanitizers**: AddressSanitizer and UndefinedBehaviorSanitizer
-- **Debug Symbols**: Full debugging information
-- **Optimization**: Disabled (-O0) for debugging
-- **Output**: `bin/debug/generator`
 
-#### Release Build
+## Testing 🧪
+
+### Quick Test Run
 ```bash
-python3 src/apps/generator/beacon-build-release.py
-```
-- **Optimization**: Maximum (-O3) with native architecture targeting
-- **Link-Time Optimization**: Full LTO for maximum performance
-- **Size Optimization**: Strip debug symbols
-- **Output**: `bin/release/generator`
+# Run all generator tests (47 total tests)
+python3 scripts/beacon-run-tests.py
 
-### Manual Build (CMake)
-
-For advanced users or CI/CD integration:
-
-```bash
-# Configure
-cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
-
-# Build generator target
-cmake --build build --target generator
-
-# Binary location
-./build/src/apps/generator/generator
+# Run specific test suite
+python3 scripts/beacon-run-tests.py --test TestStatsManager
+python3 scripts/beacon-run-tests.py --test TestCsvSerializer
+python3 scripts/beacon-run-tests.py --test TestConfigProvider
 ```
 
-### Build Features
+### Test Coverage (47 Total Tests)
 
-- **Automatic Dependency Detection**: nlohmann/json automatically found
-- **Cross-Platform**: Works on Linux, macOS, and Windows
-- **Parallel Builds**: Utilizes all available CPU cores
-- **Clean Builds**: Scripts automatically clean previous builds
+**✅ TestConfigProvider** - 11 tests covering configuration loading, validation, and serializer factory:
+- Config file parsing (valid/invalid/missing files)
+- Exchange type validation (nsdq, cme, nyse)  
+- Symbol percentage validation and distribution
+- Wave and burst configuration loading
+- CSV mode toggle functionality
 
-## 🎮 Running the Generator
+**✅ TestStatsManager** - 14 tests covering statistics collection and reporting:
+- Initial state and empty data handling
+- Single/multiple symbol statistics accuracy
+- Edge cases: zero prices, large quantities, special characters
+- Price spread calculations and formatting
+- Symbol ordering and display consistency
 
-### Python Run Scripts
+**✅ TestCsvSerializer** - 7 tests covering CSV output format:
+- Header creation and file management
+- Message serialization (Bid/Ask/Trade types)
+- Price formatting (2 decimal places)
+- Multiple message handling and line counting
+- Message type string conversion
 
-#### Debug Runner
-```bash
-python3 src/apps/generator/scripts/beacon-run-debug.py \
-  config/generator/sample_config.json output.bin
+**✅ TestMessageGenerator** - 7 tests covering core message generation:
+- Binary and CSV output modes
+- Wave amplitude calculations and market cycles
+- Burst generation and intensity patterns  
+- Message count validation and symbol distribution
+- Configuration validation and error handling
+
+**✅ TestGeneratorIntegration** - 8 tests covering end-to-end workflows:
+- Full pipeline testing (config → generation → output)
+- Multi-exchange protocol support (NASDAQ/CME/NYSE)
+- Large-scale message generation (10K+ messages)
+- Configuration validation and file consistency
+- Symbol distribution accuracy across formats
+
+### Architecture Coverage
+- **Configuration Management**: Full coverage of JSON parsing, validation, and error handling
+- **Message Generation**: Complete testing of wave patterns, bursts, and distribution algorithms  
+- **Output Serialization**: Comprehensive CSV testing, binary format validation via integration tests
+- **Statistics Collection**: Thorough coverage of real-time stats, edge cases, and formatting
+- **Integration Workflows**: End-to-end testing ensuring all components work together correctly
+
+The test suite provides **comprehensive coverage** of all major generator components with focus on:
+- 🔧 **Configuration edge cases** and validation
+- 📊 **Statistical accuracy** and performance  
+- 🎯 **Message distribution** and market dynamics
+- 📁 **Output format consistency** across all supported exchanges
+- 🚀 **Integration reliability** for production workflows
+
+## 3. Usage
+
+### Command Line Interface
+
+```
+Usage: ./bin/debug/generator [OPTIONS]
+
+Options:
+  -i, --input FILE     Input configuration file (JSON format)
+  -o, --output FILE    Output file path
+  -c, --csv            Generate CSV output instead of binary format
+  -h, --help           Show help message
+
+Example:
+  # Generate binary exchange protocol data
+  ./bin/debug/generator -i config/generator/sample_config.json -o data.bin
+  
+  # Generate CSV for analysis/backtesting
+  ./bin/debug/generator -i config/generator/sample_config.json -o data.csv --csv
+  
+  # Show help
+  ./bin/debug/generator --help
 ```
 
-#### Release Runner
-```bash
-python3 src/apps/generator/scripts/beacon-run-release.py \
-  config/generator/sample_config.json output.bin
-```
-
-### Direct Execution
-
-```bash
-# From project root
-./bin/debug/generator config/generator/sample_config.json output.bin
-./bin/release/generator config/generator/sample_config.json output.bin
-```
-
-### Command Line Arguments
-
-```
-Usage: ./generator <config_file> <output_file>
-  <config_file>: Path to the JSON configuration file
-  <output_file>: Path to the output binary file
-
-Examples:
-  ./generator config.json output.itch     # NASDAQ ITCH format
-  ./generator config.json output.cme      # CME format  
-  ./generator config.json output.nyse     # NYSE format
-```
-
-### Runtime Output
+## 4. Example Output
 
 ```
 ══════════════════════════════════════════════════════════════════════════
@@ -298,373 +178,58 @@ Generating messages (using sample_config.json)...
 
   Symbol  Orders    Trades    TotalVol    AvgBid      AvgAsk      Spread      Spread%     Min-Max     
   ----------------------------------------------------------------------------------------------------
-  GOOG    899       101       45673       300.63      299.74      -0.90       -0.30       52.40       
-  AAPL    2703      297       138296      262.89      264.23      1.34        0.51        77.62       
-  MSFT    5401      599       271135      505.31      507.44      2.13        0.42        60.00       
-  ----------------------------------------                                                            
-                                                        TOTAL   9003      997       455104      
+  GOOG    894       106       43258       302.42      300.92      -1.50       -0.50       52.24       
+  AAPL    2700      300       135118      262.99      264.11      1.12        0.42        78.12       
+  MSFT    5399      601       276189      503.54      506.05      2.50        0.50        61.14       
+          ================================                                                            
+  TOTAL   8993      1007      454565      
 
 ══════════════════════════════════════════════════════════════════════════
 ```
 
-## 📊 Output Formats
+### Output Formats
 
-### Exchange Protocols
+• **Binary Formats**: NASDAQ ITCH 5.0, CME MDP 3.0, NYSE Pillar (exchange-specific protocol messages)
+• **CSV Format**: Human-readable with columns: timestamp, symbol, message_type, side, price, quantity, order_id, trade_id
+• **Performance**: Release builds generate ~500K messages/second with ~50MB memory usage
 
-#### NASDAQ ITCH 5.0
-- **File Extension**: `.itch` or `.bin`
-- **Format**: Binary ITCH 5.0 messages
-- **Message Types**: Add Order, Execute Order, Cancel Order, Trade
-- **Specifications**: NASDAQ TotalView-ITCH 5.0
+## 5. Adding New Features
 
-#### CME MDP 3.0
-- **File Extension**: `.cme` or `.bin`
-- **Format**: Binary CME Market Data Platform messages
-- **Message Types**: New Order Single, Execution Report, Market Data
-- **Specifications**: CME MDP 3.0 Protocol
+### Key Interfaces to Implement
 
-#### NYSE Pillar
-- **File Extension**: `.nyse` or `.bin`
-- **Format**: Binary NYSE Pillar messages
-- **Message Types**: Add Order, Modify Order, Delete Order, Trade
-- **Specifications**: NYSE Pillar Gateway
-
-### Binary Format Structure
-
-Each output file contains:
-1. **Header**: Protocol version, symbol count, message count
-2. **Symbol Directory**: Symbol definitions and metadata
-3. **Message Stream**: Time-ordered market data messages
-4. **Footer**: Checksums and validation data
-
-## ⚡ Performance
-
-### Benchmarks
-
-| Configuration | Messages/Second | Memory Usage | CPU Usage |
-|---------------|-----------------|--------------|-----------|
-| Debug Build   | ~50K msgs/sec   | ~100MB       | ~15%      |
-| Release Build | ~500K msgs/sec  | ~50MB        | ~8%       |
-
-### Optimization Features
-
-- **SIMD Instructions**: Vectorized calculations where possible
-- **Memory Pooling**: Pre-allocated message buffers
-- **Zero-Copy Serialization**: Direct binary writing
-- **Branch Prediction**: Optimized conditional logic
-- **Cache-Friendly**: Data structure alignment and locality
-
-### Scaling Guidelines
-
-| Target Messages | Recommended RAM | Estimated Time |
-|-----------------|-----------------|----------------|
-| 1M messages     | 1GB            | 2 seconds      |
-| 10M messages    | 2GB            | 20 seconds     |
-| 100M messages   | 4GB            | 3 minutes      |
-| 1B messages     | 8GB            | 30 minutes     |
-
-## 🌊 Wave & Burst Dynamics
-
-### Wave Patterns
-
-Wave patterns simulate natural market rhythms:
-
-```
-Price
-  ↑     ╭─╮        ╭─╮        ╭─╮
-        ╱   ╲      ╱   ╲      ╱   ╲
-  ─────╱─────╲────╱─────╲────╱─────╲────→ Time
-              ╲  ╱       ╲  ╱       ╲  ╱
-               ╲╱         ╲╱         ╲╱
-  ↓             WaveDurationMs
-```
-
-#### Wave Configuration
-- **Duration**: Controls cycle length (default: 5 minutes)
-- **Amplitude**: Controls price variation intensity
-- **Coordination**: Synchronize waves across symbols
-
-### Burst Activity
-
-Burst periods simulate high-intensity trading:
-
-```
-Volume
-  ↑    Normal   🔥BURST🔥   Normal   🔥BURST🔥
-       Activity              Activity          
-  ████ ████████████████████ ████████████████████ ─→ Time
-       ↑                   ↑
-       BurstIntensityPercent = 300%
-       │←── BurstFrequencyMs ──→│
-```
-
-#### Burst Configuration
-- **Intensity**: Volume multiplier during bursts (e.g., 300% = 3x volume)
-- **Frequency**: Time between burst periods
-- **Coordination**: Synchronize bursts across symbols
-
-### Advanced Patterns
-
-#### Wave + Burst Combination
-```
-Price & Volume over Time:
-
-Price   ╭─╮     ╭─╮     ╭─╮     ╭─╮
-       ╱   ╲   ╱   ╲   ╱   ╲   ╱   ╲
-      ╱     ╲ ╱     ╲ ╱     ╲ ╱     ╲
-     ╱       ╲       ╲       ╲       ╲
-
-Volume ████🔥████████🔥████████🔥████████
-       Normal Burst Normal Burst Normal
-```
-
-## 🧪 Testing
-
-### Test Configuration
-
-Simple test configuration for validation:
-
-```json
-{
-  "Global": {
-    "NumMessages": 100,
-    "Exchange": "nsdq"
-  },
-  "Wave": {
-    "WaveDurationMs": 5000,
-    "WaveAmplitudePercent": 100.0
-  },
-  "Burst": {
-    "Enabled": false
-  },
-  "Symbols": [{
-    "SymbolName": "TEST",
-    "PercentTotalMessages": 100.0,
-    "SpreadPercentage": 0.5,
-    "PriceRange": {"MinPrice": 100.0, "MaxPrice": 200.0, "Weight": 1.0},
-    "QuantityRange": {"MinQuantity": 1, "MaxQuantity": 10, "Weight": 1.0},
-    "PrevDay": {"OpenPrice": 150.0, "HighPrice": 160.0, "LowPrice": 140.0, "ClosePrice": 155.0, "Volume": 1000}
-  }]
-}
-```
-
-### Running Tests
-
-```bash
-# Quick validation test
-python3 src/apps/generator/scripts/beacon-run-debug.py \
-  src/apps/generator/test_simple.json test_output.bin
-
-# Full integration test
-python3 src/apps/generator/scripts/beacon-run-debug.py \
-  config/generator/sample_config.json full_test.bin
-```
-
-### Unit Tests
-
-```bash
-# Run unit tests (if available)
-python3 src/apps/generator/scripts/beacon-run-tests.py
-```
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-#### Configuration Errors
-
-**Problem**: `"Configuration validation failed: Global configuration is invalid"`
-```bash
-# Check configuration syntax and field names
-python3 -m json.tool your_config.json
-```
-
-**Solution**: Ensure PascalCase field names and valid ranges
-
-#### Build Errors
-
-**Problem**: `"Generator binary not found!"`
-```bash
-# Rebuild the generator
-python3 src/apps/generator/beacon-build-debug.py
-```
-
-**Solution**: Run build script before run script
-
-#### Runtime Errors
-
-**Problem**: `"Could not open configuration file"`
-```bash
-# Check file path and permissions
-ls -la path/to/config.json
-```
-
-**Solution**: Use absolute paths or run from project root
-
-### Debug Mode
-
-Enable detailed error messages:
-```bash
-# Use debug build for verbose output
-python3 src/apps/generator/beacon-build-debug.py
-python3 src/apps/generator/scripts/beacon-run-debug.py config.json output.bin
-```
-
-### Validation Checklist
-
-- [ ] Configuration file exists and is readable
-- [ ] JSON syntax is valid
-- [ ] All required fields are present
-- [ ] Field names use PascalCase
-- [ ] Symbol percentages sum to 100.0%
-- [ ] All numeric ranges are valid
-- [ ] Exchange type is supported
-
-## 👨‍💻 Development
-
-### Code Structure
-
-```
-src/apps/generator/
-├── README.md                    # This file
-├── CMakeLists.txt              # Build configuration
-├── beacon-build-debug.py       # Debug build script
-├── beacon-build-release.py     # Release build script
-├── include/                    # Header files
-│   ├── ConfigProvider.h        # Configuration management
-│   ├── ConfigFileParser.h      # JSON parsing and validation
-│   ├── MessageGenerator.h      # Core generation logic
-│   ├── StatsManager.h          # Statistics collection
-│   └── serializers/            # Exchange-specific serializers
-│       ├── IMarketDataSerializer.h
-│       ├── NsdqSerializer.h
-│       ├── CmeSerializer.h
-│       └── NyseSerializer.h
-├── src/                        # Implementation files
-│   ├── main.cpp               # Entry point
-│   ├── ConfigProvider.cpp     # Configuration implementation
-│   ├── ConfigFileParser.cpp   # JSON parsing implementation
-│   ├── MessageGenerator.cpp   # Generation logic
-│   ├── StatsManager.cpp       # Statistics implementation
-│   └── serializers/           # Serializer implementations
-├── scripts/                   # Runtime scripts
-│   ├── beacon-run-debug.py    # Debug runner
-│   ├── beacon-run-release.py  # Release runner
-│   └── beacon-run-tests.py    # Test runner
-├── tests/                     # Unit tests
-└── test_simple.json           # Simple test configuration
-```
-
-### Adding New Features
-
-1. **New Exchange Protocol**:
-   - Implement `IMarketDataSerializer` interface
-   - Add protocol-specific message formats
-   - Update `ConfigProvider::createSerializer()`
-
-2. **New Configuration Options**:
-   - Update `ConfigFileParser.h` structs
-   - Add validation in `validate()` methods
-   - Update parsing in `ConfigFileParser.cpp`
-
-3. **New Market Dynamics**:
-   - Extend wave/burst configuration
-   - Implement in `MessageGenerator.cpp`
-   - Add validation rules
-
-### Coding Standards
-
-- **C++20**: Modern C++ features and best practices
-- **RAII**: Resource management and exception safety
-- **const-correctness**: Immutable data where possible
-- **Move semantics**: Efficient object transfers
-- **Error handling**: Comprehensive exception management
-
-## 📚 API Reference
-
-### ConfigProvider
-
+**1. New Exchange Protocol**:
 ```cpp
-class ConfigProvider {
+// Implement IMarketDataSerializer interface
+class MyExchangeSerializer : public IMarketDataSerializer {
 public:
-    ConfigProvider(const std::string& exchangeType, const std::string& outputFilePath);
-    bool loadConfig(const std::string& configPath);
-    std::unique_ptr<IMarketDataSerializer> createSerializer() const;
-    
-    // Getters
-    std::vector<SymbolData> getSymbolsForGeneration() const;
-    size_t getMessageCount() const;
-    const WaveConfig& getWaveConfig() const;
-    const BurstConfig& getBurstConfig() const;
+    void serializeMessage(const Message& message) const override;
 };
 ```
 
-### ConfigFileParser
-
+**2. New Output Format** (like CSV):
 ```cpp
-class ConfigFileParser {
+// Same interface, different implementation
+class CsvSerializer : public IMarketDataSerializer {
 public:
-    ConfigFileParser(const std::string& configFile);
-    
-    const GlobalConfig& getGlobalConfig() const;
-    const WaveConfig& getWaveConfig() const;
-    const BurstConfig& getBurstConfig() const;
-    const std::vector<SymbolConfig>& getSymbols() const;
-    
-private:
-    void parse(const std::string& filename);
-    void validate() const;
+    void serializeMessage(const Message& message) const override {
+        // Write CSV format instead of binary
+    }
 };
 ```
 
-### MessageGenerator
+**3. New Configuration Options**:
+- Update `ConfigFileParser.h` structs
+- Add validation in `validate()` methods  
+- Update parsing in `ConfigFileParser.cpp`
 
-```cpp
-class MessageGenerator {
-public:
-    MessageGenerator(const ConfigProvider& configProvider);
-    void generateMessages(const std::string& outputPath, 
-                         size_t messageCount,
-                         const std::string& configFile);
-    size_t getMessageCount() const;
-    
-private:
-    void applyWavePattern(double& price, uint64_t timestamp);
-    void applyBurstPattern(size_t& messageCount, uint64_t timestamp);
-};
-```
+**4. New Market Dynamics**:
+- Extend wave/burst configuration
+- Implement in `MessageGenerator.cpp`
 
-### Configuration Structures
-
-```cpp
-struct GlobalConfig {
-    int NumMessages = 0;
-    std::string Exchange;
-    WaveConfig GlobalWaveConfig;
-    BurstConfig GlobalBurstConfig;
-    bool validate() const;
-};
-
-struct WaveConfig {
-    int WaveDurationMs = 300000;
-    double WaveAmplitudePercent = 100.0;
-    bool validate() const;
-};
-
-struct BurstConfig {
-    bool Enabled = false;
-    double BurstIntensityPercent = 200.0;
-    int BurstFrequencyMs = 60000;
-    bool validate() const;
-};
-```
+### Architecture
+- **MessageGenerator**: Core generation engine
+- **IMarketDataSerializer**: Pluggable output format interface
+- **ConfigProvider**: Configuration management and serializer factory
+- **StatsManager**: Real-time statistics collection
 
 ---
-
-## 🎉 Conclusion
-
-The Beacon Market Data Generator provides a comprehensive, high-performance solution for generating realistic market data with advanced wave and burst dynamics. Its production-ready architecture, extensive configuration options, and optimized performance make it ideal for algorithm testing, backtesting, and market simulation.
-
-For questions, issues, or contributions, please refer to the project documentation or contact the development team.
-
-**Happy Trading! 📈🚀**

@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-class BinaryInputFileReader {
+class BinaryInputFileReader.h {
 public:
     static constexpr size_t MESSAGE_SIZE = 33;  // ITCH messages are 33 bytes (packed structs)
     

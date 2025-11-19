@@ -1,5 +1,5 @@
 #include <IClassifyMessagePriority.h>
-#include "../playback_state.h"
+#include "../PlaybackState.h"
 
 namespace playback::advisors {
 
@@ -7,20 +7,20 @@ namespace playback::advisors {
 class MaxPriceMoveMessagePriorityClassifier : public IClassifyMessagePriority {
 public:
   MaxPriceMoveMessagePriorityClassifier(double threshold)
-    : _threshold(threshold), _lastPrice(0.0), _isFirst(true) {}
+    : _thresholdMovePrice(threshold), _lastPrice(0.0), _isFirstPrice(true) {}
 
   MessagePriority classify(size_t messageIndex, const char* message, const PlaybackState& state) override {
     double price = *reinterpret_cast<const double*>(message + 8);
     MessagePriority priority = MessagePriority::NORMAL;
 
-    if (_isFirst) {
+    if (_isFirstPrice) {
       _lastPrice = price;
-      _isFirst = false;
+      _isFirstPrice = false;
       return priority;
     }
 
     double priceMove = std::abs(price - _lastPrice);
-    if (priceMove > _threshold) {
+    if (priceMove > _thresholdMovePrice) {
       priority = MessagePriority::CRITICAL;
     }
 
@@ -29,9 +29,9 @@ public:
   }
 
 private:
-  double _threshold;
+  double _thresholdMovePrice;
   double _lastPrice;
-  bool _isFirst;
+  bool _isFirstPrice;
 };
 
 } // namespace playback::advisors

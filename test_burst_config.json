@@ -1,0 +1,7 @@
+{
+  "senderConfig": "senders/senderUdp.json",
+  "advisors": [],
+  "authorities": [
+    "authorities/authority_burst.json"
+  ]
+}

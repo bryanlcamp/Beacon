@@ -12,9 +12,9 @@
 
 #include <cstddef>
 
-namespace playback::advisors {
+#include "../PlaybackState.h"
 
-  class PlaybackState; // Forward declaration
+namespace playback::advisors {
 
   enum class MessagePriority {
     NORMAL = 0,
@@ -28,6 +28,6 @@ namespace playback::advisors {
       virtual ~IClassifyMessagePriority() = default;
       virtual MessagePriority classify(size_t messageIndex,
                                       const char* message,
-                                      const PlaybackState& state) = 0;
+                                      const playback::rules::PlaybackState& state) = 0;
   };
 } // namespace playback::advisors

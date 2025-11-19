@@ -13,12 +13,26 @@
 #include <chrono>
 #include <deque>
 
+namespace playback {
+namespace rules {
+
 class PlaybackState {
 public:
     using TimePoint = std::chrono::steady_clock::time_point;
     using Duration = std::chrono::steady_clock::duration;
     
     PlaybackState() : _startTime(std::chrono::steady_clock::now()) {}
+    
+    // State query methods
+    size_t getCurrentMessageIndex() const { return _currentMessageIndex; }
+    size_t getTotalMessages() const { return _totalMessages; }
+    bool isRunning() const { return _isRunning; }
+    
+    // Controlled state changes
+    void initialize(size_t totalMessages) { _totalMessages = totalMessages; }
+    void start() { _isRunning = true; }
+    void stop() { _isRunning = false; }
+    void setCurrentMessageIndex(size_t index) { _currentMessageIndex = index; }
     
     // Record that a message was sent
     void recordSent() {
@@ -87,6 +101,12 @@ public:
     TimePoint getStartTime() const { return _startTime; }
     
 private:
+    // State tracking
+    size_t _currentMessageIndex = 0;
+    size_t _totalMessages = 0;
+    bool _isRunning = false;
+    
+    // Timing and statistics
     TimePoint _startTime;
     size_t _messagesSent = 0;
     size_t _totalMessagesSent = 0;
@@ -94,3 +114,9 @@ private:
     size_t _messagesQueued = 0;
     std::deque<TimePoint> _recentSendTimes;  // For rate calculation
 };
+
+} // namespace rules
+} // namespace playback
+
+// Create alias for backward compatibility
+using PlaybackState = playback::rules::PlaybackState;

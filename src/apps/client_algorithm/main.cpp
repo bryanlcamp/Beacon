@@ -14,6 +14,117 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <thread>
+#include <atomic>
+
+// Beacon HFT infrastructure for message decoding
+#include <hft/ringbuffer/spsc_ringbuffer.h>
+#include <hft/core/cpu_pause.h>
+#include <nsdq/market_data/itch/v5/itch_message_types.h>
+
+using namespace beacon::hft::ringbuffer;
+using namespace beacon::nsdq::market_data::itch;
+
+// Decoded market data message for processing
+struct DecodedMarketMessage {
+    MessageType messageType;
+    uint64_t sequenceNumber;
+    std::string symbol;
+    uint32_t price;
+    uint32_t quantity;
+    char side;
+    uint64_t timestamp;
+    
+    DecodedMarketMessage() = default;
+    
+    DecodedMarketMessage(MessageType type, uint64_t seq, const std::string& sym, 
+                        uint32_t p, uint32_t qty, char s)
+        : messageType(type), sequenceNumber(seq), symbol(sym), 
+          price(p), quantity(qty), side(s), 
+          timestamp(std::chrono::duration_cast<std::chrono::milliseconds>(
+              std::chrono::steady_clock::now().time_since_epoch()).count()) {}
+};
+
+// Global SPSC queue for decoded messages
+SpScRingBuffer<DecodedMarketMessage, 8192> g_messageQueue;
+std::atomic<bool> g_processingActive{false};
+
+// Message processing thread
+void messageProcessingThread() {
+    DecodedMarketMessage message;
+    uint64_t processedCount = 0;
+    
+    while (g_processingActive.load(std::memory_order_relaxed)) {
+        if (g_messageQueue.tryPop(message)) {
+            processedCount++;
+            
+            // Process the decoded message (trading logic would go here)
+            if (processedCount % 1000 == 0) {
+                std::cout << "[PROCESSOR] Processed " << processedCount << " decoded messages"
+                          << " (Latest: " << message.symbol << " $" 
+                          << (message.price / 10000.0) << " qty:" << message.quantity << ")\n";
+            }
+        } else {
+            // No messages available, yield CPU briefly
+            beacon::hft::core::cpu_pause();
+        }
+    }
+    
+    std::cout << "[PROCESSOR] Final processed count: " << processedCount << " messages\n";
+}
+
+// Message decoder for ITCH binary format
+bool decodeItchMessage(const char* buffer, size_t bytesRead, DecodedMarketMessage& decoded) {
+    if (bytesRead < 1) return false;
+    
+    MessageType msgType = static_cast<MessageType>(buffer[0]);
+    
+    switch (msgType) {
+        case MessageType::AddOrder: {
+            if (bytesRead < sizeof(AddOrderMessage)) return false;
+            
+            const AddOrderMessage* addMsg = reinterpret_cast<const AddOrderMessage*>(buffer);
+            
+            // Extract symbol (remove padding)
+            std::string symbol(addMsg->stock, 8);
+            symbol.erase(symbol.find_last_not_of(" \0") + 1);
+            
+            decoded = DecodedMarketMessage(
+                MessageType::AddOrder,
+                addMsg->sequenceNumber,
+                symbol,
+                addMsg->price,
+                addMsg->shares,
+                addMsg->side
+            );
+            return true;
+        }
+        
+        case MessageType::Trade: {
+            if (bytesRead < sizeof(TradeMessage)) return false;
+            
+            const TradeMessage* tradeMsg = reinterpret_cast<const TradeMessage*>(buffer);
+            
+            // Extract symbol (remove padding)
+            std::string symbol(tradeMsg->stock, 8);
+            symbol.erase(symbol.find_last_not_of(" \0") + 1);
+            
+            decoded = DecodedMarketMessage(
+                MessageType::Trade,
+                tradeMsg->sequenceNumber,
+                symbol,
+                tradeMsg->price,
+                tradeMsg->shares,
+                tradeMsg->side
+            );
+            return true;
+        }
+        
+        default:
+            // Unsupported message type for now
+            return false;
+    }
+}
 
 void printUsage(const char* progName) {
     std::cout << "Usage:\n";

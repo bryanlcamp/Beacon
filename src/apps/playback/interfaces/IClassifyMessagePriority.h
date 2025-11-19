@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../playback_state.h"
+#include "../PlaybackState.h"
 
 namespace playback::advisors {
 

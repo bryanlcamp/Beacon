@@ -20,16 +20,26 @@ namespace beacon::hft::networking {
       }
 
       // Set TTL for multicast
-      setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
+      if (setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl)) < 0) {
+        close(_socket);
+        throw std::runtime_error("Failed to set multicast TTL: " + std::string(strerror(errno)));
+      }
 
-      // Enable multicast loopback
+      // Enable multicast loopback (CRITICAL for localhost testing)
       unsigned char loopback = 1;
-      setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_LOOP, &loopback, sizeof(loopback));
+      if (setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_LOOP, &loopback, sizeof(loopback)) < 0) {
+        close(_socket);
+        throw std::runtime_error("Failed to enable multicast loopback: " + std::string(strerror(errno)));
+      }
 
-      // Use default interface (INADDR_ANY)
+      // Use default interface (INADDR_ANY) - let OS choose best interface
+      // On macOS, this typically routes via en0 which supports loopback
       in_addr localInterface;
       localInterface.s_addr = INADDR_ANY;
-      setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_IF, &localInterface, sizeof(localInterface));
+      if (setsockopt(_socket, IPPROTO_IP, IP_MULTICAST_IF, &localInterface, sizeof(localInterface)) < 0) {
+        close(_socket);
+        throw std::runtime_error("Failed to set multicast interface: " + std::string(strerror(errno)));
+      }
 
       std::memset(&_destAddr, 0, sizeof(_destAddr));
       _destAddr.sin_family = AF_INET;

@@ -14,180 +14,438 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+#include <filesystem>
+#include <csignal>
+#include <iomanip>
 #include <nlohmann/json.hpp>
-#include <authorities/rules_engine.h>
-#include <replayers/replayer_factory.h>
+#include "BinaryInputFileReader.h"
+#include "src/replayers/types/UdpReplayer.h"
+#include "src/authorities/RulesEngine.h"
+#include "src/authorities/RuleFactory.h"
+#include "PlaybackState.h"
 
 namespace fs = std::filesystem;
 
-// Create playback rules from configuration
-void configureRules(MarketDataPlayback& playback, const nlohmann::json& config) {
-    std::string mode = config.value("mode", "continuous");
-    
-    if (mode == "burst") {
-        size_t burstSize = config.value("burst_size", 5000);
-        int intervalMs = config.value("burst_interval_ms", 100);
-        playback.addRule(std::make_unique<BurstRule>(
-            burstSize, std::chrono::milliseconds(intervalMs)));
-        std::cout << "Configured: Burst mode (" << burstSize 
-                  << " msgs every " << intervalMs << "ms)\n";
-    }
-    else if (mode == "continuous") {
-        size_t rate = config.value("rate_msgs_per_sec", 10000);
-        playback.addRule(std::make_unique<ContinuousRule>(rate));
-        std::cout << "Configured: Continuous mode (" << rate << " msgs/sec)\n";
-    }
-    else if (mode == "wave") {
-        int periodMs = config.value("period_ms", 10000);
-        size_t minRate = config.value("min_rate", 1000);
-        size_t maxRate = config.value("max_rate", 100000);
-        playback.addRule(std::make_unique<WaveRule>(
-            std::chrono::milliseconds(periodMs), minRate, maxRate));
-        std::cout << "Configured: Wave mode (" << minRate << "-" << maxRate 
-                  << " msgs/sec, " << periodMs << "ms period)\n";
+// Market Data Exchange Simulator - Acts as exchange broadcasting via UDP
+class MarketDataExchange {
+public:
+    MarketDataExchange(const std::string& configPath)
+        : _state{}, _running{false}, _messagesSent{0} {
+        loadConfiguration(configPath);
+        setupUdpSender();
+        setupRulesEngine();
     }
     
-    // Add speed factor if specified
-    if (config.contains("speed_factor")) {
-        double speedFactor = config["speed_factor"];
-        playback.addRule(std::make_unique<SpeedFactorRule>(speedFactor));
-        std::cout << "Configured: Speed factor " << speedFactor << "x\n";
+    ~MarketDataExchange() {
+        stop();
     }
     
-    // Add rate limit if specified (safety rule)
-    if (config.contains("max_rate_limit")) {
-        size_t maxRate = config["max_rate_limit"];
-        playback.addRule(std::make_unique<RateLimitRule>(maxRate));
-        std::cout << "Configured: Rate limit " << maxRate << " msgs/sec (SAFETY)\n";
+    bool loadBinaryFile(const std::string& filePath) {
+        std::cout << "\n═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "                       LOADING BINARY MARKET DATA                         " << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        
+        if (!_fileReader.load(filePath)) {
+            std::cerr << "[ERROR] Failed to load binary file: " << filePath << std::endl;
+            return false;
+        }
+        
+        // Validate messages and detect format based on generator config
+        if (!validateAndDetectFormat(filePath)) {
+            std::cerr << "[ERROR] Binary file validation failed" << std::endl;
+            return false;
+        }
+        
+        std::cout << "[SUCCESS] Loaded " << _fileReader.size() << " messages" << std::endl;
+        std::cout << "[INFO] Exchange format: " << _exchangeFormat << std::endl;
+        std::cout << "[INFO] Message size: " << BinaryInputFileReader::MESSAGE_SIZE << " bytes" << std::endl;
+        
+        return true;
     }
     
-    // Add packet loss if specified (chaos rule)
-    if (config.contains("packet_loss_rate")) {
-        double lossRate = config["packet_loss_rate"];
-        playback.addRule(std::make_unique<PacketLossRule>(lossRate));
-        std::cout << "Configured: Packet loss " << (lossRate * 100) << "%\n";
+    void run() {
+        if (!_fileReader.isLoaded()) {
+            std::cerr << "[ERROR] No binary file loaded. Call loadBinaryFile() first." << std::endl;
+            return;
+        }
+        
+        std::cout << "\n═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "                      STARTING EXCHANGE BROADCAST                         " << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        
+        _running = true;
+        _rulesEngine.notifyPlaybackStart();
+        
+        // Setup signal handler for graceful shutdown
+        std::signal(SIGINT, [](int) {
+            std::cout << "\n[INFO] Shutdown signal received..." << std::endl;
+        });
+        
+        auto startTime = std::chrono::high_resolution_clock::now();
+        size_t totalMessages = _fileReader.size();
+        
+        std::cout << "[INFO] Broadcasting " << totalMessages << " messages via UDP" << std::endl;
+        std::cout << "[INFO] UDP Multicast: " << _udpSender->address() << ":" << _udpSender->port() << std::endl;
+        std::cout << "[INFO] Rules active: " << _rulesEngine.getRuleCount() << std::endl;
+        std::cout << "" << std::endl;
+        
+        // Main broadcast loop - simulate exchange behavior
+        for (size_t messageIndex = 0; messageIndex < totalMessages && _running; ++messageIndex) {
+            const char* message = _fileReader.getMessage(messageIndex);
+            if (!message) continue;
+            
+            // Update playback state
+            // Update playback state for rules evaluation
+            _state.setCurrentMessageIndex(messageIndex);
+            _state.initialize(totalMessages);
+            if (_running) _state.start(); else _state.stop();            // Apply rules engine to determine if/when to send this message
+            auto decision = _rulesEngine.evaluate(messageIndex, message, _state);
+            
+            // Handle rule decisions
+            switch (decision.outcome) {
+                case playback::rules::Outcome::DROP:
+                    continue; // Skip this message entirely
+                    
+                case playback::rules::Outcome::VETO:
+                    std::cout << "[RULES] Message " << messageIndex << " vetoed by rules engine" << std::endl;
+                    continue;
+                    
+                case playback::rules::Outcome::SEND_NOW:
+                case playback::rules::Outcome::CONTINUE:
+                case playback::rules::Outcome::MODIFIED:
+                    // Apply any delays from rules (bursts, jitter, etc.)
+                    if (decision.outcome != playback::rules::Outcome::SEND_NOW && 
+                        decision.accumulatedDelay.count() > 0) {
+                        std::this_thread::sleep_for(decision.accumulatedDelay);
+                    }
+                    
+                    // Send message via UDP (exchange broadcast)
+                    if (_udpSender->send(message, BinaryInputFileReader::MESSAGE_SIZE)) {
+                        _messagesSent++;
+                        
+                        // Progress reporting every 1000 messages
+                        if (_messagesSent % 1000 == 0) {
+                            double progress = (double)messageIndex / totalMessages * 100.0;
+                            std::cout << "[PROGRESS] Sent " << _messagesSent << " messages (" 
+                                     << std::fixed << std::setprecision(1) << progress << "%)" << std::endl;
+                        }
+                    } else {
+                        std::cerr << "[WARNING] Failed to send message " << messageIndex << std::endl;
+                    }
+                    break;
+            }
+        }
+        
+        _running = false;
+        _rulesEngine.notifyPlaybackEnd();
+        
+        // Final statistics
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        
+        std::cout << "\n═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "                           EXCHANGE SHUTDOWN                               " << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "[SUMMARY] Messages broadcast: " << _messagesSent << " / " << totalMessages << std::endl;
+        std::cout << "[SUMMARY] Duration: " << duration.count() << " ms" << std::endl;
+        if (duration.count() > 0) {
+            double msgsPerSecond = (double)_messagesSent * 1000.0 / duration.count();
+            std::cout << "[SUMMARY] Throughput: " << std::fixed << std::setprecision(0) 
+                     << msgsPerSecond << " messages/second" << std::endl;
+        }
+        std::cout << "[INFO] Exchange simulation complete." << std::endl;
     }
     
-    // Add jitter if specified (chaos rule)
-    if (config.contains("max_jitter_us")) {
-        long jitterUs = config["max_jitter_us"];
-        playback.addRule(std::make_unique<JitterRule>(
-            std::chrono::microseconds(jitterUs)));
-        std::cout << "Configured: Jitter up to " << jitterUs << " microseconds\n";
+    void stop() {
+        _running = false;
     }
-}
+    
+    size_t getMessagesSent() const { return _messagesSent; }
+    
+private:
+    BinaryInputFileReader _fileReader;
+    std::unique_ptr<playback::replayer::UdpMulticastMessageSender> _udpSender;
+    playback::rules::RulesEngine _rulesEngine;
+    playback::rules::PlaybackState _state;
+    nlohmann::json _config;
+    std::string _exchangeFormat;
+    std::atomic<bool> _running;
+    std::atomic<size_t> _messagesSent;
+    
+    void loadConfiguration(const std::string& configPath) {
+        std::ifstream configFile(configPath);
+        if (!configFile) {
+            throw std::runtime_error("Cannot open config file: " + configPath);
+        }
+        
+        configFile >> _config;
+        std::cout << "[INFO] Loaded playback configuration: " << configPath << std::endl;
+    }
+    
+    void setupUdpSender() {
+        // Load UDP sender configuration
+        std::string senderConfigPath = "config/playback/" + _config["senderConfig"].get<std::string>();
+        std::ifstream senderFile(senderConfigPath);
+        if (!senderFile) {
+            throw std::runtime_error("Cannot open sender config: " + senderConfigPath);
+        }
+        
+        nlohmann::json senderConfig;
+        senderFile >> senderConfig;
+        
+        // Use loopback address for local testing (no need to specify external UDP)
+        std::string address = senderConfig.value("address", "127.0.0.1"); // Default to loopback
+        uint16_t port = senderConfig.value("port", 12345);
+        uint8_t ttl = senderConfig.value("ttl", 1);
+        
+        _udpSender = std::make_unique<playback::replayer::UdpMulticastMessageSender>(
+            address, port, ttl
+        );
+        
+        std::cout << "[INFO] UDP sender configured: " << address << ":" << port 
+                  << " (TTL: " << (int)ttl << ")" << std::endl;
+    }
+    
+    void setupRulesEngine() {
+        // Load authority rules from configuration
+        if (_config.contains("authorities")) {
+            for (const auto& authorityPath : _config["authorities"]) {
+                std::string fullPath = "config/playback/" + authorityPath.get<std::string>();
+                loadRuleFromConfig(fullPath);
+            }
+        }
+        
+        std::cout << "[INFO] Rules engine configured with " << _rulesEngine.getRuleCount() 
+                  << " rules" << std::endl;
+    }
+    
+    void loadRuleFromConfig(const std::string& ruleConfigPath) {
+        std::cout << "[INFO] Loading rule from: " << ruleConfigPath << std::endl;
+        
+        // Use RuleFactory to create the rule from configuration
+        auto rule = playback::rules::RuleFactory::createFromConfig(ruleConfigPath);
+        
+        if (rule) {
+            std::cout << "[INFO] Successfully created rule from config" << std::endl;
+            _rulesEngine.addRule(std::move(rule));
+        } else {
+            std::cout << "[WARNING] Failed to create rule from: " << ruleConfigPath << std::endl;
+        }
+    }
+    
+    bool validateAndDetectFormat(const std::string& filePath) {
+        // Try to determine the generator config used to create this file
+        // This helps us validate the binary format matches what we expect
+        
+        // Look for a matching config file or extract format from filename
+        fs::path binPath(filePath);
+        std::string baseName = binPath.stem().string();
+        
+        // Try to find corresponding generator config
+        std::vector<std::string> possibleConfigs = {
+            "config/generator/sample_config.json",
+            "config/generator/" + baseName + ".json"
+        };
+        
+        for (const auto& configPath : possibleConfigs) {
+            if (fs::exists(configPath)) {
+                if (loadGeneratorConfig(configPath)) {
+                    std::cout << "[INFO] Detected format from generator config: " << configPath << std::endl;
+                    return validateBinaryFormat();
+                }
+            }
+        }
+        
+        // Default to NSDQ format if no config found
+        _exchangeFormat = "nsdq";
+        std::cout << "[INFO] No generator config found, defaulting to NSDQ format" << std::endl;
+        return validateBinaryFormat();
+    }
+    
+    bool loadGeneratorConfig(const std::string& configPath) {
+        try {
+            std::ifstream configFile(configPath);
+            if (!configFile) return false;
+            
+            nlohmann::json genConfig;
+            configFile >> genConfig;
+            
+            if (genConfig.contains("Global") && genConfig["Global"].contains("Exchange")) {
+                _exchangeFormat = genConfig["Global"]["Exchange"].get<std::string>();
+                std::transform(_exchangeFormat.begin(), _exchangeFormat.end(), 
+                              _exchangeFormat.begin(), ::tolower);
+                return true;
+            }
+        } catch (const std::exception& e) {
+            std::cout << "[WARNING] Error parsing generator config: " << e.what() << std::endl;
+        }
+        return false;
+    }
+    
+    bool validateBinaryFormat() {
+        // Basic validation: check if file size makes sense for the format
+        size_t messageCount = _fileReader.size();
+        
+        if (messageCount == 0) {
+            std::cerr << "[ERROR] Binary file contains no messages" << std::endl;
+            return false;
+        }
+        
+        // Validate exchange format
+        if (_exchangeFormat != "nsdq" && _exchangeFormat != "cme" && _exchangeFormat != "nyse") {
+            std::cerr << "[ERROR] Unsupported exchange format: " << _exchangeFormat << std::endl;
+            return false;
+        }
+        
+        // Basic message validation - check first few messages have reasonable structure
+        for (size_t i = 0; i < std::min(messageCount, size_t(5)); ++i) {
+            const char* message = _fileReader.getMessage(i);
+            if (!message) {
+                std::cerr << "[ERROR] Cannot read message " << i << std::endl;
+                return false;
+            }
+            
+            // Basic sanity check - message should not be all zeros or all 0xFF
+            bool allZeros = true, allOnes = true;
+            for (size_t j = 0; j < BinaryInputFileReader::MESSAGE_SIZE; ++j) {
+                if (message[j] != 0) allZeros = false;
+                if ((unsigned char)message[j] != 0xFF) allOnes = false;
+            }
+            
+            if (allZeros || allOnes) {
+                std::cerr << "[ERROR] Message " << i << " appears to be corrupted" << std::endl;
+                return false;
+            }
+        }
+        
+        std::cout << "[SUCCESS] Binary format validation passed" << std::endl;
+        return true;
+    }
+};
 
-void printUsage() {
-    std::cout << "Usage: exchange_market_data_playback [--config <config.json>] <input_file>\n\n";
-    std::cout << "Arguments:\n";
-    std::cout << "  <input_file>         Binary market data file (.itch, .pillar, .mdp)\n";
-    std::cout << "  --config <file>      Configuration file (optional)\n\n";
-    std::cout << "Example:\n";
-    std::cout << "  ./exchange_market_data_playback output.itch\n";
-    std::cout << "  ./exchange_market_data_playback --config burst.json output.mdp\n";
-}
 
-nlohmann::json load_json(const std::string& path) {
-  std::ifstream f(path);
-  if (!f) throw std::runtime_error("Config file not found: " + path);
-  nlohmann::json j;
-  f >> j;
-  return j;
+
+void printUsage(const char* programName) {
+    std::cout << "\n═══════════════════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "                    BEACON MARKET DATA EXCHANGE SIMULATOR                  " << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
+    std::cout << "\nUsage: " << programName << " [options] <binary_file>" << std::endl;
+    std::cout << "\nArguments:" << std::endl;
+    std::cout << "  <binary_file>        Binary market data file generated by beacon generator" << std::endl;
+    std::cout << "\nOptions:" << std::endl;
+    std::cout << "  --config <file>      Playback configuration file (default: config/playback/default.json)" << std::endl;
+    std::cout << "  --summary            Show periodic statistics during playback" << std::endl;
+    std::cout << "  --help, -h           Show this help message" << std::endl;
+    std::cout << "\nExamples:" << std::endl;
+    std::cout << "  # Playback generator output with default settings" << std::endl;
+    std::cout << "  " << programName << " output.bin" << std::endl;
+    std::cout << "  " << std::endl;
+    std::cout << "  # Use custom playback rules and show statistics" << std::endl;
+    std::cout << "  " << programName << " --config config/playback/burst_mode.json --summary output.bin" << std::endl;
+    std::cout << "\nNote: This app acts as an exchange simulator, broadcasting market data" << std::endl;
+    std::cout << "      via UDP multicast. Other beacon components can receive this data." << std::endl;
+    std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
-  std::string inputFile;
-  std::string configFile;
-
-  std::string configPath = "config/playback/default.json";
-  if (argc > 1) configPath = argv[1];
-
-  nlohmann::json defaultConfig = load_json(configPath);
-
-  // Load sender config
-  nlohmann::json senderConfig = load_json("config/playback/" + defaultConfig["sender_config"].get<std::string>());
-  std::string senderType = senderConfig.value("type", "udp");
-  std::string address = senderConfig.value("address", "239.255.0.1");
-  uint16_t port = senderConfig.value("port", 12345);
-  uint8_t ttl = senderConfig.value("ttl", 1);
-  auto sender = market_data_playback::createSender(senderType, address, port, ttl);
-
-  // Load advisors
-  std::vector<nlohmann::json> advisorConfigs;
-  for (const auto& advPath : defaultConfig["advisors"]) {
-    advisorConfigs.push_back(load_json("config/playback/" + advPath.get<std::string>()));
-  }
-  // Instantiate advisors as needed
-
-  // Load authorities (rules)
-  market_data_playback::playback_authorities::RulesEngine rulesEngine;
-  for (const auto& authPath : defaultConfig["authorities"]) {
-    nlohmann::json ruleConfig = load_json("config/playback/" + authPath.get<std::string>());
-    std::string type = ruleConfig.value("type", "");
-    // ...instantiate rules based on type and config...
-    // Example for burst_rule:
-    if (type == "burst_rule") {
-      size_t burstSize = ruleConfig.value("burst_size", 100);
-      int burstIntervalMs = ruleConfig.value("burst_interval_ms", 100);
-      rulesEngine.addRule(std::make_unique<market_data_playback::playback_authorities::BurstRule>(burstSize, std::chrono::milliseconds(burstIntervalMs)));
-    }
-  }
-
-    // Parse arguments
-    bool printSummary = false;
-    for (int i = 1; i < argc; ++i) {
-        std::string arg = argv[i];
-        if (arg == "--config" && i + 1 < argc) {
-            configFile = argv[++i];
-        } else if (arg == "--help" || arg == "-h") {
-            printUsage();
-            return 0;
-        } else if (arg == "--summary") {
-            printSummary = true;
-        } else {
-            inputFile = arg;
+    try {
+        std::string inputFile;
+        std::string configFile = "config/playback/default.json";
+        bool showSummary = false;
+        
+        // Parse command line arguments
+        for (int i = 1; i < argc; ++i) {
+            std::string arg = argv[i];
+            
+            if (arg == "--config" && i + 1 < argc) {
+                configFile = argv[++i];
+            } else if (arg == "--summary") {
+                showSummary = true;
+            } else if (arg == "--help" || arg == "-h") {
+                printUsage(argv[0]);
+                return 0;
+            } else if (arg.front() != '-') {
+                if (inputFile.empty()) {
+                    inputFile = arg;
+                } else {
+                    std::cerr << "[ERROR] Multiple input files specified. Only one binary file is supported." << std::endl;
+                    printUsage(argv[0]);
+                    return 1;
+                }
+            } else {
+                std::cerr << "[ERROR] Unknown option: " << arg << std::endl;
+                printUsage(argv[0]);
+                return 1;
+            }
         }
-    }
-
-    if (inputFile.empty()) {
-        std::cerr << "Error: No input file specified\n\n";
-        printUsage();
+        
+        if (inputFile.empty()) {
+            std::cerr << "[ERROR] No binary input file specified." << std::endl;
+            printUsage(argv[0]);
+            return 1;
+        }
+        
+        if (!fs::exists(inputFile)) {
+            std::cerr << "[ERROR] Input file does not exist: " << inputFile << std::endl;
+            return 1;
+        }
+        
+        if (!fs::exists(configFile)) {
+            std::cerr << "[ERROR] Configuration file does not exist: " << configFile << std::endl;
+            return 1;
+        }
+        
+        std::cout << "\n═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "                       BEACON EXCHANGE SIMULATOR                          " << std::endl;
+        std::cout << "                        Market Data Playback Engine                       " << std::endl;
+        std::cout << "═══════════════════════════════════════════════════════════════════════════" << std::endl;
+        std::cout << "[INFO] Binary file: " << inputFile << std::endl;
+        std::cout << "[INFO] Configuration: " << configFile << std::endl;
+        std::cout << "[INFO] Statistics: " << (showSummary ? "Enabled" : "Disabled") << std::endl;
+        
+        // Create the market data exchange simulator
+        MarketDataExchange exchange(configFile);
+        
+        // Load the binary market data file
+        if (!exchange.loadBinaryFile(inputFile)) {
+            std::cerr << "[ERROR] Failed to initialize exchange with binary file." << std::endl;
+            return 1;
+        }
+        
+        // Setup statistics thread if requested
+        std::atomic<bool> running{true};
+        std::thread statsThread;
+        
+        if (showSummary) {
+            statsThread = std::thread([&]() {
+                while (running) {
+                    std::this_thread::sleep_for(std::chrono::seconds(3));
+                    if (running) {
+                        std::cout << "[STATS] Messages broadcast: " << exchange.getMessagesSent() << std::endl;
+                    }
+                }
+            });
+        }
+        
+        // Start the exchange simulator (this blocks until complete)
+        exchange.run();
+        
+        // Cleanup
+        running = false;
+        if (statsThread.joinable()) {
+            statsThread.join();
+        }
+        
+        std::cout << "\n[SUCCESS] Exchange simulation completed successfully." << std::endl;
+        return 0;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "\n[FATAL ERROR] " << e.what() << std::endl;
+        std::cerr << "[INFO] Exchange simulation terminated." << std::endl;
+        return 1;
+    } catch (...) {
+        std::cerr << "\n[FATAL ERROR] Unknown exception occurred." << std::endl;
+        std::cerr << "[INFO] Exchange simulation terminated." << std::endl;
         return 1;
     }
-
-    // Create playback engine
-    MarketDataPlayback playback(sender.get() /*, advisors, rulesEngine, ...*/);
-    
-    // Load file
-    if (!playback.loadFile(inputFile)) {
-        return 1;
-    }
-    
-    // Configure rules from config
-    configureRules(playback, j);
-    
-    // Check if we should loop forever
-    bool loopForever = j.value("loop_forever", false);
-    if (loopForever) {
-        playback.setLoopForever(true);
-        std::cout << "Configured: Loop forever (continuous streaming)\n";
-    }
-    
-    std::atomic<bool> running{true};
-    std::thread summaryThread;
-    if (printSummary) {
-      summaryThread = std::thread([&]() {
-        while (running) {
-          std::this_thread::sleep_for(std::chrono::seconds(5));
-          std::cout << "[SUMMARY] Messages sent: " << playback.getMessagesSent() << std::endl;
-        }
-      });
-    }
-
-    // Run playback
-    playback.run();
-    running = false;
-    if (printSummary && summaryThread.joinable()) summaryThread.join();
-    std::cout << "[SUMMARY] Final messages sent: " << playback.getMessagesSent() << std::endl;
-    return 0;
 }

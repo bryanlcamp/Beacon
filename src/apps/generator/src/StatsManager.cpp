@@ -82,16 +82,8 @@ void StatsManager::printStats(size_t totalMessages [[maybe_unused]], double elap
               << std::setw(12) << "Min-Max"
               << "\n";
     
-    std::cout << "  " << std::string(8, '-')
-              << std::string(10, '-')
-              << std::string(10, '-')
-              << std::string(12, '-')
-              << std::string(12, '-')
-              << std::string(12, '-')
-              << std::string(12, '-')
-              << std::string(12, '-')
-              << std::string(12, '-')
-              << "\n";
+    // Create properly aligned separator line
+    std::cout << "  " << std::string(100, '-') << "\n";
     
     // Symbol rows
     for (const auto& [symbol, stats] : _symbolStats) {
@@ -102,7 +94,13 @@ void StatsManager::printStats(size_t totalMessages [[maybe_unused]], double elap
         // Spread is the difference between average ask and average bid
         // This should always be positive in a normal market (ask > bid)
         double spread = avgAskPrc - avgBidPrc;
-        double spreadPercent = avgAskPrc > 0 ? (spread / avgAskPrc) * 100.0 : 0.0;
+        double spreadPercent = 0.0;
+        
+        // Calculate spread percentage based on midpoint price for accuracy
+        if (avgBidPrc > 0.0 && avgAskPrc > 0.0) {
+            double midPrice = (avgBidPrc + avgAskPrc) / 2.0;
+            spreadPercent = (spread / midPrice) * 100.0;
+        }
         double priceRange = stats.maxPrice - stats.minPrice;
         size_t totalVol = stats.bidQty + stats.askQty;
         
@@ -119,18 +117,24 @@ void StatsManager::printStats(size_t totalMessages [[maybe_unused]], double elap
                   << "\n";
     }
     
-    std::cout << "  " << std::string(8, '-')
-              << std::string(10, '-')
-              << std::string(10, '-')
-              << std::string(12, '-')
-              << std::string(80, ' ')
+    // Totals separator with professional styling
+    std::cout << "  " << std::setw(8) << ""
+              << std::string(10, '=')
+              << std::string(10, '=')
+              << std::string(12, '=')
+              << std::string(60, ' ')
               << "\n";
     
-    // Totals row
+    // Totals row - perfectly aligned under respective columns
     std::cout << "  " << std::setw(8) << "TOTAL"
               << std::setw(10) << totalOrders
-              << std::setw(10) << totalTrades
+              << std::setw(10) << totalTrades  
               << std::setw(12) << totalVolume
+              << std::setw(12) << ""  // Empty AvgBid column
+              << std::setw(12) << ""  // Empty AvgAsk column
+              << std::setw(12) << ""  // Empty Spread column
+              << std::setw(12) << ""  // Empty Spread% column
+              << std::setw(12) << ""  // Empty Min-Max column
               << "\n\n";
     
     std::cout << "═══════════════════════════════════════════════════════════════════════════════════════════════════════\n";
