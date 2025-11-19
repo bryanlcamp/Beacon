@@ -514,23 +514,32 @@ namespace market_data_generator {
                           << std::endl;
             }
             
-            // TODO: When full wave config is implemented, validate:
-            // 1. waveDurationMs vs total generation time
-            // 2. waveAmplitudePercent creates realistic price movements
-            // 3. waveBaselinePercent doesn't go to zero (no trading halts)
-            // 4. waveCycles fit within total generation period
-            // 5. Smooth curve parameters don't create unrealistic velocity changes
+            // Validate wave configuration for realism
+            const auto& waveConfig = _configFileParser.getWaveConfig();
             
-            // Example future validation:
-            // if (waveAmplitudePercent > 1000) {
-            //     throw std::runtime_error("Wave amplitude > 1000% creates unrealistic 10x swings");
-            // }
-            // 
-            // if (waveBaselinePercent == 0) {
-            //     throw std::runtime_error("Wave baseline of 0% would halt all trading at trough");
-            // }
-            //
-            // double velocityChange = waveAmplitudePercent / waveDurationMs;
+            // 1. Validate waveDurationMs vs total generation time
+            double estimatedSymbolGenTimeMs = symbolMessages * 0.1; // 0.1ms per message estimate
+            if (waveConfig.WaveDurationMs < estimatedSymbolGenTimeMs / 10.0) {
+                std::cerr << "WARNING: WaveDurationMs (" << waveConfig.WaveDurationMs 
+                          << "ms) is very short compared to symbol generation time ("
+                          << estimatedSymbolGenTimeMs << "ms). Wave cycles may be too rapid."
+                          << std::endl;
+            }
+            
+            // 2. Validate wave amplitude creates realistic price movements
+            if (waveConfig.WaveAmplitudePercent > 1000.0) {
+                std::cerr << "ERROR: WaveAmplitudePercent (" << waveConfig.WaveAmplitudePercent 
+                          << "%) > 1000% creates unrealistic 10x+ price swings."
+                          << std::endl;
+            }
+            
+            // 3. Check for potential trading velocity issues
+            double velocityChange = waveConfig.WaveAmplitudePercent / waveConfig.WaveDurationMs;
+            if (velocityChange > 0.1) { // More than 0.1% per millisecond
+                std::cerr << "WARNING: Wave velocity (" << velocityChange 
+                          << "%/ms) may create unrealistic price acceleration for symbol '"
+                          << symbolConfig._symbol << "'." << std::endl;
+            }
             // if (velocityChange > MAX_REALISTIC_VELOCITY) {
             //     throw std::runtime_error("Wave transition too rapid for realistic market behavior");
             // }
