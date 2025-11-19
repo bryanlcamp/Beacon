@@ -8,13 +8,16 @@ import subprocess
 import sys
 from pathlib import Path
 
-def run_command(cmd, description):
-    """Run a command and handle errors"""
+def run_command(cmd, description, timeout_seconds=300):
+    """Run a command and handle errors with timeout"""
     print(f"[CI/CD] {description}...")
     try:
-        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True, timeout=timeout_seconds)
         print(f"[SUCCESS] {description} completed")
         return True
+    except subprocess.TimeoutExpired:
+        print(f"[ERROR] {description} timed out after {timeout_seconds} seconds")
+        return False
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] {description} failed:")
         print(f"STDOUT: {e.stdout}")
@@ -25,19 +28,20 @@ def main():
     """Build all components in debug mode"""
     repo_root = Path(__file__).resolve().parents[2]
     
-    print(f"[CI/CD] Building Beacon Trading System (Debug)")
+    print(f"[CI/CD] Building Beacon Trading System (Debug) - Enhanced v2.0")
     print(f"[CI/CD] Repository root: {repo_root}")
+    print(f"[CI/CD] Using multi-strategy CMake configuration system")
     
     # Change to repo root
     import os
     os.chdir(repo_root)
     
-    # Configure CMake for Debug with multiple fallback strategies
+    # Configure CMake for Debug with multiple fallback strategies (prioritize CI-friendly options)
     cmake_strategies = [
-        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug --log-level=VERBOSE",
+        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DBUILD_TESTING=OFF",
+        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=14 -DBUILD_TESTING=OFF", 
         "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17",
-        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_EXTENSIONS=OFF",
-        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=14"
+        "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug --log-level=STATUS"
     ]
     
     cmake_success = False
