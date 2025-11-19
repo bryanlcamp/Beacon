@@ -4,7 +4,7 @@
 # Author:       Bryan Camp
 # =============================================================================
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.20)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
