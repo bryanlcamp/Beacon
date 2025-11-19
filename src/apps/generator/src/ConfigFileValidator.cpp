@@ -426,22 +426,41 @@ namespace market_data_generator {
 
     void ConfigFileValidator::validateWaveAmplitudeAndBaseline() const {
         const auto& symbols = _configFileParser.getSymbols();
+        const auto& waveConfig = _configFileParser.getWaveConfig();
         
-        // TODO: When wave config is added to the schema, validate:
-        // For now, we'll add placeholder validation structure
+        // Validate wave amplitude is within realistic bounds
+        if (waveConfig.WaveAmplitudePercent < 50.0) {
+            std::cerr << "WARNING: WaveAmplitudePercent (" << waveConfig.WaveAmplitudePercent 
+                      << "%) is very low. This creates minimal price variation and may appear unrealistic."
+                      << std::endl;
+        }
         
+        if (waveConfig.WaveAmplitudePercent > 500.0) {
+            std::cerr << "ERROR: WaveAmplitudePercent (" << waveConfig.WaveAmplitudePercent 
+                      << "%) exceeds maximum safe limit (500%). This creates unrealistic 5x price swings."
+                      << std::endl;
+        }
+        
+        // Validate wave duration vs message generation time
+        const auto& globalConfig = _configFileParser.getGlobalConfig();
+        double estimatedGenerationTimeMs = globalConfig.NumMessages * 0.1; // Rough estimate: 0.1ms per message
+        
+        if (waveConfig.WaveDurationMs > estimatedGenerationTimeMs * 10) {
+            std::cerr << "WARNING: WaveDurationMs (" << waveConfig.WaveDurationMs 
+                      << "ms) is much longer than estimated generation time (" 
+                      << estimatedGenerationTimeMs << "ms). Wave patterns may not be visible."
+                      << std::endl;
+        }
+        
+        // Check for symbol-specific spread vs wave amplitude conflicts
         for (const auto& symbolConfig : symbols) {
-            // Future wave amplitude validation (when added to config):
-            // - waveAmplitudePercent should be reasonable (e.g., 50% to 500%)
-            // - waveBaselinePercent should be > 0 and < amplitude
-            // - Smooth transitions require amplitude/baseline ratios that don't cause jerky changes
+            double effectiveVariation = waveConfig.WaveAmplitudePercent * symbolConfig._spreadPercentage / 100.0;
             
-            // Placeholder: Use spread_percentage as proxy for wave intensity validation
-            if (symbolConfig._spreadPercentage > 10.0) {
-                std::cerr << "INFO: Symbol '" << symbolConfig._symbol 
-                          << "' has high spread (" << symbolConfig._spreadPercentage 
-                          << "%). In wave mode, this could create very smooth but dramatic "
-                          << "price movements. Consider if this matches intended realism."
+            if (effectiveVariation > 50.0) {
+                std::cerr << "WARNING: Symbol '" << symbolConfig._symbol 
+                          << "' combines high wave amplitude (" << waveConfig.WaveAmplitudePercent 
+                          << "%) with high spread (" << symbolConfig._spreadPercentage 
+                          << "%), creating extreme price volatility (" << effectiveVariation << "%)."
                           << std::endl;
             }
         }

@@ -352,7 +352,17 @@ int runUdpClient(const char* multicastAddr, int port) {
     std::cout << "=============================================================================\n";
     std::cout << "Total messages: " << messagesReceived << "\n";
     std::cout << "Total bytes:    " << totalBytes << "\n";
+    std::cout << "Queue dropped:  " << g_messageQueue.dropped() << "\n";
+    std::cout << "Queue high water: " << g_messageQueue.highWaterMark() << "\n";
     std::cout << "=============================================================================\n";
+    
+    // Stop processing thread and wait for completion
+    std::cout << "[INFO] Stopping message processing thread...\n";
+    g_processingActive.store(false, std::memory_order_relaxed);
+    if (processorThread.joinable()) {
+        processorThread.join();
+    }
+    std::cout << "[INFO] Message processing thread stopped\n";
     
     close(sock);
     return 0;

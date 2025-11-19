@@ -9,8 +9,94 @@ def run_process(cmd, cwd=None):
 
 def wait_for_handshake(process_name, timeout=10):
     print(f"[WAIT] Waiting for handshake from {process_name}...")
-    # TODO: Implement actual handshake detection (e.g., check log file, port, or stdout)
-    time.sleep(2)  # Simulate handshake wait
+    
+    # Implement actual handshake detection based on process type
+    if "matching engine" in process_name:
+        # Check for matching engine port binding (typically 8080 for orders)
+        return wait_for_port_binding(8080, timeout)
+    elif "algo" in process_name:
+        # Check for algorithm client connection readiness (typically connects to 8080)
+        return wait_for_tcp_connection("127.0.0.1", 8080, timeout)
+    elif "market data" in process_name:
+        # Check for UDP multicast binding (typically 12345 for market data)
+        return wait_for_udp_binding(12345, timeout)
+    else:
+        # Fallback to time-based wait for unknown processes
+        time.sleep(2)
+        return True
+
+def wait_for_port_binding(port, timeout=10):
+    """Wait for a process to bind to a specific port"""
+    import socket
+    
+    for attempt in range(timeout * 2):  # Check every 0.5 seconds
+        try:
+            # Try to connect to the port to see if it's bound
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.5)
+            result = sock.connect_ex(('127.0.0.1', port))
+            sock.close()
+            
+            if result == 0:
+                print(f"[HANDSHAKE] Port {port} is bound and accepting connections")
+                return True
+        except:
+            pass
+        
+        time.sleep(0.5)
+    
+    print(f"[WARNING] Port {port} binding timeout after {timeout}s")
+    return False
+
+def wait_for_tcp_connection(host, port, timeout=10):
+    """Wait for ability to establish TCP connection"""
+    import socket
+    
+    for attempt in range(timeout * 2):  # Check every 0.5 seconds
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1.0)
+            result = sock.connect_ex((host, port))
+            sock.close()
+            
+            if result == 0:
+                print(f"[HANDSHAKE] TCP connection to {host}:{port} successful")
+                return True
+        except:
+            pass
+        
+        time.sleep(0.5)
+    
+    print(f"[WARNING] TCP connection to {host}:{port} timeout after {timeout}s")
+    return False
+
+def wait_for_udp_binding(port, timeout=10):
+    """Wait for UDP port to become available (indicating process started)"""
+    import socket
+    
+    for attempt in range(timeout * 2):  # Check every 0.5 seconds
+        try:
+            # Try to bind to the port - if it fails, something else is using it
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.settimeout(0.5)
+            
+            # Try to bind - if this fails, port is likely in use (which is what we want)
+            try:
+                sock.bind(('127.0.0.1', port))
+                sock.close()
+                # Port is free, process hasn't bound yet
+            except socket.error:
+                # Port is in use - this is what we want for UDP multicast
+                sock.close()
+                print(f"[HANDSHAKE] UDP port {port} is in use (process likely started)")
+                return True
+        except:
+            pass
+        
+        time.sleep(0.5)
+    
+    print(f"[WARNING] UDP port {port} binding detection timeout after {timeout}s")
+    return False
 
 def main():
     repo_root = Path(__file__).resolve().parents[3]
