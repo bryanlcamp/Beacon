@@ -1,10 +1,14 @@
-name: Beacon CI
+name: Beacon CI - MEGA CACHE BUSTER v4.0
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
+env:
+  CACHE_VERSION: v4.0
+  BUILD_TIMESTAMP: ${{ github.run_number }}
 
 jobs:
   build-debug:
@@ -14,7 +18,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: 🚀 MEGA CACHE BUSTER v4.0 - Clear ALL Caches 🚀
+        run: |
+          echo "🧹 AGGRESSIVE CACHE CLEARING v4.0"
+          rm -rf ~/.cache/cmake* || true
+          rm -rf ~/build || true
+          rm -rf build/ || true
+          rm -rf .cache || true
+          find . -name CMakeCache.txt -delete || true
+          find . -name CMakeFiles -type d -exec rm -rf {} + || true
+          echo "📋 Verify CMakeLists.txt version:"
+          head -10 src/apps/client_algorithm/CMakeLists.txt | grep -i "v4.0" || echo "❌ WARNING: v4.0 not found!"
+          echo "📅 Cache Version: ${{ env.CACHE_VERSION }}"
+          echo "🔢 Build Number: ${{ env.BUILD_TIMESTAMP }}"
+
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential python3 python3-pip wget
@@ -64,6 +82,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: 🚀 MEGA CACHE BUSTER v4.0 - Clear ALL Caches 🚀
+        run: |
+          echo "🧹 AGGRESSIVE CACHE CLEARING v4.0 (RELEASE BUILD)"
+          rm -rf ~/.cache/cmake* || true
+          rm -rf ~/build || true
+          rm -rf build/ || true
+          rm -rf build-release/ || true
+          rm -rf .cache || true
+          find . -name CMakeCache.txt -delete || true
+          find . -name CMakeFiles -type d -exec rm -rf {} + || true
+          echo "📋 Verify CMakeLists.txt version:"
+          head -10 src/apps/client_algorithm/CMakeLists.txt | grep -i "v4.0" || echo "❌ WARNING: v4.0 not found!"
+          echo "📅 Cache Version: ${{ env.CACHE_VERSION }}"
+          echo "🔢 Build Number: ${{ env.BUILD_TIMESTAMP }}"
 
       - name: Install dependencies
         run: |
