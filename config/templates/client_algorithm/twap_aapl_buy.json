@@ -1,0 +1,43 @@
+{
+  "_description": "TWAP Algorithm - AAPL Buy Order Configuration",
+  
+  "networking": {
+    "market_data": {
+      "host": "127.0.0.1",
+      "port": 8002,
+      "protocol": "UDP"
+    },
+    "order_entry": {
+      "host": "127.0.0.1", 
+      "port": 9002,
+      "protocol": "TCP"
+    }
+  },
+  
+  "protocol_config": {
+    "market_data_protocol": "itch_50",
+    "order_entry_protocol": "ouch_50"
+  },
+  
+  "twap_algorithm": {
+    "time_window_minutes": 10,
+    "slice_count": 20,
+    "participation_rate": 0.15,
+    "price_tolerance_bps": 10,
+    "minimum_slice_size": 100
+  },
+  
+  "execution_strategy": {
+    "child_order_size": 250,
+    "wait_time_seconds": 30,
+    "market_impact_threshold": 0.005,
+    "aggressive_on_close": true
+  },
+  
+  "risk_controls": {
+    "max_position_deviation": 1000,
+    "price_deviation_bps": 50,
+    "volume_spike_threshold": 2.0,
+    "enabled": true
+  }
+}
