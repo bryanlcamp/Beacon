@@ -35,6 +35,13 @@ jobs:
       - name: Clean previous builds
         run: python3 scripts/ci_cd/beacon-clean-all.py
 
+      - name: Verify source files exist
+        run: |
+          echo "=== Verifying client algorithm source files ==="
+          ls -la src/apps/client_algorithm/src/ || echo "Source directory missing"
+          echo "=== CMakeLists.txt version check ==="
+          grep -n "FIXED v3.0" src/apps/client_algorithm/CMakeLists.txt || echo "Old CMakeLists.txt version"
+
       - name: Build Debug
         run: python3 scripts/ci_cd/beacon-build-all-debug.py
 

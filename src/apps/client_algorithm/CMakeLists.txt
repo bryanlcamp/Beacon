@@ -19,11 +19,13 @@ include_directories(${CMAKE_SOURCE_DIR}/vendor/nlohmann)
 set(CLIENT_ALGO_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(COMMON_SRC_DIR ${CMAKE_SOURCE_DIR}/src/apps/common)
 
-# Debug: Print current paths for CI/CD troubleshooting
+# Debug: Print current paths for CI/CD troubleshooting - FIXED v3.0 
+message(STATUS "=== CLIENT ALGORITHM CMAKE FIXED v3.0 ===")
 message(STATUS "Client Algorithm Source Dir: ${CLIENT_ALGO_SRC_DIR}")
 message(STATUS "Common Source Dir: ${COMMON_SRC_DIR}")
 message(STATUS "Current Source Dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 message(STATUS "Source Dir: ${CMAKE_SOURCE_DIR}")
+message(STATUS "This CMakeLists.txt includes proper file existence checks")
 
 # Check if common configuration exists
 if(EXISTS ${COMMON_SRC_DIR}/configuration.cpp)
@@ -37,6 +39,9 @@ endif()
 # Super HFT Market Data Receiver (TCP + UDP) - Optimized for latency
 if(EXISTS ${CLIENT_ALGO_SRC_DIR}/MarketDataReceiver.cpp)
     add_executable(MarketDataReceiver ${CLIENT_ALGO_SRC_DIR}/MarketDataReceiver.cpp)
+    message(STATUS "✅ Building MarketDataReceiver")
+else()
+    message(WARNING "❌ Skipping MarketDataReceiver - source file not found at ${CLIENT_ALGO_SRC_DIR}/MarketDataReceiver.cpp")
 endif()
 
 # Algorithm with order entry (OUCH protocol) - now with config support

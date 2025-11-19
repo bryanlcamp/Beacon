@@ -19,14 +19,18 @@ CTestTestfile.cmake
 *.so
 *.dylib
 *.exe
-client_algorithm
-client_algo
-client_algo_hft
-algo_twap
-algo_template
-exchange_matching_engine
-exchange_market_data_generator
-exchange_market_data_playback
+# Client algorithm binaries (not source directories)
+/client_algorithm
+/client_algo
+/client_algo_hft
+/algo_twap
+/algo_template
+/exchange_matching_engine
+/exchange_market_data_generator
+/exchange_market_data_playback
+
+# Allow source directories
+!/src/apps/client_algorithm/
 
 # Generated market data and output files
 *.bin
