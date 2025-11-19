@@ -1,49 +1,65 @@
 cmake_minimum_required(VERSION 3.26)
-project(client_algorithm)
+project(ClientAlgorithm)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Include paths
-include_directories(${CMAKE_SOURCE_DIR}/../../../vendor)
-include_directories(${CMAKE_SOURCE_DIR}/../../../include)
+# Add local include directory
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Test receiver (TCP + UDP)
-add_executable(client_algorithm main.cpp)
+# Add common configuration directory for centralized configs
+include_directories(${CMAKE_SOURCE_DIR}/src/apps/common)
+
+# Add project-wide includes
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/nlohmann)
+
+# Super HFT Market Data Receiver (TCP + UDP) - Optimized for latency
+add_executable(MarketDataReceiver src/MarketDataReceiver.cpp)
 
 # Algorithm with order entry (OUCH protocol) - now with config support
-add_executable(client_algo 
-    main_algo.cpp
-    config_provider.cpp
+add_executable(ClientAlgorithm 
+    src/ClientAlgorithm.cpp
+    src/ConfigProvider.cpp
+    ${CMAKE_SOURCE_DIR}/src/apps/common/configuration.cpp
 )
 
 # HFT threaded algorithm with production architecture
-add_executable(client_algo_hft
-    main_algo_threaded.cpp
+add_executable(ClientAlgorithmHft
+    src/ClientAlgorithmHft.cpp
 )
 
 # TWAP execution algorithm (industry-standard reference implementation)
-add_executable(algo_twap
-    algo_twap.cpp
+add_executable(AlgoTwap
+    src/AlgoTwap.cpp
+)
+
+# Modern protocol-aware TWAP algorithm
+add_executable(AlgoTwapProtocol
+    src/AlgoTwapProtocol.cpp
+    src/TwapProtocolExecutor.cpp
+    ${CMAKE_SOURCE_DIR}/src/apps/common/configuration.cpp
 )
 
 # Minimal template for developers to create their own algorithms
-add_executable(algo_template
-    algo_template.cpp
+add_executable(AlgoTemplate
+    src/AlgoTemplate.cpp
 )
 
 # Latency tracking example
-add_executable(example_latency_tracking
-    example_latency_tracking.cpp
+add_executable(ExampleLatencyTracking
+    src/ExampleLatencyTracking.cpp
 )
 
 # Protocol test clients
-add_executable(test_pillar test_pillar.cpp)
-add_executable(test_cme test_cme.cpp)
+add_executable(TestPillar src/TestPillar.cpp)
+add_executable(TestCme src/TestCme.cpp)
 
 # Link pthread for threading support
 find_package(Threads REQUIRED)
-target_link_libraries(client_algo Threads::Threads)
-target_link_libraries(client_algo_hft Threads::Threads)
-target_link_libraries(algo_twap Threads::Threads)
-target_link_libraries(algo_template Threads::Threads)
+target_link_libraries(ClientAlgorithm Threads::Threads)
+target_link_libraries(ClientAlgorithmHft Threads::Threads)
+target_link_libraries(AlgoTwap Threads::Threads)
+target_link_libraries(AlgoTwapProtocol Threads::Threads)
+target_link_libraries(AlgoTemplate Threads::Threads)

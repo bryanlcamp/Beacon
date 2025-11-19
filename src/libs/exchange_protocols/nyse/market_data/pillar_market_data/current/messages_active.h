@@ -8,4 +8,4 @@
 
 #pragma once
 
-#include "nyse/market_data/pillar_market_data/v1.9/market_data_message_types.h" ///< Current live version
+#include "../v1.9/market_data_message_types.h" ///< Current live version

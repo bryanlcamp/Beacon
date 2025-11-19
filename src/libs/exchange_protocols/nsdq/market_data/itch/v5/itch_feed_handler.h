@@ -67,16 +67,23 @@ namespace beacon::nsdq::market_data::itch {
 
         // Per the spec, all data types are POD (plain old data), hence memcpy.
         // We enqueue each ITCH message as we're iterating through the packet.
-        // TODO: How should we handle exceptions, if some messages in this packet
-        //       have been enqueued / consumed by the ring buffer?
-        while (packetOffset < packetSize) {
+        
+        // Exception handling strategy: Process as many valid messages as possible.
+        // If an error occurs, the successfully parsed messages remain in the ring buffer.
+        // This allows partial packet recovery rather than losing all data on any error.
+        size_t messagesProcessed = 0;
+        
+        try {
+          while (packetOffset < packetSize) {
           MessageType type = static_cast<MessageType>(rawPacket[packetOffset]);
           switch (type) {
             case MessageType::AddOrder: {
               ensureBytes(sizeof(AddOrderMessage));
               AddOrderMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -84,7 +91,9 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(TradeMessage));
               TradeMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -92,7 +101,9 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(OrderExecutedMessage));
               OrderExecutedMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -100,7 +111,9 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(OrderCancelMessage));
               OrderCancelMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -108,7 +121,9 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(OrderDeleteMessage));
               OrderDeleteMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -116,7 +131,9 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(ReplaceOrderMessage));
               ReplaceOrderMessage msg;
               std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-              _rbItchMessages.tryPush(msg);
+              if (_rbItchMessages.tryPush(msg)) {
+                messagesProcessed++;
+              }
               packetOffset += sizeof(msg);
               break;
             }
@@ -124,14 +141,24 @@ namespace beacon::nsdq::market_data::itch {
               ensureBytes(sizeof(MarketDepthMessage));
                 MarketDepthMessage msg;
                 std::memcpy(&msg, rawPacket + packetOffset, sizeof(msg));
-                _rbItchMessages.tryPush(msg);
+                if (_rbItchMessages.tryPush(msg)) {
+                  messagesProcessed++;
+                }
                 packetOffset += sizeof(msg);
                 break;
               }
               default:
-              throw std::runtime_error("Unknown ITCH message type");
+              throw std::runtime_error("Unknown ITCH message type: " + std::to_string(static_cast<int>(type)));
             } // end switch
-        } // end while
+          } // end while
+        } catch (const std::exception& e) {
+          // Partial packet processing: Some messages may have been successfully processed
+          // and are available in the ring buffer. Re-throw with context about what was saved.
+          throw std::runtime_error("ITCH packet processing failed at offset " + 
+                                  std::to_string(packetOffset) + "/" + std::to_string(packetSize) +
+                                  " (processed " + std::to_string(messagesProcessed) + " messages): " + 
+                                  e.what());
+        }
       }
 
       private:

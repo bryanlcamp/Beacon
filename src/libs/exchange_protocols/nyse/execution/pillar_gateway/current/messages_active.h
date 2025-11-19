@@ -8,4 +8,4 @@
 
 #pragma once
 
-#include "nyse/execution/pillar_gateway/v3.2/execution_message_types.h"  ///< Current live version
+#include "../v3.2/execution_message_types.h"  ///< Current live version

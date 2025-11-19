@@ -6,7 +6,8 @@
 // =============================================================================
 
 #include <gtest/gtest.h>
-// #include "src/libs/exchange_protocols/nsdq/market_data/itch/v5/itch_message_types.h"
+// ITCH protocol messages using version abstraction
+#include "libs/exchange_protocols/nsdq/market_data/itch/current/messages_active.h"
 
 // Placeholder tests - TODO: Fix include path in CMake
 TEST(ITCHSerializationTest, Placeholder) {

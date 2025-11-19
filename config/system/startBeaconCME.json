@@ -1,0 +1,37 @@
+{
+  "_comment": "🚀 BEACON CME FUTURES TRADING SYSTEM 🚀",
+  "_description": "CME E-mini S&P 500 futures with TWAP algorithm",
+  
+  "system": {
+    "name": "Beacon CME Futures TWAP",
+    "protocol": "cme_ilink3",
+    "duration_seconds": 120,
+    "startup_sequence": ["matching_engine", "client_algorithm", "playback"]
+  },
+  
+  "component_configs": {
+    "generator": {
+      "enabled": false,
+      "config_file": "config/generator/cme_futures.json"
+    },
+    "playback": {
+      "enabled": true,
+      "config_file": "config/playback/cme_mdp3_playback.json"
+    },
+    "matching_engine": {
+      "enabled": true,
+      "config_file": "config/matching_engine/cme_ilink3_matching.json"
+    },
+    "client_algorithm": {
+      "enabled": true,
+      "config_file": "config/client_algorithm/twap_es_futures.json"
+    }
+  },
+  
+  "execution_parameters": {
+    "symbol": "ESZ4",
+    "side": "B",
+    "shares": 100,
+    "price": 4250.50
+  }
+}

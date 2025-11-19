@@ -1,0 +1,92 @@
+{
+  "system_config": {
+    "name": "CME Futures TWAP Strategy",
+    "protocol": "cme",
+    "algorithm": "twap",
+    "duration_seconds": 300,
+    "description": "Complete CME futures trading setup with TWAP execution"
+  },
+  "generator": {
+    "enabled": true,
+    "output_file": "temp_data/cme_market_data.bin",
+    "message_count": 10000,
+    "symbols": ["ESZ4", "NQZ4", "YMZ4"],
+    "protocol": "cme_mdp3",
+    "wave_config": {
+      "price_volatility": 0.02,
+      "volume_burst_probability": 0.1,
+      "trend_duration_seconds": 60
+    }
+  },
+  "playback": {
+    "enabled": true,
+    "networking": {
+      "host": "127.0.0.1",
+      "port": 8001,
+      "protocol": "UDP"
+    },
+    "playback_config": {
+      "input_file": "temp_data/cme_market_data.bin",
+      "rate_limit_mbps": 100,
+      "burst_mode": false,
+      "protocol": "cme_mdp3"
+    }
+  },
+  "matching_engine": {
+    "enabled": true,
+    "networking": {
+      "host": "127.0.0.1",
+      "port": 9001,
+      "protocol": "TCP"
+    },
+    "protocol": {
+      "order_entry": "cme_ilink3",
+      "auto_detect": false,
+      "strict_validation": true
+    },
+    "execution": {
+      "immediate_fill": true,
+      "partial_fills": true,
+      "price_improvement": 0.25
+    }
+  },
+  "client_algorithm": {
+    "enabled": true,
+    "type": "twap",
+    "networking": {
+      "market_data": {
+        "host": "127.0.0.1",
+        "port": 8001,
+        "protocol": "UDP"
+      },
+      "order_entry": {
+        "host": "127.0.0.1",
+        "port": 9001,
+        "protocol": "TCP"
+      }
+    },
+    "protocol_config": {
+      "market_data_protocol": "cme_mdp3",
+      "order_entry_protocol": "cme_ilink3"
+    },
+    "execution_config": {
+      "symbol": "ESZ4",
+      "side": "B",
+      "shares": 1000,
+      "limit_price": 4250.50
+    },
+    "twap_algorithm": {
+      "time_window_minutes": 5,
+      "slice_count": 10,
+      "participation_rate": 0.20,
+      "price_tolerance": 0.001,
+      "minimum_slice_size": 50
+    }
+  },
+  "system_monitoring": {
+    "log_level": "INFO",
+    "performance_metrics": true,
+    "real_time_display": true,
+    "output_directory": "logs/session_$(timestamp)"
+  }
+}

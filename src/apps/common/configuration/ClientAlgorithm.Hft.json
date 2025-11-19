@@ -1,0 +1,28 @@
+{
+  "hft_settings": {
+    "ultra_low_latency": true,
+    "direct_memory_access": true,
+    "kernel_bypass": false,
+    "cpu_isolation": true,
+    "thread_affinity": [2, 3, 4, 5]
+  },
+  "threading": {
+    "_comment": "Thread allocation for ultra-low latency processing",
+    "market_data_threads": 1,
+    "order_processing_threads": 2,
+    "strategy_threads": 4,
+    "network_io_threads": 2
+  },
+  "memory": {
+    "lock_memory": true,
+    "huge_pages": true,
+    "pre_allocate_buffers": true,
+    "ring_buffer_size": 16384
+  },
+  "latency_monitoring": {
+    "enabled": true,
+    "sample_rate": 0.01,
+    "histogram_buckets": 1000,
+    "alert_threshold_ns": 50000
+  }
+}

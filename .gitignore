@@ -28,7 +28,7 @@ exchange_matching_engine
 exchange_market_data_generator
 exchange_market_data_playback
 
-# Generated market data
+# Generated market data and output files
 *.bin
 *.itch
 *.mdp
@@ -36,6 +36,10 @@ exchange_market_data_playback
 output.*
 test.dat
 price_ranges.json
+
+# Keep outputs directory clean
+outputs/
+!outputs/.gitkeep
 
 # Python
 __pycache__/

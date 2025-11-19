@@ -1,0 +1,29 @@
+{
+  "_description": "NASDAQ ITCH v5.0 Market Data Playback Configuration",
+  
+  "networking": {
+    "host": "127.0.0.1",
+    "port": 8002,
+    "protocol": "UDP",
+    "multicast": false
+  },
+  
+  "playback": {
+    "data_file": "test_wave_burst.bin",
+    "protocol": "itch_50",
+    "binary_format": true,
+    "rate_limit_mbps": 10,
+    "burst_mode": false,
+    "loop_playback": true
+  },
+  
+  "symbols": [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"
+  ],
+  
+  "timing": {
+    "message_interval_us": 1000,
+    "burst_size": 100,
+    "warmup_messages": 50
+  }
+}

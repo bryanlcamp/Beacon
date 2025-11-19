@@ -1,0 +1,37 @@
+{
+  "_comment": "🚀 BEACON NYSE PILLAR TRADING SYSTEM 🚀",
+  "_description": "NYSE equities with VWAP algorithm",
+  
+  "system": {
+    "name": "Beacon NYSE Pillar VWAP",
+    "protocol": "pillar_gateway",
+    "duration_seconds": 90,
+    "startup_sequence": ["matching_engine", "client_algorithm", "playback"]
+  },
+  
+  "component_configs": {
+    "generator": {
+      "enabled": false,
+      "config_file": "config/generator/nyse_equities.json"
+    },
+    "playback": {
+      "enabled": true,
+      "config_file": "config/playback/nyse_pillar_playback.json"
+    },
+    "matching_engine": {
+      "enabled": true,
+      "config_file": "config/matching_engine/pillar_matching_engine.json"
+    },
+    "client_algorithm": {
+      "enabled": true,
+      "config_file": "config/client_algorithm/vwap_spy_sell.json"
+    }
+  },
+  
+  "execution_parameters": {
+    "symbol": "SPY",
+    "side": "S",
+    "shares": 25000,
+    "price": 445.75
+  }
+}

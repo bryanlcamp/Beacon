@@ -1,0 +1,28 @@
+{
+  "application": {
+    "name": "Beacon Market Data Generator", 
+    "version": "1.0.0",
+    "description": "Multi-protocol market data generator for testing and simulation",
+    "architecture": "generator -> playback (UDP) -> market_data_receiver"
+  },
+  "output": {
+    "default_protocol": "itch",
+    "supported_protocols": ["itch", "pillar", "cme"],
+    "binary_format": true,
+    "csv_format": false
+  },
+  "generation": {
+    "message_rate": 1000,
+    "symbols": ["AAPL", "MSFT", "GOOGL", "TSLA", "AMZN"],
+    "price_variance": 0.05,
+    "volume_range": [100, 10000],
+    "market_hours_only": true
+  },
+  "network": {
+    "output": {
+      "protocol": "file",
+      "compression": false,
+      "buffer_size": 65536
+    }
+  }
+}

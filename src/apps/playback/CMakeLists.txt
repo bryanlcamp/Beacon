@@ -39,6 +39,7 @@ target_include_directories(playback PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/interfaces
     ${BEACON_ROOT}/include
     ${BEACON_ROOT}/vendor
+    ${BEACON_ROOT}/src/apps/common
 )
 
 # Add exchanges as an INTERFACE library for header-only usage

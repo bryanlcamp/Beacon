@@ -1,0 +1,21 @@
+{
+  "twap_algorithm": {
+    "time_window_minutes": 60,
+    "slice_count": 20,
+    "participation_rate": 0.15,
+    "price_tolerance": 0.001,
+    "minimum_slice_size": 100,
+    "aggressive_on_close": true
+  },
+  "execution_strategy": {
+    "child_order_size": 500,
+    "wait_time_seconds": 180,
+    "market_impact_threshold": 0.005,
+    "use_dark_pools": false
+  },
+  "risk_controls": {
+    "max_position_deviation": 1000,
+    "price_deviation_bps": 50,
+    "volume_spike_threshold": 2.0
+  }
+}

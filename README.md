@@ -1,116 +1,212 @@
-# Beacon Trading System
+# 🚀 Beacon Trading System
 
-Beacon is an exchange, live, simulated. But unique in that you have complete control. ***End-to-end.*** You generate market data. Tailor it. Specify the bid-ask spread, volatility factors, trading frequency, or use the intelligent defaults. You want to receive your market data in burst or waves, or a specific speed?  You want the market to halt or even crash? Just tell Beacon. And it will stream this market data to your algorithm via UDP using true NSDQ, CME, or NYSE protocol, just like you've asked. Complete exchange behavior. Isolated from your algorithm via UDP. All highly configurable via .json. 
+**The Ultimate Simple High-Frequency Trading Platform**
 
-Beacon delivers market data at high speed, decoded by a blazing-fast handler. This is where you implement your strategy—using your own logic, with TWAP and VWAP included as guides to illustrate integration. The process is straightforward, so you can focus on building and testing your ideas.
+Beacon is a professional-grade trading system that implements TWAP (Time-Weighted Average Price) algorithms with protocol-aware execution for NASDAQ OUCH v5.0, NYSE Pillar v3.2, and CME iLink 3 protocols.
 
-Proper risk management is essential for any successful algorithm. Beacon includes a built-in three-tier risk management system covering PnL, position, and messaging frequency. Each tier operates at three levels: warning, alert, and hard-stop. If you need more control, you can easily extend or replace the default risk system to fit your requirements.
+## ✨ The Dream Interface
 
-When your algorithm is ready to trade, Beacon’s exchange encoders handle the heavy lifting—your order is formatted, sent via TCP, and processed by the matching engine in true FIFO style. You’ll get a clear response: ACK or REJECT. Fills trigger instant execution reports, so your algo can update positions and PnL in real time.
+**One Command. One Config File. That's it.**
 
-Beacon is built for unpredictable markets. Be ready—your algorithm will need to think fast when conditions change.
-
-
-## ⚡ System Requirements
-
-- [C++20](https://en.cppreference.com/w/cpp/20) Compiler
-- [CMake](https://cmake.org/download/)
-- [Python 3+](https://www.python.org/downloads/)
-- [Linux](https://www.linux.org/pages/download/) or macOS
-
+```bash
+python3 beacon-simple.py
+```
 
 ## 🚀 Quick Start
 
-Setting up Beacon is ***straightforward!*** From a terminal:
+### 1. **Run the System** (First Time)
+```bash
+python3 beacon-simple.py
+```
+
+The system will:
+- ✅ Automatically detect if you need to build (first run)
+- ✅ Compile all required components 
+- ✅ Create a default `beacon-config.json` for you
+- ✅ Run your first TWAP trade simulation
+
+### 2. **Customize Your Trading** 
+Edit `beacon-config.json` - it contains **only** the settings you'll actually change:
+
+```json
+{
+  "_comment": "🚀 BEACON TRADING SYSTEM - USER CONFIG 🚀",
+  "_description": "Edit the values marked #change_me",
+
+  "symbol": "AAPL",           "#change_me - Stock to trade"
+  "side": "B",               "B=Buy, S=Sell"  
+  "shares": 1000,            "#change_me - Total shares"
+  "price": 150.0,            "#change_me - Limit price"
+  "time_window_minutes": 2,   "#change_me - How long to spread order"
+  "slice_count": 6,          "Break into 6 smaller orders"
+  
+  "protocol": "cme",         "#change_me - nasdaq, cme, nyse"
+  "duration_seconds": 30
+}
+```
+
+### 3. **Run Again**
+```bash
+python3 beacon-simple.py
+```
+
+That's it! 🎉
+
+## 📊 Sample Output
+
+```
+🚀 BEACON TRADING SYSTEM 🚀
+Protocol: CME | Duration: 30s
+
+TRADE: AAPL | BUY 1,000 @ $150.00 | 2min window
+COMPONENTS: DATA-GEN + MATCH-ENG + ALGO
+
+[16:07:14.611] [SUCCESS] [BUILD    ] ✅ All required binaries ready!
+[16:07:14.611] [INFO   ] [SYSTEM   ] 🚀 Starting components...
+[16:07:15.118] [SUCCESS] [GENERATOR] Data generation complete
+[16:07:17.632] [SUCCESS] [MATCH-ENG] Ready on port 9002 (PID: 35947)
+[16:07:19.149] [SUCCESS] [ALGORITHM] Connected to matching engine (PID: 35964)
+[16:07:21.153] [SUCCESS] [SYSTEM   ] 🎉 All components started!
+[16:07:21.154] [INFO   ] [ALGORITHM] 🎯 Executing TWAP: BUY 1,000 AAPL over 2 minutes
+[16:07:21.154] [INFO   ] [MONITOR  ] Monitoring session for 30 seconds (settlement & trade tracking)...
+[16:07:51.843] [SUCCESS] [SYSTEM   ] ✅ Trading session complete - Runtime: 30s
+[16:07:51.843] [INFO   ] [SYSTEM   ] 📋 Trade report: ./outputs/trade_report.log
+```
+
+## 🎯 What Just Happened?
+
+1. **Data Generation** - Created realistic market data for your symbols
+2. **Matching Engine** - Started a CME-protocol matching engine on port 9002  
+3. **TWAP Algorithm** - Connected and executed time-weighted average price strategy
+4. **Trade Execution** - Split 1,000 AAPL shares into 6 orders over 2 minutes
+5. **Settlement** - Monitored for 30 seconds to track fills and confirmations
+6. **Trade Report** - Detailed activity saved to `outputs/trade_report.log`
+
+## 📖 Documentation
+
+- 🚀 **[Full Documentation Hub](docs/)** - Complete guides and references
+- ⚙️ **[Advanced Usage](docs/advanced-usage.md)** - Power user features (`beacon-unified.py`)
+- 🔧 **[Configuration Reference](docs/configuration.md)** - All settings explained
+- 🏗️ **[Architecture Guide](docs/architecture.md)** - How Beacon works internally
+- 🚨 **[Troubleshooting](docs/troubleshooting.md)** - Common issues & solutions
+
+## ⚙️ Advanced Configuration
+
+Want more control? Beacon also supports advanced system configurations:
 
 ```bash
-git clone https://github.com/bryanlcamp/beacon.git
-python3 beacon-build.py
-python3 beacon-run.py
+# Use main system config
+python3 beacon-unified.py -i config/system/startBeacon.json
+
+# Or use exchange-specific configs
+python3 beacon-unified.py -i config/system/startBeaconCME.json
+python3 beacon-unified.py -i config/system/startBeaconNYSE.json
 ```
 
-That's it! Beacon’s running with system defaults — see it in action before diving deeper.
+This uses comprehensive system configurations for power users who need fine-grained control over multiple components. **[Learn more →](docs/advanced-usage.md)**
 
-**→ [Customizing Beacon](docs/getting-started.md)**
+## 🏗️ Architecture 
 
-## 🎯 Key Features
-
-✅ **Plug in your algo** — Simple setup. Tailor data. Test. Adjust. Iterate.  
-✅ **Simulate stress** — Burst traffic. Push your algo. Test under pressure.  
-✅ **Manage risk** — PnL, positions, messaging. Plug in your checks.  
-✅ **Master unpredictability** — Halts. Crashes. Network failures. Prepare for chaos.  
-✅ **Protocol support** — **NSDQ**, **NYSE**, **CME**. True compatibility.  
-✅ **Zero setup** — No external network. Local TCP/UDP.  
-✅ **Smart defaults** — Auto-adjust based on prior market data.  
-✅ **Low latency — High-performance design.** **Full reports.**
-
-## ⚡ Technologies
-
-- **Languages:** [C++20](https://en.cppreference.com/w/cpp/20), [Python3](https://www.python.org/)
-- **Build:** [CMake](https://cmake.org/), [GCC](https://gcc.gnu.org/) (Linux), [Clang](https://clang.llvm.org/) (MacOS)
-- **CI/CD:** [GitHub Actions](https://docs.github.com/en/actions) (custom [.yaml](https://yaml.org))
-- **Testing:** [GoogleTest](https://google.github.io/googletest/)
-- **Networking:** [TCP/IP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) & [UDP loopback](https://en.wikipedia.org/wiki/Loopback)
-- **IDE:** [VSCode](https://code.visualstudio.com/) (plug-ins/setup on request)
-- **Configuration:** [.json](https://www.json.org/json-en.html) (available on request)
-- **Source Control:** [GitHub](https://github.com/)
-- **Docs & Issues:** [GitHub Docs](https://docs.github.com/en/github)
-- **Project Management:** [GitHub Projects](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards)
-
-
-## 🏗️ Architecture
-
-### 1. Generator
-- Creates binary data files containing exchange-formatted messages
-- Control over total messages, symbols, exchanges, open (seed) price, bid-ask spread range, and trading frequency per symbol
-- Downloads previous day’s close price and trading data for intelligent suggestions
-- Generate unlimited datasets (binary files)
-
-### 2. Playback
-- Reads generator-created files into memory at startup
-- Broadcasts real exchange packets via UDP, simulating a real exchange
-- Flexible playback controls: burst frequency, circuit breakers, trading halts, message throttles, price overrides
-- Pluggable rule system—implement your own interface
-- Supports repeated playback of the same file
-
-### 3. Client Algorithm
-- Efficiently processes the market data you generate—fast and reliable
-- Built-in risk management keeps your strategy in check, or add your own for total control
-- Example strategies (TWAP, VWAP) show you how—just drop in your own logic and go
-- Sends orders to the matching engine and updates positions and PnL in real time
-
-
-### 4. Matching Engine
-- Takes your orders over TCP. Strict FIFO.
-- Extending it is straightforward: add your own matching logic if FIFO isn’t enough. Size/Time-Priority, Account for market makers. Extend the existing code, or implement your own via the public interface.
-- Every submit/update/cancel delivers an ack or reject And every fill triggers an execution report, so your algo can update positions and PnL instantly. 
-
-## 📊 Performance
-
-**Last Run (MacBook Air):**
 ```
-Market Data Received:  97,252
-Orders Sent:           972
-Fills Received:        1,586
-
-Tick-to-Trade Latency:
-  Mean:     4.621 μs
-  Median:   4.000 μs
-  p95:      7.709 μs
-  p99:      21.500 μs
-  Max:      56.541 μs
+Market Data Generator → UDP → Algorithm
+                              ↓ (TWAP Orders)
+Algorithm ← TCP ← Matching Engine
 ```
 
-**Competitive HFT performance on a laptop!**
+- **Generator**: Creates realistic market data (AAPL, MSFT, GOOGL)
+- **Matching Engine**: Protocol-aware order matching (OUCH/Pillar/CME)  
+- **Algorithm**: TWAP execution with binary protocol messaging
+- **Monitoring**: Real-time progress tracking and settlement
 
-## 🔧 Scripts
+## 🔧 Supported Protocols
 
-All system scripts are in the `scripts/` directory with consistent `beacon-` naming:
+- **NASDAQ OUCH v5.0** - NASDAQ's native binary protocol
+- **NYSE Pillar v3.2** - NYSE's high-performance protocol  
+- **CME iLink 3** - CME Group's ultra-low latency protocol
 
+All protocols use proper binary message formatting over TCP connections.
+
+## 📈 TWAP Algorithm Features
+
+- **Time-Weighted Execution** - Spreads orders evenly across time window
+- **Configurable Slicing** - Control how many child orders to create
+- **Protocol Aware** - Sends native binary messages for each exchange
+- **Risk Controls** - Price tolerance and participation rate limits
+- **Real-time Monitoring** - Track execution progress and fills
+
+## 🛠️ Requirements
+
+- **C++17** compiler (g++, clang++)
+- **CMake 3.15+** 
+- **Python 3.6+**
+- **macOS/Linux** (tested on macOS, should work on Linux)
+
+## 📋 Configuration Reference
+
+### Trading Settings
+- `symbol` - Stock symbol (AAPL, MSFT, etc.)
+- `side` - B=Buy, S=Sell  
+- `shares` - Total shares to execute
+- `price` - Limit price per share
+- `time_window_minutes` - TWAP execution window
+- `slice_count` - Number of child orders
+
+### System Settings  
+- `protocol` - Exchange protocol (nasdaq, cme, nyse)
+- `duration_seconds` - Total session runtime
+- `market_data_port` - UDP port for market data (default: 8002)
+- `order_entry_port` - TCP port for orders (default: 9002)
+
+## 🚨 Troubleshooting
+
+**Port 9002 permission denied (-13 error)?**
 ```bash
-beacon-run.py              # Run the trading system
-beacon-build.py            # Build all components
-beacon-kill.py             # Stop all processes
-beacon-previous-prices.py  # Fetch yesterday's market prices
-beacon-test-udp.py         # Test UDP multicast
+sudo lsof -i :9002  # Check what's using the port
 ```
+
+**Build issues?**
+The system auto-detects and builds on first run. For manual build:
+```bash
+cmake -B build -S .
+cmake --build build
+```
+
+**Config file corrupted?**
+```bash
+python3 beacon-reset-config.py  # Restores default config
+```
+
+## 📝 Trade Reports
+
+Detailed execution logs are saved to `trade_report.log`:
+- Order submissions and acknowledgments
+- Fill confirmations with prices and quantities  
+- Protocol-specific message details
+- Timing and performance metrics
+
+## 🎯 Use Cases
+
+- **Algorithm Development** - Test TWAP strategies safely
+- **Protocol Testing** - Validate binary message formatting
+- **Performance Analysis** - Measure latency and throughput
+- **Education** - Learn HFT system architecture
+- **Research** - Market microstructure studies
+
+---
+
+## 💡 Philosophy
+
+**Trading systems should be simple to use, not simple to build.**
+
+Beacon hides the complexity of:
+- Multi-protocol binary messaging
+- Component orchestration  
+- Build system management
+- Configuration coordination
+- Process lifecycle management
+
+So you can focus on what matters: **your trading strategy**.
+
+---
+
+*Built with ❤️ for algorithmic traders who value both power and simplicity.*

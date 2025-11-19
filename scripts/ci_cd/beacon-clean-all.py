@@ -1,34 +1,63 @@
+#!/usr/bin/env python3
+"""
+Beacon CI/CD Clean Script
+Removes build artifacts and temporary files
+"""
+
 import shutil
+import os
 from pathlib import Path
 
-def clean(paths):
-    for p in paths:
-        p = Path(p)
-        try:
-            if p.exists():
-                if p.is_dir():
-                    shutil.rmtree(p)
-                else:
-                    p.unlink()
-                print(f"Removed: {p}")
+def clean_path(path_to_clean, description):
+    """Clean a single path with error handling"""
+    path_to_clean = Path(path_to_clean)
+    try:
+        if path_to_clean.exists():
+            if path_to_clean.is_dir():
+                shutil.rmtree(path_to_clean)
+                print(f"[REMOVED] {description}: {path_to_clean}")
             else:
-                print(f"Skipped (not found): {p}")
-        except Exception as e:
-            print(f"Error removing {p}: {e}")
+                path_to_clean.unlink()
+                print(f"[REMOVED] {description}: {path_to_clean}")
+        else:
+            print(f"[SKIPPED] {description}: {path_to_clean} (not found)")
+    except Exception as e:
+        print(f"[ERROR] Failed to remove {description}: {e}")
+
+def main():
+    """Clean all build artifacts"""
+    repo_root = Path(__file__).resolve().parents[2]
+    print(f"[CI/CD] Cleaning Beacon Trading System")
+    print(f"[CI/CD] Repository root: {repo_root}")
+    
+    # Change to repo root
+    os.chdir(repo_root)
+    
+    # Clean unified build directories
+    clean_path("build", "Debug build directory")
+    clean_path("build-release", "Release build directory")
+    
+    # Clean output directories  
+    clean_path("outputs", "Generated outputs")
+    
+    # Clean log directories
+    clean_path("logs", "Log files")
+    clean_path("scripts/logs", "Script log files")
+    
+    # Clean any CMake cache files
+    clean_path("CMakeCache.txt", "CMake cache")
+    clean_path("cmake_install.cmake", "CMake install script")
+    
+    # Recreate outputs directory with gitkeep
+    outputs_dir = Path("outputs")
+    outputs_dir.mkdir(exist_ok=True)
+    gitkeep_file = outputs_dir / ".gitkeep"
+    if not gitkeep_file.exists():
+        with open(gitkeep_file, 'w') as f:
+            f.write("# This file ensures the outputs directory is tracked by git\n")
+        print(f"[CREATED] .gitkeep file in outputs/")
+    
+    print(f"[CI/CD] ✅ Clean complete!")
 
 if __name__ == "__main__":
-    repo_root = Path(__file__).resolve().parents[2]
-    print(f"[DEBUG] Repo root: {repo_root}")
-    clean([
-        repo_root / "src/apps/exchange_matching_engine/build-debug",
-        repo_root / "src/apps/exchange_matching_engine/build-release",
-        repo_root / "src/apps/exchange_market_data_generator/build-debug",
-        repo_root / "src/apps/exchange_market_data_generator/build-release",
-        repo_root / "src/apps/exchange_market_data_playback/build-debug",
-        repo_root / "src/apps/exchange_market_data_playback/build-release",
-        repo_root / "src/apps/client_algorithm/build-debug",
-        repo_root / "src/apps/client_algorithm/build-release",
-        repo_root / "logs",
-        repo_root / "scripts/logs",
-    ])
-    print("[CI/CD] Clean complete!")
+    main()

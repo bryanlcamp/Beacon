@@ -6,9 +6,10 @@
 // =============================================================================
 
 #include <gtest/gtest.h>
-// #include "src/libs/exchange_protocols/nsdq/execution/ouch/v5.0/execution_message_types.h"
+// Version-specific include replaced with protocol abstraction
 
-// TODO: Expand these tests based on your OUCH implementation
+// OUCH protocol messages using version abstraction
+#include "libs/exchange_protocols/nsdq/execution/ouch/current/messages_active.cpp"
 
 TEST(OUCHMessagesTest, Placeholder) {
     // Placeholder until OUCH messages are fully defined

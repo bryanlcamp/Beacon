@@ -1,0 +1,37 @@
+{
+  "application": {
+    "name": "Beacon Matching Engine",
+    "version": "1.0.0",
+    "description": "Multi-protocol electronic matching engine",
+    "architecture": "client_algorithm <--> (TCP) matching_engine"
+  },
+  "network": {
+    "server": {
+      "protocol": "tcp",
+      "host": "127.0.0.1",
+      "port": 54321,
+      "max_connections": 100,
+      "socket_buffer_size": 65536,
+      "keepalive": true,
+      "nodelay": true
+    }
+  },
+  "exchange": {
+    "protocol_mode": "auto",
+    "supported_protocols": ["ouch", "pillar", "cme"],
+    "auto_detect": true,
+    "strict_validation": true
+  },
+  "performance": {
+    "thread_pool_size": 4,
+    "cpu_affinity": -1,
+    "numa_node": -1,
+    "latency_mode": "ultra_low"
+  },
+  "execution": {
+    "fill_probability": 0.95,
+    "partial_fill_enabled": true,
+    "rejection_rate": 0.02,
+    "execution_delay_us": 10
+  }
+}

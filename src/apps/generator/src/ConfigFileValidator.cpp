@@ -562,31 +562,50 @@ namespace market_data_generator {
 
     void ConfigFileValidator::validateWaveBurstSynchronization() const {
         const auto& symbols = _configFileParser.getSymbols();
+        const auto& globalConfig = _configFileParser.getGlobalConfig();
+        const auto& waveConfig = _configFileParser.getWaveConfig();
+        const auto& burstConfig = _configFileParser.getBurstConfig();
         
-        // TODO: When full wave+burst config is implemented, validate synchronization
-        // For now, validate conceptual conflicts using existing fields
+        // Validate wave+burst synchronization settings
+        if (!globalConfig.BurstTogether && globalConfig.WaveTogether) {
+            std::cerr << "WARNING: Independent bursts (BurstTogether=false) on coordinated waves "
+                      << "(WaveTogether=true) may create unrealistic market patterns where symbols "
+                      << "burst independently while maintaining synchronized price waves."
+                      << std::endl;
+        }
+        
+        if (globalConfig.BurstTogether && !globalConfig.WaveTogether) {
+            std::cerr << "INFO: Coordinated bursts (BurstTogether=true) on independent waves "
+                      << "(WaveTogether=false) creates market events where all symbols burst "
+                      << "simultaneously but follow different wave patterns."
+                      << std::endl;
+        }
+        
+        // Check for timing conflicts between wave cycles and burst frequency
+        if (burstConfig.Enabled && burstConfig.BurstFrequencyMs < waveConfig.WaveDurationMs / 4) {
+            std::cerr << "WARNING: BurstFrequencyMs (" << burstConfig.BurstFrequencyMs 
+                      << "ms) is very short compared to WaveDurationMs (" << waveConfig.WaveDurationMs 
+                      << "ms). Multiple bursts per wave cycle may create excessive volatility."
+                      << std::endl;
+        }
         
         for (const auto& symbolConfig : symbols) {
-            // Future validation for wave-burst synchronization:
-            // 
-            // if (burstOnWavePeaks && burstOnWaveTraoughs) {
-            //     throw std::runtime_error("Symbol '" + symbol + "': Cannot burst on both peaks and troughs simultaneously");
-            // }
-            // 
-            // if (burstTogether=false && waveTogether=true) {
-            //     warn("Independent bursts on coordinated waves may create unrealistic patterns");
-            // }
-            // 
-            // if (burstTogether=true && waveTogether=false) {
             //     info("Coordinated bursts on independent waves - ensure this matches market intent");
             // }
             
-            // Current placeholder validation using spread as synchronization proxy
-            if (symbolConfig._spreadPercentage > 5.0) {
-                std::cerr << "INFO: Symbol '" << symbolConfig._symbol 
-                          << "' has significant spread (" << symbolConfig._spreadPercentage 
-                          << "%). In wave+burst mode, ensure burst timing aligns properly "
-                          << "with wave phases for realistic market behavior."
+            // Validate symbol spread vs wave/burst combination
+            double combinedVolatility = symbolConfig._spreadPercentage * 
+                                      (waveConfig.WaveAmplitudePercent / 100.0);
+            
+            if (burstConfig.Enabled) {
+                combinedVolatility *= (burstConfig.BurstIntensityPercent / 100.0);
+            }
+            
+            if (combinedVolatility > 20.0) {
+                std::cerr << "WARNING: Symbol '" << symbolConfig._symbol 
+                          << "' may experience extreme volatility (" << combinedVolatility 
+                          << "%) from combined wave+burst effects. Consider reducing spread, "
+                          << "wave amplitude, or burst intensity for more realistic behavior."
                           << std::endl;
             }
         }
@@ -603,30 +622,39 @@ namespace market_data_generator {
                 globalConfig._numMessages * (symbolConfig._percentTotalMessages / 100.0)
             );
             
-            // TODO: When full config is implemented, validate combined intensities:
-            // 
-            // double waveAmplitude = waveConfig.waveAmplitudePercent;  // e.g., 150%
-            // double burstIntensity = burstConfig.burstIntensityPercent; // e.g., 500%
-            // double combinedPeak = waveAmplitude * (burstIntensity / 100.0); // 150% * 5.0 = 750%
-            // 
-            // if (combinedPeak > 1000.0) {
-            //     throw std::runtime_error("Combined wave+burst intensity (" + 
-            //                            std::to_string(combinedPeak) + "%) exceeds 1000% limit");
-            // }
-            // 
-            // double waveTrough = waveConfig.waveBaselinePercent;     // e.g., 75%
-            // double combinedTrough = waveTrough * (burstIntensity / 100.0); // 75% * 5.0 = 375%
-            // 
-            // if (combinedTrough > combinedPeak * 0.8) {
-            //     warn("Burst intensity during wave trough approaches peak levels");
-            // }
+            // Validate combined wave+burst intensity limits
+            const auto& waveConfig = _configFileParser.getWaveConfig();
+            const auto& burstConfig = _configFileParser.getBurstConfig();
             
-            // Current validation using existing fields as intensity proxy
-            double proxyIntensity = symbolConfig._spreadPercentage * 10.0; // Rough proxy
-            if (symbolMessages > 1000 && proxyIntensity > 50.0) {
-                std::cerr << "WARNING: Symbol '" << symbolConfig._symbol 
-                          << "' with high message count (" << symbolMessages 
-                          << ") and high intensity proxy. In wave+burst mode, "
+            double waveAmplitude = waveConfig.WaveAmplitudePercent;  // e.g., 150%
+            double burstIntensity = burstConfig.Enabled ? burstConfig.BurstIntensityPercent : 100.0;
+            double combinedPeak = waveAmplitude * (burstIntensity / 100.0); // e.g., 150% * 5.0 = 750%
+            
+            if (combinedPeak > 1000.0) {
+                std::cerr << "ERROR: Symbol '" << symbolConfig._symbol 
+                          << "' combined wave+burst intensity (" << combinedPeak 
+                          << "%) exceeds 1000% safe limit. Reduce wave amplitude or burst intensity."
+                          << std::endl;
+            }
+            
+            // Check if burst intensity during wave variations creates extreme ranges
+            double waveVariationRange = waveAmplitude - 50.0; // Assume 50% baseline
+            if (waveVariationRange > 0 && burstConfig.Enabled) {
+                double maxVariation = waveVariationRange * (burstIntensity / 100.0);
+                
+                if (maxVariation > 800.0) {
+                    std::cerr << "WARNING: Symbol '" << symbolConfig._symbol 
+                              << "' wave variation range (" << maxVariation 
+                              << "%) with burst effects may create unrealistic market behavior."
+                              << std::endl;
+                }
+            }
+            
+            // Validate message throughput can handle intensity
+            if (symbolMessages > 1000 && combinedPeak > 500.0) {
+                std::cerr << "INFO: Symbol '" << symbolConfig._symbol 
+                          << "' has high message count (" << symbolMessages 
+                          << ") with high intensity (" << combinedPeak << "%). "
                           << "ensure combined peak intensity doesn't exceed system capacity."
                           << std::endl;
             }
@@ -637,44 +665,52 @@ namespace market_data_generator {
         const auto& symbols = _configFileParser.getSymbols();
         
         // Validate that wave and burst timings work together harmoniously
-        for (const auto& symbolConfig : symbols) {
-            // TODO: When full timing config is implemented, validate harmony:
-            // 
-            // double waveDuration = waveConfig.waveDurationMs;      // e.g., 300,000ms (5 min)
-            // double burstFrequency = burstConfig.burstFrequencyMs; // e.g., 45,000ms (45 sec)
-            // 
-            // // Check if burst frequency aligns reasonably with wave cycles
-            // double burstsPerWave = waveDuration / burstFrequency;  // 300,000 / 45,000 = 6.67
-            // 
-            // if (burstsPerWave < 2.0) {
-            //     warn("Very few bursts per wave cycle - may not show clear pattern interaction");
-            // }
-            // 
-            // if (burstsPerWave > 20.0) {
-            //     warn("Too many bursts per wave cycle - may overwhelm wave pattern");
-            // }
-            // 
-            // // Validate burst duration vs wave smoothness
-            // double burstDuration = burstConfig.burstDurationMs;    // e.g., 2,000ms (2 sec)
-            // double waveSmoothness = waveConfig.waveSmoothness;     // e.g., 0.8
-            // 
-            // if (burstDuration > (waveDuration * 0.1)) {
-            //     warn("Burst duration > 10% of wave cycle may disrupt smooth wave pattern");
-            // }
-            // 
-            // // Check phase alignment
-            // if (burstOnWavePeaks) {
-            //     // Validate that bursts enhance rather than fight wave peaks
-            //     if (burstIntensity < waveAmplitude) {
-            //         info("Burst intensity lower than wave amplitude - bursts may be subtle");
-            //     }
-            // }
+        const auto& waveConfig = _configFileParser.getWaveConfig();
+        const auto& burstConfig = _configFileParser.getBurstConfig();
+        
+        if (burstConfig.Enabled) {
+            double waveDuration = waveConfig.WaveDurationMs;      // e.g., 300,000ms (5 min)
+            double burstFrequency = burstConfig.BurstFrequencyMs; // e.g., 45,000ms (45 sec)
             
-            // Current placeholder validation
-            std::cerr << "INFO: Symbol '" << symbolConfig._symbol 
-                      << "' configured for wave+burst mode. Ensure burst timing "
-                      << "harmonizes with wave cycles for optimal market realism."
-                      << std::endl;
+            // Check if burst frequency aligns reasonably with wave cycles
+            double burstsPerWave = waveDuration / burstFrequency;  // 300,000 / 45,000 = 6.67
+            
+            if (burstsPerWave < 2.0) {
+                std::cerr << "INFO: Very few bursts per wave cycle (" << burstsPerWave 
+                          << "). Pattern interaction may not be clearly visible."
+                          << std::endl;
+            }
+            
+            if (burstsPerWave > 20.0) {
+                std::cerr << "WARNING: Too many bursts per wave cycle (" << burstsPerWave 
+                          << "). Burst activity may overwhelm wave patterns."
+                          << std::endl;
+            }
+            
+            // Validate timing harmony for each symbol
+            for (const auto& symbolConfig : symbols) {
+                // Estimate burst impact duration (assume ~5% of burst frequency)
+                double estimatedBurstImpactMs = burstFrequency * 0.05;
+                
+                if (estimatedBurstImpactMs > (waveDuration * 0.1)) {
+                    std::cerr << "WARNING: Symbol '" << symbolConfig._symbol 
+                              << "' burst impact duration may exceed 10% of wave cycle, "
+                              << "potentially disrupting smooth wave patterns."
+                              << std::endl;
+                }
+                
+                // Validate intensity alignment for this symbol
+                double symbolEffectiveIntensity = symbolConfig._spreadPercentage * 
+                                                (waveConfig.WaveAmplitudePercent / 100.0) *
+                                                (burstConfig.BurstIntensityPercent / 100.0);
+                
+                if (symbolEffectiveIntensity > 15.0) {
+                    std::cerr << "INFO: Symbol '" << symbolConfig._symbol 
+                              << "' has high combined wave+burst intensity (" 
+                              << symbolEffectiveIntensity << "%). Verify this creates "
+                              << "realistic market behavior in your use case."
+                              << std::endl;
+                }
         }
         
         // Cross-symbol timing validation for combined mode

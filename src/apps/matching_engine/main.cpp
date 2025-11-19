@@ -34,6 +34,9 @@
 #include <unistd.h>
 #include <thread>
 #include <atomic>
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <configuration.h>
 #include "protocol_adapters.h"
 
 // Execution report to client (32 bytes)
@@ -65,10 +68,11 @@ public:
         setsockopt(_listenSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
         
         // Bind to port
+        // Setup server address (bind to loopback for local testing)
         sockaddr_in serverAddr;
         std::memset(&serverAddr, 0, sizeof(serverAddr));
         serverAddr.sin_family = AF_INET;
-        serverAddr.sin_addr.s_addr = INADDR_ANY;
+        serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  // Loopback only
         serverAddr.sin_port = htons(_port);
         
         if (bind(_listenSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr)) < 0) {
@@ -262,30 +266,78 @@ private:
 };
 
 int main(int argc, char* argv[]) {
-    uint16_t port = 54321;
-    std::string protocol = "auto";
+    std::string configFile = "src/apps/common/configuration/MatchingEngine.json";
     
-    if (argc > 1) {
-        port = std::atoi(argv[1]);
-    }
-    
-    if (argc > 2) {
-        protocol = argv[2];
-        // Validate protocol
-        if (protocol != "auto" && protocol != "ouch" && protocol != "pillar" && protocol != "cme") {
-            std::cerr << "ERROR: Invalid protocol '" << protocol << "'\n";
-            std::cerr << "Valid options: auto, ouch, pillar, cme\n\n";
-            std::cout << "Usage: " << argv[0] << " [port] [protocol]\n";
-            std::cout << "  port     - Port to listen on (default: 54321)\n";
-            std::cout << "  protocol - Protocol mode: auto|ouch|pillar|cme (default: auto)\n\n";
+    // Parse command line arguments
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "--config" && i + 1 < argc) {
+            configFile = argv[++i];
+        } else if (arg == "--help" || arg == "-h") {
+            std::cout << "Usage: " << argv[0] << " [--config <config_file>]\n\n";
+            std::cout << "Options:\n";
+            std::cout << "  --config   - Application configuration file (default: src/apps/common/configuration/MatchingEngine.json)\n\n";
+            std::cout << "Architecture:\n";
+            std::cout << "  playback (UDP) -> client_algorithm <--> (TCP) matching_engine\n\n";
             std::cout << "Examples:\n";
-            std::cout << "  " << argv[0] << " 54321 auto     # Auto-detect protocol\n";
-            std::cout << "  " << argv[0] << " 54321 ouch     # NASDAQ OUCH only\n";
-            std::cout << "  " << argv[0] << " 54321 pillar   # NYSE Pillar only\n";
-            std::cout << "  " << argv[0] << " 54321 cme      # CME only\n";
+            std::cout << "  " << argv[0] << "                              # Use default MatchingEngine.json\n";
+            std::cout << "  " << argv[0] << " --config CustomNetwork.json  # Use custom network config\n\n";
+            std::cout << "Centralized configuration uses ApplicationName.json naming convention.\n";
+            return 0;
+        } else {
+            std::cerr << "ERROR: Unknown argument '" << arg << "'\n";
             return 1;
         }
     }
+    
+    // Load configuration
+    std::ifstream configFileStream(configFile);
+    if (!configFileStream.is_open()) {
+        std::cerr << "ERROR: Cannot open config file: " << configFile << "\n";
+        std::cerr << "Using default settings: 127.0.0.1:54321, protocol=auto\n\n";
+    }
+    
+    uint16_t port = 54321;
+    std::string protocol = "auto";
+    std::string host = "127.0.0.1";
+    
+    if (configFileStream.is_open()) {
+        nlohmann::json config;
+        try {
+            configFileStream >> config;
+            
+            if (config.contains("matching_engine")) {
+                auto& meConfig = config["matching_engine"];
+                if (meConfig.contains("server")) {
+                    if (meConfig["server"].contains("port")) {
+                        port = meConfig["server"]["port"];
+                    }
+                    if (meConfig["server"].contains("host")) {
+                        host = meConfig["server"]["host"];
+                    }
+                }
+                
+                if (meConfig.contains("exchange") && meConfig["exchange"].contains("protocol_mode")) {
+                    protocol = meConfig["exchange"]["protocol_mode"];
+                }
+            }
+            
+            std::cout << "Loaded configuration from: " << configFile << "\n";
+        } catch (const std::exception& e) {
+            std::cerr << "ERROR: Invalid JSON in config file: " << e.what() << "\n";
+            std::cerr << "Using default settings\n\n";
+        }
+        configFileStream.close();
+    }
+    
+    std::cout << "=============================================================================\n";
+    std::cout << "                        BEACON MATCHING ENGINE                              \n";
+    std::cout << "=============================================================================\n";
+    std::cout << "Config File:  " << configFile << "\n";
+    std::cout << "Binding:      " << host << ":" << port << " (loopback only)\n";
+    std::cout << "Protocol:     " << protocol << "\n";
+    std::cout << "Architecture: playback (UDP) -> client_algorithm <--> (TCP) matching_engine\n";
+    std::cout << "=============================================================================\n\n";
     
     MatchingEngine engine(port, protocol);
     

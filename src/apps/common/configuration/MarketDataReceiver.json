@@ -1,0 +1,29 @@
+{
+  "application": {
+    "name": "Beacon Market Data Receiver",
+    "version": "1.0.0",
+    "description": "Super HFT market data receiver with ITCH protocol decoding",
+    "architecture": "playback (UDP) -> market_data_receiver -> client_algorithm"
+  },
+  "network": {
+    "input": {
+      "protocol": "udp",
+      "host": "127.0.0.1",
+      "port": 12345,
+      "multicast_address": "239.255.0.1",
+      "socket_buffer_size": 65536
+    }
+  },
+  "processing": {
+    "queue_size": 8192,
+    "batch_size": 100,
+    "decode_messages": true,
+    "print_decoded": true,
+    "high_water_mark_warning": 7000
+  },
+  "performance": {
+    "cpu_affinity": -1,
+    "thread_priority": "high",
+    "numa_node": -1
+  }
+}

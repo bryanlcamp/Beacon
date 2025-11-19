@@ -8,4 +8,4 @@
 
 #pragma once
 
-#include "cme/market_data/mdp_mbo/v4.0/market_data_message_types.h" ///< Current live version
+#include "../v4.0/market_data_message_types.h" ///< Current live version

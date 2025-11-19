@@ -44,6 +44,7 @@ add_executable(generator
 target_include_directories(generator PRIVATE
     ${BEACON_ROOT}/vendor
     ${BEACON_ROOT}/src/libs/exchange_protocols
+    ${BEACON_ROOT}/src/apps/common
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )

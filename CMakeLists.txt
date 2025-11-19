@@ -20,14 +20,17 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # Add shared include directory for all targets
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+# Add common configuration directory for all applications
+include_directories(${PROJECT_SOURCE_DIR}/src/apps/common)
+
 include_directories(
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_SOURCE_DIR}/config/playback
   ${CMAKE_SOURCE_DIR}/src/apps/playback
-  ${CMAKE_SOURCE_DIR}/src/apps/playback/message_senders
-  ${CMAKE_SOURCE_DIR}/src/apps/playback/playback_advisors
-  ${CMAKE_SOURCE_DIR}/src/apps/playback/playback_authorities,
-  ${CMAKE_SOURCE_DIR}/src/apps/playback/playback_types
+  ${CMAKE_SOURCE_DIR}/src/apps/playbook/message_senders
+  ${CMAKE_SOURCE_DIR}/src/apps/playbook/playbook_advisors
+  ${CMAKE_SOURCE_DIR}/src/apps/playbook/playbook_authorities,
+  ${CMAKE_SOURCE_DIR}/src/apps/playbook/playbook_types
 )
 
 # Create a static library for shared utilities

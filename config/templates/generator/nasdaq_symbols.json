@@ -1,0 +1,38 @@
+{
+  "_description": "NASDAQ Market Data Generator Configuration",
+  
+  "_comment_user_settings": "⭐ MAIN SETTINGS - Change these values ⭐",
+  "generation": {
+    "symbols": ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META"],
+    "message_count": 10000,
+    "price_range": {"min": 50.0, "max": 500.0},
+    "volume_range": {"min": 100, "max": 10000},
+    "market_hours_only": false,
+    "_comment_market_hours": "market_hours_only: if true, generates realistic trading session timing (9:30-4:00 ET)"
+  },
+  
+  "network": {
+    "multicast_address": "224.0.0.1",
+    "port": 8002,
+    "interface": "127.0.0.1"
+  },
+  
+  "output": {
+    "file": "generated_nasdaq_data.bin",
+    "format": "binary",
+    "protocol": "itch_50"
+  },
+  
+  "timing": {
+    "message_frequency_hz": 1000,
+    "burst_patterns": true,
+    "realistic_timing": true
+  },
+  
+  "message_types": {
+    "add_order": 0.4,
+    "execute_order": 0.3,
+    "cancel_order": 0.2,
+    "system_events": 0.1
+  }
+}

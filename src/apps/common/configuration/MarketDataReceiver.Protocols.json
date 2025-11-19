@@ -1,0 +1,27 @@
+{
+  "protocols": {
+    "itch": {
+      "version": "5.0",
+      "message_types": ["system", "stock_directory", "trading_action", "add_order", "execute_order", "cancel_order"],
+      "validation": "strict",
+      "byte_order": "big_endian"
+    },
+    "pillar": {
+      "version": "1.9", 
+      "gateway_version": "3.2",
+      "message_validation": true,
+      "sequence_number_gap_detection": true
+    },
+    "cme": {
+      "version": "4.0",
+      "template_validation": true,
+      "incremental_refresh_support": true
+    }
+  },
+  "decode_performance": {
+    "parallel_decoding": true,
+    "decoder_threads": 2,
+    "message_cache_size": 1000,
+    "symbol_table_preload": true
+  }
+}

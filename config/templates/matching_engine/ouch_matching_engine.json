@@ -1,0 +1,37 @@
+{
+  "_description": "NASDAQ OUCH v5.0 Matching Engine Configuration",
+  
+  "networking": {
+    "host": "127.0.0.1",
+    "port": 9002,
+    "protocol": "TCP",
+    "max_connections": 10
+  },
+  
+  "protocol": {
+    "order_entry": "ouch_50",
+    "auto_detect": false,
+    "strict_validation": true,
+    "message_size": 64
+  },
+  
+  "execution": {
+    "match_type": "fifo",
+    "mode": "immediate_fill",
+    "partial_fills": true,
+    "price_improvement": 0.001,
+    "fill_probability": 1.0
+  },
+  
+  "risk_controls": {
+    "max_order_size": 100000,
+    "max_price_deviation_bps": 500,
+    "position_limits_enabled": true
+  },
+  
+  "logging": {
+    "trade_log": "logs/ouch_trades.log",
+    "order_log": "logs/ouch_orders.log",
+    "level": "INFO"
+  }
+}

@@ -8,4 +8,4 @@
 
 #pragma once
 
-#include <nsdq/execution/ouch/v5/ouch_messages.h>  ///< Current live version
+#include "../v5.0/execution_message_types.h"  ///< Current live version

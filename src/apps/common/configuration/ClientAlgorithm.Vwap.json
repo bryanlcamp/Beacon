@@ -1,0 +1,29 @@
+{
+  "vwap_algorithm": {
+    "lookback_window_minutes": 20,
+    "participation_rate": 0.20,
+    "volume_curve": "historical_intraday",
+    "aggressive_threshold": 0.8,
+    "minimum_order_size": 100,
+    "price_improvement_bps": 1
+  },
+  "execution_strategy": {
+    "child_order_sizing": "volume_weighted",
+    "interval_seconds": 30,
+    "market_impact_model": "linear",
+    "dark_pool_preference": 0.3,
+    "urgency_adjustment": true
+  },
+  "volume_prediction": {
+    "use_historical_patterns": true,
+    "intraday_seasonality": true,
+    "volatility_adjustment": true,
+    "news_impact_detection": false
+  },
+  "risk_controls": {
+    "max_volume_participation": 0.25,
+    "price_deviation_bps": 30,
+    "volume_spike_threshold": 3.0,
+    "market_close_urgency": 0.9
+  }
+}
