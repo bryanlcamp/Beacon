@@ -232,6 +232,11 @@ int runUdpClient(const char* multicastAddr, int port) {
     std::cout << "Mode: UDP Multicast\n";
     std::cout << "Listening on: " << multicastAddr << ":" << port << "\n\n";
     
+    // Start message processing thread
+    g_processingActive.store(true, std::memory_order_relaxed);
+    std::thread processorThread(messageProcessingThread);
+    std::cout << "[INFO] Started message processing thread\n";
+    
     // Create UDP socket
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock < 0) {
@@ -301,8 +306,26 @@ int runUdpClient(const char* multicastAddr, int port) {
         messagesReceived++;
         totalBytes += bytesRead;
         
-        // TODO: Decode and put onto SPSC queue.
-        
+        // Decode message and put onto SPSC queue
+        DecodedMarketMessage decodedMsg;
+        if (decodeItchMessage(buffer, bytesRead, decodedMsg)) {
+            // Try to push to queue (non-blocking)
+            if (!g_messageQueue.tryPush(decodedMsg)) {
+                // Queue full - could log dropped messages in production
+                static uint64_t droppedCount = 0;
+                if (++droppedCount % 1000 == 0) {
+                    std::cout << "[WARNING] Dropped " << droppedCount 
+                              << " messages (queue full)\n";
+                }
+            }
+        } else {
+            // Could not decode message - might be different format or corrupted
+            static uint64_t decodeFailures = 0;
+            if (++decodeFailures % 1000 == 0) {
+                std::cout << "[WARNING] Failed to decode " << decodeFailures 
+                          << " messages (size: " << bytesRead << " bytes)\n";
+            }
+        }
 
         // Print progress every 1000 messages
         if (messagesReceived % 1000 == 0) {
