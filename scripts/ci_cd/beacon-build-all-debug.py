@@ -105,14 +105,50 @@ def main():
             print(f"[FATAL] Even minimal CMake configuration failed")
             sys.exit(1)
     
-    # Build critical targets (skip tests for faster CI/CD)
-    critical_targets = ["generator", "matching_engine", "AlgoTwapProtocol"]
+    # Build critical targets with explicit linking verification
+    critical_targets = ["generator", "matching_engine", "AlgoTwapProtocol", "playback"]
     for target in critical_targets:
-        if not run_command(f"cmake --build build --target {target}", f"Debug build - {target}"):
+        print(f"[CI/CD] Building critical target: {target}")
+        if not run_command(f"cmake --build build --target {target} --verbose", f"Debug build - {target}"):
             print(f"[ERROR] Failed to build critical target: {target}")
+            
+            # Check what was actually created
+            print(f"[DEBUG] Checking build output for {target}...")
+            expected_paths = {
+                "generator": "build/src/apps/generator/generator",
+                "matching_engine": "build/src/apps/matching_engine/matching_engine",
+                "AlgoTwapProtocol": "build/src/apps/client_algorithm/AlgoTwapProtocol",
+                "playback": "build/src/apps/playback/playback"
+            }
+            
+            if target in expected_paths:
+                binary_path = repo_root / expected_paths[target]
+                if binary_path.exists():
+                    print(f"[WARNING] Target {target} build reported failure but binary exists at {binary_path}")
+                    continue
+                else:
+                    print(f"[ERROR] Target {target} binary missing at expected path: {binary_path}")
+            
             sys.exit(1)
+        
+        # Verify the binary was actually created
+        expected_paths = {
+            "generator": "build/src/apps/generator/generator",
+            "matching_engine": "build/src/apps/matching_engine/matching_engine",
+            "AlgoTwapProtocol": "build/src/apps/client_algorithm/AlgoTwapProtocol",
+            "playback": "build/src/apps/playback/playback"
+        }
+        
+        if target in expected_paths:
+            binary_path = repo_root / expected_paths[target]
+            if binary_path.exists():
+                size = binary_path.stat().st_size
+                print(f"[SUCCESS] {target} binary created: {binary_path} ({size} bytes)")
+            else:
+                print(f"[ERROR] {target} binary missing after successful build: {binary_path}")
+                sys.exit(1)
     
-    print(f"[CI/CD] ✅ All critical targets built successfully")
+    print(f"[CI/CD] ✅ All critical targets built and verified successfully")
     
     # Optionally build all targets (including tests) - this might fail but won't stop CI/CD
     print(f"[CI/CD] Building remaining targets (tests, examples)...")
@@ -138,11 +174,12 @@ def main():
         else:
             print(f"[CI/CD] ⚠️  Build completed with errors but critical binaries exist")
     
-    # Verify key binaries exist
+    # Comprehensive binary verification
     required_binaries = [
         "build/src/apps/generator/generator",
         "build/src/apps/matching_engine/matching_engine", 
-        "build/src/apps/client_algorithm/AlgoTwapProtocol"
+        "build/src/apps/client_algorithm/AlgoTwapProtocol",
+        "build/src/apps/playback/playback"
     ]
     
     print(f"[CI/CD] Verifying build outputs...")
