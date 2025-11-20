@@ -81,15 +81,15 @@
         }
         
         .ray-content {
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            color: hsl(200.29deg 100% 27.25%);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .ray-1 { transform: translate(-50%, -50%) rotate(-90deg) translateX(150px) rotate(90deg); }
@@ -142,7 +142,7 @@
             display: inline-block;
             padding: 18px 45px;
             background: white;
-            color: #667eea;
+            color: hsl(200.29deg 100% 27.25%);
             text-decoration: none;
             border-radius: 50px;
             font-size: 1.3rem;
@@ -192,7 +192,7 @@
         
         .section h2 {
             font-size: 2.5rem;
-            color: #667eea;
+            color: hsl(200.29deg 100% 27.25%);
             margin-bottom: 30px;
             text-align: center;
         }
@@ -233,7 +233,7 @@
         
         .feature-card h3 {
             font-size: 1.5rem;
-            color: #667eea;
+            color: hsl(200.29deg 100% 27.25%);
             margin-bottom: 15px;
         }
         
@@ -245,7 +245,7 @@
         }
         
         .highlight-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, hsl(200.29deg 100% 27.25%) 0%, hsl(210deg 100% 35%) 100%);
             color: white;
             padding: 60px;
             border-radius: 15px;
@@ -324,7 +324,7 @@
             <!-- Hero Beacon with radiating features -->
             <div class="hero-beacon">
                 <!-- Center glowing beacon -->
-                <div class="beacon-center">💡</div>
+                <div class="beacon-center"></div>
                 
                 <!-- Feature rays radiating outward -->
                 <div class="beacon-ray ray-1">
@@ -382,8 +382,8 @@
                 </p>
                 
                 <div style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">
-                    <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">⚡ See Performance Benchmarks & Technical Architecture Below</div>
-                    <div style="opacity: 0.9;">Microsecond latency • Lock-free algorithms • Production metrics</div>
+                    <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; color: rgba(255,255,255,0.95);">⚡ See Performance Benchmarks & Technical Architecture Below</div>
+                    <div style="opacity: 0.9; color: rgba(255,255,255,0.85);">Microsecond latency • Lock-free algorithms • Production metrics</div>
                 </div>
             </div>
             
@@ -451,9 +451,9 @@ python3 scripts/<span class="command">beacon-run.py</span> 30
 
             <div class="section">
                 <h2 style="font-size: 3rem; margin-bottom: 40px; text-align: center;">🏆 Professional Metrics & Benchmarks</h2>
-                <div style="text-align: center; margin-bottom: 30px; font-size: 1.2rem; color: #667eea; font-weight: 600;">Performance that speaks for itself</div>
+                <div style="text-align: center; margin-bottom: 30px; font-size: 1.2rem; color: hsl(200.29deg 100% 27.25%); font-weight: 600;">Performance that speaks for itself</div>
                 <div class="features-grid">
-                    <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="feature-card" style="background: linear-gradient(135deg, hsl(200.29deg 100% 27.25%) 0%, hsl(210deg 100% 35%) 100%); color: white;">
                         <div class="icon" style="color: #FFD700;">⚡</div>
                         <h3 style="color: white;">~4μs Latency</h3>
                         <p style="color: rgba(255,255,255,0.95);">Consistent sub-5 microsecond tick-to-trade latency with p99.9 < 25μs. Production-grade performance.</p>
@@ -544,7 +544,7 @@ python3 scripts/<span class="command">beacon-run.py</span> 30
     </div>
     
     <!-- Back to top button -->
-    <div id="back-to-top" style="position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s; z-index: 1000;">
+    <div id="back-to-top" style="position: fixed; bottom: 20px; right: 20px; background: hsl(200.29deg 100% 27.25%); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s; z-index: 1000;">
         <span style="font-size: 1.5rem;">↑</span>
     </div>
     
