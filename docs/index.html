@@ -47,6 +47,18 @@
             text-align: right;
         }
         
+        .github-link-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .github-icon {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
         .nav-links a:hover {
             opacity: 0.7;
         }
@@ -113,8 +125,11 @@
     <!-- Navigation Links -->
     <nav class="nav-links">
         <a href="docs.html">Let's Get Started!</a>
-        <a href="https://github.com/bryanlcamp/Beacon">Beacon Project</a>
-        <a href="https://github.com/bryanlcamp">More Projects</a>
+        <div class="github-link-group">
+            <a href="https://github.com/bryanlcamp/Beacon">Beacon Project</a>
+            <a href="https://github.com/bryanlcamp/Beacon" class="github-icon">⚡</a>
+        </div>
+        <a href="https://github.com/bryanlcamp">Contact</a>
     </nav>
 
     <!-- Main Content -->
