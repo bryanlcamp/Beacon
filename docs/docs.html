@@ -53,31 +53,65 @@
         }
         
         .section {
+            margin-bottom: 30px;
+        }
+        
+        .intro {
             margin-bottom: 50px;
         }
         
-        .section h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-        
-        .section p {
+        .intro p {
             font-size: 1.1rem;
-            font-weight: 300;
-            opacity: 0.9;
-            margin-bottom: 20px;
+            text-align: center;
         }
         
-        .section-link {
+        .workflow-tree {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .step-number {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-link {
             color: #ffffff;
             text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
             transition: opacity 0.3s ease;
         }
         
-        .section-link:hover {
+        .step-link:hover {
             opacity: 0.7;
+        }
+        
+        .connector {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2rem;
+            margin: 5px 0;
         }
         
         @media (max-width: 768px) {
@@ -105,32 +139,45 @@
         <h1>Beacon.</h1>
         <p class="subtitle">Your Personal Guide. From Idea to Market.</p>
         
-        <div class="section">
-            <p>Beacon helps you build and test trading algorithms with realistic market conditions. It's designed to bridge the gap between having an idea and seeing it work in market-like scenarios.</p>
+        <div class="intro">
+            <p>Beacon helps you build and test trading algorithms with realistic market conditions.</p>
         </div>
         
-        <div class="section">
-            <h2><a href="market-data.html" class="section-link">Create Market Data. Tailored. Realistic.</a></h2>
-        </div>
-        
-        <div class="section">
-            <h2><a href="algorithm.html" class="section-link">Design your Algorithm. A Simple Framework.</a></h2>
-        </div>
-        
-        <div class="section">
-            <h2><a href="delivery.html" class="section-link">Define Data Delivery. Stress Test. Chaos. Be Prepared.</a></h2>
-        </div>
-        
-        <div class="section">
-            <h2><a href="execution.html" class="section-link">Execute Against Real Exchanges. Customize Risk Limits.</a></h2>
-        </div>
-        
-        <div class="section">
-            <h2><a href="tracking.html" class="section-link">Track your PnL, Positions, Prepare for the Unexpected.</a></h2>
-        </div>
-        
-        <div class="section">
-            <h2><a href="reports.html" class="section-link">Receive Detailed Simulation Reports.</a></h2>
+        <div class="workflow-tree">
+            <div class="step">
+                <div class="step-number">1</div>
+                <a href="market-data.html" class="step-link">Create Market Data. Tailored. Realistic.</a>
+            </div>
+            <div class="connector">↓</div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <a href="algorithm.html" class="step-link">Design your Algorithm. A Simple Framework.</a>
+            </div>
+            <div class="connector">↓</div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <a href="delivery.html" class="step-link">Define Data Delivery. Stress Test. Chaos. Be Prepared.</a>
+            </div>
+            <div class="connector">↓</div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <a href="execution.html" class="step-link">Execute Against Real Exchanges. Customize Risk Limits.</a>
+            </div>
+            <div class="connector">↓</div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <a href="tracking.html" class="step-link">Track your PnL, Positions, Prepare for the Unexpected.</a>
+            </div>
+            <div class="connector">↓</div>
+            
+            <div class="step">
+                <div class="step-number">6</div>
+                <a href="reports.html" class="step-link">Receive Detailed Simulation Reports.</a>
+            </div>
         </div>
     </div>
 </body>
