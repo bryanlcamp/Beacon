@@ -24,11 +24,40 @@ def run_command(cmd, description, timeout_seconds=300):
         print(f"STDERR: {e.stderr}")
         return False
 
+def emergency_fix_config_parser(repo_root):
+    """Emergency fix for ConfigFileParser.h naming conflicts"""
+    config_parser_path = repo_root / "src/apps/generator/include/ConfigFileParser.h"
+    
+    print("[🚑 EMERGENCY FIX] Checking ConfigFileParser.h...")
+    
+    if not config_parser_path.exists():
+        print("[❌] ConfigFileParser.h not found - skipping fix")
+        return
+        
+    # Read current content
+    content = config_parser_path.read_text()
+    
+    # Check for old syntax and fix if needed
+    if "PriceRange PriceRange;" in content:
+        print("[❌] DETECTED OLD VERSION! Applying emergency patch...")
+        content = content.replace("PriceRange PriceRange;", "PriceRange priceRange;")
+        content = content.replace("QuantityRange QuantityRange;", "QuantityRange quantityRange;") 
+        content = content.replace("PreviousDay PreviousDay;", "PreviousDay previousDay;")
+        
+        # Write fixed content
+        config_parser_path.write_text(content)
+        print("[✅] PATCHED! ConfigFileParser.h has been fixed.")
+    else:
+        print("[✅] ConfigFileParser.h already correct - no patching needed")
+
 def main():
     """Build all components in release mode"""
     repo_root = Path(__file__).resolve().parents[2]
     
-    print(f"[CI/CD] Building Beacon Trading System (Release) - Enhanced v2.0")
+    print(f"[CI/CD] Building Beacon Trading System (Release) - Enhanced v2.0 + EMERGENCY FIX")
+    
+    # Apply emergency fix first
+    emergency_fix_config_parser(repo_root)
     print(f"[CI/CD] Repository root: {repo_root}")
     print(f"[CI/CD] Using multi-strategy CMake configuration system")
     
