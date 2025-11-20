@@ -27,9 +27,25 @@
             padding: 0 40px;
         }
         
+        .github-icon {
+            position: fixed;
+            top: 25px;
+            right: 40px;
+            z-index: 101;
+            color: #ffffff;
+            font-size: 1.8rem;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .github-icon:hover {
+            opacity: 1;
+        }
+        
         .nav-links {
             position: fixed;
-            top: 40px;
+            top: 70px;
             right: 40px;
             z-index: 100;
             display: flex;
@@ -45,18 +61,6 @@
             letter-spacing: 0.5px;
             transition: opacity 0.3s ease;
             text-align: right;
-        }
-        
-        .github-link-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-        
-        .github-icon {
-            font-size: 1.1rem;
-            opacity: 0.8;
         }
         
         .nav-links a:hover {
@@ -97,8 +101,14 @@
                 padding: 0 20px;
             }
             
+            .github-icon {
+                top: 15px;
+                right: 20px;
+                font-size: 1.5rem;
+            }
+            
             .nav-links {
-                top: 20px;
+                top: 55px;
                 right: 20px;
                 gap: 15px;
             }
@@ -122,13 +132,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- GitHub Icon -->
+    <a href="https://github.com/bryanlcamp/Beacon" class="github-icon">🐈‍⬛</a>
+    
     <!-- Navigation Links -->
     <nav class="nav-links">
         <a href="docs.html">Let's Get Started!</a>
-        <div class="github-link-group">
-            <a href="https://github.com/bryanlcamp/Beacon">Beacon Project</a>
-            <a href="https://github.com/bryanlcamp/Beacon" class="github-icon">🐱</a>
-        </div>
         <a href="https://github.com/bryanlcamp">Contact</a>
     </nav>
 
