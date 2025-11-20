@@ -1,0 +1,21 @@
+title: Beacon Trading System
+description: Professional HFT Infrastructure Made Simple
+theme: minima
+baseurl: "/beacon"
+url: "https://bryanlcamp.github.io"
+
+# Navigation
+header_pages:
+  - docs/getting-started.md
+  - docs/architecture.md  
+  - docs/configuration.md
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+
+# GitHub Pages specific
+github_username: bryanlcamp
+repository: beacon
