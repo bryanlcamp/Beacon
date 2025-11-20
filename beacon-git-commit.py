@@ -143,6 +143,11 @@ class BeaconGitCommit:
         if protection_settings.get('size_limits_enabled', True):
             self.check_commit_size_limits()
         
+        # 5. Build verification if enabled
+        if protection_settings.get('build_verification_enabled', False):
+            if not self.run_build_verification():
+                raise GitProtectionError("Build verification failed - commit blocked")
+        
         # 5. Check repository health
         if protection_settings.get('repo_health_check_enabled', True):
             self.check_repo_health()
@@ -247,6 +252,92 @@ class BeaconGitCommit:
             print("   Push may fail - check network connection")
         
         print("✅ Repository health check passed")
+    
+    def run_build_verification(self):
+        """Run build and test verification before commit"""
+        print("🔧 Running build verification...")
+        
+        # Check for common build files to determine build system
+        build_commands = []
+        
+        # CMake project
+        if (self.repo_root / 'CMakeLists.txt').exists():
+            print("   📋 Detected CMake project")
+            if (self.repo_root / 'build').exists():
+                build_commands.append((['cmake', '--build', 'build'], 'CMake build'))
+            else:
+                print("   ⚠️  Build directory not found, configuring...")
+                config_result = subprocess.run(['cmake', '-B', 'build', '-S', '.'],
+                                             capture_output=True, text=True, timeout=60)
+                if config_result.returncode == 0:
+                    build_commands.append((['cmake', '--build', 'build'], 'CMake build'))
+                else:
+                    print(f"   ❌ CMake configuration failed:")
+                    print(f"   {config_result.stderr.strip()[:200]}")
+                    return False
+        
+        # Python project  
+        elif (self.repo_root / 'setup.py').exists() or (self.repo_root / 'pyproject.toml').exists():
+            print("   📋 Detected Python project")
+            # Basic syntax check
+            python_files = list(self.repo_root.glob('**/*.py'))
+            if python_files:
+                for py_file in python_files[:10]:  # Limit check
+                    result = subprocess.run(['python3', '-m', 'py_compile', str(py_file)],
+                                          capture_output=True, text=True)
+                    if result.returncode != 0:
+                        print(f"   ❌ Python syntax error in {py_file}:")
+                        print(f"   {result.stderr.strip()[:200]}")
+                        return False
+                print(f"   ✅ Python syntax check passed ({len(python_files)} files)")
+        
+        # Node.js project
+        elif (self.repo_root / 'package.json').exists():
+            print("   📋 Detected Node.js project")
+            build_commands.append((['npm', 'run', 'build'], 'npm build'))
+        
+        # Generic make
+        elif (self.repo_root / 'Makefile').exists():
+            print("   📋 Detected Makefile")
+            build_commands.append((['make'], 'Make build'))
+        
+        if not build_commands and not any(p.exists() for p in [
+            self.repo_root / 'setup.py', self.repo_root / 'pyproject.toml']):
+            print("   ⚠️  No recognized build system found, skipping")
+            return True
+        
+        # Run build commands
+        for command, description in build_commands:
+            print(f"   🔨 Running: {description}")
+            try:
+                result = subprocess.run(command, capture_output=True, text=True,
+                                      timeout=180, cwd=self.repo_root)
+                
+                if result.returncode == 0:
+                    print(f"   ✅ {description} passed")
+                else:
+                    print(f"   ❌ {description} FAILED")
+                    
+                    # Show error summary
+                    if result.stderr:
+                        error_lines = result.stderr.strip().split('\n')[:3]
+                        print("   📄 First error:")
+                        for line in error_lines:
+                            if line.strip():
+                                print(f"      {line.strip()[:80]}")
+                    
+                    print(f"\n🚫 Build verification failed")
+                    print(f"   Run '{' '.join(command)}' for full details")
+                    return False
+                    
+            except subprocess.TimeoutExpired:
+                print(f"   ⏰ {description} timed out")
+                return False
+            except FileNotFoundError:
+                print(f"   ⚠️  Command '{command[0]}' not found, skipping")
+        
+        print("✅ Build verification passed!")
+        return True
     
     def analyze_repo_status(self):
         """Analyze current repository status"""

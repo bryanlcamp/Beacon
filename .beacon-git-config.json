@@ -11,12 +11,13 @@
       "pom.xml"
     ],
     "max_file_size_mb": 10,
-    "max_commit_files": 50,
+    "max_commit_files": 20,
     "require_conventional_commits": false,
     "security_scan_enabled": true,
     "branch_protection_enabled": true,
     "size_limits_enabled": true,
-    "repo_health_check_enabled": true
+    "repo_health_check_enabled": true,
+    "build_verification_enabled": false
   },
   "security_patterns": [
     "password\\s*=",
