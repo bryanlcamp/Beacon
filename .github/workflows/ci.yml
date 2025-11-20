@@ -1,10 +1,8 @@
-name: Beacon CI - NUCLEAR CACHE BUSTER v5.0
+name: Beacon CI - NUCLEAR CACHE BUSTER v5.0 (DISABLED)
 
+# Temporarily disabled to test fresh workflow
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 env:
   CACHE_VERSION: v5.0

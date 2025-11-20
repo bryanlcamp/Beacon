@@ -1,0 +1,110 @@
+name: Beacon CI - FRESH START v6.0
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CACHE_VERSION: v6.0
+  BUILD_TIMESTAMP: ${{ github.run_number }}
+  ACTIONS_RUNNER_DEBUG: true
+
+jobs:
+  build-debug-fresh:
+    name: Fresh Debug Build (No Cache)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code (FRESH)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          clean: true
+
+      - name: 🔥 COMPLETE FRESH START v6.0 🔥
+        run: |
+          echo "🔥 COMPLETE FRESH START v6.0 - NO CACHE ALLOWED"
+          
+          # Nuclear cache clearing
+          rm -rf ~/.cache/cmake* ~/.cmake* || true
+          rm -rf ~/build* || true  
+          rm -rf build* || true
+          rm -rf .cache .cmake || true
+          find . -name "CMakeCache.txt" -delete || true
+          find . -name "CMakeFiles" -type d -exec rm -rf {} + || true
+          find . -name ".git" -prune -o -name "*cmake*" -type d -exec rm -rf {} + || true
+          
+          echo "🔍 DEBUGGING: Verify we have the CORRECT files:"
+          echo "--- ConfigFileParser.h lines 120-130 (should show lowercase members) ---"
+          sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
+          echo "--- Should see priceRange, quantityRange, previousDay (lowercase) ---"
+          
+          echo "--- CMakeLists.txt v4.0 check ---"
+          grep -i "v4.0\|MEGA-FIXED\|Cache Destroyer" src/apps/client_algorithm/CMakeLists.txt || echo "❌ v4.0 markers not found!"
+          
+          echo "--- Source files verification ---"
+          ls -la src/apps/client_algorithm/src/
+          
+          echo "📅 Fresh Version: ${{ env.CACHE_VERSION }}"
+          echo "🔢 Build: ${{ env.BUILD_TIMESTAMP }}"
+          echo "🕒 Time: $(date)"
+
+      - name: Install dependencies (FRESH)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential python3 python3-pip wget curl
+          
+          # Install newer CMake with verification
+          CMAKE_VERSION="3.28.0"
+          echo "🔽 Installing CMake ${CMAKE_VERSION}..."
+          if wget -O cmake.sh "https://cmake.org/files/v3.28/cmake-${CMAKE_VERSION}-linux-x86_64.sh" 2>/dev/null; then
+            sudo sh cmake.sh --skip-license --exclude-subdir --prefix=/usr/local
+            rm cmake.sh
+            echo "✅ CMake installation successful"
+          else
+            echo "⚠️ Fallback: using system CMake"
+            sudo apt-get install -y cmake
+          fi
+          
+          # Verify installation
+          cmake --version
+          gcc --version
+
+      - name: Clean all previous builds (FRESH)
+        run: |
+          echo "🧹 Final cleanup before build..."
+          rm -rf build* || true
+          python3 scripts/ci_cd/beacon-clean-all.py || echo "Clean script not critical"
+
+      - name: Configure CMake (FRESH)
+        run: |
+          echo "⚙️ Fresh CMake configuration..."
+          mkdir build-fresh
+          cd build-fresh
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DBUILD_TESTING=OFF
+          echo "✅ CMake configuration completed"
+
+      - name: Build Debug (FRESH)
+        run: |
+          echo "🔨 Fresh debug build..."
+          cd build-fresh
+          make -j$(nproc) generator matching_engine
+          echo "✅ Fresh build completed"
+
+      - name: Verify Build Results (FRESH)
+        run: |
+          echo "🔍 Verify fresh build results..."
+          ls -la build-fresh/src/apps/*/
+          test -f build-fresh/src/apps/generator/generator && echo "✅ Generator built successfully"
+          test -f build-fresh/src/apps/matching_engine/matching_engine && echo "✅ Matching engine built successfully"
+
+      - name: Archive Fresh Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: beacon-fresh-debug-binaries
+          path: |
+            build-fresh/src/apps/*/
+            !build-fresh/src/apps/*/*.o
+            !build-fresh/src/apps/*/CMakeFiles/
+          retention-days: 7
