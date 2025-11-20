@@ -6,10 +6,21 @@
 #include <cstring>
 
 #if defined(__x86_64__) || defined(_M_X64)
-#ifdef __MMX__
-#include <x86intrin.h>
+// Only include what we actually need for RDTSC
+#ifdef _MSC_VER
+#include <intrin.h>
 #else
-#include <immintrin.h>
+// For GCC/Clang, we only need the RDTSC intrinsic
+#ifdef __has_include
+  #if __has_include(<x86gprintrin.h>)
+    #include <x86gprintrin.h>  // Contains __rdtsc without MMX dependencies
+  #else
+    // Fallback: declare __rdtsc manually to avoid MMX includes
+    extern "C" uint64_t __rdtsc();
+  #endif
+#else
+  extern "C" uint64_t __rdtsc();
+#endif
 #endif
 #define HAS_RDTSC 1
 #elif defined(__aarch64__) || defined(_M_ARM64)
