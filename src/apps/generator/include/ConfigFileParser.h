@@ -110,18 +110,18 @@ namespace market_data_generator {
                 : SymbolName(symbolName),
                   PercentTotalMessages(percentTotalMessages),
                   SpreadPercentage(spreadPercentage),
-                  PriceRange(priceRange),
-                  QuantityRange(quantityRange),
-                  PreviousDay(previousDay) {
+                  priceRange(priceRange),
+                  quantityRange(quantityRange),
+                  previousDay(previousDay) {
                 validate();
             }
 
             std::string SymbolName;
             double PercentTotalMessages;
             double SpreadPercentage = 0.0;
-            PriceRange PriceRange;
-            QuantityRange QuantityRange;
-            PreviousDay PreviousDay;
+            PriceRange priceRange;
+            QuantityRange quantityRange;
+            PreviousDay previousDay;
             
             // Optional per-symbol wave/burst overrides
             bool HasSymbolWaveConfig = false;
@@ -133,9 +133,9 @@ namespace market_data_generator {
                 return !SymbolName.empty() &&
                        PercentTotalMessages >= 0.0 && PercentTotalMessages <= 100.0 &&
                        SpreadPercentage >= 0.0 &&
-                       PriceRange.validate() &&
-                       QuantityRange.validate() &&
-                       PreviousDay.validate();
+                       priceRange.validate() &&
+                       quantityRange.validate() &&
+                       previousDay.validate();
             }
         }; // End SymbolConfig
 

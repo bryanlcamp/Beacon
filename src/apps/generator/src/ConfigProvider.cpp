@@ -65,8 +65,8 @@ bool ConfigProvider::loadConfig(const std::string& configPath) {
             SymbolData symbolData;
             symbolData.symbolName = symbol.SymbolName;
             symbolData.weight = symbol.PercentTotalMessages; // PercentTotalMessages from JSON
-            symbolData.minPrice = symbol.PriceRange.MinPrice;
-            symbolData.maxPrice = symbol.PriceRange.MaxPrice;
+            symbolData.minPrice = symbol.priceRange.MinPrice;
+            symbolData.maxPrice = symbol.priceRange.MaxPrice;
             symbolData.spreadPercent = symbol.SpreadPercentage;
             
             _symbols.push_back(symbolData);
