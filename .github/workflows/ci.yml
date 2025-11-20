@@ -1,10 +1,8 @@
-name: Beacon CI - NUCLEAR CACHE BUSTER v5.1 (EMERGENCY FIXED) # Force fresh run
+name: Beacon CI - NUCLEAR CACHE BUSTER v5.1 (DISABLED - REPLACED BY ci-fresh.yml)
 
+# DISABLED - This workflow has been replaced by the professional ci-fresh.yml
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 env:
   CACHE_VERSION: v5.0
