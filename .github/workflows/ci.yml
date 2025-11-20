@@ -98,18 +98,63 @@ jobs:
       - name: Archive Debug Binaries
         run: |
           echo "📦 Preparing debug binaries for upload..."
+          echo "🔍 First, let's see what was actually built:"
+          find build/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "No binaries found in build/"
+          
+          echo "🔍 Build directory structure:"
+          ls -la build/src/apps/ 2>/dev/null || echo "No build/src/apps/ directory"
+          for app in generator matching_engine client_algorithm playback; do
+            if [ -d "build/src/apps/$app" ]; then
+              echo "Contents of build/src/apps/$app:"
+              ls -la "build/src/apps/$app/" || echo "Directory empty"
+            fi
+          done
+          
           mkdir -p debug-binaries/generator debug-binaries/matching_engine debug-binaries/client_algorithm debug-binaries/playback
           
-          # Copy binaries to simplified structure
-          cp build/src/apps/generator/generator debug-binaries/generator/ || echo "Generator not built"
-          cp build/src/apps/matching_engine/matching_engine debug-binaries/matching_engine/ || echo "Matching engine not built"
-          cp build/src/apps/client_algorithm/AlgoTwapProtocol debug-binaries/client_algorithm/ || echo "AlgoTwapProtocol not built"
-          cp build/src/apps/client_algorithm/MarketDataReceiver debug-binaries/client_algorithm/ 2>/dev/null || echo "MarketDataReceiver not built"
-          cp build/src/apps/client_algorithm/ClientAlgorithm debug-binaries/client_algorithm/ 2>/dev/null || echo "ClientAlgorithm not built"
-          cp build/src/apps/playback/playback debug-binaries/playback/ || echo "Playback not built"
+          # Copy binaries with flexible search and detailed logging
+          echo "🔎 Searching for generator binary..."
+          GENERATOR_FOUND=$(find build/ -name "generator" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$GENERATOR_FOUND" ]; then
+            cp "$GENERATOR_FOUND" debug-binaries/generator/
+            echo "✅ Generator copied from: $GENERATOR_FOUND"
+          else
+            echo "❌ Generator not found anywhere in build/"
+          fi
           
-          echo "📦 Debug binaries prepared:"
-          find debug-binaries/ -type f -name "*" | sort
+          echo "🔎 Searching for matching_engine binary..."
+          MATCHING_ENGINE_FOUND=$(find build/ -name "matching_engine" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$MATCHING_ENGINE_FOUND" ]; then
+            cp "$MATCHING_ENGINE_FOUND" debug-binaries/matching_engine/
+            echo "✅ Matching engine copied from: $MATCHING_ENGINE_FOUND"
+          else
+            echo "❌ Matching engine not found anywhere in build/"
+          fi
+          
+          echo "🔎 Searching for AlgoTwapProtocol binary..."
+          ALGO_FOUND=$(find build/ -name "AlgoTwapProtocol" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$ALGO_FOUND" ]; then
+            cp "$ALGO_FOUND" debug-binaries/client_algorithm/
+            echo "✅ AlgoTwapProtocol copied from: $ALGO_FOUND"
+          else
+            echo "❌ AlgoTwapProtocol not found anywhere in build/"
+          fi
+          
+          echo "🔎 Searching for playback binary..."
+          PLAYBACK_FOUND=$(find build/ -name "playback" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$PLAYBACK_FOUND" ]; then
+            cp "$PLAYBACK_FOUND" debug-binaries/playback/
+            echo "✅ Playback copied from: $PLAYBACK_FOUND"
+          else
+            echo "❌ Playback not found anywhere in build/"
+          fi
+          
+          # Optional binaries
+          cp build/src/apps/client_algorithm/MarketDataReceiver debug-binaries/client_algorithm/ 2>/dev/null && echo "✅ MarketDataReceiver copied" || echo "⚠️ MarketDataReceiver not built"
+          cp build/src/apps/client_algorithm/ClientAlgorithm debug-binaries/client_algorithm/ 2>/dev/null && echo "✅ ClientAlgorithm copied" || echo "⚠️ ClientAlgorithm not built"
+          
+          echo "📦 Final debug binaries prepared:"
+          find debug-binaries/ -type f -name "*" | sort || echo "No binaries copied!"
           
       - name: Upload Debug Binaries
         uses: actions/upload-artifact@v4
@@ -193,18 +238,63 @@ jobs:
       - name: Archive Release Binaries  
         run: |
           echo "📦 Preparing release binaries for upload..."
+          echo "🔍 First, let's see what was actually built:"
+          find build-release/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "No binaries found in build-release/"
+          
+          echo "🔍 Build-release directory structure:"
+          ls -la build-release/src/apps/ 2>/dev/null || echo "No build-release/src/apps/ directory"
+          for app in generator matching_engine client_algorithm playback; do
+            if [ -d "build-release/src/apps/$app" ]; then
+              echo "Contents of build-release/src/apps/$app:"
+              ls -la "build-release/src/apps/$app/" || echo "Directory empty"
+            fi
+          done
+          
           mkdir -p release-binaries/generator release-binaries/matching_engine release-binaries/client_algorithm release-binaries/playback
           
-          # Copy binaries to simplified structure
-          cp build-release/src/apps/generator/generator release-binaries/generator/ || echo "Generator not built"
-          cp build-release/src/apps/matching_engine/matching_engine release-binaries/matching_engine/ || echo "Matching engine not built"
-          cp build-release/src/apps/client_algorithm/AlgoTwapProtocol release-binaries/client_algorithm/ || echo "AlgoTwapProtocol not built"
-          cp build-release/src/apps/client_algorithm/MarketDataReceiver release-binaries/client_algorithm/ 2>/dev/null || echo "MarketDataReceiver not built"
-          cp build-release/src/apps/client_algorithm/ClientAlgorithm release-binaries/client_algorithm/ 2>/dev/null || echo "ClientAlgorithm not built"
-          cp build-release/src/apps/playback/playback release-binaries/playback/ || echo "Playback not built"
+          # Copy binaries with flexible search and detailed logging
+          echo "🔎 Searching for generator binary..."
+          GENERATOR_FOUND=$(find build-release/ -name "generator" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$GENERATOR_FOUND" ]; then
+            cp "$GENERATOR_FOUND" release-binaries/generator/
+            echo "✅ Generator copied from: $GENERATOR_FOUND"
+          else
+            echo "❌ Generator not found anywhere in build-release/"
+          fi
           
-          echo "📦 Release binaries prepared:"
-          find release-binaries/ -type f -name "*" | sort
+          echo "🔎 Searching for matching_engine binary..."
+          MATCHING_ENGINE_FOUND=$(find build-release/ -name "matching_engine" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$MATCHING_ENGINE_FOUND" ]; then
+            cp "$MATCHING_ENGINE_FOUND" release-binaries/matching_engine/
+            echo "✅ Matching engine copied from: $MATCHING_ENGINE_FOUND"
+          else
+            echo "❌ Matching engine not found anywhere in build-release/"
+          fi
+          
+          echo "🔎 Searching for AlgoTwapProtocol binary..."
+          ALGO_FOUND=$(find build-release/ -name "AlgoTwapProtocol" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$ALGO_FOUND" ]; then
+            cp "$ALGO_FOUND" release-binaries/client_algorithm/
+            echo "✅ AlgoTwapProtocol copied from: $ALGO_FOUND"
+          else
+            echo "❌ AlgoTwapProtocol not found anywhere in build-release/"
+          fi
+          
+          echo "🔎 Searching for playback binary..."
+          PLAYBACK_FOUND=$(find build-release/ -name "playback" -type f -executable 2>/dev/null | head -1)
+          if [ -n "$PLAYBACK_FOUND" ]; then
+            cp "$PLAYBACK_FOUND" release-binaries/playback/
+            echo "✅ Playback copied from: $PLAYBACK_FOUND"
+          else
+            echo "❌ Playback not found anywhere in build-release/"
+          fi
+          
+          # Optional binaries
+          cp build-release/src/apps/client_algorithm/MarketDataReceiver release-binaries/client_algorithm/ 2>/dev/null && echo "✅ MarketDataReceiver copied" || echo "⚠️ MarketDataReceiver not built"
+          cp build-release/src/apps/client_algorithm/ClientAlgorithm release-binaries/client_algorithm/ 2>/dev/null && echo "✅ ClientAlgorithm copied" || echo "⚠️ ClientAlgorithm not built"
+          
+          echo "📦 Final release binaries prepared:"
+          find release-binaries/ -type f -name "*" | sort || echo "No binaries copied!"
           
       - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
