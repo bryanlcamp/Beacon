@@ -1,9 +1,0 @@
-feat: Add safe commit helper to prevent shell quoting issues
-
-- Create commit-helper.py to handle multi-line commit messages safely
-- Uses temporary files to avoid shell escaping problems  
-- Prevents the recurring cmdand dquote> terminal prompt issues
-- Provides clean interface for professional commit messages
-
-This resolves the persistent shell quoting problems that have been
-occurring with multi-line git commit commands.
