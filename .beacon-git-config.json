@@ -1,7 +1,7 @@
 {
   "protection_settings": {
     "enabled": true,
-    "protected_branches": ["main", "master", "production", "release"],
+    "protected_branches": ["production", "release"],
     "protected_files": [
       "VERSION", 
       ".github/workflows/*",
