@@ -70,17 +70,14 @@
             margin-bottom: 20px;
         }
         
-        .highlight {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 8px;
-            border-left: 3px solid rgba(255, 255, 255, 0.3);
-            margin: 30px 0;
+        .section-link {
+            color: #ffffff;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
         }
         
-        .highlight p {
-            margin-bottom: 0;
-            font-style: italic;
+        .section-link:hover {
+            opacity: 0.7;
         }
         
         @media (max-width: 768px) {
@@ -114,19 +111,13 @@
         </div>
         
         <div class="section">
-            <h2>Create Realistic Market Data</h2>
+            <h2><a href="#market-data" class="section-link">Create Realistic Market Data</a></h2>
             <p>You create and tailor realistic market data. Don't worry. Beacon is here to help.</p>
-            <div class="highlight">
-                <p>Generate market data that behaves like real exchanges - with proper price movements, realistic volumes, and authentic timing patterns.</p>
-            </div>
         </div>
         
         <div class="section">
-            <h2>Deliver to Your Algorithm</h2>
+            <h2><a href="#delivery" class="section-link">Deliver to Your Algorithm</a></h2>
             <p>Deliver your market data to your algorithm. In a realistic way. Like it came from an exchange.</p>
-            <div class="highlight">
-                <p>Your algorithm receives data through the same protocols and patterns used by real trading systems. No simulation shortcuts.</p>
-            </div>
         </div>
         
         <div class="section">
