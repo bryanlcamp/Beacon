@@ -1,4 +1,4 @@
-name: Beacon CI - MEGA CACHE BUSTER v4.0
+name: Beacon CI - NUCLEAR CACHE BUSTER v5.0
 
 on:
   push:
@@ -7,8 +7,9 @@ on:
     branches: [ main ]
 
 env:
-  CACHE_VERSION: v4.0
+  CACHE_VERSION: v5.0
   BUILD_TIMESTAMP: ${{ github.run_number }}
+  ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build-debug:
@@ -18,17 +19,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🚀 MEGA CACHE BUSTER v4.0 - Clear ALL Caches 🚀
+      - name: 🚀 NUCLEAR CACHE BUSTER v5.0 - FORCE CORRECT FILES 🚀
         run: |
-          echo "🧹 AGGRESSIVE CACHE CLEARING v4.0"
+          echo "💥 NUCLEAR CACHE CLEARING v5.0 - DEBUG BUILD"
           rm -rf ~/.cache/cmake* || true
           rm -rf ~/build || true
           rm -rf build/ || true
           rm -rf .cache || true
           find . -name CMakeCache.txt -delete || true
           find . -name CMakeFiles -type d -exec rm -rf {} + || true
-          echo "📋 Verify CMakeLists.txt version:"
-          head -10 src/apps/client_algorithm/CMakeLists.txt | grep -i "v4.0" || echo "❌ WARNING: v4.0 not found!"
+          
+          echo "🔍 DEBUGGING: Current CMakeLists.txt content:"
+          echo "--- First 15 lines of CMakeLists.txt ---"
+          head -15 src/apps/client_algorithm/CMakeLists.txt || echo "❌ File not found!"
+          echo "--- Lines with 'add_executable' ---"
+          grep -n "add_executable" src/apps/client_algorithm/CMakeLists.txt || echo "❌ No add_executable found!"
+          echo "--- Check for v4.0 markers ---"
+          grep -i "v4.0\|MEGA-FIXED\|Cache Destroyer" src/apps/client_algorithm/CMakeLists.txt || echo "❌ v4.0 markers not found!"
+          
+          echo "🗂️ Source files in client_algorithm/src:"
+          ls -la src/apps/client_algorithm/src/ || echo "❌ src directory not found!"
+          
           echo "📅 Cache Version: ${{ env.CACHE_VERSION }}"
           echo "🔢 Build Number: ${{ env.BUILD_TIMESTAMP }}"
 
@@ -83,9 +94,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🚀 MEGA CACHE BUSTER v4.0 - Clear ALL Caches 🚀
+      - name: 🚀 NUCLEAR CACHE BUSTER v5.0 - FORCE CORRECT FILES 🚀
         run: |
-          echo "🧹 AGGRESSIVE CACHE CLEARING v4.0 (RELEASE BUILD)"
+          echo "💥 NUCLEAR CACHE CLEARING v5.0 - RELEASE BUILD"
           rm -rf ~/.cache/cmake* || true
           rm -rf ~/build || true
           rm -rf build/ || true
@@ -93,8 +104,18 @@ jobs:
           rm -rf .cache || true
           find . -name CMakeCache.txt -delete || true
           find . -name CMakeFiles -type d -exec rm -rf {} + || true
-          echo "📋 Verify CMakeLists.txt version:"
-          head -10 src/apps/client_algorithm/CMakeLists.txt | grep -i "v4.0" || echo "❌ WARNING: v4.0 not found!"
+          
+          echo "🔍 DEBUGGING: Current CMakeLists.txt content:"
+          echo "--- First 15 lines of CMakeLists.txt ---"
+          head -15 src/apps/client_algorithm/CMakeLists.txt || echo "❌ File not found!"
+          echo "--- Lines with 'add_executable' ---"
+          grep -n "add_executable" src/apps/client_algorithm/CMakeLists.txt || echo "❌ No add_executable found!"
+          echo "--- Check for v4.0 markers ---"
+          grep -i "v4.0\|MEGA-FIXED\|Cache Destroyer" src/apps/client_algorithm/CMakeLists.txt || echo "❌ v4.0 markers not found!"
+          
+          echo "🗂️ Source files in client_algorithm/src:"
+          ls -la src/apps/client_algorithm/src/ || echo "❌ src directory not found!"
+          
           echo "📅 Cache Version: ${{ env.CACHE_VERSION }}"
           echo "🔢 Build Number: ${{ env.BUILD_TIMESTAMP }}"
 
