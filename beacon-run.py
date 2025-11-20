@@ -472,6 +472,58 @@ class BeaconUnified:
             runtime = time.time() - self.start_time
             self._log("SUCCESS", "SHUTDOWN", f"Complete - Runtime: {runtime:.1f}s")
 
+    def validate_and_setup_only(self) -> bool:
+        """Validate configuration and ensure system is ready without running it"""
+        self._log("INFO", "🧪 DRY RUN: Validating system configuration and setup...")
+        
+        # Load and validate config
+        if not self.load_config():
+            self._log("ERROR", "❌ Configuration validation failed")
+            return False
+        self._log("SUCCESS", "✅ Configuration loaded and validated")
+        
+        # Check and build system if needed (but don't run)
+        if not self.ensure_system_built():
+            self._log("ERROR", "❌ Build system validation failed") 
+            return False
+        self._log("SUCCESS", "✅ Build system validated - all binaries ready")
+        
+        # Load component configs from individual files
+        if not self.load_component_configs():
+            self._log("ERROR", "❌ Component configuration validation failed")
+            return False
+        self._log("SUCCESS", "✅ Component configurations validated")
+        
+        # Validate that all required binaries exist
+        required_binaries = self.get_required_binaries()
+        for component, binary_path in required_binaries.items():
+            if not binary_path.exists():
+                self._log("ERROR", f"❌ Required binary missing: {component} at {binary_path}")
+                return False
+            self._log("SUCCESS", f"✅ Binary validated: {component}")
+        
+        self._log("SUCCESS", "🎉 DRY RUN COMPLETE: System is ready for deployment!")
+        return True
+    
+    def get_required_binaries(self) -> Dict[str, Path]:
+        """Get dictionary of required binaries for enabled components"""
+        binaries = {}
+        
+        # Check which components are enabled
+        for component in ['generator', 'matching_engine', 'client_algorithm', 'playback']:
+            component_config = self.config.get('component_configs', {}).get(component, {})
+            if component_config.get('enabled', False):
+                if component == 'generator':
+                    binaries['generator'] = self.build_dir / "src/apps/generator/generator"
+                elif component == 'matching_engine':
+                    binaries['matching_engine'] = self.build_dir / "src/apps/matching_engine/matching_engine" 
+                elif component == 'client_algorithm':
+                    binaries['client_algorithm'] = self.build_dir / "src/apps/client_algorithm/AlgoTwapProtocol"
+                elif component == 'playback':
+                    binaries['playback'] = self.build_dir / "src/apps/playback/playback"
+        
+        return binaries
+
     def run(self, duration: Optional[int] = None) -> bool:
         """Run the complete system"""
         self.start_time = time.time()
@@ -509,6 +561,7 @@ def main():
     parser = argparse.ArgumentParser(description='🚀 Beacon Unified Trading System')
     parser.add_argument('-i', '--input', required=True, help='Unified configuration JSON file')
     parser.add_argument('-d', '--duration', type=int, help='Runtime duration (seconds)')
+    parser.add_argument('--dry-run', action='store_true', help='Validate configuration and setup without running system')
     
     args = parser.parse_args()
     
@@ -517,6 +570,13 @@ def main():
         return 1
     
     beacon = BeaconUnified(args.input)
+    
+    if args.dry_run:
+        print(f"{Colors.CYAN}🧪 DRY RUN MODE - Validating configuration and setup{Colors.RESET}")
+        success = beacon.validate_and_setup_only()
+        print(f"{Colors.GREEN}✅ Dry run completed - System ready for deployment{Colors.RESET}" if success else f"{Colors.RED}❌ Dry run failed - Configuration issues detected{Colors.RESET}")
+        return 0 if success else 1
+    
     success = beacon.run(args.duration)
     
     return 0 if success else 1

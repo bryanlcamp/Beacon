@@ -1,4 +1,4 @@
-name: Beacon CI - EXTREME DEBUGGING v7.0
+name: Beacon Professional CI/CD
 
 on:
   push:
@@ -130,22 +130,23 @@ jobs:
           python3 beacon-run.py --help && echo "✅ Main interface working"
           python3 beacon-build.py --help && echo "✅ Build system working"
 
-      - name: Quick System Integration Test
+      - name: Professional System Integration Test
         run: |
           echo "🧪 Testing professional system integration..."
           
+          # Test main system with dry-run mode
+          python3 beacon-run.py -i config/system/startBeacon.json --dry-run && echo "✅ Main system validation passed"
+          
           # Test config management
-          python3 beacon-config.py --version || echo "Config tool available"
+          python3 beacon-config.py --help > /dev/null && echo "✅ Config management working"
           
-          # Verify key binaries are executable
-          ./build/src/apps/generator/generator --help || echo "Generator responds"
-          ./build/src/apps/matching_engine/matching_engine --help || echo "Matching engine responds"
+          # Test build system
+          python3 beacon-build.py --help > /dev/null && echo "✅ Build system working"
           
-          # Test scripts directory
-          ls -la scripts/
+          # Test demo system
           python3 scripts/beacon-demo-system.py > /dev/null && echo "✅ Demo system working"
           
-          echo "🎉 Professional Beacon system verified!"
+          echo "🎉 Professional Beacon system fully validated!"
 
       - name: Archive Fresh Binaries
         uses: actions/upload-artifact@v4
