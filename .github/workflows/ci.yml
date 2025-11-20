@@ -521,8 +521,12 @@ jobs:
         run: |
           echo "🔍 Checking Release build outputs:"
           echo "=== Downloaded release artifact structure ==="
+          echo "Checking release-binaries/ directory:"
           find release-binaries/ -type f 2>/dev/null | sort || echo "No files in release-binaries/"
           ls -la release-binaries/ 2>/dev/null || echo "Release binaries directory not found"
+          echo "Checking build-release/ directory (alternate location):"
+          find build-release/ -type f 2>/dev/null | sort || echo "No files in build-release/"
+          ls -la build-release/ 2>/dev/null || echo "Build-release directory not found"
           
           # Check for binaries in actual downloaded structure (with build-release/ subdirectory)
           if test -f release-binaries/build-release/generator/generator; then
