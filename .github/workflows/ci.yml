@@ -1,8 +1,10 @@
-name: Beacon CI - NUCLEAR CACHE BUSTER v5.0 (DISABLED)
+name: Beacon CI - NUCLEAR CACHE BUSTER v5.1 (EMERGENCY FIXED)
 
-# Temporarily disabled to test fresh workflow
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
   CACHE_VERSION: v5.0
@@ -61,6 +63,24 @@ jobs:
 
       - name: Clean previous builds
         run: python3 scripts/ci_cd/beacon-clean-all.py
+
+      - name: 🚑 EMERGENCY FIX - ConfigFileParser.h 🚑
+        run: |
+          echo "🚑 EMERGENCY: Checking and fixing ConfigFileParser.h"
+          echo "--- Current content lines 120-130 ---"
+          sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
+          
+          # Check if we have the bad version
+          if grep -q "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h; then
+            echo "❌ DETECTED OLD VERSION! Force-patching..."
+            sed -i 's/PriceRange PriceRange;/PriceRange priceRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/QuantityRange QuantityRange;/QuantityRange quantityRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/PreviousDay PreviousDay;/PreviousDay previousDay;/g' src/apps/generator/include/ConfigFileParser.h
+            echo "✅ PATCHED! New content:"
+            sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
+          else
+            echo "✅ ConfigFileParser.h already correct - no patching needed"
+          fi
 
       - name: Verify source files exist
         run: |
@@ -134,6 +154,22 @@ jobs:
           
           # Verify CMake version
           cmake --version
+
+      - name: 🚑 EMERGENCY FIX - ConfigFileParser.h (Release) 🚑
+        run: |
+          echo "🚑 EMERGENCY: Checking and fixing ConfigFileParser.h (Release Build)"
+          
+          # Check if we have the bad version
+          if grep -q "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h; then
+            echo "❌ DETECTED OLD VERSION! Force-patching..."
+            sed -i 's/PriceRange PriceRange;/PriceRange priceRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/QuantityRange QuantityRange;/QuantityRange quantityRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/PreviousDay PreviousDay;/PreviousDay previousDay;/g' src/apps/generator/include/ConfigFileParser.h
+            echo "✅ PATCHED! New content:"
+            sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
+          else
+            echo "✅ ConfigFileParser.h already correct - no patching needed"
+          fi
 
       - name: Clean previous builds
         run: python3 scripts/ci_cd/beacon-clean-all.py
