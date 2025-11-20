@@ -242,10 +242,22 @@ class BeaconUnified:
             self._log("SUCCESS", "BUILD", "✅ All required binaries exist - ready to start!")
             return True
 
+    def clean_build_directories(self):
+        """Clean build directories for fresh builds"""
+        import shutil
+        
+        for build_path in [self.build_dir, self.beacon_root / "build-test"]:
+            if build_path.exists():
+                self._log("INFO", "CLEANUP", f"🧹 Removing {build_path.name}/")
+                shutil.rmtree(build_path, ignore_errors=True)
+    
     def build_system(self) -> bool:
-        """Build the Beacon trading system"""
+        """Build the Beacon trading system with clean build"""
         try:
-            self._log("INFO", "BUILD", "🔨 Starting automatic build process...")
+            # Always clean for fresh builds
+            self.clean_build_directories()
+            
+            self._log("INFO", "BUILD", "🔨 Starting clean build process...")
             
             # Step 1: Configure CMake
             self._log("INFO", "BUILD", "⚙️  Configuring CMake...")

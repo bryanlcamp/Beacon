@@ -1,3 +1,18 @@
+/*
+ * TCP Message Sender Example
+ * 
+ * This file provides an example implementation of a TCP-based message sender
+ * for market data playback. It demonstrates how to create a TCP server that
+ * accepts client connections and sends market data messages over TCP.
+ * 
+ * This is an alternative to the UDP multicast approach used in the main
+ * playback system. It's useful for scenarios where you need reliable,
+ * connection-oriented delivery of market data.
+ * 
+ * Note: This is example code. The production implementation is in:
+ * src/apps/playback/src/replayers/types/TcpReplayer.h
+ */
+
 #pragma once
 #include <iostream>
 #include <cstring>

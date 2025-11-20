@@ -108,11 +108,11 @@ def main():
     print(f"\n[TEST 3] Interface Validation")
     interface_test_passed = True
     
-    # Test beacon-simple.py help
-    if not run_command("timeout 10 python3 beacon-simple.py --help 2>&1 | head -5", 
-                      "Test beacon-simple.py help", 15):
+    # Test beacon.py help
+    if not run_command("timeout 10 python3 beacon.py --help 2>&1 | head -5", 
+                      "Test beacon.py help", 15):
         # This might fail but shouldn't be fatal since the script might start the system
-        print(f"[INFO] beacon-simple.py help test completed (expected behavior)")
+        print(f"[INFO] beacon.py help test completed (expected behavior)")
     
     # Test 4: CTest unit tests if available
     print(f"\n[TEST 4] Unit Tests")

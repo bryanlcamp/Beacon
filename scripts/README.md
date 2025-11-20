@@ -105,6 +105,20 @@ python3 beacon-playback-test.py
 
 ## 🔧 Utility Scripts
 
+### `beacon-demo-system.py` - **System Demo and Documentation**
+Professional demonstration of the Beacon unified system interface.
+
+```bash
+python3 beacon-demo-system.py
+```
+
+**Features:**
+- Shows the ONE command, ONE config file approach
+- Displays configuration structure and examples
+- Lists demo commands for different exchanges (NASDAQ, CME, NYSE)
+- Checks system readiness (files, binaries)
+- Provides architecture overview and workflow explanation
+
 ### `beacon-build.py` - Build Everything
 Build all components from scratch.
 

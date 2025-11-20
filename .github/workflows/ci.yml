@@ -574,8 +574,8 @@ jobs:
 
       - name: Test Simple Interface
         run: |
-          # Test that beacon-simple.py doesn't crash on --help
-          timeout 10 python3 beacon-simple.py --help 2>&1 | head -5 || echo "✅ Simple interface validation complete"
+          # Test that beacon.py doesn't crash on --help
+          timeout 10 python3 beacon.py --help 2>&1 | head -5 || echo "✅ Simple interface validation complete"
 
       - name: Binary Performance Comparison
         run: |

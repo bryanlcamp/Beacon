@@ -50,11 +50,24 @@ def emergency_fix_config_parser(repo_root):
     else:
         print("[✅] ConfigFileParser.h already correct - no patching needed")
 
+def clean_build_directories():
+    """Clean build directories for fresh CI builds"""
+    import shutil
+    
+    build_dirs = ["build", "build-test", "build-fresh"]
+    for build_dir in build_dirs:
+        if Path(build_dir).exists():
+            print(f"[🧹 CLEANUP] Removing {build_dir}/")
+            shutil.rmtree(build_dir, ignore_errors=True)
+
 def main():
-    """Build all components in release mode"""
+    """Build all components in release mode with clean build"""
     repo_root = Path(__file__).resolve().parents[2]
     
     print(f"[CI/CD] Building Beacon Trading System (Release) - Enhanced v2.0 + EMERGENCY FIX")
+    
+    # Always clean for fresh CI builds
+    clean_build_directories()
     
     # Apply emergency fix first
     emergency_fix_config_parser(repo_root)

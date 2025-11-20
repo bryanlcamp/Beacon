@@ -3,19 +3,22 @@
 Welcome to the complete Beacon Trading System documentation. Choose your path:
 
 ## 🚀 **Getting Started**
-- **[Quick Start](../README.md#quick-start)** - The dream interface: `python3 beacon-simple.py`
+- **[Quick Start](../README.md#quick-start)** - The dream interface: `python3 beacon.py`
 - **[Configuration Guide](configuration.md)** - Customize your trading parameters
 - **[First Trade Walkthrough](getting-started.md)** - Step-by-step tutorial
 
 ## ⚙️ **Advanced Usage**
-- **[Advanced Configuration](advanced-usage.md)** - Power user features with `beacon-unified.py`  
+- **[Advanced Configuration](advanced-usage.md)** - Power user features with `beacon-run.py`  
 - **[Component Architecture](architecture.md)** - How the system works internally
 - **[Protocol Details](protocols.md)** - NASDAQ OUCH, NYSE Pillar, CME iLink 3
 
 ## 🛠️ **Development**
+- **[CI/CD Pipeline](ci-cd.md)** - Automated build, test, and deployment system
 - **[Building from Source](building.md)** - Compilation and dependencies
 - **[Extending Beacon](extending.md)** - Add your own algorithms and protocols
 - **[API Reference](api-reference.md)** - Component interfaces and configuration schema
+- **[Playback Modernization](PLAYBACK_MODERNIZATION.md)** - Design document for playback system improvements
+- **[TODO & Roadmap](TODO.md)** - Project planning and future enhancements
 
 ## 📊 **Trading**
 - **[TWAP Algorithm](twap-algorithm.md)** - Time-weighted average price execution
@@ -45,16 +48,15 @@ Welcome to the complete Beacon Trading System documentation. Choose your path:
 
 ```
 beacon/
-├── README.md                    # Main entry - beacon-simple.py interface
+├── README.md                    # Main entry - beacon.py interface
 ├── docs/
 │   ├── index.md                 # This file - documentation hub
 │   ├── getting-started.md       # Detailed tutorial
 │   ├── configuration.md         # Complete config reference
-│   ├── advanced-usage.md        # beacon-unified.py interface
+│   ├── advanced-usage.md        # beacon-run.py interface
 │   ├── architecture.md          # Technical deep dive
 │   ├── protocols.md            # Exchange protocol details
 │   ├── troubleshooting.md      # Common problems & solutions
 │   └── ...
-├── examples/                    # Sample configurations
-└── wiki/                       # Legacy wiki content
+└── examples/                    # Sample configurations
 ```

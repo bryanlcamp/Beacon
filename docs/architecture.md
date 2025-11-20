@@ -9,7 +9,7 @@ Beacon is a **modular high-frequency trading system** designed for **protocol-aw
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    🎮 User Interface Layer                      │
-│  python3 beacon-simple.py  +  beacon-config.json              │
+│  python3 beacon.py  +  beacon-config.json              │
 └─────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -42,7 +42,7 @@ Beacon is a **modular high-frequency trading system** designed for **protocol-aw
 ### **Phase 1: System Preparation**
 ```mermaid
 graph TD
-    A[User runs beacon-simple.py] --> B{Build check}
+    A[User runs beacon.py] --> B{Build check}
     B -->|Missing| C[Auto-build components]
     B -->|Ready| D[Load configuration]
     C --> D
@@ -75,7 +75,7 @@ graph TD
 
 ## 🧩 Component Architecture
 
-### **🎛️ Orchestration Engine (beacon-simple.py)**
+### **🎛️ Orchestration Engine (beacon.py)**
 
 **Purpose**: Master coordinator ensuring smooth system operation
 

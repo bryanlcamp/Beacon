@@ -30,8 +30,8 @@ sudo kill <PID>
 cmake -B build -S .
 cmake --build build
 
-# Or let beacon-simple.py auto-build
-python3 beacon-simple.py  # It will build automatically
+# Or let beacon.py auto-build
+python3 beacon.py  # It will build automatically
 ```
 
 ### ❌ **"Config file not found" or corrupted**
@@ -41,11 +41,11 @@ python3 beacon-simple.py  # It will build automatically
 **Solutions**:
 ```bash
 # Restore default config
-python3 beacon-reset-config.py
+python3 beacon-config.py
 
 # Or delete and run again
 rm beacon-config.json
-python3 beacon-simple.py  # Creates new config
+python3 beacon.py  # Creates new config
 ```
 
 ## 🔧 Common Issues
@@ -250,7 +250,7 @@ python3 --version
 cmake --version
 
 # Beacon status
-ls -la beacon-simple.py beacon-config.json
+ls -la beacon.py beacon-config.json
 ls -la build/src/apps/*/
 
 # Process info

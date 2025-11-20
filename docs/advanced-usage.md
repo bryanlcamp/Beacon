@@ -4,7 +4,7 @@ Power user features and advanced configurations for Beacon Trading System.
 
 ## 🎯 Overview
 
-While `beacon-simple.py` provides the perfect getting-started experience, power users need advanced features like:
+While `beacon.py` provides the perfect getting-started experience, power users need advanced features like:
 
 - **Multiple algorithm execution**
 - **Custom protocol implementations** 
@@ -13,23 +13,23 @@ While `beacon-simple.py` provides the perfect getting-started experience, power 
 - **Advanced risk management**
 - **Real-time monitoring and control**
 
-This guide covers these advanced scenarios using the full `beacon-unified.py` interface.
+This guide covers these advanced scenarios using the full `beacon-run.py` interface.
 
 ## 🚀 Advanced Interface
 
-### **beacon-unified.py**
+### **beacon-run.py**
 
 The advanced interface provides **modular configuration** and **fine-grained control**:
 
 ```bash
 # Advanced interface with modular configs
-python3 beacon-unified.py
+python3 beacon-run.py
 
 # Custom config locations
-python3 beacon-unified.py --config configs/startBeaconNYSE.json
+python3 beacon-run.py --config configs/startBeaconNYSE.json
 
 # Debug mode with verbose output
-python3 beacon-unified.py --debug --verbose
+python3 beacon-run.py --debug --verbose
 ```
 
 **Key Differences from Simple Interface**:

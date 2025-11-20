@@ -5,7 +5,7 @@ Common questions and answers about Beacon Trading System.
 ## 🚀 Getting Started
 
 ### **Q: What's the fastest way to get Beacon running?**
-**A**: Just run `python3 beacon-simple.py` - it handles everything automatically:
+**A**: Just run `python3 beacon.py` - it handles everything automatically:
 - Builds the system on first run
 - Creates default configuration  
 - Generates sample market data
@@ -153,7 +153,7 @@ clang++ --version # Or Clang 5+
 ### **Q: Components start but algorithm fails to connect**
 **A**: Usually a timing issue. The algorithm tries to connect before the matching engine is ready. Solutions:
 - **Automatic retry**: The system retries connections automatically
-- **Manual restart**: Run `python3 beacon-simple.py` again
+- **Manual restart**: Run `python3 beacon.py` again
 - **Increase delays**: Edit timing in the configuration
 
 ### **Q: System builds but no output appears**

@@ -30,7 +30,7 @@ def create_fresh_config():
     fresh_config = {
         "_comment": "🚀 BEACON TRADING SYSTEM - USER CONFIG 🚀",
         "_description": "This file contains ONLY the settings you'll actually change. Edit values marked #change_me",
-        "_instructions": "1. Change symbol, shares, price below  2. Run: python3 beacon-simple.py  3. That's it!",
+        "_instructions": "1. Change symbol, shares, price below  2. Run: python3 beacon.py  3. That's it!",
         
         "_trading_comment": "📈 MAIN TRADING SETTINGS #change_me",
         "symbol": "AAPL",
@@ -90,7 +90,7 @@ def create_fresh_config():
     
     print(f"✅ Created fresh beacon-config.json")
     print(f"📝 Edit the values marked #change_me")  
-    print(f"🚀 Then run: python3 beacon-simple.py")
+    print(f"🚀 Then run: python3 beacon.py")
     
     return True
 

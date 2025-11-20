@@ -4,50 +4,60 @@
 
 Beacon is a professional-grade trading system that implements TWAP (Time-Weighted Average Price) algorithms with protocol-aware execution for NASDAQ OUCH v5.0, NYSE Pillar v3.2, and CME iLink 3 protocols.
 
-## ✨ The Dream Interface
+## ✨ The Professional Interface
 
 **One Command. One Config File. That's it.**
 
 ```bash
-python3 beacon-simple.py
+python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
 ## 🚀 Quick Start
 
 ### 1. **Run the System** (First Time)
 ```bash
-python3 beacon-simple.py
+python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
 The system will:
 - ✅ Automatically detect if you need to build (first run)
-- ✅ Compile all required components 
-- ✅ Create a default `beacon-config.json` for you
+- ✅ Compile all required components using professional build system
+- ✅ Use professional system configuration
 - ✅ Run your first TWAP trade simulation
 
 ### 2. **Customize Your Trading** 
-Edit `beacon-config.json` - it contains **only** the settings you'll actually change:
+Edit the system config files in `config/system/` or use the configuration management tool:
+
+```bash
+python3 beacon-config.py  # Interactive configuration editor
+```
+
+**Quick config editing** - Main settings in `config/system/startBeacon.json`:
 
 ```json
 {
-  "_comment": "🚀 BEACON TRADING SYSTEM - USER CONFIG 🚀",
-  "_description": "Edit the values marked #change_me",
-
-  "symbol": "AAPL",           "#change_me - Stock to trade"
-  "side": "B",               "B=Buy, S=Sell"  
-  "shares": 1000,            "#change_me - Total shares"
-  "price": 150.0,            "#change_me - Limit price"
-  "time_window_minutes": 2,   "#change_me - How long to spread order"
-  "slice_count": 6,          "Break into 6 smaller orders"
-  
-  "protocol": "cme",         "#change_me - nasdaq, cme, nyse"
-  "duration_seconds": 30
+  "system": {
+    "name": "Beacon Professional Trading System",
+    "protocol": "nasdaq_ouch",
+    "duration_seconds": 60
+  },
+  "execution_parameters": {
+    "symbol": "AAPL",
+    "side": "B",
+    "shares": 1000,
+    "price": 150.25
+  },
+  "component_configs": {
+    "matching_engine": {"enabled": true, "config_file": "config/matching_engine/ouch_matching_engine.json"},
+    "client_algorithm": {"enabled": true, "config_file": "config/client_algorithm/twap_aapl_buy.json"},
+    "playback": {"enabled": true, "config_file": "config/playback/nasdaq_itch_playback.json"}
+  }
 }
 ```
 
 ### 3. **Run Again**
 ```bash
-python3 beacon-simple.py
+python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
 That's it! 🎉
@@ -84,11 +94,26 @@ COMPONENTS: DATA-GEN + MATCH-ENG + ALGO
 
 ## 📖 Documentation
 
-- 🚀 **[Full Documentation Hub](docs/)** - Complete guides and references
-- ⚙️ **[Advanced Usage](docs/advanced-usage.md)** - Power user features (`beacon-unified.py`)
-- 🔧 **[Configuration Reference](docs/configuration.md)** - All settings explained
-- 🏗️ **[Architecture Guide](docs/architecture.md)** - How Beacon works internally
+### 🚀 **Getting Started**
+- 📖 **[Documentation Hub](docs/index.md)** - Complete navigation and overview
+- 🏁 **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial
+- 🔧 **[Configuration Guide](docs/configuration.md)** - All settings explained
 - 🚨 **[Troubleshooting](docs/troubleshooting.md)** - Common issues & solutions
+
+### ⚙️ **Advanced Usage**  
+- 💪 **[Advanced Features](docs/advanced-usage.md)** - Power user features (`beacon-run.py`)
+- 🏗️ **[Architecture Guide](docs/architecture.md)** - How Beacon works internally
+- 🔨 **[Build System](docs/building.md)** - Professional Python build system
+- 🚀 **[CI/CD Pipeline](docs/ci-cd.md)** - Automated deployment system
+
+### 📊 **Trading & Protocols**
+- 🔌 **[Exchange Protocols](docs/exchange_protocols/)** - NASDAQ, CME, NYSE protocol documentation
+- 📡 **[UDP/TCP Guide](docs/UDP_TCP_LOOPBACK_GUIDE.md)** - Network configuration and testing
+- ❓ **[FAQ](docs/faq.md)** - Frequently asked questions
+
+### 📋 **Planning & Development**
+- 📝 **[TODO & Roadmap](docs/TODO.md)** - Project planning and future enhancements  
+- 📊 **[Documentation Summary](docs/DOCUMENTATION_SUMMARY.md)** - Complete docs overview (~53,000 words)
 
 ## ⚙️ Advanced Configuration
 
@@ -96,11 +121,11 @@ Want more control? Beacon also supports advanced system configurations:
 
 ```bash
 # Use main system config
-python3 beacon-unified.py -i config/system/startBeacon.json
+python3 beacon-run.py -i config/system/startBeacon.json
 
 # Or use exchange-specific configs
-python3 beacon-unified.py -i config/system/startBeaconCME.json
-python3 beacon-unified.py -i config/system/startBeaconNYSE.json
+python3 beacon-run.py -i config/system/startBeaconCME.json
+python3 beacon-run.py -i config/system/startBeaconNYSE.json
 ```
 
 This uses comprehensive system configurations for power users who need fine-grained control over multiple components. **[Learn more →](docs/advanced-usage.md)**
@@ -167,13 +192,13 @@ sudo lsof -i :9002  # Check what's using the port
 **Build issues?**
 The system auto-detects and builds on first run. For manual build:
 ```bash
-cmake -B build -S .
-cmake --build build
+python3 beacon-build.py         # Clean build (recommended)
+python3 beacon-build.py --debug # Debug build with symbols
 ```
 
 **Config file corrupted?**
 ```bash
-python3 beacon-reset-config.py  # Restores default config
+python3 beacon-config.py  # Restores default config
 ```
 
 ## 📝 Trade Reports

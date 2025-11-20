@@ -27,7 +27,7 @@ config/
 You don't need this directory! Use `beacon-config.json` in the root:
 
 ```bash
-python3 beacon-simple.py  # Uses beacon-config.json automatically
+python3 beacon.py  # Uses beacon-config.json automatically
 ```
 
 ### **For Advanced Users**
@@ -35,12 +35,12 @@ Use the system configurations for full control:
 
 ```bash
 # Use main system config
-python3 beacon-unified.py -i config/system/startBeacon.json
+python3 beacon-run.py -i config/system/startBeacon.json
 
 # Use exchange-specific configs
-python3 beacon-unified.py -i config/system/startBeaconCME.json
-python3 beacon-unified.py -i config/system/startBeaconNYSE.json
-python3 beacon-unified.py -i config/system/startBeaconNasdaq.json
+python3 beacon-run.py -i config/system/startBeaconCME.json
+python3 beacon-run.py -i config/system/startBeaconNYSE.json
+python3 beacon-run.py -i config/system/startBeaconNasdaq.json
 ```
 
 ## 🔧 Configuration Types
@@ -79,7 +79,7 @@ ls config/templates/generator/     # See data generation options
 ## 🎯 Best Practices
 
 ### **Simple Users**
-- Stick with `beacon-simple.py` and `beacon-config.json`
+- Stick with `beacon.py` and `beacon-config.json`
 - Only use system configs when you need advanced features
 
 ### **Advanced Users**  

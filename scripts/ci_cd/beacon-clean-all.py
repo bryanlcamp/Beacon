@@ -34,8 +34,14 @@ def main():
     os.chdir(repo_root)
     
     # Clean unified build directories
-    clean_path("build", "Debug build directory")
+    clean_path("build", "Main build directory")
+    clean_path("build-test", "Test build directory")
     clean_path("build-release", "Release build directory")
+    clean_path("build-fresh", "Fresh build directory")
+    
+    # Clean binary directories
+    clean_path("bin/debug", "Debug binaries")
+    clean_path("bin/release", "Release binaries")
     
     # Clean output directories  
     clean_path("outputs", "Generated outputs")
@@ -47,6 +53,15 @@ def main():
     # Clean any CMake cache files
     clean_path("CMakeCache.txt", "CMake cache")
     clean_path("cmake_install.cmake", "CMake install script")
+    clean_path("Makefile", "Generated Makefile")
+    
+    # Clean generated data files
+    clean_path("market_data.bin", "Generated market data")
+    
+    # Clean temp config files
+    import glob
+    for temp_file in glob.glob("outputs/temp_*.json"):
+        clean_path(temp_file, "Temporary config file")
     
     # Recreate outputs directory with gitkeep
     outputs_dir = Path("outputs")
