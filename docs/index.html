@@ -117,6 +117,12 @@
             50% { opacity: 0.8; }
         }
         
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
         header h1 {
             font-size: 4.5rem;
             font-weight: 700;
@@ -355,6 +361,12 @@
             <div style="margin: 30px 0; opacity: 0.9; font-size: 1.1rem; font-weight: 500;">
                 Supporting NYSE • NASDAQ • CME protocols for production-grade trading infrastructure
             </div>
+            
+            <!-- Scroll indicator -->
+            <div class="scroll-indicator" style="margin-top: 50px; animation: bounce 2s infinite;">
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 10px;">Explore Technical Details Below</div>
+                <div style="font-size: 2rem; opacity: 0.7;">↓</div>
+            </div>
         </div>
     </header>
     
@@ -363,11 +375,16 @@
             <div class="section">
                 <h2>One Command. Production-Grade Results.</h2>
                 <p>
-                    <strong>Elegantly simple:</strong> Run one command and you have a complete trading infrastructure environment with matching engine, real-time market data, and comprehensive analytics. No complex setup. No configuration overhead.
+                    Elegantly simple: Run one command and you have a complete trading infrastructure environment with matching engine, real-time market data, and comprehensive analytics. No complex setup. No configuration overhead.
                 </p>
                 <p>
-                    <strong>Professionally engineered:</strong> Built with institutional-grade architecture—lock-free data structures, optimized threading, low-latency networking, and real exchange protocols. Enterprise reliability with development simplicity.
+                    Professionally engineered: Built with institutional-grade architecture—lock-free data structures, optimized threading, low-latency networking, and real exchange protocols. Enterprise reliability with development simplicity.
                 </p>
+                
+                <div style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">⚡ See Performance Benchmarks & Technical Architecture Below</div>
+                    <div style="opacity: 0.9;">Microsecond latency • Lock-free algorithms • Production metrics</div>
+                </div>
             </div>
             
             <div class="features-grid">
@@ -433,7 +450,8 @@ python3 scripts/<span class="command">beacon-run.py</span> 30
             </div>
 
             <div class="section">
-                <h2>🏆 Professional Metrics & Benchmarks</h2>
+                <h2 style="font-size: 3rem; margin-bottom: 40px; text-align: center;">🏆 Professional Metrics & Benchmarks</h2>
+                <div style="text-align: center; margin-bottom: 30px; font-size: 1.2rem; color: #667eea; font-weight: 600;">Performance that speaks for itself</div>
                 <div class="features-grid">
                     <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                         <div class="icon" style="color: #FFD700;">⚡</div>
@@ -525,6 +543,11 @@ python3 scripts/<span class="command">beacon-run.py</span> 30
         </div>
     </div>
     
+    <!-- Back to top button -->
+    <div id="back-to-top" style="position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s; z-index: 1000;">
+        <span style="font-size: 1.5rem;">↑</span>
+    </div>
+    
     <footer>
         <div class="container">
             <p>🏆 <strong>Professional HFT Infrastructure</strong> | Built for Enterprise Trading Technology</p>
@@ -538,5 +561,35 @@ python3 scripts/<span class="command">beacon-run.py</span> 30
             </p>
         </div>
     </footer>
+    
+    <script>
+        // Show/hide back to top button
+        const backToTop = document.getElementById('back-to-top');
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTop.style.opacity = '1';
+                } else {
+                    backToTop.style.opacity = '0';
+                }
+            });
+            
+            // Back to top click handler  
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // Auto-hide scroll indicator after user scrolls
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (scrollIndicator) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) {
+                    scrollIndicator.style.opacity = '0';
+                    scrollIndicator.style.transition = 'opacity 0.5s';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
