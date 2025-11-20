@@ -242,7 +242,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: beacon-debug-binaries
-          path: debug-binaries/
+          path: |
+            debug-binaries/generator/generator
+            debug-binaries/matching_engine/matching_engine
+            debug-binaries/client_algorithm/AlgoTwapProtocol
+            debug-binaries/playback/playback
           retention-days: 7
 
   build-release:
@@ -419,7 +423,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: beacon-release-binaries
-          path: release-binaries/
+          path: |
+            release-binaries/generator/generator
+            release-binaries/matching_engine/matching_engine
+            release-binaries/client_algorithm/AlgoTwapProtocol
+            release-binaries/playback/playback
           retention-days: 30
 
   integration-test:
@@ -477,61 +485,71 @@ jobs:
       - name: Verify Debug Build
         run: |
           echo "🔍 Checking Debug build outputs:"
+          echo "=== Downloaded artifact structure ==="
+          find debug-binaries/ -type f 2>/dev/null | sort || echo "No files in debug-binaries/"
           ls -la debug-binaries/ 2>/dev/null || echo "Debug binaries directory not found"
           
-          # Check for binaries in simplified structure
+          # Check for binaries in artifact structure (no debug-binaries prefix in paths)
           if test -f debug-binaries/generator/generator; then
             echo "✅ Generator found"
             chmod +x debug-binaries/generator/generator
           else
-            echo "❌ Generator not found"
-            ls -la debug-binaries/generator/ 2>/dev/null || echo "Generator directory empty"
+            echo "❌ Generator not found at debug-binaries/generator/generator"
+            echo "Checking what's actually in debug-binaries/generator/:"
+            ls -la debug-binaries/generator/ 2>/dev/null || echo "Generator directory empty or missing"
           fi
           
           if test -f debug-binaries/matching_engine/matching_engine; then
             echo "✅ Matching Engine found" 
             chmod +x debug-binaries/matching_engine/matching_engine
           else
-            echo "❌ Matching Engine not found"
-            ls -la debug-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            echo "❌ Matching Engine not found at debug-binaries/matching_engine/matching_engine"
+            echo "Checking what's actually in debug-binaries/matching_engine/:"
+            ls -la debug-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty or missing"
           fi
           
           if test -f debug-binaries/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
             chmod +x debug-binaries/client_algorithm/AlgoTwapProtocol
           else
-            echo "❌ AlgoTwapProtocol not found"
-            ls -la debug-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            echo "❌ AlgoTwapProtocol not found at debug-binaries/client_algorithm/AlgoTwapProtocol"
+            echo "Checking what's actually in debug-binaries/client_algorithm/:"
+            ls -la debug-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty or missing"
           fi
 
       - name: Verify Release Build  
         run: |
           echo "🔍 Checking Release build outputs:"
+          echo "=== Downloaded release artifact structure ==="
+          find release-binaries/ -type f 2>/dev/null | sort || echo "No files in release-binaries/"
           ls -la release-binaries/ 2>/dev/null || echo "Release binaries directory not found"
           
-          # Check for binaries in simplified structure
+          # Check for binaries in artifact structure (no release-binaries prefix in paths)
           if test -f release-binaries/generator/generator; then
             echo "✅ Generator found"
             chmod +x release-binaries/generator/generator
           else
-            echo "❌ Generator not found"
-            ls -la release-binaries/generator/ 2>/dev/null || echo "Generator directory empty"
+            echo "❌ Generator not found at release-binaries/generator/generator"
+            echo "Checking what's actually in release-binaries/generator/:"
+            ls -la release-binaries/generator/ 2>/dev/null || echo "Generator directory empty or missing"
           fi
           
           if test -f release-binaries/matching_engine/matching_engine; then
             echo "✅ Matching Engine found"
             chmod +x release-binaries/matching_engine/matching_engine
           else
-            echo "❌ Matching Engine not found"
-            ls -la release-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            echo "❌ Matching Engine not found at release-binaries/matching_engine/matching_engine"
+            echo "Checking what's actually in release-binaries/matching_engine/:"
+            ls -la release-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty or missing"
           fi
           
           if test -f release-binaries/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
             chmod +x release-binaries/client_algorithm/AlgoTwapProtocol
           else
-            echo "❌ AlgoTwapProtocol not found"
-            ls -la release-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            echo "❌ AlgoTwapProtocol not found at release-binaries/client_algorithm/AlgoTwapProtocol"
+            echo "Checking what's actually in release-binaries/client_algorithm/:"
+            ls -la release-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty or missing"
           fi
 
       - name: Test Configuration Validation
