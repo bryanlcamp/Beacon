@@ -1,0 +1,45 @@
+{
+  "protection_settings": {
+    "enabled": true,
+    "protected_branches": ["main", "master", "production", "release"],
+    "protected_files": [
+      "VERSION", 
+      ".github/workflows/*",
+      "beacon-config.json",
+      "CMakeLists.txt",
+      "package.json",
+      "pom.xml"
+    ],
+    "max_file_size_mb": 10,
+    "max_commit_files": 50,
+    "require_conventional_commits": false,
+    "security_scan_enabled": true,
+    "branch_protection_enabled": true,
+    "size_limits_enabled": true,
+    "repo_health_check_enabled": true
+  },
+  "security_patterns": [
+    "password\\s*=",
+    "api[_-]?key\\s*=",
+    "secret\\s*=",
+    "token\\s*=",
+    "private[_-]?key",
+    "-----BEGIN.*PRIVATE KEY-----",
+    "aws_access_key_id",
+    "aws_secret_access_key",
+    "db_password",
+    "database_password"
+  ],
+  "commit_message_rules": {
+    "max_subject_length": 72,
+    "require_description": false,
+    "forbidden_words": ["hack", "quick fix", "temp"],
+    "require_issue_reference": false
+  },
+  "workflow_settings": {
+    "auto_push": true,
+    "confirm_protected_files": true,
+    "show_diff_on_request": true,
+    "backup_on_rollback": true
+  }
+}

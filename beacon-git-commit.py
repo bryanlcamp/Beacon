@@ -11,6 +11,11 @@ import tempfile
 import re
 from pathlib import Path
 from datetime import datetime
+import json
+
+class GitProtectionError(Exception):
+    """Custom exception for git protection violations"""
+    pass
 
 class BeaconGitCommit:
     def __init__(self):
@@ -19,6 +24,49 @@ class BeaconGitCommit:
         self.modified_files = []
         self.untracked_files = []
         self.commit_hash = None
+        self.config = self.load_config()
+        
+        # Load settings from config
+        protection = self.config.get('protection_settings', {})
+        self.protected_branches = protection.get('protected_branches', ['main', 'master'])
+        self.protected_files = protection.get('protected_files', ['VERSION'])
+        self.max_file_size_mb = protection.get('max_file_size_mb', 10)
+        self.max_commit_files = protection.get('max_commit_files', 50)
+        self.dangerous_patterns = [
+            re.compile(pattern, re.IGNORECASE) 
+            for pattern in self.config.get('security_patterns', [])
+        ]
+        
+    def load_config(self):
+        """Load configuration from .beacon-git-config.json"""
+        config_file = self.repo_root / '.beacon-git-config.json'
+        
+        if config_file.exists():
+            try:
+                with open(config_file, 'r') as f:
+                    config = json.load(f)
+                print(f"✅ Loaded configuration from {config_file.name}")
+                return config
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"⚠️  Config file error: {e}")
+                print("   Using default settings")
+        
+        # Return default config
+        return {
+            'protection_settings': {
+                'enabled': True,
+                'protected_branches': ['main', 'master'],
+                'protected_files': ['VERSION'],
+                'max_file_size_mb': 10,
+                'max_commit_files': 50
+            },
+            'security_patterns': [
+                r'password\s*=',
+                r'api[_-]?key\s*=', 
+                r'secret\s*=',
+                r'token\s*='
+            ]
+        }
         
     def run_git_command(self, cmd, capture_output=True, check=False):
         """Run git command safely"""
@@ -40,6 +88,165 @@ class BeaconGitCommit:
             print("❌ Not in a git repository!")
             return False
         return True
+    
+    def check_professional_protections(self):
+        """Comprehensive professional protection checks"""
+        protection_settings = self.config.get('protection_settings', {})
+        
+        if not protection_settings.get('enabled', True):
+            print("🔓 Protection checks disabled")
+            return True
+            
+        print("🔐 Running professional protection checks...")
+        
+        # 1. Check current branch protection
+        if protection_settings.get('branch_protection_enabled', True):
+            current_branch_result = self.run_git_command(['branch', '--show-current'])
+            if current_branch_result:
+                current_branch = current_branch_result.stdout.strip()
+                if current_branch in self.protected_branches:
+                    print(f"⚠️  WARNING: You're on protected branch '{current_branch}'")
+                    confirm = input("🤔 Are you authorized to commit to this branch? (yes/no): ").strip().lower()
+                    if confirm != 'yes':
+                        raise GitProtectionError(f"Commit to protected branch '{current_branch}' not authorized")
+                    print("✅ Protected branch access confirmed")
+        
+        # 2. Check for uncommitted changes to protected files
+        if self.staged_files or self.modified_files:
+            all_changed_files = self.staged_files + self.modified_files
+            protected_matches = []
+            
+            for file_path in all_changed_files:
+                for pattern in self.protected_files:
+                    if '*' in pattern:
+                        # Handle wildcard patterns
+                        import fnmatch
+                        if fnmatch.fnmatch(file_path, pattern):
+                            protected_matches.append(file_path)
+                    elif pattern in file_path:
+                        protected_matches.append(file_path)
+            
+            if protected_matches:
+                print(f"🚨 CRITICAL: Changes detected to {len(protected_matches)} protected file(s):")
+                for file_path in protected_matches:
+                    print(f"   🔒 {file_path}")
+                
+                confirm = input("🚨 Confirm changes to protected files (type 'CONFIRM'): ").strip()
+                if confirm != 'CONFIRM':
+                    raise GitProtectionError("Changes to protected files not confirmed")
+                print("✅ Protected file changes confirmed")
+        
+        # 3. Check for secrets/credentials
+        self.check_for_secrets()
+        
+        # 4. Check file sizes and commit size
+        if protection_settings.get('size_limits_enabled', True):
+            self.check_commit_size_limits()
+        
+        # 5. Check repository health
+        if protection_settings.get('repo_health_check_enabled', True):
+            self.check_repo_health()
+        
+        print("✅ All protection checks passed")
+        return True
+    
+    def check_for_secrets(self):
+        """Scan for potential secrets in staged content"""
+        if not self.config.get('protection_settings', {}).get('security_scan_enabled', True):
+            return
+            
+        print("🔍 Scanning for potential secrets...")
+        
+        if not self.staged_files:
+            return
+        
+        # Get diff of staged content
+        diff_result = self.run_git_command(['diff', '--cached'])
+        if not diff_result:
+            return
+        
+        diff_content = diff_result.stdout
+        secrets_found = []
+        
+        for pattern in self.dangerous_patterns:
+            matches = pattern.finditer(diff_content)
+            for match in matches:
+                # Get line context
+                lines = diff_content[:match.start()].count('\n')
+                secrets_found.append(f"Line {lines}: {pattern.pattern}")
+        
+        if secrets_found:
+            print(f"🚨 SECURITY ALERT: Potential secrets detected!")
+            for secret in secrets_found:
+                print(f"   🔑 {secret}")
+            
+            print("\n⚠️  Review these potential security issues:")
+            print("   • Remove any real passwords, API keys, or tokens")
+            print("   • Use environment variables or config files")
+            print("   • Add sensitive files to .gitignore")
+            
+            confirm = input("\n🛡️  Confirm no real secrets are being committed (type 'SAFE'): ").strip()
+            if confirm != 'SAFE':
+                raise GitProtectionError("Potential secrets detected - commit aborted for security")
+            
+            print("✅ Security review completed")
+    
+    def check_commit_size_limits(self):
+        """Check file sizes and overall commit limits"""
+        if not self.staged_files:
+            return
+        
+        print(f"📏 Checking commit size limits...")
+        
+        # Check number of files
+        if len(self.staged_files) > self.max_commit_files:
+            print(f"⚠️  Large commit: {len(self.staged_files)} files (limit: {self.max_commit_files})")
+            confirm = input("🤔 Proceed with large commit? (y/n): ").strip().lower()
+            if confirm != 'y':
+                raise GitProtectionError(f"Commit exceeds file limit ({self.max_commit_files} files)")
+        
+        # Check individual file sizes
+        large_files = []
+        for file_path in self.staged_files:
+            if os.path.exists(file_path):
+                size_mb = os.path.getsize(file_path) / (1024 * 1024)
+                if size_mb > self.max_file_size_mb:
+                    large_files.append(f"{file_path} ({size_mb:.1f}MB)")
+        
+        if large_files:
+            print(f"⚠️  Large files detected:")
+            for file_info in large_files:
+                print(f"   📁 {file_info}")
+            
+            confirm = input("🤔 Commit large files? (y/n): ").strip().lower()
+            if confirm != 'y':
+                raise GitProtectionError("Large files detected - commit aborted")
+        
+        print("✅ Size limits check passed")
+    
+    def check_repo_health(self):
+        """Check overall repository health"""
+        print("🏥 Checking repository health...")
+        
+        # Check for merge conflicts
+        merge_head = self.repo_root / '.git' / 'MERGE_HEAD'
+        if merge_head.exists():
+            print("🚨 MERGE IN PROGRESS: Repository has unresolved merge")
+            raise GitProtectionError("Cannot commit during active merge - resolve conflicts first")
+        
+        # Check for rebase in progress
+        rebase_dir = self.repo_root / '.git' / 'rebase-apply'
+        if rebase_dir.exists():
+            print("🚨 REBASE IN PROGRESS: Repository has active rebase")
+            raise GitProtectionError("Cannot commit during active rebase - complete rebase first")
+        
+        # Check remote connectivity (non-blocking)
+        remote_result = self.run_git_command(['ls-remote', '--exit-code', 'origin'], check=False)
+        if remote_result and remote_result.returncode != 0:
+            print("⚠️  WARNING: Cannot reach remote repository")
+            print("   Push may fail - check network connection")
+        
+        print("✅ Repository health check passed")
     
     def analyze_repo_status(self):
         """Analyze current repository status"""
@@ -439,11 +646,15 @@ class BeaconGitCommit:
             return True
         
         try:
-            # Step 3: Handle modified tracked files
+            # Step 3: Professional protection checks
+            if not self.check_professional_protections():
+                return False
+            
+            # Step 4: Handle modified tracked files
             if not self.handle_modified_files():
                 return False
             
-            # Step 4: Handle untracked files
+            # Step 5: Handle untracked files
             if not self.handle_untracked_files():
                 return False
             
@@ -452,15 +663,23 @@ class BeaconGitCommit:
                 print("\n⚠️  No files staged for commit")
                 return True
             
-            # Step 5: Generate and edit commit message
+            # Step 6: Final security scan after staging
+            print("\n🔒 Final security scan...")
+            self.check_for_secrets()
+            
+            # Step 7: Generate and edit commit message
             initial_message = self.generate_intelligent_commit_message()
             final_message = self.edit_commit_message(initial_message)
             
-            # Step 6: Perform commit
+            # Step 8: Pre-commit validation
+            if not self.validate_commit_message(final_message):
+                return False
+            
+            # Step 9: Perform commit
             if not self.perform_commit(final_message):
                 return False
             
-            # Step 7: Push to remote
+            # Step 10: Push to remote
             if not self.perform_push():
                 print("⚠️  Commit successful but push failed")
                 rollback = input("🤔 Rollback commit? (y/n): ").strip().lower()
@@ -483,10 +702,54 @@ class BeaconGitCommit:
             if rollback in ['y', 'yes']:
                 self.rollback_changes()
             return False
-        except Exception as e:
-            print(f"\n❌ Unexpected error: {e}")
+        except GitProtectionError as e:
+            print(f"\n🚨 PROTECTION VIOLATION: {e}")
+            print("🔒 Commit aborted for security/safety reasons")
             self.rollback_changes()
             return False
+        except Exception as e:
+            print(f"\n❌ Unexpected error: {e}")
+            print("🔄 Rolling back for safety...")
+            self.rollback_changes()
+            return False
+    
+    def validate_commit_message(self, message):
+        """Validate commit message meets professional standards"""
+        print("📝 Validating commit message...")
+        
+        lines = message.strip().split('\n')
+        if not lines:
+            print("❌ Empty commit message")
+            return False
+        
+        # Check first line (subject)
+        subject = lines[0].strip()
+        
+        # Length check
+        if len(subject) > 72:
+            print(f"⚠️  Subject line too long ({len(subject)} chars, max 72)")
+            confirm = input("🤔 Proceed with long subject? (y/n): ").strip().lower()
+            if confirm != 'y':
+                return False
+        
+        # Check conventional commit format (optional but recommended)
+        conventional_pattern = r'^(feat|fix|docs|style|refactor|test|chore|ci|build)(\(.+\))?: .+'
+        if not re.match(conventional_pattern, subject):
+            print("💡 TIP: Consider using conventional commit format:")
+            print("   feat: add new feature")
+            print("   fix: resolve bug")
+            print("   docs: update documentation")
+            print("   etc.")
+        
+        # Check for TODO/FIXME in commit message
+        if re.search(r'\b(TODO|FIXME|XXX|HACK)\b', message, re.IGNORECASE):
+            print("⚠️  TODO/FIXME found in commit message")
+            confirm = input("🤔 Commit with TODO/FIXME? (y/n): ").strip().lower()
+            if confirm != 'y':
+                return False
+        
+        print("✅ Commit message validation passed")
+        return True
 
 def main():
     if '--help' in sys.argv or '-h' in sys.argv:
@@ -495,13 +758,46 @@ def main():
         print("Intelligent git workflow with:")
         print("  • Smart handling of modified and untracked files")
         print("  • Intelligent commit message generation")
+        print("  • Professional protection and security checks")
         print("  • Safe commit and push with rollback on errors")
-        print("  • Professional output and error handling")
+        print("  • Configurable protection settings")
         print()
-        print("Usage: python3 beacon-git-commit.py")
+        print("Usage:")
+        print("  python3 beacon-git-commit.py           # Normal workflow")
+        print("  python3 beacon-git-commit.py --bypass  # Emergency bypass mode")
+        print("  python3 beacon-git-commit.py --config  # Show current configuration")
+        print()
+        print("Configuration:")
+        print("  Edit .beacon-git-config.json to customize protection settings")
         return
     
+    # Handle special flags
+    if '--config' in sys.argv:
+        workflow = BeaconGitCommit()
+        print("📋 Current Configuration:")
+        print("=" * 40)
+        print(json.dumps(workflow.config, indent=2))
+        return
+    
+    # Emergency bypass mode
+    bypass_mode = '--bypass' in sys.argv
+    if bypass_mode:
+        print("🚨 EMERGENCY BYPASS MODE ACTIVATED")
+        print("⚠️  All protection checks will be DISABLED")
+        confirm = input("🤔 Are you sure you want to proceed? (type 'EMERGENCY'): ").strip()
+        if confirm != 'EMERGENCY':
+            print("❌ Bypass cancelled")
+            return
+        print("🔓 Protections bypassed - USE WITH EXTREME CAUTION")
+    
     workflow = BeaconGitCommit()
+    
+    # Disable protections if bypass mode
+    if bypass_mode:
+        workflow.config['protection_settings']['enabled'] = False
+        workflow.config['protection_settings']['security_scan_enabled'] = False
+        workflow.config['protection_settings']['branch_protection_enabled'] = False
+    
     success = workflow.run()
     
     if not success:
