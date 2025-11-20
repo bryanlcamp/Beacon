@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: hsl(220, 45%, 8%);
+            color: #ffffff;
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            opacity: 0.8;
+            margin-bottom: 50px;
+            letter-spacing: 0.5px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        
+        .section p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .highlight {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            margin: 30px 0;
+        }
+        
+        .highlight p {
+            margin-bottom: 0;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Beacon</a>
+        
+        <h1>Beacon.</h1>
+        <p class="subtitle">Your Personal Guide. From Idea to Market.</p>
+        
+        <div class="section">
+            <h2>What Beacon Does</h2>
+            <p>Beacon helps you build and test trading algorithms with realistic market conditions. It's designed to bridge the gap between having an idea and seeing it work in market-like scenarios.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Create Realistic Market Data</h2>
+            <p>You create and tailor realistic market data. Don't worry. Beacon is here to help.</p>
+            <div class="highlight">
+                <p>Generate market data that behaves like real exchanges - with proper price movements, realistic volumes, and authentic timing patterns.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Deliver to Your Algorithm</h2>
+            <p>Deliver your market data to your algorithm. In a realistic way. Like it came from an exchange.</p>
+            <div class="highlight">
+                <p>Your algorithm receives data through the same protocols and patterns used by real trading systems. No simulation shortcuts.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>The Result</h2>
+            <p>Your algorithm experiences realistic market conditions. You see how it performs. You iterate. You improve.</p>
+            <p>When you're ready for production, your algorithm has already been tested against market-realistic scenarios.</p>
+        </div>
+    </div>
+</body>
+</html>
