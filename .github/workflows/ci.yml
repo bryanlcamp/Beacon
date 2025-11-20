@@ -100,9 +100,12 @@ jobs:
         with:
           name: beacon-debug-binaries
           path: |
-            build/src/apps/*/
-            !build/src/apps/*/*.o
-            !build/src/apps/*/CMakeFiles/
+            build/src/apps/generator/generator
+            build/src/apps/matching_engine/matching_engine
+            build/src/apps/client_algorithm/AlgoTwapProtocol
+            build/src/apps/client_algorithm/MarketDataReceiver
+            build/src/apps/client_algorithm/ClientAlgorithm
+            build/src/apps/playback/playback
           retention-days: 7
 
   build-release:
@@ -182,9 +185,12 @@ jobs:
         with:
           name: beacon-release-binaries
           path: |
-            build-release/src/apps/*/
-            !build-release/src/apps/*/*.o
-            !build-release/src/apps/*/CMakeFiles/
+            build-release/src/apps/generator/generator
+            build-release/src/apps/matching_engine/matching_engine
+            build-release/src/apps/client_algorithm/AlgoTwapProtocol
+            build-release/src/apps/client_algorithm/MarketDataReceiver
+            build-release/src/apps/client_algorithm/ClientAlgorithm
+            build-release/src/apps/playback/playback
           retention-days: 30
 
   integration-test:
@@ -233,29 +239,34 @@ jobs:
 
       - name: Make binaries executable
         run: |
-          find build/ -type f -executable -exec chmod +x {} \; 2>/dev/null || echo "No debug binaries to make executable"
-          find build-release/ -type f -executable -exec chmod +x {} \; 2>/dev/null || echo "No release binaries to make executable"
+          echo "Making downloaded binaries executable..."
+          # Make all downloaded files executable (chmod during verification steps)
+          find build/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No debug binaries downloaded"
+          find build-release/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No release binaries downloaded"
 
       - name: Verify Debug Build
         run: |
           echo "🔍 Checking Debug build outputs:"
-          ls -la build/src/apps/*/ 2>/dev/null || echo "Debug apps directory structure not found"
+          ls -la build/ 2>/dev/null || echo "Build directory not found"
           
-          # Check for binaries with flexible paths
-          if find build/ -name "generator" -type f 2>/dev/null | head -1; then
+          # Check for specific binaries
+          if test -f build/generator; then
             echo "✅ Generator found"
+            chmod +x build/generator
           else
             echo "❌ Generator not found"
           fi
           
-          if find build/ -name "matching_engine" -type f 2>/dev/null | head -1; then
-            echo "✅ Matching engine found"
+          if test -f build/matching_engine; then
+            echo "✅ Matching engine found" 
+            chmod +x build/matching_engine
           else
             echo "❌ Matching engine not found"
           fi
           
-          if find build/ -name "AlgoTwapProtocol" -type f 2>/dev/null | head -1; then
+          if test -f build/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
+            chmod +x build/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
           fi
@@ -263,23 +274,26 @@ jobs:
       - name: Verify Release Build  
         run: |
           echo "🔍 Checking Release build outputs:"
-          ls -la build-release/src/apps/*/ 2>/dev/null || echo "Release apps directory structure not found"
+          ls -la build-release/ 2>/dev/null || echo "Build-release directory not found"
           
-          # Check for binaries with flexible paths
-          if find build-release/ -name "generator" -type f 2>/dev/null | head -1; then
+          # Check for specific binaries
+          if test -f build-release/generator; then
             echo "✅ Generator found"
+            chmod +x build-release/generator
           else
             echo "❌ Generator not found"
           fi
           
-          if find build-release/ -name "matching_engine" -type f 2>/dev/null | head -1; then
+          if test -f build-release/matching_engine; then
             echo "✅ Matching engine found"
+            chmod +x build-release/matching_engine
           else
             echo "❌ Matching engine not found"  
           fi
           
-          if find build-release/ -name "AlgoTwapProtocol" -type f 2>/dev/null | head -1; then
+          if test -f build-release/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
+            chmod +x build-release/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
           fi
