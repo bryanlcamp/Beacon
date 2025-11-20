@@ -250,28 +250,28 @@ jobs:
           ls -la build/ 2>/dev/null || echo "Build directory not found"
           
           # Check for binaries in subdirectories
-          if test -f build/generator/generator; then
+          if test -f build/src/apps/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build/generator/generator
+            chmod +x build/src/apps/generator/generator
           else
             echo "❌ Generator not found"
-            ls -la build/generator/ 2>/dev/null || echo "Generator directory empty"
+            ls -la build/src/apps/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build/matching_engine/matching_engine; then
+          if test -f build/src/apps/matching_engine/matching_engine; then
             echo "✅ Matching Engine found" 
-            chmod +x build/matching_engine/matching_engine
+            chmod +x build/src/apps/matching_engine/matching_engine
           else
             echo "❌ Matching Engine not found"
-            ls -la build/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            ls -la build/src/apps/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
-          if test -f build/client_algorithm/AlgoTwapProtocol; then
+          if test -f build/src/apps/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build/client_algorithm/AlgoTwapProtocol
+            chmod +x build/src/apps/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
-            ls -la build/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            ls -la build/src/apps/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Verify Release Build  
@@ -280,28 +280,28 @@ jobs:
           ls -la build-release/ 2>/dev/null || echo "Build-release directory not found"
           
           # Check for binaries in subdirectories
-          if test -f build-release/generator/generator; then
+          if test -f build-release/src/apps/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build-release/generator/generator
+            chmod +x build-release/src/apps/generator/generator
           else
             echo "❌ Generator not found"
-            ls -la build-release/generator/ 2>/dev/null || echo "Generator directory empty"
+            ls -la build-release/src/apps/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build-release/matching_engine/matching_engine; then
+          if test -f build-release/src/apps/matching_engine/matching_engine; then
             echo "✅ Matching Engine found"
-            chmod +x build-release/matching_engine/matching_engine
+            chmod +x build-release/src/apps/matching_engine/matching_engine
           else
             echo "❌ Matching Engine not found"
-            ls -la build-release/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            ls -la build-release/src/apps/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
-          if test -f build-release/client_algorithm/AlgoTwapProtocol; then
+          if test -f build-release/src/apps/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build-release/client_algorithm/AlgoTwapProtocol
+            chmod +x build-release/src/apps/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
-            ls -la build-release/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            ls -la build-release/src/apps/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Test Configuration Validation
