@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import os
 import json
+import re
 from pathlib import Path
 
 def run_build_verification():
@@ -103,6 +104,36 @@ def run_build_verification():
     print("✅ All build verifications passed!")
     return True
 
+def validate_simple_issue_reference(message):
+    """Light issue reference validation for simple commits"""
+    # Basic patterns for issue references
+    issue_patterns = [
+        r'#\d+',           # #123
+        r'fixes #\d+',     # fixes #123
+        r'closes #\d+',    # closes #123
+        r'refs #\d+',      # refs #123
+        r'PROJ-\d+',       # PROJ-123
+    ]
+    
+    # Check if message contains issue reference
+    for pattern in issue_patterns:
+        if re.search(pattern, message, re.IGNORECASE):
+            return True
+    
+    # Check for bypass types (docs, chore, etc.)
+    bypass_types = ['docs:', 'chore:', 'style:', 'refactor:']
+    for bypass in bypass_types:
+        if message.lower().startswith(bypass):
+            print(f"✅ '{bypass.rstrip(':')}' type bypasses issue requirement")
+            return True
+    
+    # No issue found - warn but don't block (simple commit is lenient)
+    print("⚠️  No issue reference found (e.g., #123, fixes #456)")
+    print("💡 Consider linking commits to issues for better tracking")
+    
+    # For simple commit, just warn - don't block
+    return True
+
 def simple_commit(message, add_all=False, push=False, verify_build=False, max_files=20):
     """Simple single-line commit with zero shell issues and safety checks"""
     
@@ -143,6 +174,10 @@ def simple_commit(message, add_all=False, push=False, verify_build=False, max_fi
         if verify_build:
             if not run_build_verification():
                 return False
+        
+        # Issue reference validation (light version)
+        if not validate_simple_issue_reference(message):
+            return False
         
         # Write message to temp file (completely bypasses shell)
         with tempfile.NamedTemporaryFile(mode='w', 

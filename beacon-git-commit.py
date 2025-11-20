@@ -839,7 +839,65 @@ class BeaconGitCommit:
             if confirm != 'y':
                 return False
         
+        # Issue reference validation
+        if not self.validate_issue_reference(message):
+            return False
+        
         print("✅ Commit message validation passed")
+        return True
+    
+    def validate_issue_reference(self, message):
+        """Validate that commit references an issue if required"""
+        commit_rules = self.config.get('commit_message_rules', {})
+        
+        if not commit_rules.get('require_issue_reference', False):
+            return True
+        
+        # Extract commit type for bypass checking
+        first_line = message.split('\n')[0]
+        commit_type_match = re.match(r'^(\w+)(\(.+\))?: ', first_line)
+        commit_type = commit_type_match.group(1) if commit_type_match else None
+        
+        # Check if this commit type can bypass issue requirement
+        bypass_types = commit_rules.get('bypass_issue_types', [])
+        if commit_type and commit_type in bypass_types:
+            print(f"✅ Commit type '{commit_type}' bypasses issue requirement")
+            return True
+        
+        # Check for issue references
+        patterns = commit_rules.get('issue_reference_patterns', ['#\\d+'])
+        
+        found_issue = False
+        for pattern in patterns:
+            if re.search(pattern, message, re.IGNORECASE):
+                found_issue = True
+                break
+        
+        if not found_issue:
+            print("🎯 ISSUE TRACKING REQUIRED")
+            print("   Professional development requires issue references!")
+            print(f"   Expected patterns: {', '.join(patterns)}")
+            print("   Examples:")
+            print("   • feat: Add new feature (fixes #123)")
+            print("   • fix: Resolve bug (closes #456)")
+            print("   • feat(api): Update endpoint (refs #789)")
+            
+            strict_mode = commit_rules.get('strict_mode', False)
+            
+            if strict_mode:
+                print("🚫 STRICT MODE: Issue reference required - commit blocked")
+                return False
+            else:
+                print("⚠️  No issue reference found")
+                override = input("🤔 Proceed without issue reference? (y/n): ").strip().lower()
+                if override != 'y':
+                    print("💡 Add issue reference like: fixes #123")
+                    return False
+                else:
+                    print("⚠️  Proceeding without issue reference (not recommended)")
+        else:
+            print("✅ Issue reference found")
+        
         return True
 
 def main():

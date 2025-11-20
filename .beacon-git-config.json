@@ -35,7 +35,18 @@
     "max_subject_length": 72,
     "require_description": false,
     "forbidden_words": ["hack", "quick fix", "temp"],
-    "require_issue_reference": false
+    "require_issue_reference": true,
+    "issue_reference_patterns": [
+      "#\\d+",
+      "fixes #\\d+", 
+      "closes #\\d+",
+      "resolves #\\d+",
+      "refs #\\d+",
+      "PROJ-\\d+",
+      "TASK-\\d+"
+    ],
+    "bypass_issue_types": ["docs", "chore", "style", "refactor"],
+    "strict_mode": false
   },
   "workflow_settings": {
     "auto_push": true,
