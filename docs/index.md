@@ -17,7 +17,8 @@ Welcome to the complete Beacon Trading System documentation. Choose your path:
 - **[Building from Source](building.md)** - Compilation and dependencies
 - **[Extending Beacon](extending.md)** - Add your own algorithms and protocols
 - **[API Reference](api-reference.md)** - Component interfaces and configuration schema
-- **[Playback Modernization](PLAYBACK_MODERNIZATION.md)** - Design document for playback system improvements
+- **[Development Roadmap](DEVELOPMENT_ROADMAP.md)** - Comprehensive development plan and priorities
+- **[Playback Modernization](PLAYBACK_MODERNIZATION.md)** - Design document for playback system improvements  
 - **[TODO & Roadmap](TODO.md)** - Project planning and future enhancements
 
 ## 📊 **Trading**
