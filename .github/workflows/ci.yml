@@ -196,41 +196,39 @@ jobs:
           
           mkdir -p debug-binaries/generator debug-binaries/matching_engine debug-binaries/client_algorithm debug-binaries/playback
           
-          # Copy binaries with flexible search and detailed logging
-          echo "🔎 Searching for generator binary..."
-          GENERATOR_FOUND=$(find build/ -name "generator" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$GENERATOR_FOUND" ]; then
-            cp "$GENERATOR_FOUND" debug-binaries/generator/
-            echo "✅ Generator copied from: $GENERATOR_FOUND"
+          # Copy binaries using known working paths from build script verification
+          echo "🔎 Using explicit paths verified by build script..."
+          
+          if [ -f "build/src/apps/generator/generator" ]; then
+            cp "build/src/apps/generator/generator" debug-binaries/generator/
+            echo "✅ Generator copied from: build/src/apps/generator/generator"
           else
-            echo "❌ Generator not found anywhere in build/"
+            echo "❌ Generator not found at build/src/apps/generator/generator"
+            ls -la build/src/apps/generator/ || echo "Generator directory not accessible"
           fi
           
-          echo "🔎 Searching for matching_engine binary..."
-          MATCHING_ENGINE_FOUND=$(find build/ -name "matching_engine" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$MATCHING_ENGINE_FOUND" ]; then
-            cp "$MATCHING_ENGINE_FOUND" debug-binaries/matching_engine/
-            echo "✅ Matching engine copied from: $MATCHING_ENGINE_FOUND"
+          if [ -f "build/src/apps/matching_engine/matching_engine" ]; then
+            cp "build/src/apps/matching_engine/matching_engine" debug-binaries/matching_engine/
+            echo "✅ Matching engine copied from: build/src/apps/matching_engine/matching_engine"
           else
-            echo "❌ Matching engine not found anywhere in build/"
+            echo "❌ Matching engine not found at build/src/apps/matching_engine/matching_engine"
+            ls -la build/src/apps/matching_engine/ || echo "Matching engine directory not accessible"
           fi
           
-          echo "🔎 Searching for AlgoTwapProtocol binary..."
-          ALGO_FOUND=$(find build/ -name "AlgoTwapProtocol" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$ALGO_FOUND" ]; then
-            cp "$ALGO_FOUND" debug-binaries/client_algorithm/
-            echo "✅ AlgoTwapProtocol copied from: $ALGO_FOUND"
+          if [ -f "build/src/apps/client_algorithm/AlgoTwapProtocol" ]; then
+            cp "build/src/apps/client_algorithm/AlgoTwapProtocol" debug-binaries/client_algorithm/
+            echo "✅ AlgoTwapProtocol copied from: build/src/apps/client_algorithm/AlgoTwapProtocol"
           else
-            echo "❌ AlgoTwapProtocol not found anywhere in build/"
+            echo "❌ AlgoTwapProtocol not found at build/src/apps/client_algorithm/AlgoTwapProtocol"
+            ls -la build/src/apps/client_algorithm/ || echo "Client algorithm directory not accessible"
           fi
           
-          echo "🔎 Searching for playback binary..."
-          PLAYBACK_FOUND=$(find build/ -name "playback" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$PLAYBACK_FOUND" ]; then
-            cp "$PLAYBACK_FOUND" debug-binaries/playback/
-            echo "✅ Playback copied from: $PLAYBACK_FOUND"
+          if [ -f "build/src/apps/playback/playback" ]; then
+            cp "build/src/apps/playback/playback" debug-binaries/playback/
+            echo "✅ Playback copied from: build/src/apps/playback/playback"
           else
-            echo "❌ Playback not found anywhere in build/"
+            echo "❌ Playback not found at build/src/apps/playback/playback"
+            ls -la build/src/apps/playback/ || echo "Playbook directory not accessible"
           fi
           
           # Optional binaries
@@ -375,41 +373,39 @@ jobs:
           
           mkdir -p release-binaries/generator release-binaries/matching_engine release-binaries/client_algorithm release-binaries/playback
           
-          # Copy binaries with flexible search and detailed logging
-          echo "🔎 Searching for generator binary..."
-          GENERATOR_FOUND=$(find build-release/ -name "generator" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$GENERATOR_FOUND" ]; then
-            cp "$GENERATOR_FOUND" release-binaries/generator/
-            echo "✅ Generator copied from: $GENERATOR_FOUND"
+          # Copy binaries using known working paths from build script verification
+          echo "🔎 Using explicit paths verified by build script..."
+          
+          if [ -f "build-release/src/apps/generator/generator" ]; then
+            cp "build-release/src/apps/generator/generator" release-binaries/generator/
+            echo "✅ Generator copied from: build-release/src/apps/generator/generator"
           else
-            echo "❌ Generator not found anywhere in build-release/"
+            echo "❌ Generator not found at build-release/src/apps/generator/generator"
+            ls -la build-release/src/apps/generator/ || echo "Generator directory not accessible"
           fi
           
-          echo "🔎 Searching for matching_engine binary..."
-          MATCHING_ENGINE_FOUND=$(find build-release/ -name "matching_engine" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$MATCHING_ENGINE_FOUND" ]; then
-            cp "$MATCHING_ENGINE_FOUND" release-binaries/matching_engine/
-            echo "✅ Matching engine copied from: $MATCHING_ENGINE_FOUND"
+          if [ -f "build-release/src/apps/matching_engine/matching_engine" ]; then
+            cp "build-release/src/apps/matching_engine/matching_engine" release-binaries/matching_engine/
+            echo "✅ Matching engine copied from: build-release/src/apps/matching_engine/matching_engine"
           else
-            echo "❌ Matching engine not found anywhere in build-release/"
+            echo "❌ Matching engine not found at build-release/src/apps/matching_engine/matching_engine"
+            ls -la build-release/src/apps/matching_engine/ || echo "Matching engine directory not accessible"
           fi
           
-          echo "🔎 Searching for AlgoTwapProtocol binary..."
-          ALGO_FOUND=$(find build-release/ -name "AlgoTwapProtocol" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$ALGO_FOUND" ]; then
-            cp "$ALGO_FOUND" release-binaries/client_algorithm/
-            echo "✅ AlgoTwapProtocol copied from: $ALGO_FOUND"
+          if [ -f "build-release/src/apps/client_algorithm/AlgoTwapProtocol" ]; then
+            cp "build-release/src/apps/client_algorithm/AlgoTwapProtocol" release-binaries/client_algorithm/
+            echo "✅ AlgoTwapProtocol copied from: build-release/src/apps/client_algorithm/AlgoTwapProtocol"
           else
-            echo "❌ AlgoTwapProtocol not found anywhere in build-release/"
+            echo "❌ AlgoTwapProtocol not found at build-release/src/apps/client_algorithm/AlgoTwapProtocol"
+            ls -la build-release/src/apps/client_algorithm/ || echo "Client algorithm directory not accessible"
           fi
           
-          echo "🔎 Searching for playback binary..."
-          PLAYBACK_FOUND=$(find build-release/ -name "playback" -type f -executable 2>/dev/null | head -1)
-          if [ -n "$PLAYBACK_FOUND" ]; then
-            cp "$PLAYBACK_FOUND" release-binaries/playback/
-            echo "✅ Playback copied from: $PLAYBACK_FOUND"
+          if [ -f "build-release/src/apps/playback/playback" ]; then
+            cp "build-release/src/apps/playback/playback" release-binaries/playback/
+            echo "✅ Playback copied from: build-release/src/apps/playback/playback"
           else
-            echo "❌ Playback not found anywhere in build-release/"
+            echo "❌ Playback not found at build-release/src/apps/playback/playback"
+            ls -la build-release/src/apps/playback/ || echo "Playback directory not accessible"
           fi
           
           # Optional binaries
