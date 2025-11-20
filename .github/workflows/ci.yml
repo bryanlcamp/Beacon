@@ -96,16 +96,26 @@ jobs:
         run: python3 scripts/ci_cd/beacon-run-all-tests.py
 
       - name: Archive Debug Binaries
+        run: |
+          echo "📦 Preparing debug binaries for upload..."
+          mkdir -p debug-binaries/generator debug-binaries/matching_engine debug-binaries/client_algorithm debug-binaries/playback
+          
+          # Copy binaries to simplified structure
+          cp build/src/apps/generator/generator debug-binaries/generator/ || echo "Generator not built"
+          cp build/src/apps/matching_engine/matching_engine debug-binaries/matching_engine/ || echo "Matching engine not built"
+          cp build/src/apps/client_algorithm/AlgoTwapProtocol debug-binaries/client_algorithm/ || echo "AlgoTwapProtocol not built"
+          cp build/src/apps/client_algorithm/MarketDataReceiver debug-binaries/client_algorithm/ 2>/dev/null || echo "MarketDataReceiver not built"
+          cp build/src/apps/client_algorithm/ClientAlgorithm debug-binaries/client_algorithm/ 2>/dev/null || echo "ClientAlgorithm not built"
+          cp build/src/apps/playback/playback debug-binaries/playback/ || echo "Playback not built"
+          
+          echo "📦 Debug binaries prepared:"
+          find debug-binaries/ -type f -name "*" | sort
+          
+      - name: Upload Debug Binaries
         uses: actions/upload-artifact@v4
         with:
           name: beacon-debug-binaries
-          path: |
-            build/src/apps/generator/generator
-            build/src/apps/matching_engine/matching_engine
-            build/src/apps/client_algorithm/AlgoTwapProtocol
-            build/src/apps/client_algorithm/MarketDataReceiver
-            build/src/apps/client_algorithm/ClientAlgorithm
-            build/src/apps/playback/playback
+          path: debug-binaries/
           retention-days: 7
 
   build-release:
@@ -180,17 +190,27 @@ jobs:
       - name: Build Release
         run: python3 scripts/ci_cd/beacon-build-all-release.py
 
-      - name: Archive Release Binaries
+      - name: Archive Release Binaries  
+        run: |
+          echo "📦 Preparing release binaries for upload..."
+          mkdir -p release-binaries/generator release-binaries/matching_engine release-binaries/client_algorithm release-binaries/playback
+          
+          # Copy binaries to simplified structure
+          cp build-release/src/apps/generator/generator release-binaries/generator/ || echo "Generator not built"
+          cp build-release/src/apps/matching_engine/matching_engine release-binaries/matching_engine/ || echo "Matching engine not built"
+          cp build-release/src/apps/client_algorithm/AlgoTwapProtocol release-binaries/client_algorithm/ || echo "AlgoTwapProtocol not built"
+          cp build-release/src/apps/client_algorithm/MarketDataReceiver release-binaries/client_algorithm/ 2>/dev/null || echo "MarketDataReceiver not built"
+          cp build-release/src/apps/client_algorithm/ClientAlgorithm release-binaries/client_algorithm/ 2>/dev/null || echo "ClientAlgorithm not built"
+          cp build-release/src/apps/playback/playback release-binaries/playback/ || echo "Playback not built"
+          
+          echo "📦 Release binaries prepared:"
+          find release-binaries/ -type f -name "*" | sort
+          
+      - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
         with:
           name: beacon-release-binaries
-          path: |
-            build-release/src/apps/generator/generator
-            build-release/src/apps/matching_engine/matching_engine
-            build-release/src/apps/client_algorithm/AlgoTwapProtocol
-            build-release/src/apps/client_algorithm/MarketDataReceiver
-            build-release/src/apps/client_algorithm/ClientAlgorithm
-            build-release/src/apps/playback/playback
+          path: release-binaries/
           retention-days: 30
 
   integration-test:
@@ -217,91 +237,92 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: beacon-debug-binaries
-          path: build/
+          path: debug-binaries/
         continue-on-error: true
 
       - name: Download Release Binaries
         uses: actions/download-artifact@v4
         with:
           name: beacon-release-binaries  
-          path: build-release/
+          path: release-binaries/
         continue-on-error: true
 
       - name: 🔍 Debug Downloaded Artifacts
         run: |
           echo "🔍 Checking downloaded artifacts..."
-          echo "=== Debug build directory ==="
-          ls -la build/ || echo "Debug build directory not found"
-          find build/ -type f -name "*" 2>/dev/null | head -10 || echo "No files in build/"
-          echo "=== Release build directory ==="  
-          ls -la build-release/ || echo "Release build directory not found"
-          find build-release/ -type f -name "*" 2>/dev/null | head -10 || echo "No files in build-release/"
+          echo "=== Debug binaries structure ==="
+          find debug-binaries/ -type f -name "*" 2>/dev/null | sort || echo "No debug binaries downloaded"
+          echo "=== Release binaries structure ===" 
+          find release-binaries/ -type f -name "*" 2>/dev/null | sort || echo "No release binaries downloaded"
+          echo "=== Directory structure ==="
+          ls -la debug-binaries/ 2>/dev/null || echo "No debug-binaries/ dir"
+          ls -la release-binaries/ 2>/dev/null || echo "No release-binaries/ dir"
 
       - name: Make binaries executable
         run: |
           echo "Making downloaded binaries executable..."
-          # Make all downloaded files executable (chmod during verification steps)
-          find build/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No debug binaries downloaded"
-          find build-release/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No release binaries downloaded"
+          # Make all downloaded files executable
+          find debug-binaries/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No debug binaries downloaded"
+          find release-binaries/ -type f -exec chmod +x {} \; 2>/dev/null || echo "No release binaries downloaded"
 
       - name: Verify Debug Build
         run: |
           echo "🔍 Checking Debug build outputs:"
-          ls -la build/ 2>/dev/null || echo "Build directory not found"
+          ls -la debug-binaries/ 2>/dev/null || echo "Debug binaries directory not found"
           
-          # Check for binaries in subdirectories
-          if test -f build/src/apps/generator/generator; then
+          # Check for binaries in simplified structure
+          if test -f debug-binaries/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build/src/apps/generator/generator
+            chmod +x debug-binaries/generator/generator
           else
             echo "❌ Generator not found"
-            ls -la build/src/apps/generator/ 2>/dev/null || echo "Generator directory empty"
+            ls -la debug-binaries/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build/src/apps/matching_engine/matching_engine; then
+          if test -f debug-binaries/matching_engine/matching_engine; then
             echo "✅ Matching Engine found" 
-            chmod +x build/src/apps/matching_engine/matching_engine
+            chmod +x debug-binaries/matching_engine/matching_engine
           else
             echo "❌ Matching Engine not found"
-            ls -la build/src/apps/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            ls -la debug-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
-          if test -f build/src/apps/client_algorithm/AlgoTwapProtocol; then
+          if test -f debug-binaries/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build/src/apps/client_algorithm/AlgoTwapProtocol
+            chmod +x debug-binaries/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
-            ls -la build/src/apps/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            ls -la debug-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Verify Release Build  
         run: |
           echo "🔍 Checking Release build outputs:"
-          ls -la build-release/ 2>/dev/null || echo "Build-release directory not found"
+          ls -la release-binaries/ 2>/dev/null || echo "Release binaries directory not found"
           
-          # Check for binaries in subdirectories
-          if test -f build-release/src/apps/generator/generator; then
+          # Check for binaries in simplified structure
+          if test -f release-binaries/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build-release/src/apps/generator/generator
+            chmod +x release-binaries/generator/generator
           else
             echo "❌ Generator not found"
-            ls -la build-release/src/apps/generator/ 2>/dev/null || echo "Generator directory empty"
+            ls -la release-binaries/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build-release/src/apps/matching_engine/matching_engine; then
+          if test -f release-binaries/matching_engine/matching_engine; then
             echo "✅ Matching Engine found"
-            chmod +x build-release/src/apps/matching_engine/matching_engine
+            chmod +x release-binaries/matching_engine/matching_engine
           else
             echo "❌ Matching Engine not found"
-            ls -la build-release/src/apps/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
+            ls -la release-binaries/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
-          if test -f build-release/src/apps/client_algorithm/AlgoTwapProtocol; then
+          if test -f release-binaries/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build-release/src/apps/client_algorithm/AlgoTwapProtocol
+            chmod +x release-binaries/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
-            ls -la build-release/src/apps/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
+            ls -la release-binaries/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Test Configuration Validation
