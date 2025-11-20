@@ -7,9 +7,9 @@ on:
     branches: [ main ]
 
 env:
-  CACHE_VERSION: v7.0
-  BUILD_TIMESTAMP: ${{ github.run_number }}
-  ACTIONS_RUNNER_DEBUG: true
+  BUILD_TYPE: Debug
+  BUILD_VERSION: v1.0
+  BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
   build-debug-fresh:
@@ -22,50 +22,19 @@ jobs:
           fetch-depth: 0
           clean: true
 
-      - name: 🚀 EXTREME DEBUGGING v7.0 - SHOW EVERYTHING 🚀
+      - name: Professional System Information
         run: |
-          echo "🚀 EXTREME DEBUGGING v7.0 - SHOW EXACTLY WHAT GITHUB ACTIONS SEES"
-          
-          # Show working directory and git status
+          echo "🚀 BEACON PROFESSIONAL CI/CD PIPELINE"
           echo "📂 Working Directory: $(pwd)"
           echo "🌿 Git Branch: $(git branch --show-current)"
-          echo "📋 Git Status:"
-          git status --porcelain
-          echo "🔗 Git Remote:"
-          git remote -v
-          echo "📝 Last Commit:"
-          git log --oneline -1
+          echo "📝 Latest Commit: $(git log --oneline -1)"
+          echo "🕒 Build Time: $(date)"
+          echo "📦 Build Version: ${{ env.BUILD_VERSION }}"
+          echo "🔢 Build Number: ${{ env.BUILD_NUMBER }}"
           
-          # Nuclear cache clearing
-          rm -rf ~/.cache/cmake* ~/.cmake* || true
-          rm -rf ~/build* || true  
+          # Clean previous builds
+          echo "🧹 Cleaning previous builds..."
           rm -rf build* || true
-          rm -rf .cache .cmake || true
-          find . -name "CMakeCache.txt" -delete || true
-          find . -name "CMakeFiles" -type d -exec rm -rf {} + || true
-          find . -name ".git" -prune -o -name "*cmake*" -type d -exec rm -rf {} + || true
-          
-          echo "🔍 CRITICAL DEBUGGING: ConfigFileParser.h content:"
-          echo "--- Full file info ---"
-          ls -la src/apps/generator/include/ConfigFileParser.h
-          echo "--- File checksum ---"
-          md5sum src/apps/generator/include/ConfigFileParser.h || true
-          echo "--- Lines 115-135 (around the problem area) ---"
-          sed -n '115,135p' src/apps/generator/include/ConfigFileParser.h
-          echo "--- Search for 'PriceRange PriceRange' (OLD bad version) ---"
-          grep -n "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h || echo "✅ OLD version not found (good!)"
-          echo "--- Search for 'priceRange' (NEW good version) ---"
-          grep -n "priceRange" src/apps/generator/include/ConfigFileParser.h || echo "❌ NEW version not found (bad!)"
-          
-          echo "--- CMakeLists.txt v4.0 check ---"
-          grep -i "v4.0\|MEGA-FIXED\|Cache Destroyer" src/apps/client_algorithm/CMakeLists.txt || echo "❌ v4.0 markers not found!"
-          
-          echo "--- Source files verification ---"
-          ls -la src/apps/client_algorithm/src/ || echo "❌ Client algorithm src not found!"
-          
-          echo "📅 Extreme Version: ${{ env.CACHE_VERSION }}"
-          echo "🔢 Build: ${{ env.BUILD_TIMESTAMP }}"
-          echo "🕒 Time: $(date)"
 
       - name: Install dependencies (FRESH)
         run: |
@@ -97,21 +66,7 @@ jobs:
           # Use professional build system for cleaning
           python3 beacon-build.py --clean || echo "Professional clean completed"
 
-      - name: 🚑 EMERGENCY FIX - Force correct ConfigFileParser.h 🚑
-        run: |
-          echo "🚑 EMERGENCY: Force-fixing ConfigFileParser.h if needed"
-          
-          # Check if we still have the bad version
-          if grep -q "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h; then
-            echo "❌ DETECTED OLD VERSION! Force-patching..."
-            sed -i 's/PriceRange PriceRange;/PriceRange priceRange;/g' src/apps/generator/include/ConfigFileParser.h
-            sed -i 's/QuantityRange QuantityRange;/QuantityRange quantityRange;/g' src/apps/generator/include/ConfigFileParser.h
-            sed -i 's/PreviousDay PreviousDay;/PreviousDay previousDay;/g' src/apps/generator/include/ConfigFileParser.h
-            echo "✅ PATCHED! New content:"
-            sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
-          else
-            echo "✅ ConfigFileParser.h looks correct - no patching needed"
-          fi
+
 
       - name: Professional Build System (FRESH)
         run: |
@@ -153,9 +108,10 @@ jobs:
         with:
           name: beacon-professional-debug-binaries
           path: |
-            build/src/apps/*/
-            !build/src/apps/*/*.o
-            !build/src/apps/*/CMakeFiles/
+            build/src/apps/generator/generator
+            build/src/apps/matching_engine/matching_engine
+            build/src/apps/client_algorithm/AlgoTwapProtocol
+            build/src/apps/playback/playback
             beacon-run.py
             beacon-build.py
             beacon-config.py
