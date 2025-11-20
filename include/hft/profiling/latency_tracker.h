@@ -6,7 +6,11 @@
 #include <cstring>
 
 #if defined(__x86_64__) || defined(_M_X64)
+#ifdef __MMX__
 #include <x86intrin.h>
+#else
+#include <immintrin.h>
+#endif
 #define HAS_RDTSC 1
 #elif defined(__aarch64__) || defined(_M_ARM64)
 #define HAS_RDTSC 0

@@ -108,9 +108,9 @@ public:
         return Priority::TIMING;
     }
 
-    Decision apply(size_t messageIndex, 
-                   const char* message, 
-                   const PlaybackState& state, 
+    Decision apply(size_t /* messageIndex */, 
+                   const char* /* message */, 
+                   const PlaybackState& /* state */, 
                    Decision currentDecision) override {
         
         auto now = std::chrono::steady_clock::now();
