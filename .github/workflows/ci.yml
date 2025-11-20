@@ -259,11 +259,11 @@ jobs:
           fi
           
           if test -f build/matching_engine/matching_engine; then
-            echo "✅ Matching engine found" 
+            echo "✅ Matching Engine found" 
             chmod +x build/matching_engine/matching_engine
           else
-            echo "❌ Matching engine not found"
-            ls -la build/matching_engine/ 2>/dev/null || echo "Matching engine directory empty"
+            echo "❌ Matching Engine not found"
+            ls -la build/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
           if test -f build/client_algorithm/AlgoTwapProtocol; then
@@ -289,11 +289,11 @@ jobs:
           fi
           
           if test -f build-release/matching_engine/matching_engine; then
-            echo "✅ Matching engine found"
+            echo "✅ Matching Engine found"
             chmod +x build-release/matching_engine/matching_engine
           else
-            echo "❌ Matching engine not found"
-            ls -la build-release/matching_engine/ 2>/dev/null || echo "Matching engine directory empty"
+            echo "❌ Matching Engine not found"
+            ls -la build-release/matching_engine/ 2>/dev/null || echo "Matching Engine directory empty"
           fi
           
           if test -f build-release/client_algorithm/AlgoTwapProtocol; then
