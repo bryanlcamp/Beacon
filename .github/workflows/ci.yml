@@ -90,7 +90,74 @@ jobs:
           grep -n "FIXED v3.0" src/apps/client_algorithm/CMakeLists.txt || echo "Old CMakeLists.txt version"
 
       - name: Build Debug
-        run: python3 scripts/ci_cd/beacon-build-all-debug.py
+        run: |
+          echo "🔧 Starting Debug Build Process..."
+          python3 scripts/ci_cd/beacon-build-all-debug.py 2>&1 | tee debug-build.log
+          echo "Debug build exit code: $?"
+          echo "Debug build log saved to debug-build.log"
+        
+      - name: 🔍 COMPREHENSIVE BUILD DEBUG ANALYSIS
+        run: |
+          echo "🔍 COMPREHENSIVE CI BUILD ANALYSIS - DEBUGGING LINKING FAILURES"
+          echo "=== Build Directory Structure (full details) ==="
+          find build/ -type f -name "*" 2>/dev/null | head -50 || echo "No files in build/"
+          
+          echo "=== Check for ANY executable files in build ==="
+          find build/ -type f -executable 2>/dev/null | head -20 || echo "No executable files found"
+          
+          echo "=== Check for specific binary names anywhere ==="
+          find build/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" 2>/dev/null || echo "No target binaries found"
+          
+          echo "=== CMake build logs check ==="
+          if [ -f "build/CMakeFiles/CMakeOutput.log" ]; then
+            echo "CMake Output Log (last 50 lines):"
+            tail -50 build/CMakeFiles/CMakeOutput.log
+          else
+            echo "No CMakeOutput.log found"
+          fi
+          
+          if [ -f "build/CMakeFiles/CMakeError.log" ]; then
+            echo "CMake Error Log:"
+            cat build/CMakeFiles/CMakeError.log
+          else
+            echo "No CMakeError.log found"
+          fi
+          
+          echo "=== App-specific build directories ==="
+          for app in generator matching_engine client_algorithm playback; do
+            if [ -d "build/src/apps/$app" ]; then
+              echo "Contents of build/src/apps/$app:"
+              ls -la "build/src/apps/$app/" || echo "Directory listing failed"
+              
+              echo "Makefiles in build/src/apps/$app:"
+              find "build/src/apps/$app" -name "Makefile" -exec head -20 {} \; 2>/dev/null || echo "No Makefiles found"
+              
+              echo "CMakeFiles for $app:"
+              find "build/src/apps/$app" -name "*.dir" -type d 2>/dev/null | head -5 || echo "No CMakeFiles dirs found"
+            else
+              echo "❌ build/src/apps/$app directory not found"
+            fi
+          done
+          
+          echo "=== System Environment ==="
+          echo "Compiler version:"
+          g++ --version || echo "g++ not found"
+          echo "CMake version:"
+          cmake --version || echo "cmake not found"
+          echo "Available disk space:"
+          df -h . || echo "df failed"
+          echo "Memory info:"
+          free -h || echo "free failed"
+          
+          echo "=== BUILD LOG ANALYSIS ==="
+          if [ -f "debug-build.log" ]; then
+            echo "Debug build log contents (last 100 lines):"
+            tail -100 debug-build.log
+            echo "Build log ERROR lines:"
+            grep -i "error\|failed\|fatal" debug-build.log || echo "No obvious errors in build log"
+          else
+            echo "No debug build log found"
+          fi
 
       - name: Run Debug Tests
         run: python3 scripts/ci_cd/beacon-run-all-tests.py
@@ -98,8 +165,25 @@ jobs:
       - name: Archive Debug Binaries
         run: |
           echo "📦 Preparing debug binaries for upload..."
-          echo "🔍 First, let's see what was actually built:"
-          find build/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "No binaries found in build/"
+          echo "🔍 FINAL BUILD VERIFICATION - What was actually created:"
+          
+          echo "=== All files in build (first 100) ==="
+          find build/ -type f 2>/dev/null | head -100 | sort || echo "No files found in build/"
+          
+          echo "=== Looking for target binaries ==="
+          find build/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "❌ NO TARGET BINARIES FOUND - BUILD FAILED"
+          
+          echo "=== All executable files in build ==="
+          find build/ -type f -executable 2>/dev/null | head -20 || echo "❌ NO EXECUTABLE FILES FOUND"
+          
+          echo "=== Files with 'generator' in name ==="
+          find build/ -name "*generator*" 2>/dev/null || echo "No generator-related files"
+          
+          echo "=== Files with 'matching' in name ==="
+          find build/ -name "*matching*" 2>/dev/null || echo "No matching-related files"
+          
+          echo "=== Files with 'Algo' in name ==="
+          find build/ -name "*Algo*" 2>/dev/null || echo "No Algo-related files"
           
           echo "🔍 Build directory structure:"
           ls -la build/src/apps/ 2>/dev/null || echo "No build/src/apps/ directory"
@@ -233,13 +317,52 @@ jobs:
         run: python3 scripts/ci_cd/beacon-clean-all.py
 
       - name: Build Release
-        run: python3 scripts/ci_cd/beacon-build-all-release.py
+        run: |
+          echo "🔧 Starting Release Build Process..."
+          python3 scripts/ci_cd/beacon-build-all-release.py 2>&1 | tee release-build.log
+          echo "Release build exit code: $?"
+          echo "Release build log saved to release-build.log"
+        
+      - name: 🔍 COMPREHENSIVE RELEASE BUILD DEBUG ANALYSIS
+        run: |
+          echo "🔍 COMPREHENSIVE CI RELEASE BUILD ANALYSIS"
+          echo "=== Release Build Directory Structure (full details) ==="
+          find build-release/ -type f -name "*" 2>/dev/null | head -50 || echo "No files in build-release/"
+          
+          echo "=== Check for ANY executable files in build-release ==="
+          find build-release/ -type f -executable 2>/dev/null | head -20 || echo "No executable files found"
+          
+          echo "=== Check for specific binary names anywhere in release ==="
+          find build-release/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" 2>/dev/null || echo "No target binaries found"
+          
+          echo "=== Release CMake build logs check ==="
+          if [ -f "build-release/CMakeFiles/CMakeOutput.log" ]; then
+            echo "Release CMake Output Log (last 50 lines):"
+            tail -50 build-release/CMakeFiles/CMakeOutput.log
+          else
+            echo "No release CMakeOutput.log found"
+          fi
+          
+          if [ -f "build-release/CMakeFiles/CMakeError.log" ]; then
+            echo "Release CMake Error Log:"
+            cat build-release/CMakeFiles/CMakeError.log
+          else
+            echo "No release CMakeError.log found"
+          fi
 
       - name: Archive Release Binaries  
         run: |
           echo "📦 Preparing release binaries for upload..."
-          echo "🔍 First, let's see what was actually built:"
-          find build-release/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "No binaries found in build-release/"
+          echo "🔍 FINAL RELEASE BUILD VERIFICATION - What was actually created:"
+          
+          echo "=== All files in build-release (first 100) ==="
+          find build-release/ -type f 2>/dev/null | head -100 | sort || echo "No files found in build-release/"
+          
+          echo "=== Looking for target binaries in release ==="
+          find build-release/ -name "generator" -o -name "matching_engine" -o -name "AlgoTwapProtocol" -o -name "playback" -type f 2>/dev/null | sort || echo "❌ NO TARGET BINARIES FOUND - RELEASE BUILD FAILED"
+          
+          echo "=== All executable files in build-release ==="
+          find build-release/ -type f -executable 2>/dev/null | head -20 || echo "❌ NO EXECUTABLE FILES FOUND"
           
           echo "🔍 Build-release directory structure:"
           ls -la build-release/src/apps/ 2>/dev/null || echo "No build-release/src/apps/ directory"
