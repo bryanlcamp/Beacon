@@ -1,4 +1,4 @@
-name: Beacon CI - FRESH START v6.0
+name: Beacon CI - EXTREME DEBUGGING v7.0
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  CACHE_VERSION: v6.0
+  CACHE_VERSION: v7.0
   BUILD_TIMESTAMP: ${{ github.run_number }}
   ACTIONS_RUNNER_DEBUG: true
 
@@ -22,9 +22,19 @@ jobs:
           fetch-depth: 0
           clean: true
 
-      - name: 🔥 COMPLETE FRESH START v6.0 🔥
+      - name: 🚀 EXTREME DEBUGGING v7.0 - SHOW EVERYTHING 🚀
         run: |
-          echo "🔥 COMPLETE FRESH START v6.0 - NO CACHE ALLOWED"
+          echo "🚀 EXTREME DEBUGGING v7.0 - SHOW EXACTLY WHAT GITHUB ACTIONS SEES"
+          
+          # Show working directory and git status
+          echo "📂 Working Directory: $(pwd)"
+          echo "🌿 Git Branch: $(git branch --show-current)"
+          echo "📋 Git Status:"
+          git status --porcelain
+          echo "🔗 Git Remote:"
+          git remote -v
+          echo "📝 Last Commit:"
+          git log --oneline -1
           
           # Nuclear cache clearing
           rm -rf ~/.cache/cmake* ~/.cmake* || true
@@ -35,18 +45,25 @@ jobs:
           find . -name "CMakeFiles" -type d -exec rm -rf {} + || true
           find . -name ".git" -prune -o -name "*cmake*" -type d -exec rm -rf {} + || true
           
-          echo "🔍 DEBUGGING: Verify we have the CORRECT files:"
-          echo "--- ConfigFileParser.h lines 120-130 (should show lowercase members) ---"
-          sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
-          echo "--- Should see priceRange, quantityRange, previousDay (lowercase) ---"
+          echo "🔍 CRITICAL DEBUGGING: ConfigFileParser.h content:"
+          echo "--- Full file info ---"
+          ls -la src/apps/generator/include/ConfigFileParser.h
+          echo "--- File checksum ---"
+          md5sum src/apps/generator/include/ConfigFileParser.h || true
+          echo "--- Lines 115-135 (around the problem area) ---"
+          sed -n '115,135p' src/apps/generator/include/ConfigFileParser.h
+          echo "--- Search for 'PriceRange PriceRange' (OLD bad version) ---"
+          grep -n "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h || echo "✅ OLD version not found (good!)"
+          echo "--- Search for 'priceRange' (NEW good version) ---"
+          grep -n "priceRange" src/apps/generator/include/ConfigFileParser.h || echo "❌ NEW version not found (bad!)"
           
           echo "--- CMakeLists.txt v4.0 check ---"
           grep -i "v4.0\|MEGA-FIXED\|Cache Destroyer" src/apps/client_algorithm/CMakeLists.txt || echo "❌ v4.0 markers not found!"
           
           echo "--- Source files verification ---"
-          ls -la src/apps/client_algorithm/src/
+          ls -la src/apps/client_algorithm/src/ || echo "❌ Client algorithm src not found!"
           
-          echo "📅 Fresh Version: ${{ env.CACHE_VERSION }}"
+          echo "📅 Extreme Version: ${{ env.CACHE_VERSION }}"
           echo "🔢 Build: ${{ env.BUILD_TIMESTAMP }}"
           echo "🕒 Time: $(date)"
 
@@ -76,6 +93,22 @@ jobs:
           echo "🧹 Final cleanup before build..."
           rm -rf build* || true
           python3 scripts/ci_cd/beacon-clean-all.py || echo "Clean script not critical"
+
+      - name: 🚑 EMERGENCY FIX - Force correct ConfigFileParser.h 🚑
+        run: |
+          echo "🚑 EMERGENCY: Force-fixing ConfigFileParser.h if needed"
+          
+          # Check if we still have the bad version
+          if grep -q "PriceRange PriceRange" src/apps/generator/include/ConfigFileParser.h; then
+            echo "❌ DETECTED OLD VERSION! Force-patching..."
+            sed -i 's/PriceRange PriceRange;/PriceRange priceRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/QuantityRange QuantityRange;/QuantityRange quantityRange;/g' src/apps/generator/include/ConfigFileParser.h
+            sed -i 's/PreviousDay PreviousDay;/PreviousDay previousDay;/g' src/apps/generator/include/ConfigFileParser.h
+            echo "✅ PATCHED! New content:"
+            sed -n '120,130p' src/apps/generator/include/ConfigFileParser.h
+          else
+            echo "✅ ConfigFileParser.h looks correct - no patching needed"
+          fi
 
       - name: Configure CMake (FRESH)
         run: |
