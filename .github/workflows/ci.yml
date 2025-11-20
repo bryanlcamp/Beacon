@@ -249,26 +249,29 @@ jobs:
           echo "🔍 Checking Debug build outputs:"
           ls -la build/ 2>/dev/null || echo "Build directory not found"
           
-          # Check for specific binaries
-          if test -f build/generator; then
+          # Check for binaries in subdirectories
+          if test -f build/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build/generator
+            chmod +x build/generator/generator
           else
             echo "❌ Generator not found"
+            ls -la build/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build/matching_engine; then
+          if test -f build/matching_engine/matching_engine; then
             echo "✅ Matching engine found" 
-            chmod +x build/matching_engine
+            chmod +x build/matching_engine/matching_engine
           else
             echo "❌ Matching engine not found"
+            ls -la build/matching_engine/ 2>/dev/null || echo "Matching engine directory empty"
           fi
           
-          if test -f build/AlgoTwapProtocol; then
+          if test -f build/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build/AlgoTwapProtocol
+            chmod +x build/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
+            ls -la build/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Verify Release Build  
@@ -276,26 +279,29 @@ jobs:
           echo "🔍 Checking Release build outputs:"
           ls -la build-release/ 2>/dev/null || echo "Build-release directory not found"
           
-          # Check for specific binaries
-          if test -f build-release/generator; then
+          # Check for binaries in subdirectories
+          if test -f build-release/generator/generator; then
             echo "✅ Generator found"
-            chmod +x build-release/generator
+            chmod +x build-release/generator/generator
           else
             echo "❌ Generator not found"
+            ls -la build-release/generator/ 2>/dev/null || echo "Generator directory empty"
           fi
           
-          if test -f build-release/matching_engine; then
+          if test -f build-release/matching_engine/matching_engine; then
             echo "✅ Matching engine found"
-            chmod +x build-release/matching_engine
+            chmod +x build-release/matching_engine/matching_engine
           else
-            echo "❌ Matching engine not found"  
+            echo "❌ Matching engine not found"
+            ls -la build-release/matching_engine/ 2>/dev/null || echo "Matching engine directory empty"
           fi
           
-          if test -f build-release/AlgoTwapProtocol; then
+          if test -f build-release/client_algorithm/AlgoTwapProtocol; then
             echo "✅ AlgoTwapProtocol found"
-            chmod +x build-release/AlgoTwapProtocol
+            chmod +x build-release/client_algorithm/AlgoTwapProtocol
           else
             echo "❌ AlgoTwapProtocol not found"
+            ls -la build-release/client_algorithm/ 2>/dev/null || echo "Client algorithm directory empty"
           fi
 
       - name: Test Configuration Validation
