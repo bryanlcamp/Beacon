@@ -56,15 +56,6 @@
             margin-bottom: 30px;
         }
         
-        .intro {
-            margin-bottom: 50px;
-        }
-        
-        .intro p {
-            font-size: 1.1rem;
-            text-align: center;
-        }
-        
         .workflow-tree {
             max-width: 500px;
             margin: 0 auto;
@@ -73,45 +64,51 @@
         .step {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            padding: 15px 20px;
+            margin-bottom: 8px;
+            padding: 10px 16px;
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
         }
         
         .step-number {
             background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            margin-right: 15px;
+            margin-right: 12px;
             flex-shrink: 0;
         }
         
         .step-link {
             color: #ffffff;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .step:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-left-color: rgba(255, 255, 255, 0.4);
         }
         
         .step-link:hover {
-            opacity: 0.7;
+            opacity: 1;
         }
         
         .connector {
             text-align: center;
             color: rgba(255, 255, 255, 0.3);
-            font-size: 1.2rem;
-            margin: 5px 0;
+            font-size: 1rem;
+            margin: 3px 0;
         }
         
         @media (max-width: 768px) {
@@ -138,10 +135,6 @@
         
         <h1>Beacon.</h1>
         <p class="subtitle">Your Personal Guide. From Idea to Market.</p>
-        
-        <div class="intro">
-            <p>Beacon helps you build and test trading algorithms with realistic market conditions.</p>
-        </div>
         
         <div class="workflow-tree">
             <div class="step">
