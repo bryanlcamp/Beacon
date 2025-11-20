@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Trading System</title>
+    <meta http-equiv="refresh" content="0; url=docs/">
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; text-align: center;
+        }
+        .redirect { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 10px; }
+        .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white;
+                  border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 1rem auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="redirect">
+        <h1>🚀 Beacon Trading System</h1>
+        <div class="spinner"></div>
+        <p>Redirecting to documentation...</p>
+        <p><a href="docs/" style="color: #FFD700;">Click here if not redirected automatically</a></p>
+    </div>
+    
+    <script>
+        // Backup redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'docs/';
+        }, 2000);
+    </script>
+</body>
+</html>
