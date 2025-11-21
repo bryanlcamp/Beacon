@@ -24,21 +24,23 @@
             overflow: hidden;
         }
         
-        /* Sharp lighthouse-style light beams */
+        /* Distinct light rays showing the path forward */
         body::before {
             content: '';
             position: absolute;
-            top: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 70%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: 
-                linear-gradient(162deg, transparent 45%, rgba(255, 255, 255, 0.1) 48%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.1) 52%, transparent 55%),
-                linear-gradient(170deg, transparent 45%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.08) 52%, transparent 55%),
-                linear-gradient(178deg, transparent 45%, rgba(255, 255, 255, 0.12) 48%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.12) 52%, transparent 55%),
-                linear-gradient(186deg, transparent 45%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.08) 52%, transparent 55%),
-                linear-gradient(198deg, transparent 45%, rgba(255, 255, 255, 0.1) 48%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.1) 52%, transparent 55%);
+                /* Central ray - strongest */
+                linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.05) 50%, transparent 75%),
+                /* Left rays */
+                linear-gradient(185deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
+                linear-gradient(190deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%),
+                /* Right rays */
+                linear-gradient(175deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
+                linear-gradient(170deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
             z-index: 1;
         }
         
