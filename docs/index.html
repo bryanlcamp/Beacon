@@ -24,16 +24,21 @@
             overflow: hidden;
         }
         
-        /* Rays of light effect positioned in upper portion */
+        /* Sharp lighthouse-style light beams */
         body::before {
             content: '';
             position: absolute;
-            top: 10%;
+            top: 5%;
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
-            height: 60%;
-            background: radial-gradient(ellipse 50% 30% at 50% 20%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 70%, transparent 100%);
+            width: 60%;
+            height: 70%;
+            background: 
+                linear-gradient(162deg, transparent 45%, rgba(255, 255, 255, 0.1) 48%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.1) 52%, transparent 55%),
+                linear-gradient(170deg, transparent 45%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.08) 52%, transparent 55%),
+                linear-gradient(178deg, transparent 45%, rgba(255, 255, 255, 0.12) 48%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.12) 52%, transparent 55%),
+                linear-gradient(186deg, transparent 45%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.08) 52%, transparent 55%),
+                linear-gradient(198deg, transparent 45%, rgba(255, 255, 255, 0.1) 48%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.1) 52%, transparent 55%);
             z-index: 1;
         }
         
