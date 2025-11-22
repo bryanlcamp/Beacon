@@ -42,12 +42,12 @@ Beacon consists of several core components:
 ```cpp
 class MyCustomAlgorithm : public IAlgorithm {
 public:
-    void onMarketData(const MarketData& data) override {
+    void OnMarketData(const MarketData& data) override {
         // Process market data
         // Make trading decisions
     }
     
-    void onExecutionReport(const ExecutionReport& report) override {
+    void OnExecutionReport(const ExecutionReport& report) override {
         // Handle order fills
         // Update position tracking
     }

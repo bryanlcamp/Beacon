@@ -91,10 +91,85 @@
             letter-spacing: 0.5px;
         }
         
-        .coming-soon {
-            text-align: center;
-            margin-top: 100px;
-            opacity: 0.6;
+        .content-section {
+            max-width: none;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 50px 0 25px 0;
+            color: #ffffff;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0 50px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        
+        .tech-specs {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .spec-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+        
+        .scenario-list {
+            list-style: none;
+            margin: 25px 0;
+        }
+        
+        .scenario-list li {
+            padding: 10px 0;
+            opacity: 0.9;
+        }
+        
+        .scenario-list li::before {
+            content: "→";
+            color: rgba(255, 255, 255, 0.5);
+            margin-right: 10px;
+        }
+        
+        .cta-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cta-section h3 {
+            margin-bottom: 15px;
+            color: #ffffff;
         }
         
         @media (max-width: 768px) {
@@ -153,11 +228,66 @@
     <div class="container">
         <a href="docs.html" class="back-link">← Back to Documentation</a>
         
-        <h1>Create Tailored Market Data</h1>
-        <p class="subtitle">Technical details coming soon...</p>
+        <h1>Realistic Market Data Generation</h1>
+        <p class="subtitle">OHLCV patterns with burst and wave dynamics for sophisticated backtesting</p>
         
-        <div class="coming-soon">
-            <p>This section will contain detailed technical information about market data creation.</p>
+        <div class="content-section">
+            <h2>Advanced Pattern Generation</h2>
+            <p>Beacon's market data generator creates realistic trading scenarios using sophisticated statistical models:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📊 OHLCV Structure</h3>
+                    <p><strong>Open, High, Low, Close, Volume</strong> - Industry-standard candlestick data with proper temporal relationships and realistic price movements.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>⚡ Burst Patterns</h3>
+                    <p><strong>Volatility Spikes</strong> - Sudden volume surges and price jumps that mirror real market events like news releases or large institutional orders.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🌊 Wave Dynamics</h3>
+                    <p><strong>Trend Cycles</strong> - Natural price oscillations with momentum buildups and reversion periods that test algorithm resilience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>🎯 Multi-Symbol Support</h3>
+                    <p><strong>Correlated Assets</strong> - Generate data for AAPL, MSFT, GOOGL with realistic cross-correlations and sector relationships.</p>
+                </div>
+            </div>
+            
+            <h2>Technical Implementation</h2>
+            <div class="tech-specs">
+                <div class="spec-item">
+                    <strong>Data Format:</strong> High-resolution tick data with microsecond timestamps
+                </div>
+                <div class="spec-item">
+                    <strong>Distribution:</strong> UDP multicast for realistic market data feed simulation
+                </div>
+                <div class="spec-item">
+                    <strong>Volume Profile:</strong> Intraday patterns matching real market sessions
+                </div>
+                <div class="spec-item">
+                    <strong>Price Movements:</strong> Brownian motion with jump-diffusion components
+                </div>
+            </div>
+            
+            <h2>Algorithmic Testing Scenarios</h2>
+            <p>The generated data creates challenging scenarios that validate algorithm performance:</p>
+            
+            <ul class="scenario-list">
+                <li><strong>Gap Opens</strong> - Test algorithm behavior during overnight price jumps</li>
+                <li><strong>Flash Crashes</strong> - Validate risk controls during extreme volatility</li>
+                <li><strong>Low Liquidity</strong> - Challenge execution during thin order book periods</li>
+                <li><strong>Trending Markets</strong> - Measure performance during sustained directional moves</li>
+                <li><strong>Range-Bound Trading</strong> - Test mean reversion strategies in sideways markets</li>
+            </ul>
+            
+            <div class="cta-section">
+                <h3>Real-World Realism</h3>
+                <p>Unlike simple random walk generators, Beacon's market data incorporates the statistical properties that make real trading challenging - ensuring your algorithms are battle-tested before deployment.</p>
+            </div>
         </div>
     </div>
 </body>

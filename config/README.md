@@ -2,25 +2,6 @@
 
 Clear, organized configuration management for Beacon Trading System.
 
-## 📖 Directory Structure
-
-```
-config/
-├── system/                    # 🎯 ACTIVE SYSTEM CONFIGS
-│   ├── startBeacon.json      # Main system configuration
-│   ├── startBeaconCME.json   # CME-specific setup
-│   ├── startBeaconNYSE.json  # NYSE-specific setup  
-│   └── startBeaconNasdaq.json # NASDAQ-specific setup
-│
-├── templates/                 # 📝 COMPONENT TEMPLATES
-│   ├── algorithm/            # Algorithm config templates
-│   ├── generator/            # Market data generator templates
-│   ├── matching_engine/      # Matching engine templates
-│   └── playback/             # Playbook system templates
-│
-└── README.md                 # This file
-```
-
 ## 🎯 Usage Guide
 
 ### **For Simple Interface Users** 

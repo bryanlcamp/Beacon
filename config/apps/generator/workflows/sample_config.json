@@ -1,0 +1,86 @@
+{  
+  "Global": {
+    "NumMessages": 10000,
+    "Exchange": "nsdq"
+  },
+  "Wave": {
+    "WaveDurationMs": 2000,
+    "WaveAmplitudePercent": 110.0
+  },
+  "Burst": {
+    "Enabled": true,
+    "BurstIntensityPercent": 250.0,
+    "BurstFrequencyMs": 5000
+  },
+  "Symbols": [
+    {
+      "SymbolName": "MSFT",
+      "PercentTotalMessages": 60,
+      "TradeProbability": 0.1,
+      "SpreadPercentage": 0.8,
+      "PriceRange": {
+        "MinPrice": 475.00,
+        "MaxPrice": 535.00,
+        "Weight": 1.0
+      },
+      "QuantityRange": {
+        "MinQuantity": 10,
+        "MaxQuantity": 100,
+        "Weight": 1.0
+      },
+      "PrevDay": {
+        "OpenPrice": 508.29,
+        "HighPrice": 514.83,
+        "LowPrice": 506.57,
+        "ClosePrice": 510.53,
+        "Volume": 14358338
+      }      
+    },
+    {
+      "SymbolName": "AAPL",
+      "PercentTotalMessages": 30,
+      "TradeProbability": 0.2,
+      "SpreadPercentage": 0.6,
+      "PriceRange": {
+        "MinPrice": 220.00,
+        "MaxPrice": 300.00,
+        "Weight": 1.0
+      },
+      "QuantityRange": {
+        "MinQuantity": 5,
+        "MaxQuantity": 50,
+        "Weight": 1.0
+      },
+      "PrevDay": {
+        "OpenPrice": 274.29,
+        "HighPrice": 275.93,
+        "LowPrice": 245.19,
+        "ClosePrice": 267.22,
+        "Volume": 44918325
+      }
+    },
+    {
+      "SymbolName": "GOOG",
+      "PercentTotalMessages": 10,
+      "TradeProbability": 0.15,
+      "SpreadPercentage": 0.3,
+      "PriceRange": {
+        "MinPrice": 270.00,
+        "MaxPrice": 325.00,
+        "Weight": 1.0
+      },
+      "QuantityRange": {
+        "MinQuantity": 1,
+        "MaxQuantity": 10,
+        "Weight": 1.0
+      },
+      "PrevDay": {
+        "OpenPrice": 285.59,
+        "HighPrice": 293.83,
+        "LowPrice": 277.57,
+        "ClosePrice": 280.53,
+        "Volume": 34090105
+      }
+    }
+  ]
+}

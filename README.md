@@ -1,10 +1,10 @@
-# 🚀 Beacon Trading System
+# Beacon Trading System
 
 **The Ultimate Simple High-Frequency Trading Platform**
 
 Beacon is a professional-grade trading system that implements TWAP (Time-Weighted Average Price) algorithms with protocol-aware execution for NASDAQ OUCH v5.0, NYSE Pillar v3.2, and CME iLink 3 protocols.
 
-## ✨ The Professional Interface
+## The Professional Interface
 
 **One Command. One Config File. That's it.**
 
@@ -12,7 +12,7 @@ Beacon is a professional-grade trading system that implements TWAP (Time-Weighte
 python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. **Run the System** (First Time)
 ```bash
@@ -20,10 +20,10 @@ python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
 The system will:
-- ✅ Automatically detect if you need to build (first run)
-- ✅ Compile all required components using professional build system
-- ✅ Use professional system configuration
-- ✅ Run your first TWAP trade simulation
+- Automatically detect if you need to build (first run)
+- Compile all required components using professional build system
+- Use professional system configuration
+- Run your first TWAP trade simulation
 
 ### 2. **Customize Your Trading** 
 Edit the system config files in `config/system/` or use the configuration management tool:
@@ -60,30 +60,30 @@ python3 beacon-config.py  # Interactive configuration editor
 python3 beacon-run.py -i config/system/startBeacon.json
 ```
 
-That's it! 🎉
+That's it!
 
-## 📊 Sample Output
+## Sample Output
 
 ```
-🚀 BEACON TRADING SYSTEM 🚀
+BEACON TRADING SYSTEM
 Protocol: CME | Duration: 30s
 
 TRADE: AAPL | BUY 1,000 @ $150.00 | 2min window
 COMPONENTS: DATA-GEN + MATCH-ENG + ALGO
 
-[16:07:14.611] [SUCCESS] [BUILD    ] ✅ All required binaries ready!
-[16:07:14.611] [INFO   ] [SYSTEM   ] 🚀 Starting components...
+[16:07:14.611] [SUCCESS] [BUILD    ] All required binaries ready!
+[16:07:14.611] [INFO   ] [SYSTEM   ] Starting components...
 [16:07:15.118] [SUCCESS] [GENERATOR] Data generation complete
 [16:07:17.632] [SUCCESS] [MATCH-ENG] Ready on port 9002 (PID: 35947)
 [16:07:19.149] [SUCCESS] [ALGORITHM] Connected to matching engine (PID: 35964)
-[16:07:21.153] [SUCCESS] [SYSTEM   ] 🎉 All components started!
-[16:07:21.154] [INFO   ] [ALGORITHM] 🎯 Executing TWAP: BUY 1,000 AAPL over 2 minutes
+[16:07:21.153] [SUCCESS] [SYSTEM   ] All components started!
+[16:07:21.154] [INFO   ] [ALGORITHM] Executing TWAP: BUY 1,000 AAPL over 2 minutes
 [16:07:21.154] [INFO   ] [MONITOR  ] Monitoring session for 30 seconds (settlement & trade tracking)...
-[16:07:51.843] [SUCCESS] [SYSTEM   ] ✅ Trading session complete - Runtime: 30s
-[16:07:51.843] [INFO   ] [SYSTEM   ] 📋 Trade report: ./outputs/trade_report.log
+[16:07:51.843] [SUCCESS] [SYSTEM   ] Trading session complete - Runtime: 30s
+[16:07:51.843] [INFO   ] [SYSTEM   ] Trade report: ./outputs/trade_report.log
 ```
 
-## 🎯 What Just Happened?
+## What Just Happened?
 
 1. **Data Generation** - Created realistic market data for your symbols
 2. **Matching Engine** - Started a CME-protocol matching engine on port 9002  
@@ -94,28 +94,28 @@ COMPONENTS: DATA-GEN + MATCH-ENG + ALGO
 
 ## 📖 Documentation
 
-### 🚀 **Getting Started**
-- 📖 **[Documentation Hub](docs/index.md)** - Complete navigation and overview
-- 🏁 **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial
-- 🔧 **[Configuration Guide](docs/configuration.md)** - All settings explained
-- 🚨 **[Troubleshooting](docs/troubleshooting.md)** - Common issues & solutions
+### **Getting Started**
+- **[Documentation Hub](docs/index.md)** - Complete navigation and overview
+- **[Getting Started Guide](docs/getting-started.md)** - Step-by-step tutorial
+- **[Configuration Guide](docs/configuration.md)** - All settings explained
+- **[Troubleshooting](docs/troubleshooting.md)** - Common issues & solutions
 
-### ⚙️ **Advanced Usage**  
-- 💪 **[Advanced Features](docs/advanced-usage.md)** - Power user features (`beacon-run.py`)
-- 🏗️ **[Architecture Guide](docs/architecture.md)** - How Beacon works internally
-- 🔨 **[Build System](docs/building.md)** - Professional Python build system
-- 🚀 **[CI/CD Pipeline](docs/ci-cd.md)** - Automated deployment system
+### **Advanced Usage**  
+- **[Advanced Features](docs/advanced-usage.md)** - Power user features (`beacon-run.py`)
+- **[Architecture Guide](docs/architecture.md)** - How Beacon works internally
+- **[Build System](docs/building.md)** - Professional Python build system
+- **[CI/CD Pipeline](docs/ci-cd.md)** - Automated deployment system
 
-### 📊 **Trading & Protocols**
-- 🔌 **[Exchange Protocols](docs/exchange_protocols/)** - NASDAQ, CME, NYSE protocol documentation
-- 📡 **[UDP/TCP Guide](docs/UDP_TCP_LOOPBACK_GUIDE.md)** - Network configuration and testing
-- ❓ **[FAQ](docs/faq.md)** - Frequently asked questions
+### **Trading & Protocols**
+- **[Exchange Protocols](docs/exchange_protocols/)** - NASDAQ, CME, NYSE protocol documentation
+- **[UDP/TCP Guide](docs/UDP_TCP_LOOPBACK_GUIDE.md)** - Network configuration and testing
+- **[FAQ](docs/faq.md)** - Frequently asked questions
 
-### 📋 **Planning & Development**
-- 📝 **[TODO & Roadmap](docs/TODO.md)** - Project planning and future enhancements  
-- 📊 **[Documentation Summary](docs/DOCUMENTATION_SUMMARY.md)** - Complete docs overview (~53,000 words)
+### **Planning & Development**
+- **[TODO & Roadmap](docs/TODO.md)** - Project planning and future enhancements  
+- **[Documentation Summary](docs/DOCUMENTATION_SUMMARY.md)** - Complete docs overview (~53,000 words)
 
-## ⚙️ Advanced Configuration
+## Advanced Configuration
 
 Want more control? Beacon also supports advanced system configurations:
 
@@ -143,7 +143,7 @@ Algorithm ← TCP ← Matching Engine
 - **Algorithm**: TWAP execution with binary protocol messaging
 - **Monitoring**: Real-time progress tracking and settlement
 
-## 🔧 Supported Protocols
+## Supported Protocols
 
 - **NASDAQ OUCH v5.0** - NASDAQ's native binary protocol
 - **NYSE Pillar v3.2** - NYSE's high-performance protocol  
@@ -151,7 +151,7 @@ Algorithm ← TCP ← Matching Engine
 
 All protocols use proper binary message formatting over TCP connections.
 
-## 📈 TWAP Algorithm Features
+## TWAP Algorithm Features
 
 - **Time-Weighted Execution** - Spreads orders evenly across time window
 - **Configurable Slicing** - Control how many child orders to create
@@ -159,14 +159,14 @@ All protocols use proper binary message formatting over TCP connections.
 - **Risk Controls** - Price tolerance and participation rate limits
 - **Real-time Monitoring** - Track execution progress and fills
 
-## 🛠️ Requirements
+## Requirements
 
 - **C++17** compiler (g++, clang++)
 - **CMake 3.15+** 
 - **Python 3.6+**
 - **macOS/Linux** (tested on macOS, should work on Linux)
 
-## 📋 Configuration Reference
+## Configuration Reference
 
 ### Trading Settings
 - `symbol` - Stock symbol (AAPL, MSFT, etc.)
@@ -182,7 +182,7 @@ All protocols use proper binary message formatting over TCP connections.
 - `market_data_port` - UDP port for market data (default: 8002)
 - `order_entry_port` - TCP port for orders (default: 9002)
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 **Port 9002 permission denied (-13 error)?**
 ```bash
@@ -201,7 +201,7 @@ python3 beacon-build.py --debug # Debug build with symbols
 python3 beacon-config.py  # Restores default config
 ```
 
-## 📝 Trade Reports
+## Trade Reports
 
 Detailed execution logs are saved to `trade_report.log`:
 - Order submissions and acknowledgments
@@ -209,7 +209,7 @@ Detailed execution logs are saved to `trade_report.log`:
 - Protocol-specific message details
 - Timing and performance metrics
 
-## 🎯 Use Cases
+## Use Cases
 
 - **Algorithm Development** - Test TWAP strategies safely
 - **Protocol Testing** - Validate binary message formatting
@@ -219,7 +219,7 @@ Detailed execution logs are saved to `trade_report.log`:
 
 ---
 
-## 💡 Philosophy
+## Philosophy
 
 **Trading systems should be simple to use, not simple to build.**
 
@@ -234,4 +234,4 @@ So you can focus on what matters: **your trading strategy**.
 
 ---
 
-*Built with ❤️ for algorithmic traders who value both power and simplicity.*
+*Built for algorithmic traders who value both power and simplicity.*
