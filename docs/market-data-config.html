@@ -847,7 +847,7 @@
     <div style="position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, rgba(0,150,255,0.2), rgba(0,120,255,0.25)); 
                 border-bottom: 1px solid rgba(0,150,255,0.4); padding: 10px 0; z-index: 1000;
                 font-size: 0.9rem; font-weight: 600; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 15px;">
-        <span>This is an Interactive Demo of Beacon. Play around with the features!</span>
+        <span>This is an Interactive Demo of Beacon.    Play around with the features!</span>
         <a href="https://github.com/bryanlcamp/beacon" style="color: rgba(255,255,255,0.8); transition: color 0.3s ease;" 
            onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1273,10 +1273,7 @@
                 
                 // Special handling for percentage inputs to validate Generate button
                 if (input.classList.contains('percentage-input')) {
-                    input.addEventListener('input', function() {
-                        console.log(`Percentage input changed: "${this.value}" (symbol: ${this.closest('.symbol-row')?.querySelector('.symbol-input')?.value || 'unknown'})`);
-                        validatePercentages();
-                    });
+                    input.addEventListener('input', validatePercentages);
                     input.addEventListener('blur', validatePercentages);
                 }
             });
@@ -1522,10 +1519,7 @@
                 
                 // Special handling for percentage inputs
                 if (input.classList.contains('percentage-input')) {
-                    input.addEventListener('input', function() {
-                        console.log(`New symbol percentage input changed: "${this.value}" (symbol: ${this.closest('.symbol-row')?.querySelector('.symbol-input')?.value || 'new symbol'})`);
-                        validatePercentages();
-                    });
+                    input.addEventListener('input', validatePercentages);
                     input.addEventListener('blur', validatePercentages);
                 }
             });
