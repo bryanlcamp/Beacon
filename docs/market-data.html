@@ -13,15 +13,40 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: hsl(220, 45%, 8%);
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
             color: #ffffff;
-            line-height: 1.7;
+            line-height: 1.6;
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 40px 20px;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 25px;
+            left: 40px;
+            z-index: 102;
+        }
+        
+        .back-button a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+        
+        .back-button a:hover {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .github-icon {
@@ -29,14 +54,13 @@
             top: 25px;
             right: 40px;
             z-index: 101;
-            color: #ffffff;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .github-icon:hover {
-            opacity: 1;
+            color: rgba(255, 255, 255, 0.9);
         }
         
         .nav-links {
@@ -77,18 +101,18 @@
         }
         
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            text-align: center;
         }
         
         .subtitle {
-            font-size: 1.3rem;
-            font-weight: 300;
+            text-align: center;
+            font-size: 1.1rem;
             opacity: 0.8;
-            margin-bottom: 50px;
-            letter-spacing: 0.5px;
+            margin-bottom: 40px;
+            font-weight: 600;
         }
         
         .content-section {
@@ -116,9 +140,15 @@
         
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             padding: 25px;
-            border-radius: 8px;
-            border-left: 4px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
         }
         
         .feature-card h3 {
@@ -172,6 +202,45 @@
             color: #ffffff;
         }
         
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .btn-success {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+            border: 1px solid rgba(0, 255, 100, 0.4);
+        }
+        
+        .btn-success:hover {
+            background: rgba(0, 255, 100, 0.3);
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 40px 20px;
@@ -204,6 +273,17 @@
             .subtitle {
                 font-size: 1.1rem;
             }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,8 +305,16 @@
         <a href="https://github.com/bryanlcamp">Contact</a>
     </nav>
 
+    <!-- Back button -->
+    <div class="back-button">
+        <a href="docs.html">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </a>
+    </div>
+
     <div class="container">
-        <a href="docs.html" class="back-link">← Back to Documentation</a>
         
         <h1>Realistic Market Data Generation</h1>
         <p class="subtitle">OHLCV patterns with burst and wave dynamics for sophisticated backtesting</p>
@@ -287,6 +375,11 @@
             <div class="cta-section">
                 <h3>Real-World Realism</h3>
                 <p>Unlike simple random walk generators, Beacon's market data incorporates the statistical properties that make real trading challenging - ensuring your algorithms are battle-tested before deployment.</p>
+                
+                <div class="action-buttons">
+                    <a href="market-data-config.html" class="btn btn-primary">Configure Market Data</a>
+                    <a href="../web/market-data-config.html" class="btn btn-success">Launch Web Interface</a>
+                </div>
             </div>
         </div>
     </div>
