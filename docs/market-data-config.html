@@ -1178,18 +1178,28 @@
                 const errorDiv = document.getElementById('validationErrors');
                 let total = 0;
                 let errors = [];
+                let symbolCount = 0;
                 
-                percentageInputs.forEach(input => {
-                    const value = parseFloat(input.value) || 0;
-                    total += value;
+                console.log('Validating percentages...'); // Debug
+                
+                percentageInputs.forEach((input, index) => {
+                    const value = parseFloat(input.value);
+                    const cleanValue = isNaN(value) ? 0 : value;
+                    
+                    console.log(`Symbol ${index + 1}: input="${input.value}" parsed=${cleanValue}`); // Debug
+                    
+                    total += cleanValue;
+                    symbolCount++;
                     
                     // Individual field validation
-                    if (value < 0) {
+                    if (cleanValue < 0) {
                         errors.push('Negative percentages not allowed');
-                    } else if (value > 100) {
+                    } else if (cleanValue > 100) {
                         errors.push('Individual percentages cannot exceed 100%');
                     }
                 });
+                
+                console.log(`Total calculated: ${total}% from ${symbolCount} symbols`); // Debug
                 
                 // Total validation
                 const totalError = Math.abs(total - 100);
@@ -1206,11 +1216,12 @@
                 // Update error display
                 if (errorDiv) {
                     if (errors.length > 0) {
-                        errorDiv.textContent = errors[0]; // Show first error
+                        errorDiv.textContent = errors[errors.length - 1]; // Show total error last
                         errorDiv.style.opacity = '1';
                     } else {
-                        errorDiv.textContent = '';
-                        errorDiv.style.opacity = '0';
+                        errorDiv.textContent = total === 100 ? '✓ Valid (100%)' : '';
+                        errorDiv.style.opacity = total === 100 ? '1' : '0';
+                        errorDiv.style.color = total === 100 ? '#00ff64' : '#ff6b6b';
                     }
                 }
                 
@@ -1262,7 +1273,10 @@
                 
                 // Special handling for percentage inputs to validate Generate button
                 if (input.classList.contains('percentage-input')) {
-                    input.addEventListener('input', validatePercentages);
+                    input.addEventListener('input', function() {
+                        console.log(`Percentage input changed: "${this.value}" (symbol: ${this.closest('.symbol-row')?.querySelector('.symbol-input')?.value || 'unknown'})`);
+                        validatePercentages();
+                    });
                     input.addEventListener('blur', validatePercentages);
                 }
             });
@@ -1398,7 +1412,10 @@
             
             if (config) {
                 populateFormFromConfig(config);
-                showDemoMessage('📊 Demo Workflow Loaded', `"${configName}" - Try adjusting the settings!`);
+                // Only show message if manually selected, not on auto-load
+                if (configName !== 'High Frequency Demo') {
+                    showDemoMessage('📊 Demo Workflow Loaded', `"${configName}" - Try adjusting the settings!`);
+                }
             }
         }
         
@@ -1505,7 +1522,10 @@
                 
                 // Special handling for percentage inputs
                 if (input.classList.contains('percentage-input')) {
-                    input.addEventListener('input', validatePercentages);
+                    input.addEventListener('input', function() {
+                        console.log(`New symbol percentage input changed: "${this.value}" (symbol: ${this.closest('.symbol-row')?.querySelector('.symbol-input')?.value || 'new symbol'})`);
+                        validatePercentages();
+                    });
                     input.addEventListener('blur', validatePercentages);
                 }
             });
