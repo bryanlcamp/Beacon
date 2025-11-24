@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting Guide - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 170, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .quick-fix {
+            background: rgba(255, 150, 0, 0.1);
+            border: 1px solid rgba(255, 150, 0, 0.3);
+            border-left: 4px solid #ff9600;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .error-box {
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            border-left: 4px solid #ff3232;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .solution-box {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            border-left: 4px solid #00ff64;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .log-example {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .debug-section {
+            border-left: 3px solid #00aaff;
+            padding-left: 20px;
+            margin: 25px 0;
+        }
+        
+        .problem-title {
+            color: #ff6666;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .solution-title {
+            color: #66ff66;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .log-level {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        .log-info { background: rgba(0, 170, 255, 0.3); }
+        .log-success { background: rgba(0, 255, 100, 0.3); }
+        .log-warning { background: rgba(255, 150, 0, 0.3); }
+        .log-error { background: rgba(255, 50, 50, 0.3); }
+        
+        a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Documentation</a>
+        
+        <header>
+            <h1>Troubleshooting Guide</h1>
+            <p class="subtitle">Common issues and solutions for Beacon Trading System</p>
+        </header>
+        
+        <div class="content">
+            <h2>Quick Fixes</h2>
+            
+            <div class="quick-fix">
+                <div class="problem-title">Port 9002 permission denied (-13 error)</div>
+                <p><strong>Problem:</strong> Matching engine can't bind to port 9002</p>
+                
+                <div class="solution-title">Solutions:</div>
+                <pre><code># Check what's using the port
+sudo lsof -i :9002
+
+# Kill any processes using the port  
+sudo kill &lt;PID&gt;
+
+# Or try a different port in beacon-config.json
+"order_entry_port": 9003</code></pre>
+            </div>
+            
+            <div class="quick-fix">
+                <div class="problem-title">Build failed or missing binaries</div>
+                <p><strong>Problem:</strong> System needs to be compiled</p>
+                
+                <div class="solution-title">Solutions:</div>
+                <pre><code># Manual build
+cmake -B build -S .
+cmake --build build
+
+# Or let beacon.py auto-build
+python3 beacon.py  # It will build automatically</code></pre>
+            </div>
+            
+            <div class="quick-fix">
+                <div class="problem-title">Config file not found or corrupted</div>
+                <p><strong>Problem:</strong> beacon-config.json is missing or invalid</p>
+                
+                <div class="solution-title">Solutions:</div>
+                <pre><code># Restore default config
+python3 beacon-config.py
+
+# Or delete and run again
+rm beacon-config.json
+python3 beacon.py  # Creates new config</code></pre>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Common Issues</h2>
+            
+            <div class="debug-section">
+                <h3>Component Startup Problems</h3>
+                
+                <h4>Algorithm fails to connect</h4>
+                <div class="error-box">
+                    <code>[ERROR] [ALGORITHM] Failed: Connection refused</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Cause:</strong> Matching engine not ready or port blocked</p>
+                    <p><strong>Fix:</strong></p>
+                    <ul>
+                        <li>Check matching engine started successfully</li>
+                        <li>Verify port 9002 is available</li>
+                        <li>Increase startup delays in config</li>
+                    </ul>
+                </div>
+                
+                <h4>Data generation fails</h4>
+                <div class="error-box">
+                    <code>[ERROR] [GENERATOR] Failed: Permission denied</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Cause:</strong> Can't write market_data.bin file</p>
+                    <p><strong>Fix:</strong></p>
+                    <ul>
+                        <li>Check write permissions in current directory</li>
+                        <li>Ensure sufficient disk space</li>
+                    </ul>
+                </div>
+                
+                <h4>Matching engine crashes immediately</h4>
+                <div class="error-box">
+                    <code>[ERROR] [MATCH-ENG] Exited with code -13</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Cause:</strong> Port permission or binding issue</p>
+                    <p><strong>Fix:</strong></p>
+                    <ul>
+                        <li>Use different port in config</li>
+                        <li>Check firewall settings</li>
+                        <li>Run <code>sudo lsof -i :9002</code></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="debug-section">
+                <h3>Configuration Issues</h3>
+                
+                <h4>Invalid JSON syntax</h4>
+                <div class="error-box">
+                    <code>[ERROR] [CONFIG] Config error: Expecting ',' delimiter</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Fix:</strong> Check JSON syntax in beacon-config.json</p>
+                    <ul>
+                        <li>Missing commas between fields</li>
+                        <li>Extra commas at end of objects</li>
+                        <li>Unmatched quotes or brackets</li>
+                    </ul>
+                </div>
+                
+                <h4>Missing required fields</h4>
+                <div class="error-box">
+                    <code>[ERROR] [CONFIG] Missing required field: symbol</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Fix:</strong> Ensure all required fields are present:</p>
+                    <ul>
+                        <li><code>symbol</code>, <code>side</code>, <code>shares</code>, <code>price</code></li>
+                    </ul>
+                </div>
+                
+                <h4>Invalid values</h4>
+                <div class="error-box">
+                    <code>[ERROR] [CONFIG] shares must be positive</code>
+                </div>
+                <div class="solution-box">
+                    <p><strong>Fix:</strong> Check value ranges:</p>
+                    <ul>
+                        <li><code>shares</code> > 0</li>
+                        <li><code>price</code> > 0</li>
+                        <li><code>time_window_minutes</code> >= 1</li>
+                        <li><code>slice_count</code> >= 1</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="debug-section">
+                <h3>Performance Issues</h3>
+                
+                <h4>Slow startup times</h4>
+                <div class="solution-box">
+                    <p><strong>Cause:</strong> Build system or large data generation</p>
+                    <p><strong>Fix:</strong></p>
+                    <ul>
+                        <li>Pre-build system: <code>cmake --build build</code></li>
+                        <li>Reduce <code>message_count</code> in config</li>
+                        <li>Use SSD storage for faster I/O</li>
+                    </ul>
+                </div>
+                
+                <h4>Algorithm completes too quickly</h4>
+                <div class="solution-box">
+                    <p><strong>Cause:</strong> TWAP slices executing faster than expected</p>
+                    <p><strong>Fix:</strong></p>
+                    <ul>
+                        <li>Increase <code>time_window_minutes</code></li>
+                        <li>Increase <code>slice_count</code> for smaller orders</li>
+                        <li>Check algorithm implementation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Debugging Steps</h2>
+            
+            <h3>1. Check System Status</h3>
+            <pre><code># Verify all binaries exist
+ls -la build/src/apps/*/
+ls -la build/src/apps/*/*
+
+# Check required files
+ls -la beacon-config.json
+ls -la temp_*.json</code></pre>
+            
+            <h3>2. Test Components Individually</h3>
+            
+            <h4>Test Matching Engine:</h4>
+            <pre><code>./build/src/apps/matching_engine/matching_engine --help
+./build/src/apps/matching_engine/matching_engine --config temp_matching_engine.json</code></pre>
+            
+            <h4>Test Algorithm:</h4>
+            <pre><code>./build/src/apps/client_algorithm/AlgoTwapProtocol --help
+./build/src/apps/client_algorithm/AlgoTwapProtocol --config temp_algorithm.json --symbol AAPL --side B --shares 100 --price 150.0</code></pre>
+            
+            <h4>Test Generator:</h4>
+            <pre><code>./build/src/apps/generator/generator --help</code></pre>
+            
+            <h3>3. Check Network Connectivity</h3>
+            
+            <h4>Port availability:</h4>
+            <pre><code># Check if ports are free
+lsof -i :8002  # Market data port
+lsof -i :9002  # Order entry port</code></pre>
+            
+            <h4>Network loopback:</h4>
+            <pre><code># Test UDP
+nc -u -l 8002 &  # Listen on UDP 8002
+echo "test" | nc -u 127.0.0.1 8002
+
+# Test TCP  
+nc -l 9002 &     # Listen on TCP 9002
+echo "test" | nc 127.0.0.1 9002</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Log Analysis</h2>
+            
+            <h3>Understanding Log Levels</h3>
+            <ul>
+                <li><span class="log-level log-info">[INFO   ]</span> - Normal operation</li>
+                <li><span class="log-level log-success">[SUCCESS]</span> - Component ready/completed</li>
+                <li><span class="log-level log-warning">[WARNING]</span> - Non-critical issues</li>
+                <li><span class="log-level log-error">[ERROR  ]</span> - Problems requiring attention</li>
+            </ul>
+            
+            <h3>Key Log Patterns</h3>
+            
+            <h4>Successful startup:</h4>
+            <div class="log-example">
+                <pre><code>[SUCCESS] [BUILD    ] All required binaries ready!
+[SUCCESS] [GENERATOR] Data generation complete  
+[SUCCESS] [MATCH-ENG] Ready on port 9002 (PID: 12345)
+[SUCCESS] [ALGORITHM] Connected to matching engine (PID: 12346)
+[SUCCESS] [SYSTEM   ] All components started!</code></pre>
+            </div>
+            
+            <h4>Port binding issue:</h4>
+            <div class="log-example">
+                <pre><code>[INFO   ] [MATCH-ENG] Starting on port 9002
+[ERROR  ] [MATCH-ENG] Exited with code -13: Permission denied
+[ERROR  ] [SYSTEM   ] Port 9002 permission issue</code></pre>
+            </div>
+            
+            <h4>Build problems:</h4>
+            <div class="log-example">
+                <pre><code>[WARNING] [BUILD    ] matching_engine binary missing
+[INFO   ] [BUILD    ] Building missing components
+[ERROR  ] [BUILD    ] Build failed: ...</code></pre>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Reset Procedures</h2>
+            
+            <h3>Complete System Reset</h3>
+            <pre><code># Clean build
+rm -rf build/
+cmake -B build -S .
+cmake --build build
+
+# Reset config
+python3 beacon-config.py
+
+# Clean temporary files
+rm -f temp_*.json market_data.bin trade_report.log</code></pre>
+            
+            <h3>Soft Reset</h3>
+            <pre><code># Just reset config and temp files
+python3 beacon-config.py
+rm -f temp_*.json market_data.bin trade_report.log</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Getting Help</h2>
+            
+            <h3>Enable Debug Mode</h3>
+            <p>Add to beacon-config.json:</p>
+            <pre><code>{
+  "debug_mode": true,
+  "verbose_logging": true
+}</code></pre>
+            
+            <h3>Collect Debug Information</h3>
+            <pre><code># System info
+uname -a
+python3 --version  
+cmake --version
+
+# Beacon status
+ls -la beacon.py beacon-config.json
+ls -la build/src/apps/*/
+
+# Process info
+ps aux | grep -E "(generator|matching|algorithm)"
+lsof -i :8002
+lsof -i :9002</code></pre>
+            
+            <h3>Report Issues</h3>
+            <p>Include this information:</p>
+            <ul>
+                <li>Operating system and version</li>
+                <li>Python version</li>
+                <li>Complete error message and logs</li>
+                <li>Contents of beacon-config.json</li>
+                <li>Output of debug commands above</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <h2>Related Documentation</h2>
+            <ul>
+                <li><a href="../system/configuration.html">Configuration Reference</a> - All settings explained</li>
+                <li><a href="../system/getting-started.html">Getting Started</a> - Step-by-step tutorial</li>
+                <li><a href="../system/architecture.html">Architecture Guide</a> - How components interact</li>
+                <li><a href="faq.html">FAQ</a> - Frequently asked questions</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

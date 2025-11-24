@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon - Your Personal Guide from Idea to Market</title>
+    <title>Beacon Trading System - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -12,176 +12,146 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a15;
             color: #ffffff;
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Distinct light rays showing the path forward */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                /* Central ray - strongest */
-                linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.05) 50%, transparent 75%),
-                /* Left rays */
-                linear-gradient(185deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
-                linear-gradient(190deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%),
-                /* Right rays */
-                linear-gradient(175deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
-                linear-gradient(170deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
-            z-index: 1;
         }
         
         .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
             text-align: center;
-            max-width: 800px; /* Match the rays width */
-            padding: 0 40px;
-            position: relative;
-            z-index: 2;
-            margin-top: 25vh; /* Position clearly below the rays */
+            margin-bottom: 60px;
         }
         
-        .github-icon {
-            position: fixed;
-            top: 25px;
-            right: 40px;
-            z-index: 101;
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
             color: #ffffff;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
         }
         
-        .github-icon:hover {
-            opacity: 1;
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
         }
         
-        .nav-links {
-            position: fixed;
-            top: 70px;
-            right: 40px;
-            z-index: 102;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
         
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: opacity 0.3s ease;
-            text-align: right;
+        .doc-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 25px;
         }
         
-        .nav-links a:hover {
-            opacity: 0.7;
+        .doc-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #00aaff;
         }
         
-        .brand {
-            margin-bottom: 24px;
+        .doc-links {
+            list-style: none;
         }
         
-        .brand h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            letter-spacing: -2px;
+        .doc-links li {
             margin-bottom: 8px;
-            transition: opacity 0.3s ease;
         }
         
-        .brand a:hover h1 {
-            opacity: 0.8;
+        .doc-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
         
-        .tagline {
-            font-size: 1.4rem;
-            font-weight: 300;
-            opacity: 0.85;
-            letter-spacing: 1px;
+        .doc-links a:hover {
+            color: #00aaff;
         }
         
-        /* Space reserved for HFT performance indicators */
-        .hft-indicators {
-            margin-top: 40px;
-            /* Future: subtle performance metrics */
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-            }
-            
-            .github-icon {
-                top: 15px;
-                right: 20px;
-            }
-            
-            .github-icon svg {
-                width: 18px;
-                height: 18px;
-            }
-            
-            .nav-links {
-                top: 55px;
-                right: 20px;
-                gap: 15px;
-            }
-            
-            .nav-links a {
-                font-size: 0.8rem;
-            }
-            
-            .brand h1 {
-                font-size: 3rem;
-                letter-spacing: -1px;
-            }
-            
-            .tagline {
-                font-size: 1.1rem;
-            }
+        .description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 5px;
         }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- GitHub Icon -->
-    <a href="https://github.com/bryanlcamp/Beacon" class="github-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-        </svg>
-    </a>
-    
-    <!-- Navigation Links -->
-    <nav class="nav-links">
-        <a href="docs.html">Let's Get Started!</a>
-        <a href="faq.html">FAQ</a>
-        <a href="https://github.com/bryanlcamp">Contact</a>
-    </nav>
-
-    <!-- Main Content -->
     <div class="container">
-        <div class="brand">
-            <a href="docs.html" style="color: inherit; text-decoration: none;">
-                <h1>Beacon.</h1>
-            </a>
-            <p class="tagline">Your Personal Guide. From Idea to Market.</p>
+        <header>
+            <h1>Beacon.</h1>
+            <p class="subtitle">Documentation.</p>
+        </header>
+        
+        <div class="doc-grid">
+            <div class="doc-section">
+                <h2>Applications</h2>
+                <ul class="doc-links">
+                    <li><a href="apps/generator/overview.html">Market Data Creator</a> <span class="description">- Create a Dataset.</span></li>
+                    <li><a href="apps/playback/overview.html">Market Data Playback</a> <span class="description">- Send Your Dataset.</span></li>
+                    <li><a href="apps/client-algorithm/overview.html">Client Algorithm</a> <span class="description">- Your Algorithm.</span></li>
+                    <li><a href="apps/matching-engine/overview.html">Matching Engine</a> <span class="description">- Exchange Simulator.</span></li>
+                    <li><a href="apps/orchestrator/overview.html">Orchestrator</a> <span class="description">- Coordinates System Start.</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>System Documentation</h2>
+                <ul class="doc-links">
+                    <li><a href="system/getting-started.html">Getting Started</a> <span class="description">- Installation and setup</span></li>
+                    <li><a href="system/configuration.html">Configuration</a> <span class="description">- System settings</span></li>
+                    <li><a href="system/architecture.html">Architecture</a> <span class="description">- System design</span></li>
+                    <li><a href="system/building.html">Build System</a> <span class="description">- Compilation process</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Exchange Protocols</h2>
+                <ul class="doc-links">
+                    <li><a href="protocols/nasdaq-ouch.html">NASDAQ OUCH</a> <span class="description">- v5.0 protocol</span></li>
+                    <li><a href="protocols/nyse-pillar.html">NYSE Pillar</a> <span class="description">- v3.2 protocol</span></li>
+                    <li><a href="protocols/cme-ilink.html">CME iLink</a> <span class="description">- iLink 3 protocol</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Web Interface</h2>
+                <ul class="doc-links">
+                    <li><a href="market-data-config.html">Market Data Config</a> <span class="description">- Interactive demo</span></li>
+                    <li><a href="delivery.html">Trade Delivery</a> <span class="description">- Execution tracking</span></li>
+                    <li><a href="reports.html">Performance Reports</a> <span class="description">- Analytics dashboard</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Reference</h2>
+                <ul class="doc-links">
+                    <li><a href="reference/faq.html">FAQ</a> <span class="description">- Frequently asked questions</span></li>
+                    <li><a href="reference/troubleshooting.html">Troubleshooting</a> <span class="description">- Common issues</span></li>
+                    <li><a href="reference/network-guide.html">Network Guide</a> <span class="description">- UDP/TCP configuration</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Advanced Usage</h2>
+                <ul class="doc-links">
+                    <li><a href="advanced-usage.html">Power Features</a> <span class="description">- Advanced configuration</span></li>
+                    <li><a href="algorithm.html">Algorithm Development</a> <span class="description">- Custom strategies</span></li>
+                    <li><a href="ci-cd.html">CI/CD Pipeline</a> <span class="description">- Deployment process</span></li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>

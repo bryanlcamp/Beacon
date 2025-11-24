@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipeline - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 170, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .pipeline-section {
+            border-left: 3px solid #00aaff;
+            padding-left: 20px;
+            margin: 25px 0;
+        }
+        
+        .build-flow {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: rgba(255, 150, 0, 0.1);
+            border: 1px solid rgba(255, 150, 0, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Documentation</a>
+        
+        <header>
+            <h1>CI/CD Pipeline</h1>
+            <p class="subtitle">Automated testing, building, and integration verification</p>
+        </header>
+        
+        <div class="content">
+            <h2>Overview</h2>
+            <p>The Beacon Trading System uses a sophisticated GitHub Actions CI/CD pipeline designed for reliable automated testing, building, and integration verification. The pipeline handles complex C++ build dependencies and provides robust artifact management.</p>
+            
+            <div class="build-flow">
+                <h4>Pipeline Architecture</h4>
+                <pre><code>Debug Build → Release Build → Integration Tests
+     ↓              ↓              ↓
+  Artifacts     Artifacts    Download & Verify</code></pre>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Pipeline Jobs</h2>
+            
+            <div class="pipeline-section">
+                <h3>1. Debug Build</h3>
+                <p><strong>Location:</strong> <code>.github/workflows/ci.yml</code><br>
+                <strong>Script:</strong> <code>scripts/ci_cd/beacon-build-all-debug.py</code></p>
+                
+                <h4>Build Process:</h4>
+                <ol>
+                    <li>Environment setup (CMake, GCC, Python)</li>
+                    <li>Nuclear cache clearing (v5.0+)</li>
+                    <li>Emergency ConfigFileParser.h fixes</li>
+                    <li>CMake configuration with fallback strategies</li>
+                    <li>Critical target builds</li>
+                    <li>Binary verification</li>
+                </ol>
+                
+                <h4>Key Binaries Produced:</h4>
+                <ul>
+                    <li><code>build/src/apps/generator/generator</code> - Market data generator</li>
+                    <li><code>build/src/apps/matching_engine/matching_engine</code> - Trading engine</li>
+                    <li><code>build/src/apps/client_algorithm/AlgoTwapProtocol</code> - TWAP algorithm</li>
+                    <li><code>build/src/apps/playback/playback</code> - Data playback system</li>
+                </ul>
+            </div>
+            
+            <div class="pipeline-section">
+                <h3>2. Release Build</h3>
+                <p><strong>Script:</strong> <code>scripts/ci_cd/beacon-build-all-release.py</code></p>
+                
+                <p>Identical to debug build but with:</p>
+                <ul>
+                    <li><code>CMAKE_BUILD_TYPE=Release</code></li>
+                    <li>Optimized compilation flags</li>
+                    <li>Extended artifact retention (30 days)</li>
+                </ul>
+            </div>
+            
+            <div class="pipeline-section">
+                <h3>3. Integration Tests</h3>
+                <p><strong>Dependencies:</strong> Requires both debug and release builds</p>
+                
+                <h4>Process:</h4>
+                <ol>
+                    <li>Download debug binaries to <code>debug-binaries/</code></li>
+                    <li>Download release binaries to <code>release-binaries/</code></li>
+                    <li>Binary verification and path validation</li>
+                    <li>Configuration file validation</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Emergency Fixes System</h2>
+            
+            <h3>ConfigFileParser.h Naming Conflicts</h3>
+            <div class="warning-box">
+                <p><strong>Problem:</strong> C++ naming conflicts between struct names and member variables</p>
+                <pre><code>// Problematic (compilation errors):
+PriceRange PriceRange;
+
+// Fixed automatically:
+PriceRange priceRange;</code></pre>
+            </div>
+            
+            <h3>Nuclear Cache Busting</h3>
+            <p><strong>Current Version:</strong> v5.1</p>
+            <p>Prevents GitHub Actions cache corruption affecting builds by clearing all CMake caches and build artifacts.</p>
+            
+            <pre><code># Clear all CMake caches
+rm -rf ~/.cache/cmake* || true
+rm -rf ~/build || true  
+rm -rf build/ || true
+find . -name CMakeCache.txt -delete || true
+find . -name CMakeFiles -type d -exec rm -rf {} + || true</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Build Strategies</h2>
+            
+            <p>Multiple CMake configuration strategies for maximum compatibility:</p>
+            
+            <pre><code>cmake_strategies = [
+    "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DBUILD_TESTING=OFF",
+    "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=14 -DBUILD_TESTING=OFF", 
+    "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17",
+    "cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug --log-level=STATUS"
+]</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Artifact Management</h2>
+            
+            <h3>Upload Structure</h3>
+            <pre><code>debug-binaries/
+├── generator/
+│   └── generator
+├── matching_engine/  
+│   └── matching_engine
+├── client_algorithm/
+│   └── AlgoTwapProtocol
+└── playback/
+    └── playback
+
+release-binaries/ (same structure, optimized binaries)</code></pre>
+            
+            <h3>Retention Policy</h3>
+            <ul>
+                <li><strong>Debug Binaries:</strong> 7 days retention</li>
+                <li><strong>Release Binaries:</strong> 30 days retention</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <h2>Common Issues & Solutions</h2>
+            
+            <h3>1. gtest Dependency Missing</h3>
+            <div class="warning-box">
+                <p><strong>Symptom:</strong> <code>/usr/bin/ld: cannot find -lgtest: No such file or directory</code></p>
+                <p><strong>Solution:</strong> Expected behavior - tests fail but critical binaries build successfully</p>
+            </div>
+            
+            <h3>2. Artifact Path Mismatches</h3>
+            <div class="warning-box">
+                <p><strong>Symptom:</strong> Generator/Matching engine not found</p>
+                <p><strong>Solution:</strong> Verification checks correct paths including build subdirectories</p>
+            </div>
+            
+            <h3>3. Cache-Related Build Failures</h3>
+            <div class="warning-box">
+                <p><strong>Symptom:</strong> Inconsistent build failures, stale configuration</p>
+                <p><strong>Solution:</strong> Nuclear cache busting system automatically applied</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Performance Metrics</h2>
+            
+            <div class="success-box">
+                <h4>Typical Build Times</h4>
+                <ul>
+                    <li><strong>Debug Build:</strong> 3-5 minutes</li>
+                    <li><strong>Release Build:</strong> 4-6 minutes</li>
+                    <li><strong>Integration Tests:</strong> 1-2 minutes</li>
+                    <li><strong>Total Pipeline:</strong> 8-13 minutes</li>
+                </ul>
+            </div>
+            
+            <h4>Artifact Sizes</h4>
+            <ul>
+                <li><strong>Debug Binaries:</strong> ~2.7MB total</li>
+                <li><strong>Release Binaries:</strong> ~290KB total (optimized)</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <h2>Monitoring & Debugging</h2>
+            
+            <h3>Status Indicators</h3>
+            <ul>
+                <li><strong>Success:</strong> All binaries built and verified</li>
+                <li><strong>Partial Success:</strong> Critical binaries exist despite test failures</li>
+                <li><strong>Failure:</strong> Critical binaries missing or build failed</li>
+            </ul>
+            
+            <h3>Enhanced Logging</h3>
+            <p>Each build provides comprehensive debugging information including complete file listings, CMake logs, and binary verification.</p>
+        </div>
+        
+        <div class="content">
+            <h2>Related Documentation</h2>
+            <ul>
+                <li><a href="architecture.html">Architecture Overview</a> - System design and components</li>
+                <li><a href="building.html">Build System</a> - Local development builds</li>
+                <li><a href="getting-started.html">Getting Started</a> - Development workflow</li>
+                <li><a href="../reference/troubleshooting.html">Troubleshooting</a> - Common issues</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

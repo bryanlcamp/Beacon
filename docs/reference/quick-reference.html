@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Reference - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 170, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .command-section {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .performance-table th,
+        .performance-table td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .performance-table th {
+            background: rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .performance-table td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .checklist {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .protocol-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .emergency-box {
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            border-left: 4px solid #ff3232;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .quick-commands {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #ffffff;
+        }
+        
+        .highlight {
+            color: #00ff64;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Documentation</a>
+        
+        <header>
+            <h1>Quick Reference</h1>
+            <p class="subtitle">Essential commands and configuration guide</p>
+        </header>
+        
+        <div class="content">
+            <h2>Build Commands</h2>
+            
+            <div class="command-grid">
+                <div class="command-section">
+                    <h4>Build Everything</h4>
+                    <pre><code>python3 beacon-build.py</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h4>CMake Build (Manual)</h4>
+                    <pre><code>cmake -B build -S .
+cmake --build build</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Run Commands</h2>
+            
+            <h3>Full System (Automated)</h3>
+            <pre><code># Complete system
+python3 beacon.py
+
+# Or use run script
+python3 beacon-run.py</code></pre>
+            
+            <h3>Manual Launch (3 terminals)</h3>
+            
+            <div class="command-grid">
+                <div class="command-section">
+                    <h4>Terminal 1: Matching Engine</h4>
+                    <pre><code>./build/src/apps/matching_engine/matching_engine</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h4>Terminal 2: Market Data</h4>
+                    <pre><code># Generator
+./build/src/apps/generator/generator
+
+# OR Playback
+./build/src/apps/playback/playback</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h4>Terminal 3: Trading Algorithm</h4>
+                    <pre><code>./build/src/apps/client_algorithm/AlgoTwapProtocol</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Configuration Files</h2>
+            
+            <h3>Main Configuration</h3>
+            <p><strong>Location:</strong> <code>beacon-config.json</code></p>
+            
+            <h4>Key Settings:</h4>
+            <pre><code>{
+  "symbol": "AAPL",
+  "side": "B",
+  "shares": 1000,
+  "price": 150.0,
+  "time_window_minutes": 2,
+  "slice_count": 6,
+  "protocol": "cme",
+  "duration_seconds": 30
+}</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Performance Monitoring</h2>
+            
+            <h3>Check Latency</h3>
+            <pre><code># Add to any component
+auto start = std::chrono::high_resolution_clock::now();
+// ... operation ...
+auto end = std::chrono::high_resolution_clock::now();
+auto latency_us = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count();</code></pre>
+            
+            <h3>Monitor Network Traffic</h3>
+            <pre><code># UDP multicast (market data)
+sudo tcpdump -i any udp port 8002 -v
+
+# TCP orders
+sudo tcpdump -i any tcp port 9002 -v
+
+# Packet rates
+iftop -i lo -f "port 8002 or port 9002"</code></pre>
+            
+            <h3>System Performance</h3>
+            <pre><code># CPU usage
+top -p $(pgrep -d',' matching_engine)
+
+# Profile with perf (Linux)
+perf record -g ./build/src/apps/matching_engine/matching_engine
+perf report</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Protocol Selection</h2>
+            
+            <div class="protocol-section">
+                <h4>NASDAQ OUCH</h4>
+                <ul>
+                    <li>Market data: NASDAQ ITCH 5.0</li>
+                    <li>Orders: OUCH 5.0</li>
+                    <li>Port: 9002</li>
+                </ul>
+            </div>
+            
+            <div class="protocol-section">
+                <h4>NYSE Pillar</h4>
+                <ul>
+                    <li>Market data: NYSE Pillar</li>
+                    <li>Orders: Pillar Gateway 3.2</li>
+                    <li>Port: 9002</li>
+                </ul>
+            </div>
+            
+            <div class="protocol-section">
+                <h4>CME iLink 3</h4>
+                <ul>
+                    <li>Market data: CME MDP 3.0</li>
+                    <li>Orders: iLink 3</li>
+                    <li>Port: 9002</li>
+                </ul>
+            </div>
+            
+            <p><strong>Note:</strong> Matching engine auto-detects protocol based on incoming message format.</p>
+        </div>
+        
+        <div class="content">
+            <h2>Troubleshooting</h2>
+            
+            <h3>No Market Data</h3>
+            <pre><code># Check if generator is running
+ps aux | grep generator
+
+# Test UDP reception
+nc -u -l 8002</code></pre>
+            
+            <h3>Orders Not Executing</h3>
+            <pre><code># Check if matching engine is running
+ps aux | grep matching_engine
+
+# Test TCP connection
+telnet 127.0.0.1 9002
+
+# Check port binding
+netstat -an | grep 9002</code></pre>
+            
+            <h3>Algorithm Not Trading</h3>
+            <pre><code># Check configuration
+cat beacon-config.json
+
+# Verify settings are valid
+python3 beacon-config.py --validate</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Testing Checklist</h2>
+            
+            <div class="checklist">
+                <ul style="list-style: none;">
+                    <li><input type="checkbox"> Build all applications successfully</li>
+                    <li><input type="checkbox"> Launch matching engine (port 9002 listening)</li>
+                    <li><input type="checkbox"> Start market data source (UDP)</li>
+                    <li><input type="checkbox"> Start algorithm (connects to both)</li>
+                    <li><input type="checkbox"> Verify market data reception</li>
+                    <li><input type="checkbox"> Verify order submission</li>
+                    <li><input type="checkbox"> Verify fill reception</li>
+                    <li><input type="checkbox"> Check latency metrics</li>
+                    <li><input type="checkbox"> Test risk limit triggers</li>
+                    <li><input type="checkbox"> Test position limit enforcement</li>
+                    <li><input type="checkbox"> Test protocol switching (OUCH, Pillar, iLink 3)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Performance Targets</h2>
+            
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Market data processing</td>
+                        <td>&lt; 1 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Trading decision</td>
+                        <td>&lt; 5 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Order submission</td>
+                        <td>&lt; 10 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Order matching</td>
+                        <td>&lt; 5 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Fill processing</td>
+                        <td>&lt; 2 μs</td>
+                    </tr>
+                    <tr style="background: rgba(0, 255, 100, 0.2);">
+                        <td><strong>Total round-trip</strong></td>
+                        <td><strong>&lt; 30 μs</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Throughput</td>
+                        <td>&gt; 100,000 orders/sec</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="content">
+            <h2>Common Use Cases</h2>
+            
+            <h3>Live Trading Simulation</h3>
+            <pre><code># Use generator with realistic parameters
+python3 beacon.py  # Uses default config</code></pre>
+            
+            <h3>Latency Testing</h3>
+            <pre><code># Run all components on same machine
+# Use loopback interface (minimal network latency)
+# Add instrumentation points
+# Measure end-to-end latency</code></pre>
+            
+            <h3>Stress Testing</h3>
+            <pre><code># Increase market data rate to maximum
+# Launch multiple algorithm instances
+# Monitor system resources</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Log Files</h2>
+            
+            <p>Logs are written to the console by default. To redirect:</p>
+            <pre><code>python3 beacon.py > beacon.log 2>&1</code></pre>
+            
+            <p>To monitor in real-time:</p>
+            <pre><code>tail -f beacon.log</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Emergency Shutdown</h2>
+            
+            <div class="emergency-box">
+                <h4>Graceful</h4>
+                <pre><code># If using beacon.py
+Ctrl+C (in beacon.py terminal)
+
+# Manual
+pkill -SIGTERM matching_engine
+pkill -SIGTERM generator
+pkill -SIGTERM AlgoTwapProtocol</code></pre>
+                
+                <h4>Force</h4>
+                <pre><code>pkill -9 matching_engine
+pkill -9 generator
+pkill -9 AlgoTwapProtocol</code></pre>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Quick Commands Summary</h2>
+            
+            <div class="quick-commands">
+                <pre><code># Build everything
+python3 beacon-build.py
+
+# Run complete system
+python3 beacon.py
+
+# Check processes
+ps aux | grep -E "matching_engine|generator|AlgoTwapProtocol"
+
+# Network monitoring
+sudo tcpdump -i any 'port 8002 or port 9002'
+
+# Performance check
+top -p $(pgrep -d',' -f "matching_engine|generator|AlgoTwapProtocol")</code></pre>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Related Documentation</h2>
+            <ul>
+                <li><a href="../system/getting-started.html">Getting Started</a> - Step-by-step setup</li>
+                <li><a href="../system/configuration.html">Configuration Reference</a> - All settings explained</li>
+                <li><a href="troubleshooting.html">Troubleshooting</a> - Common issues</li>
+                <li><a href="../system/architecture.html">Architecture</a> - System overview</li>
+                <li><a href="../protocols/">Exchange Protocols</a> - Protocol documentation</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

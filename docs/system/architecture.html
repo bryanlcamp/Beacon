@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 170, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(0, 170, 255, 0.2);
+            font-weight: 600;
+        }
+        
+        .performance-table {
+            background: rgba(0, 255, 100, 0.1);
+        }
+        
+        .performance-table th {
+            background: rgba(0, 255, 100, 0.2);
+        }
+        
+        .component-section {
+            border-left: 3px solid #00aaff;
+            padding-left: 20px;
+            margin: 25px 0;
+        }
+        
+        .highlight-box {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .performance-box {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #ffffff;
+        }
+        
+        .toc {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Documentation</a>
+        
+        <header>
+            <h1>System Architecture</h1>
+            <p class="subtitle">Complete multi-protocol electronic trading ecosystem</p>
+        </header>
+        
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#components">System Components</a></li>
+                <li><a href="#communication">Communication Flow</a></li>
+                <li><a href="#protocols">Protocol Support</a></li>
+                <li><a href="#performance">Performance Targets</a></li>
+                <li><a href="#building">Building & Running</a></li>
+            </ul>
+        </div>
+        
+        <div class="content" id="overview">
+            <h2>Overview</h2>
+            <p>The Beacon Trading System is a complete, multi-protocol electronic trading ecosystem designed for ultra-low latency algorithmic trading. The system supports multiple exchange protocols (NASDAQ OUCH, NYSE Pillar, CME iLink 3) and provides end-to-end infrastructure for market data generation, distribution, order execution, and algorithmic trading.</p>
+            
+            <div class="highlight-box">
+                <h4>System Architecture Flow</h4>
+                <pre><code>Market Data Generator → UDP Multicast → Algorithm
+                                                        ↓
+Algorithm ← TCP Orders ← Matching Engine ← TCP Orders</code></pre>
+            </div>
+        </div>
+        
+        <div class="content" id="components">
+            <h2>System Components</h2>
+            
+            <div class="component-section">
+                <h3>1. Market Data Generator</h3>
+                <p><strong>Purpose:</strong> Generates synthetic market data in exchange-native formats</p>
+                
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Multi-protocol support: NASDAQ ITCH, NYSE Pillar, CME MDP</li>
+                    <li>Configurable symbol behavior and price ranges</li>
+                    <li>Realistic market microstructure simulation</li>
+                    <li>High-frequency message generation (100K+ msgs/sec)</li>
+                </ul>
+                
+                <h4>Communication:</h4>
+                <ul>
+                    <li>Output: UDP multicast (239.255.0.1:12345)</li>
+                    <li>Protocols: ITCH 5.0, Pillar, MDP 3.0</li>
+                </ul>
+                
+                <p><a href="../apps/generator/">View detailed documentation →</a></p>
+            </div>
+            
+            <div class="component-section">
+                <h3>2. Market Data Playback</h3>
+                <p><strong>Purpose:</strong> Replays pre-recorded or synthetic market data for testing and backtesting</p>
+                
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>File-based playback with speed control</li>
+                    <li>UDP multicast streaming</li>
+                    <li>Timestamped message replay</li>
+                    <li>Loop/repeat functionality</li>
+                </ul>
+                
+                <p><a href="../apps/playback/">View detailed documentation →</a></p>
+            </div>
+            
+            <div class="component-section">
+                <h3>3. Exchange Matching Engine</h3>
+                <p><strong>Purpose:</strong> Simulates exchange order matching and execution</p>
+                
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Multi-protocol support (OUCH, Pillar, iLink 3)</li>
+                    <li>Price-time priority matching algorithm</li>
+                    <li>Real-time order book maintenance</li>
+                    <li>Fill generation and reporting</li>
+                </ul>
+                
+                <h4>Performance:</h4>
+                <ul>
+                    <li>Order processing latency: &lt; 5 μs</li>
+                    <li>Throughput: 100,000+ orders/sec</li>
+                    <li>Lock-free order processing</li>
+                </ul>
+                
+                <p><a href="../apps/matching-engine/">View detailed documentation →</a></p>
+            </div>
+            
+            <div class="component-section">
+                <h3>4. Client Algorithm</h3>
+                <p><strong>Purpose:</strong> Algorithmic trading client with comprehensive risk management</p>
+                
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Real-time market data processing</li>
+                    <li>Multi-protocol order generation</li>
+                    <li>Advanced risk management layers</li>
+                    <li>Position and PnL tracking</li>
+                </ul>
+                
+                <h4>Risk Management:</h4>
+                <ul>
+                    <li>PnL-based limits (Warning/Alert/Hard Stop)</li>
+                    <li>Order rejection monitoring</li>
+                    <li>Burst rate control</li>
+                    <li>Position limits (per-product and firm-wide)</li>
+                </ul>
+                
+                <p><a href="../apps/client-algorithm/">View detailed documentation →</a></p>
+            </div>
+            
+            <div class="component-section">
+                <h3>5. Orchestrator</h3>
+                <p><strong>Purpose:</strong> System coordination and component lifecycle management</p>
+                
+                <h4>Key Features:</h4>
+                <ul>
+                    <li>Component lifecycle management</li>
+                    <li>Dependency-aware startup sequencing</li>
+                    <li>Health monitoring and restart capabilities</li>
+                    <li>Configuration distribution</li>
+                </ul>
+                
+                <p><a href="../apps/orchestrator/">View detailed documentation →</a></p>
+            </div>
+        </div>
+        
+        <div class="content" id="communication">
+            <h2>Communication Flow</h2>
+            
+            <h3>Complete Trading Loop</h3>
+            <ol>
+                <li>Market Data Generator → UDP Multicast</li>
+                <li>Algorithm receives market data (&lt; 1 μs)</li>
+                <li>Algorithm makes trading decision (&lt; 5 μs)</li>
+                <li>Algorithm sends order via TCP (&lt; 10 μs)</li>
+                <li>Matching Engine receives and matches order (&lt; 5 μs)</li>
+                <li>Matching Engine sends fill report (&lt; 5 μs)</li>
+                <li>Algorithm receives fill, updates position/PnL (&lt; 2 μs)</li>
+            </ol>
+            
+            <div class="performance-box">
+                <h4>Total Round-Trip Latency Target: &lt; 30 μs</h4>
+            </div>
+        </div>
+        
+        <div class="content" id="protocols">
+            <h2>Protocol Support Matrix</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>NASDAQ OUCH</th>
+                        <th>NYSE Pillar</th>
+                        <th>CME iLink 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Market Data Generator</td>
+                        <td>✅ ITCH 5.0</td>
+                        <td>✅ Pillar</td>
+                        <td>✅ MDP 3.0</td>
+                    </tr>
+                    <tr>
+                        <td>Market Data Playback</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Matching Engine</td>
+                        <td>✅ Order entry</td>
+                        <td>✅ Order entry</td>
+                        <td>✅ Order entry</td>
+                    </tr>
+                    <tr>
+                        <td>Client Algorithm</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="content" id="performance">
+            <h2>Performance Targets</h2>
+            
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Target</th>
+                        <th>Typical</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Market Data Processing</td>
+                        <td>&lt; 1 μs</td>
+                        <td>0.5 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Trading Decision</td>
+                        <td>&lt; 5 μs</td>
+                        <td>3 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Order Submission</td>
+                        <td>&lt; 10 μs</td>
+                        <td>7 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Order Matching</td>
+                        <td>&lt; 5 μs</td>
+                        <td>3 μs</td>
+                    </tr>
+                    <tr>
+                        <td>Fill Processing</td>
+                        <td>&lt; 2 μs</td>
+                        <td>1 μs</td>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td><strong>Total Round-Trip</strong></td>
+                        <td><strong>&lt; 30 μs</strong></td>
+                        <td><strong>~20 μs</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Throughput (orders/sec)</td>
+                        <td>&gt; 100,000</td>
+                        <td>150,000</td>
+                    </tr>
+                    <tr>
+                        <td>Market Data Rate</td>
+                        <td>&gt; 100,000 msgs/sec</td>
+                        <td>200,000+</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="content" id="building">
+            <h2>Building & Running</h2>
+            
+            <h3>Quick Build</h3>
+            <pre><code>python3 beacon-build.py --release</code></pre>
+            
+            <h3>Running Complete System</h3>
+            <pre><code># Start all components
+python3 beacon-run.py -i config/system/startBeacon.json
+
+# The system will coordinate:
+# 1. Matching engine startup
+# 2. Market data generation 
+# 3. Algorithm connection
+# 4. Trading session monitoring</code></pre>
+            
+            <h3>Manual Component Startup</h3>
+            <pre><code># Terminal 1: Start Matching Engine
+cd build/src/apps/matching_engine
+./matching_engine
+
+# Terminal 2: Start Market Data Generator  
+cd build/src/apps/generator
+./generator --config config.json
+
+# Terminal 3: Start Algorithm
+cd build/src/apps/client_algorithm
+./client_algo --config sample_config.json</code></pre>
+        </div>
+        
+        <div class="content">
+            <h2>Architecture Highlights</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li><strong>Lock-Free Design:</strong> SPSC queues, ring buffers, zero-copy techniques</li>
+                <li><strong>Memory Efficiency:</strong> Pre-allocated buffers, object pooling, cache-aligned structures</li>
+                <li><strong>Network Optimization:</strong> UDP multicast, non-blocking I/O, kernel bypass options</li>
+                <li><strong>Observability:</strong> Built-in latency instrumentation, configurable logging, performance counters</li>
+            </ul>
+            
+            <h3>Related Documentation</h3>
+            <ul>
+                <li><a href="../protocols/nasdaq-ouch.html">NASDAQ OUCH Protocol</a></li>
+                <li><a href="../protocols/nyse-pillar.html">NYSE Pillar Protocol</a></li>
+                <li><a href="../protocols/cme-ilink.html">CME iLink 3 Protocol</a></li>
+                <li><a href="building.html">Build System</a></li>
+                <li><a href="../reference/troubleshooting.html">Troubleshooting Guide</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Overview - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-links {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .back-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .back-links a:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 170, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        h4 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+        
+        .navigation {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 20px;
+            border-radius: 6px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            color: #00aaff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(0, 170, 255, 0.2);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(0, 170, 255, 0.4);
+            color: #ffffff;
+        }
+        
+        a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #ffffff;
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 25px 0;
+            border: none;
+        }
+        
+        .screenshot {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin: 25px auto;
+            display: block;
+        }
+        
+        .screenshot-caption {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-links">
+            <a href="../../index.html">← Documentation Hub</a>
+            <span>/</span>
+            <a href="../">Applications</a>
+            <span>/</span>
+            <span>Generator</span>
+        </div>
+        
+        <header>
+            <h1>Market Data Creator.</h1>
+            <p class="subtitle">Overview and How to Use.</p>
+        </header>
+    
+        <div class="content">
+            <h2>What It Does.</h2>
+            <p>
+              The purpose of the Market Data Creator is to help you build highly curated datasets, that interact with the Beacon platform. 
+              Using the comprehensive web interface, you specify the dataset's input parameters, on a granular level, which we will cover below.
+              You can choose whether to save your dataset in NASDAQ, CME, or NYSE native binary formats.
+              You simply click Generate, and the Market Data Creator will generate a dataset. That's it.
+              Note that the dataset you create here is designed to be used by the Market Data Playback tool. 
+              The Market Data Playback tool will then deliver the data that you create here, directly to your algorithm.
+              So, let's dig in, take a look at the web interface, and walk through the process of creating a dataset. 
+          </p>
+            
+            <img src="DatasetConfig.png" alt="Beacon Market Data Generator Interface" class="screenshot">
+            <p class="screenshot-caption">Beacon Market Data Generator Interface</p>
+        </div>
+        
+        <div class="content">
+            <h2>What You Do.</h2>
+            <ul>
+                <li>Specify the total message count in your dataset. <b><i>Not per product.</i></b> E.g., 1,000,000 in the screenshot above.</li>
+                <li>Just below, specify the exchange-specific type of your dataset: NASDAQ, NYSE, or CME. Your data will be encoded per the exchange spec.</li>
+                <li>Next, specify whether your dataset should have wave periods, the number and how intensity.</li>
+                <li>Lastly decide if you want your data to have bursts. Including how many, the duration, the intensity, and the time period in between.</li>
+            </ul>
+            
+            <hr class="section-divider">
+            
+            <ul>
+                <li>The next step step is to add the symbols you want. Note that when you add a symbol, you need to specify a % in the upper-right hand corner. This is the percent of the overall message count. E.g., If you specified 1,000 messages in your dataset, and you chose 50% for AAPL, then 500 in your dataset would be AAPL.</li>
+                  <li>Next, you use sliders to specify a minimum and maximum price/qty for each symbol. Each symbol, defaults to the previous day's OHLCV values.</li>
+                  <li>Both price and quantity have weighting sliders to skew the generated data toward the low or high end of the specified range.</li>
+                  <li>Next, you define the bid-ask spread that you'd like to try and maintain. Beacon does its best to follow this rule. But, as you can see, other parameters, such as max/min price may have prevent Beacon from always maintaining this spread.</li>
+                  <li>Finally, you must specify the target traded volume for this symbol. Again, Beacon does its best to follow this rule. But, max order qty, and % total messages can interfere.</li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <h2>Final Steps.</h2>
+            <p>Once you're finished setting up your configuration, the Create button will turn green. Just click it, and you will be prompted what to name it and where to save it. Note: If the generation button doesn't turn green, then there is likely a configuration error. The error message will be displayed in red letters at the top of the screen telling you what needs to be fixed.</p>
+        </div>
+        
+        <div class="navigation">
+            <div class="nav-links">
+                <a href="details.html">Technical Details</a>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Related Documentation</h2>
+            <ul>
+                <li><a href="details.html">Generator Technical Details</a> - Implementation and architecture</li>
+                <li><a href="../playback/overview.html">Playback System</a> - Alternative data source</li>
+                <li><a href="../../protocols/">Exchange Protocols</a> - Supported data formats</li>
+                <li><a href="../../system/architecture.html">System Architecture</a> - How components interact</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
