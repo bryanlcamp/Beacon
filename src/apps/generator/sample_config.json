@@ -1,4 +1,27 @@
-{  
+{
+  "ExchangeDefaults": {
+    "nsdq": {
+      "priceRange": { "min": 1, "max": 500 },
+      "quantityRange": { "min": 1, "max": 1000 },
+      "spreadRange": { "min": 0, "max": 10 },
+      "volumeRange": { "min": 0, "max": 100 },
+      "weightRange": { "min": 0, "max": 1 }
+    },
+    "nyse": {
+      "priceRange": { "min": 1, "max": 500 },
+      "quantityRange": { "min": 1, "max": 1000 },
+      "spreadRange": { "min": 0, "max": 15 },
+      "volumeRange": { "min": 0, "max": 200 },
+      "weightRange": { "min": 0, "max": 1 }
+    },
+    "cme": {
+      "priceRange": { "min": 1, "max": 500 },
+      "quantityRange": { "min": 1, "max": 1000 },
+      "spreadRange": { "min": 0, "max": 8 },
+      "volumeRange": { "min": 0, "max": 150 },
+      "weightRange": { "min": 0, "max": 1 }
+    }
+  },
   "Global": {
     "NumMessages": 10000,
     "Exchange": "nsdq"
@@ -20,13 +43,13 @@
       "SpreadPercentage": 0.8,
       "PriceRange": {
         "MinPrice": 475.00,
-        "MaxPrice": 535.00,
-        "Weight": 1.0
+        "MaxPrice": 500.00,
+        "Weight": 0.65
       },
       "QuantityRange": {
         "MinQuantity": 10,
-        "MaxQuantity": 100,
-        "Weight": 1.0
+        "MaxQuantity": 1000,
+        "Weight": 0.75
       },
       "PrevDay": {
         "OpenPrice": 508.29,
