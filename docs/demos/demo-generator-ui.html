@@ -1015,19 +1015,36 @@
 
     <div class="container">
         <h1>Market Data.</h1>
-        <p class="subtitle-bubble" data-tooltip="Defaults are based on OHLCV">Smart Defaults. But you have Control.</p>
+        <p class="subtitle-bubble" data-tooltip="This demo auto-launches the Python web server when you click 'Launch Full Interface'">Demo Page - Auto-Launches Full Interface.</p>
         
-        <!-- Workflow Selection -->
+        <!-- Config Generation Section -->
+        <div class="workflow-section" style="background: rgba(0, 255, 100, 0.08); border-color: rgba(0, 255, 100, 0.2);">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="flex: 1;">
+                    <h3 style="color: #00ff64; margin-bottom: 8px; font-size: 1.1rem;">💾 Generate & Download Config</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-bottom: 0;">
+                        Configure your settings above, then download the config file. Run the full trading pipeline with proper component sequencing - no networking required.
+                    </p>
+                </div>
+                <button class="btn btn-success" onclick="generateMarketData()" style="padding: 16px 32px; font-size: 1rem;">
+                    Generate Market Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Configuration (Preview Only) -->
         <div class="workflow-section">
-            <div class="workflow-controls">
-                <span class="workflow-label">Workflow:</span>
-                <select class="workflow-select" id="workflowSelect" onchange="handleWorkflowSelection()">
-                    <option value="">Select a Workflow</option>
-                    <!-- Workflow files from: beacon/config/apps/generator/workflow/ -->
-                    <option value="sample_config.json">sample_config</option>
-                </select>
-                <button class="btn-create-workflow" id="createWorkflowBtn" onclick="createNewWorkflow()">+ Create</button>
-                <button class="btn btn-success" onclick="generateMarketData()" style="margin-left: auto;">Generate Market Data</button>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span class="workflow-label">Demo Workflow Preview:</span>
+                    <select class="workflow-select" id="workflowSelect" onchange="handleWorkflowSelection()" disabled style="opacity: 0.6;">
+                        <option value="">Demo Configuration Only</option>
+                        <option value="sample_config.json">sample_config (preview)</option>
+                    </select>
+                </div>
+                <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.85rem;">
+                    ↑ Use "Launch Full Interface" for real functionality
+                </div>
             </div>
         </div>
 
@@ -1822,81 +1839,72 @@
             return config;
         }
         
-        async function generateMarketData() {
+        function generateMarketData() {
             const btn = event?.target || document.querySelector('.btn-success');
-            const originalText = btn ? btn.textContent : 'Generate Market Data';
             
-            // Get selected workflow
-            const select = document.getElementById('workflowSelect');
-            const configName = select.value;
-            
-            if (!configName) {
-                alert('Please select or create a workflow first');
-                return;
+            if (btn) {
+                btn.textContent = 'Generating Config...';
+                btn.disabled = true;
             }
             
-            // Save current configuration first
+            // Generate config from current UI settings
             const config = saveCurrentWorkflow();
             
-            try {
+            // Create filename with timestamp
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+            const filename = `beacon-config-${timestamp}.json`;
+            
+            // Download the config file
+            downloadConfig(filename, config);
+            
+            // Show run instructions
+            setTimeout(() => {
                 if (btn) {
-                    btn.textContent = 'Saving configuration...';
-                    btn.disabled = true;
-                }
-                
-                // Save the current configuration
-                const saveResponse = await fetch(`/api/config/${configName}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(config)
-                });
-                
-                const saveResult = await saveResponse.json();
-                if (!saveResult.success) {
-                    throw new Error(saveResult.error || 'Failed to save configuration');
-                }
-                
-                if (btn) {
-                    btn.textContent = 'Starting generator...';
-                }
-                
-                // Start the market data generator
-                const generateResponse = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ config_name: configName })
-                });
-                
-                const generateResult = await generateResponse.json();
-                
-                if (generateResult.success) {
-                    if (btn) {
-                        btn.textContent = '✓ Generator Started';
-                        setTimeout(() => {
-                            btn.textContent = originalText;
-                            btn.disabled = false;
-                        }, 3000);
-                    }
-                    alert(`Market data generator started successfully!\nPID: ${generateResult.pid}\n\nConfiguration saved as: ${configName}`);
-                    
-                    // Start monitoring generator status
-                    monitorGeneratorStatus();
-                } else {
-                    throw new Error(generateResult.error || 'Failed to start generator');
-                }
-                
-            } catch (error) {
-                console.error('Error generating market data:', error);
-                alert('Failed to generate market data: ' + error.message);
-                
-                if (btn) {
-                    btn.textContent = originalText;
+                    btn.textContent = 'Generate Market Data';
                     btn.disabled = false;
                 }
+                showRunInstructions(filename);
+            }, 1500);
+        }
+        
+        function downloadConfig(filename, config) {
+            const dataStr = JSON.stringify(config, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        function showRunInstructions(filename) {
+            const instructions = `
+✅ CONFIG DOWNLOADED: ${filename}
+
+🚀 TO RUN BEACON GENERATOR:
+
+   python3 beacon-start-session.py ${filename}
+
+This will:
+• Auto-build required binaries
+• Start full trading pipeline (Matching Engine → Playback → Client Algo → Generator)
+• Use your configured settings
+• Generate realistic market data with order flow
+
+💡 SIMPLE & NETWORK-FREE
+No web servers, no ports, no IT complications.
+            `.trim();
+            
+            const userChoice = confirm(`${instructions}\n\n📋 Copy run command to clipboard?`);
+            
+            if (userChoice && navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(`python3 beacon-start-session.py ${filename}`);
+                alert('✅ Run command copied to clipboard!');
             }
         }
         
