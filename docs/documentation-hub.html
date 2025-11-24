@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Trading System - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a15;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .doc-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 25px;
+        }
+        
+        .doc-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #00aaff;
+        }
+        
+        .doc-links {
+            list-style: none;
+        }
+        
+        .doc-links li {
+            margin-bottom: 8px;
+        }
+        
+        .doc-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .doc-links a:hover {
+            color: #00aaff;
+        }
+        
+        .description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Beacon.</h1>
+            <p class="subtitle">Documentation.</p>
+        </header>
+        
+        <div class="doc-grid">
+            <div class="doc-section">
+                <h2>Applications</h2>
+                <ul class="doc-links">
+                    <li><a href="apps/generator/overview.html">Market Data Creator</a> <span class="description">- Create a Dataset.</span></li>
+                    <li><a href="apps/playback/overview.html">Market Data Playback</a> <span class="description">- Send Your Dataset.</span></li>
+                    <li><a href="apps/client-algorithm/overview.html">Client Algorithm</a> <span class="description">- Your Algorithm.</span></li>
+                    <li><a href="apps/matching-engine/overview.html">Matching Engine</a> <span class="description">- Exchange Simulator.</span></li>
+                    <li><a href="apps/orchestrator/overview.html">Orchestrator</a> <span class="description">- Coordinates System Start.</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>System Documentation</h2>
+                <ul class="doc-links">
+                    <li><a href="system/getting-started.html">Getting Started</a> <span class="description">- Installation and setup</span></li>
+                    <li><a href="system/configuration.html">Configuration</a> <span class="description">- System settings</span></li>
+                    <li><a href="system/architecture.html">Architecture</a> <span class="description">- System design</span></li>
+                    <li><a href="system/building.html">Build System</a> <span class="description">- Compilation process</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Exchange Protocols</h2>
+                <ul class="doc-links">
+                    <li><a href="protocols/nasdaq-ouch.html">NASDAQ OUCH</a> <span class="description">- v5.0 protocol</span></li>
+                    <li><a href="protocols/nyse-pillar.html">NYSE Pillar</a> <span class="description">- v3.2 protocol</span></li>
+                    <li><a href="protocols/cme-ilink.html">CME iLink</a> <span class="description">- iLink 3 protocol</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Web Interface</h2>
+                <ul class="doc-links">
+                    <li><a href="market-data-config.html">Market Data Config</a> <span class="description">- Interactive demo</span></li>
+                    <li><a href="delivery.html">Trade Delivery</a> <span class="description">- Execution tracking</span></li>
+                    <li><a href="reports.html">Performance Reports</a> <span class="description">- Analytics dashboard</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Reference</h2>
+                <ul class="doc-links">
+                    <li><a href="reference/faq.html">FAQ</a> <span class="description">- Frequently asked questions</span></li>
+                    <li><a href="reference/troubleshooting.html">Troubleshooting</a> <span class="description">- Common issues</span></li>
+                    <li><a href="reference/network-guide.html">Network Guide</a> <span class="description">- UDP/TCP configuration</span></li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Advanced Usage</h2>
+                <ul class="doc-links">
+                    <li><a href="advanced-usage.html">Power Features</a> <span class="description">- Advanced configuration</span></li>
+                    <li><a href="algorithm.html">Algorithm Development</a> <span class="description">- Custom strategies</span></li>
+                    <li><a href="ci-cd.html">CI/CD Pipeline</a> <span class="description">- Deployment process</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
