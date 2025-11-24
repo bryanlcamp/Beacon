@@ -150,26 +150,7 @@ python3 beacon-run.py -i config/system/startBeacon.json</code></pre>
             </ol>
         </div>
         
-        <div class="content">
-            <h2>Directory Organization</h2>
-            <pre><code>beacon/
-├── beacon-run.py                 # Main entry point
-├── beacon-build.py               # Build system
-├── beacon-config.py              # Configuration management
-├── config/                       # Configuration files
-│   ├── system/                   # System configurations
-│   ├── algorithm/                # Algorithm settings
-│   └── matching_engine/          # Engine settings
-├── src/apps/                     # Application code
-│   ├── generator/                # Market data generation
-│   ├── matching_engine/          # Order matching
-│   ├── client_algorithm/         # Trading algorithms
-│   ├── playback/                 # Historical replay
-│   └── orchestrator/             # System coordination
-├── include/                      # Header files
-├── docs/                         # Documentation
-└── outputs/                      # Generated reports</code></pre>
-        </div>
+
         
         <div class="content">
             <h2>First Time Setup</h2>
@@ -189,17 +170,7 @@ python3 beacon-config.py
 python3 beacon-run.py -i config/system/startBeacon.json</code></pre>
         </div>
         
-        <div class="content">
-            <h2>Troubleshooting</h2>
-            <pre><code># Check system status
-python3 beacon-run.py --status
 
-# Clean rebuild
-python3 beacon-build.py --clean
-
-# View logs
-tail -f outputs/trade_report.log</code></pre>
-        </div>
         
         <div class="content">
             <h2>Key Documentation</h2>
