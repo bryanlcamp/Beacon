@@ -235,9 +235,9 @@
                 <td><code>gcc --version</code></td>
             </tr>
             <tr>
-                <td><strong>Make/Ninja</strong></td>
-                <td>Any recent version</td>
-                <td><code>make --version</code></td>
+                <td><strong>Python</strong></td>
+                <td>3.6+</td>
+                <td><code>python3 --version</code></td>
             </tr>
             <tr>
                 <td><strong>Git</strong></td>
@@ -246,10 +246,6 @@
             </tr>
         </table>
         
-        <div class="highlight">
-            <strong>Note:</strong> pthread, sockets, nlohmann/json, and GoogleTest are included or built-in.
-        </div>
-        
         <h2>Platform-Specific Installation</h2>
         
         <h3>Ubuntu/Debian</h3>
@@ -257,13 +253,13 @@
 sudo apt update
 
 # Install build tools
-sudo apt install -y build-essential cmake git
+sudo apt install -y build-essential cmake git python3
 
-# Install additional tools
-sudo apt install -y ninja-build pkg-config
+# Install additional tools  
+sudo apt install -y python3-pip
 
 # Verify installation
-cmake --version && gcc --version && git --version</code></pre>
+cmake --version && gcc --version && python3 --version && git --version</code></pre>
         
         <h3>macOS</h3>
         <pre><code># Install Xcode Command Line Tools
@@ -273,50 +269,21 @@ xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install dependencies
-brew install cmake git ninja
+brew install cmake git python3
 
 # Verify installation
-cmake --version && clang --version && git --version</code></pre>
+cmake --version && clang --version && python3 --version && git --version</code></pre>
         
-        <h3>CentOS/RHEL/Fedora</h3>
-        <pre><code># CentOS/RHEL
-sudo yum groupinstall "Development Tools"
-sudo yum install cmake git
+        <h2>Verification</h2>
+        
+        <pre><code># Check prerequisites
+cmake --version && gcc --version && python3 --version && git --version
 
-# Fedora
-sudo dnf groupinstall "Development Tools"
-sudo dnf install cmake git ninja-build
+# Test network connectivity
+ping 127.0.0.1
 
-# Verify installation
-cmake --version && gcc --version && git --version</code></pre>
-        
-        <h2>Network Setup</h2>
-        
-        <div class="warning">
-            <strong>⚠️ Firewall:</strong> Allow ports 8000-9000 (TCP/UDP) for Beacon communication.
-        </div>
-        
-        <pre><code># Ubuntu/Debian
-sudo ufw allow 8000:9000/tcp && sudo ufw allow 8000:9000/udp
-
-# CentOS/RHEL/Fedora
-sudo firewall-cmd --permanent --add-port=8000-9000/tcp
-sudo firewall-cmd --permanent --add-port=8000-9000/udp
-sudo firewall-cmd --reload
-
-# Test localhost connectivity
-ping 127.0.0.1</code></pre>
-        
-        <h2>Performance Optimization (Optional)</h2>
-        
-        <div class="highlight">
-            <strong>Production Only:</strong> CPU isolation, memory tuning, and network buffer optimization for low-latency trading. Not required for development.
-        </div>
-        
-        <h2>Quick Check</h2>
-        
-        <pre><code># Verify all prerequisites
-cmake --version && gcc --version && make --version && git --version</code></pre>
+# Check firewall (if needed)
+# Ubuntu: sudo ufw allow 8000:9000/tcp && sudo ufw allow 8000:9000/udp</code></pre>
         
         <div class="success">
             <strong>✅ Next:</strong> <a href="system/getting-started.html" style="color: #28a745;">Getting Started Guide</a>
