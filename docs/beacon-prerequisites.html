@@ -249,16 +249,10 @@ brew install cmake git python3
 # Verify installation
 cmake --version && clang --version && python3 --version && git --version</code></pre>
         
-        <h2>Verification</h2>
+        <h2>Quick Check</h2>
         
-        <pre><code># Check prerequisites
-cmake --version && gcc --version && python3 --version && git --version
-
-# Test network connectivity
-ping 127.0.0.1
-
-# Check firewall (if needed)
-# Ubuntu: sudo ufw allow 8000:9000/tcp && sudo ufw allow 8000:9000/udp</code></pre>
+        <p>Run the automated prerequisites checker:</p>
+        <pre><code>./scripts/check-prerequisites.sh</code></pre>
         
         <div class="success">
             <strong>✅ Next:</strong> <a href="system/getting-started.html" style="color: #28a745;">Getting Started Guide</a>
