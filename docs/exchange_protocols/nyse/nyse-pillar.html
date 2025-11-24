@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYSE Pillar Protocol Documentation - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #00aaff;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            color: #ffffff;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px 0;
+            color: #00aaff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #ffffff;
+        }
+        
+        h4 {
+            font-size: 1.0rem;
+            font-weight: 600;
+            margin: 15px 0 8px 0;
+            color: #00aaff;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .highlight {
+            background: rgba(0, 170, 255, 0.1);
+            padding: 15px;
+            border-left: 3px solid #00aaff;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 3px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .info {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 3px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../documentation-hub.html" class="back-link">← Back to Documentation</a>
+        
+        <h1>NYSE Pillar Protocol Documentation</h1>
+        <p><strong>New York Stock Exchange - Pillar Gateway Protocol Implementation</strong></p>
+        
+        <h2>Overview</h2>
+        <p><strong>Pillar</strong> is the New York Stock Exchange's (NYSE) unified trading platform and gateway protocol. It consolidates order entry, market data, and trade reporting across all NYSE markets (NYSE, NYSE American, NYSE Arca, NYSE National).</p>
+        
+        <div class="highlight">
+            <strong>Protocol Characteristics:</strong>
+            <ul>
+                <li><strong>Type:</strong> Binary, fixed-length messages (64 bytes)</li>
+                <li><strong>Transport:</strong> TCP (order entry), UDP (market data)</li>
+                <li><strong>Byte Order:</strong> Network byte order (big-endian)</li>
+                <li><strong>Version:</strong> 3.2 (current implementation)</li>
+                <li><strong>Markets:</strong> NYSE, NYSE American, NYSE Arca, NYSE National</li>
+            </ul>
+        </div>
+        
+        <h2>Message Structure</h2>
+        <h3>New Order Message (64 bytes)</h3>
+        <p>Submits a new order to NYSE.</p>
+        
+        <pre><code>struct PillarOrderEntryMessage {
+    uint64_t clientOrderId;      // 8 bytes: unique client order ID
+    char symbol[8];              // 8 bytes: stock symbol (space-padded)
+    uint32_t shares;             // 4 bytes: order quantity
+    uint32_t price;              // 4 bytes: price in 1/10000 dollars
+    char side;                   // 1 byte: 'B'=buy, 'S'=sell
+    char orderType;              // 1 byte: 'L'=limit, 'M'=market
+    char tif;                    // 1 byte: time in force
+    char capacity;               // 1 byte: trading capacity
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[38];           // 38 bytes: padding to 64 bytes
+};</code></pre>
+        
+        <h3>Field Details</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Valid Values</th>
+            </tr>
+            <tr>
+                <td><code>clientOrderId</code></td>
+                <td>uint64_t</td>
+                <td>Unique order identifier</td>
+                <td>1 - 2^64-1</td>
+            </tr>
+            <tr>
+                <td><code>symbol</code></td>
+                <td>char[8]</td>
+                <td>Stock symbol, space-padded</td>
+                <td>"AAPL    ", "MSFT    "</td>
+            </tr>
+            <tr>
+                <td><code>shares</code></td>
+                <td>uint32_t</td>
+                <td>Number of shares</td>
+                <td>1 - 99,999,999</td>
+            </tr>
+            <tr>
+                <td><code>price</code></td>
+                <td>uint32_t</td>
+                <td>Price in 1/10000 dollars</td>
+                <td>0 (market order) or 1-999,999,999</td>
+            </tr>
+            <tr>
+                <td><code>side</code></td>
+                <td>char</td>
+                <td>Buy or sell</td>
+                <td>'B' = Buy, 'S' = Sell</td>
+            </tr>
+            <tr>
+                <td><code>orderType</code></td>
+                <td>char</td>
+                <td>Order type</td>
+                <td>'L' = Limit, 'M' = Market</td>
+            </tr>
+            <tr>
+                <td><code>tif</code></td>
+                <td>char</td>
+                <td>Time in force</td>
+                <td>'0' = Day, '3' = IOC, '4' = FOK, 'G' = GTC</td>
+            </tr>
+            <tr>
+                <td><code>capacity</code></td>
+                <td>char</td>
+                <td>Trading capacity</td>
+                <td>'A' = Agency, 'P' = Principal</td>
+            </tr>
+        </table>
+        
+        <div class="info">
+            <strong>Example Order:</strong><br>
+            BUY 500 MSFT @ $375.50, Day Order, Limit<br>
+            <code>clientOrderId: 67890</code><br>
+            <code>symbol: "MSFT    "</code><br>
+            <code>shares: 500</code><br>
+            <code>price: 3755000 (represents $375.50)</code><br>
+            <code>side: 'B'</code><br>
+            <code>orderType: 'L'</code><br>
+            <code>tif: '0'</code><br>
+            <code>capacity: 'A'</code>
+        </div>
+        
+        <h2>Message Types</h2>
+        
+        <h3>Inbound Messages (Client → Exchange)</h3>
+        
+        <h4>1. New Order Message</h4>
+        <p>Submits a new order to NYSE (structure shown above).</p>
+        
+        <h4>2. Cancel Order Message (64 bytes)</h4>
+        <pre><code>struct PillarCancelMessage {
+    uint64_t clientOrderId;      // 8 bytes: order ID to cancel
+    uint32_t cancelShares;       // 4 bytes: shares to cancel (0 = all)
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[50];           // 50 bytes: padding
+};</code></pre>
+        
+        <h4>3. Modify Order Message (64 bytes)</h4>
+        <pre><code>struct PillarModifyMessage {
+    uint64_t clientOrderId;      // 8 bytes: original order ID
+    uint64_t newOrderId;         // 8 bytes: new order ID (must be unique)
+    uint32_t newShares;          // 4 bytes: new share count
+    uint32_t newPrice;           // 4 bytes: new price
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[36];           // 36 bytes: padding
+};</code></pre>
+        
+        <h3>Outbound Messages (Exchange → Client)</h3>
+        
+        <h4>1. Order Acknowledgment</h4>
+        <p>Confirms order has been received and entered into the order book.</p>
+        <ul>
+            <li>Client Order ID</li>
+            <li>Exchange Order ID (assigned by NYSE)</li>
+            <li>Symbol, Shares, Price</li>
+            <li>Timestamp (nanoseconds since midnight)</li>
+            <li>Order Book ID</li>
+        </ul>
+        
+        <h4>2. Order Reject</h4>
+        <p>Indicates order was rejected before entering the book.</p>
+        <pre><code>enum PillarRejectReason {
+    INVALID_SYMBOL = 1,
+    INVALID_PRICE = 2,
+    INVALID_QUANTITY = 3,
+    MARKET_CLOSED = 4,
+    HALTED = 5,
+    DUPLICATE_ORDER_ID = 6,
+    PRICE_OUT_OF_RANGE = 7,
+    LIMIT_UP_LIMIT_DOWN_VIOLATION = 8,
+    INSUFFICIENT_BUYING_POWER = 9,
+    SHORT_SALE_RESTRICTION = 10
+};</code></pre>
+        
+        <h2>Price Encoding</h2>
+        <p>Pillar uses <strong>fixed-point encoding</strong> for price representation:</p>
+        <pre><code>Stored Value = Price × 10,000
+
+Examples:
+$250.00 → 2,500,000
+$375.50 → 3,755,000
+$0.0001 → 1 (minimum tick)
+$99,999.99 → 999,999,900
+
+Special Values:
+0 = Market order (no price specified)
+0xFFFFFFFF = Pegged order (price derived from market)</code></pre>
+        
+        <h2>Order Types & Time In Force</h2>
+        
+        <h3>Order Types</h3>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price Required</th>
+            </tr>
+            <tr>
+                <td>'L'</td>
+                <td>Limit</td>
+                <td>Execute at specified price or better</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>'M'</td>
+                <td>Market</td>
+                <td>Execute at best available price</td>
+                <td>No (set to 0)</td>
+            </tr>
+            <tr>
+                <td>'P'</td>
+                <td>Pegged</td>
+                <td>Price tracks market (e.g., midpoint)</td>
+                <td>Special</td>
+            </tr>
+            <tr>
+                <td>'S'</td>
+                <td>Stop</td>
+                <td>Becomes market order when triggered</td>
+                <td>Trigger price</td>
+            </tr>
+            <tr>
+                <td>'T'</td>
+                <td>Stop Limit</td>
+                <td>Becomes limit order when triggered</td>
+                <td>Both trigger and limit</td>
+            </tr>
+        </table>
+        
+        <h3>Time In Force (TIF) Options</h3>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Pillar-Specific Notes</th>
+            </tr>
+            <tr>
+                <td>'0'</td>
+                <td>Day</td>
+                <td>Valid until market close</td>
+                <td>Cancels at 4:00 PM ET</td>
+            </tr>
+            <tr>
+                <td>'3'</td>
+                <td>IOC</td>
+                <td>Immediate or Cancel</td>
+                <td>Unfilled portion cancelled immediately</td>
+            </tr>
+            <tr>
+                <td>'4'</td>
+                <td>FOK</td>
+                <td>Fill or Kill</td>
+                <td>All-or-nothing execution</td>
+            </tr>
+            <tr>
+                <td>'G'</td>
+                <td>GTC</td>
+                <td>Good Till Cancel</td>
+                <td>Persists across sessions</td>
+            </tr>
+            <tr>
+                <td>'O'</td>
+                <td>Opening Only</td>
+                <td>Execute in opening auction only</td>
+                <td>NYSE-specific</td>
+            </tr>
+            <tr>
+                <td>'C'</td>
+                <td>Closing Only</td>
+                <td>Execute in closing auction only</td>
+                <td>NYSE-specific</td>
+            </tr>
+        </table>
+        
+        <h2>Symbol Formatting</h2>
+        <p>Symbols are <strong>8 bytes, space-padded on the right</strong>.</p>
+        
+        <div class="info">
+            <strong>NYSE-Specific Examples:</strong><br>
+            <code>"IBM     "   // IBM Corp</code><br>
+            <code>"GE      "   // General Electric</code><br>
+            <code>"C       "   // Citigroup</code><br>
+            <code>"BAC     "   // Bank of America</code><br>
+            <code>"SPY     "   // SPDR S&P 500 ETF (NYSE Arca)</code><br>
+            <code>"VXX     "   // VIX ETF (NYSE Arca)</code><br><br>
+            
+            <strong>Preferred Stock Notation:</strong><br>
+            <code>"BAC-PL  "   // Bank of America Preferred Series L</code><br>
+            <code>"JPM-PC  "   // JPMorgan Chase Preferred Series C</code>
+        </div>
+        
+        <h2>Market Phases</h2>
+        <p>NYSE operates in distinct trading phases:</p>
+        
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Time (ET)</th>
+                <th>Description</th>
+                <th>Order Entry Allowed</th>
+            </tr>
+            <tr>
+                <td>Pre-Opening</td>
+                <td>4:00 AM - 9:30 AM</td>
+                <td>Accumulate orders for opening auction</td>
+                <td>Yes (Day, Opening Only)</td>
+            </tr>
+            <tr>
+                <td>Opening Auction</td>
+                <td>~9:30 AM</td>
+                <td>Price discovery, single opening price</td>
+                <td>No (queued orders execute)</td>
+            </tr>
+            <tr>
+                <td>Core Trading</td>
+                <td>9:30 AM - 4:00 PM</td>
+                <td>Continuous trading</td>
+                <td>Yes (all order types)</td>
+            </tr>
+            <tr>
+                <td>Closing Auction</td>
+                <td>~4:00 PM</td>
+                <td>Single closing price</td>
+                <td>No (queued orders execute)</td>
+            </tr>
+            <tr>
+                <td>After Hours</td>
+                <td>4:00 PM - 8:00 PM</td>
+                <td>Extended hours trading</td>
+                <td>Yes (limited)</td>
+            </tr>
+        </table>
+        
+        <h2>Performance Considerations</h2>
+        
+        <div class="highlight">
+            <strong>Typical Round-Trip Times (RTT):</strong>
+            <ul>
+                <li>Co-located in Mahwah, NJ data center: <strong>50-200 microseconds</strong></li>
+                <li>New York City: <strong>500-1000 microseconds</strong></li>
+                <li>Chicago: <strong>5-10 milliseconds</strong></li>
+                <li>West Coast: <strong>30-50 milliseconds</strong></li>
+            </ul>
+        </div>
+        
+        <h3>Optimization Techniques</h3>
+        <ol>
+            <li><strong>Co-location:</strong> Place servers in NYSE Mahwah data center</li>
+            <li><strong>Kernel Bypass:</strong> Use DPDK or Solarflare OpenOnload</li>
+            <li><strong>Lock-Free Queues:</strong> Zero-copy message passing</li>
+            <li><strong>CPU Pinning:</strong> Dedicate cores to trading threads</li>
+            <li><strong>Huge Pages:</strong> Reduce TLB misses</li>
+        </ol>
+        
+        <h2>Code Example</h2>
+        <h3>Sending a Pillar Order</h3>
+        <pre><code>#include "protocol_adapters.h"
+
+int sendPillarOrder(int sock) {
+    PillarOrderEntryMessage order;
+    std::memset(&order, 0, sizeof(order));
+    
+    order.clientOrderId = 123456;
+    std::memcpy(order.symbol, "IBM     ", 8);
+    order.shares = 500;
+    order.price = 1575000;  // $157.50
+    order.side = 'B';
+    order.orderType = 'L';  // Limit
+    order.tif = '0';        // Day
+    order.capacity = 'A';   // Agency
+    
+    // Send order
+    ssize_t sent = send(sock, &order, sizeof(order), 0);
+    
+    if (sent != sizeof(order)) {
+        std::cerr << "Failed to send order\n";
+        return -1;
+    }
+    
+    std::cout << "Pillar order sent: BUY " << order.shares 
+              << " IBM @ $" << (order.price / 10000.0) << "\n";
+    
+    return 0;
+}</code></pre>
+        
+        <h2>Beacon Integration</h2>
+        <div class="success">
+            <strong>✅ Implemented:</strong>
+            <ul>
+                <li>New Order Message (64 bytes)</li>
+                <li>Execution Reports (32 bytes)</li>
+                <li>Protocol adapter for normalization</li>
+                <li>Test client for validation</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <strong>⏳ Not Yet Implemented:</strong>
+            <ul>
+                <li>Cancel Order / Modify Order</li>
+                <li>Sequence number tracking</li>
+                <li>Market phase awareness</li>
+                <li>Opening/Closing auction handling</li>
+                <li>Regulatory order marking (short sale, etc.)</li>
+            </ul>
+        </div>
+        
+        <h2>Testing</h2>
+        <p>Run the Pillar test client:</p>
+        <pre><code># Start matching engine in Pillar mode
+cd exchange_matching_engine
+./build/exchange_matching_engine 54321 pillar
+
+# In another terminal, run Pillar test client
+cd client_algorithm
+./build/test_pillar 127.0.0.1 54321 20</code></pre>
+        
+        <h2>Differences from NASDAQ OUCH</h2>
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>OUCH</th>
+                <th>Pillar</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Protocol</td>
+                <td>Binary</td>
+                <td>Binary</td>
+                <td>Both use fixed-length</td>
+            </tr>
+            <tr>
+                <td>Message Size</td>
+                <td>64 bytes</td>
+                <td>64 bytes</td>
+                <td>Identical in this implementation</td>
+            </tr>
+            <tr>
+                <td>Price Encoding</td>
+                <td>1/10000 dollars</td>
+                <td>1/10000 dollars</td>
+                <td>Same fixed-point</td>
+            </tr>
+            <tr>
+                <td>Sequence Numbers</td>
+                <td>Optional</td>
+                <td>Required</td>
+                <td>Pillar tracks gaps</td>
+            </tr>
+            <tr>
+                <td>Market Phases</td>
+                <td>Simpler</td>
+                <td>Complex (auctions)</td>
+                <td>NYSE has opening/closing auctions</td>
+            </tr>
+        </table>
+        
+        <h2>References</h2>
+        <ul>
+            <li>NYSE Pillar Gateway Specification v3.2</li>
+            <li>NYSE Integrated Feed v2.1 Specification</li>
+            <li>SEC Rule 611 (Order Protection Rule)</li>
+            <li>SEC Rule 15c3-5 (Market Access Rule)</li>
+            <li>Beacon Implementation: <code>src/apps/client_algorithm/test_pillar.cpp</code></li>
+        </ul>
+        
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 30px 0;">
+        <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+            <strong>Last Updated:</strong> November 24, 2025 | 
+            <strong>Author:</strong> Bryan Camp | 
+            <strong>Version:</strong> 1.0
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASDAQ OUCH Protocol Documentation - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #00aaff;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            color: #ffffff;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px 0;
+            color: #00aaff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #ffffff;
+        }
+        
+        h4 {
+            font-size: 1.0rem;
+            font-weight: 600;
+            margin: 15px 0 8px 0;
+            color: #00aaff;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .highlight {
+            background: rgba(0, 170, 255, 0.1);
+            padding: 15px;
+            border-left: 3px solid #00aaff;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 3px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .info {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 3px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../documentation-hub.html" class="back-link">← Back to Documentation</a>
+        
+        <h1>NASDAQ OUCH Protocol Documentation</h1>
+        <p><strong>Order Utility and Connection Handler (OUCH) v5.0</strong></p>
+        
+        <h2>Overview</h2>
+        <p><strong>OUCH (Order Utility and Connection Handler)</strong> is NASDAQ's proprietary binary protocol for order entry and management. This document describes the implementation in the Beacon trading system.</p>
+        
+        <div class="highlight">
+            <strong>Protocol Characteristics:</strong>
+            <ul>
+                <li><strong>Type:</strong> Binary, fixed-length messages</li>
+                <li><strong>Transport:</strong> TCP (reliable, ordered delivery)</li>
+                <li><strong>Byte Order:</strong> Network byte order (big-endian for multi-byte fields)</li>
+                <li><strong>Message Size:</strong> 64 bytes for inbound, 32 bytes for outbound</li>
+                <li><strong>Version:</strong> 5.0 (current implementation)</li>
+            </ul>
+        </div>
+        
+        <h2>Message Structure</h2>
+        <h3>Enter Order Message (64 bytes)</h3>
+        <p>Submits a new order to the exchange.</p>
+        
+        <pre><code>struct OuchEnterOrderMessage {
+    uint64_t clientOrderId;      // 8 bytes: unique client order ID
+    char symbol[8];              // 8 bytes: padded stock symbol (space-filled)
+    uint32_t shares;             // 4 bytes: number of shares
+    uint32_t price;              // 4 bytes: price in 1/10000 dollars
+    char side;                   // 1 byte: 'B'=buy, 'S'=sell
+    char timeInForce;            // 1 byte: '0'=Day, '3'=IOC, '4'=FOK
+    char orderType;              // 1 byte: 'O'=order
+    char capacity;               // 1 byte: 'A'=agency, 'P'=principal
+    uint16_t reserved;           // 2 bytes: reserved for future use
+    char _padding[34];           // 34 bytes: padding to 64 bytes
+};</code></pre>
+        
+        <h3>Field Details</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Valid Values</th>
+            </tr>
+            <tr>
+                <td><code>clientOrderId</code></td>
+                <td>uint64_t</td>
+                <td>Unique order identifier assigned by client</td>
+                <td>1 - 2^64-1</td>
+            </tr>
+            <tr>
+                <td><code>symbol</code></td>
+                <td>char[8]</td>
+                <td>Stock symbol, space-padded on right</td>
+                <td>"AAPL    ", "MSFT    "</td>
+            </tr>
+            <tr>
+                <td><code>shares</code></td>
+                <td>uint32_t</td>
+                <td>Order quantity</td>
+                <td>1 - 999,999,999</td>
+            </tr>
+            <tr>
+                <td><code>price</code></td>
+                <td>uint32_t</td>
+                <td>Price in 1/10000 dollars (fixed-point)</td>
+                <td>Example: 1,502,500 = $150.25</td>
+            </tr>
+            <tr>
+                <td><code>side</code></td>
+                <td>char</td>
+                <td>Buy or sell indicator</td>
+                <td>'B' = Buy, 'S' = Sell</td>
+            </tr>
+            <tr>
+                <td><code>timeInForce</code></td>
+                <td>char</td>
+                <td>Order duration</td>
+                <td>'0' = Day, '3' = IOC, '4' = FOK</td>
+            </tr>
+            <tr>
+                <td><code>orderType</code></td>
+                <td>char</td>
+                <td>Type of order</td>
+                <td>'O' = Standard order</td>
+            </tr>
+            <tr>
+                <td><code>capacity</code></td>
+                <td>char</td>
+                <td>Trading capacity</td>
+                <td>'A' = Agency, 'P' = Principal, 'R' = Riskless Principal</td>
+            </tr>
+        </table>
+        
+        <div class="info">
+            <strong>Example Order:</strong><br>
+            BUY 100 AAPL @ $150.25, Day Order, Agency<br>
+            <code>clientOrderId: 12345</code><br>
+            <code>symbol: "AAPL    " (space-padded)</code><br>
+            <code>shares: 100</code><br>
+            <code>price: 1502500 (represents $150.25)</code><br>
+            <code>side: 'B'</code><br>
+            <code>timeInForce: '0'</code><br>
+            <code>orderType: 'O'</code><br>
+            <code>capacity: 'A'</code>
+        </div>
+        
+        <h2>Message Types</h2>
+        
+        <h3>Inbound Messages (Client → Exchange)</h3>
+        
+        <h4>1. Enter Order Message</h4>
+        <p>Submits a new order to the exchange (structure shown above).</p>
+        
+        <h4>2. Cancel Order Message (64 bytes)</h4>
+        <pre><code>struct OuchCancelOrderMessage {
+    uint64_t clientOrderId;      // 8 bytes: order ID to cancel
+    uint32_t canceledShares;     // 4 bytes: shares to cancel (0 = all)
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[50];           // 50 bytes: padding to 64 bytes
+};</code></pre>
+        
+        <h4>3. Replace Order Message (64 bytes)</h4>
+        <pre><code>struct OuchReplaceOrderMessage {
+    uint64_t originalOrderId;    // 8 bytes: original order ID
+    uint64_t newOrderId;         // 8 bytes: new order ID
+    uint32_t shares;             // 4 bytes: new share count
+    uint32_t price;              // 4 bytes: new price
+    char side;                   // 1 byte: 'B' or 'S'
+    char timeInForce;            // 1 byte: TIF
+    char orderType;              // 1 byte: order type
+    char capacity;               // 1 byte: capacity
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[34];           // 34 bytes: padding
+};</code></pre>
+        
+        <h3>Outbound Messages (Exchange → Client)</h3>
+        
+        <h4>1. Order Accepted Message</h4>
+        <p>Confirms order has been accepted and entered into the order book.</p>
+        <ul>
+            <li>Order ID</li>
+            <li>Symbol, Shares, Price, Side</li>
+            <li>Timestamp</li>
+            <li>Order reference number (exchange-assigned)</li>
+        </ul>
+        
+        <h4>2. Order Rejected Message</h4>
+        <p>Indicates order was rejected.</p>
+        <ul>
+            <li>Invalid symbol</li>
+            <li>Invalid price (outside price bands)</li>
+            <li>Insufficient buying power</li>
+            <li>Duplicate order ID</li>
+            <li>Market closed</li>
+            <li>Halted symbol</li>
+        </ul>
+        
+        <h4>3. Order Executed Message</h4>
+        <p>Reports a full or partial fill.</p>
+        <ul>
+            <li>Order ID</li>
+            <li>Executed shares</li>
+            <li>Execution price</li>
+            <li>Match number (unique trade ID)</li>
+            <li>Liquidity flag (added/removed liquidity)</li>
+            <li>Timestamp</li>
+        </ul>
+        
+        <h2>Price Encoding</h2>
+        <p>OUCH uses <strong>fixed-point decimal encoding</strong> for prices:</p>
+        
+        <pre><code>Stored Value = Price × 10,000
+
+Examples:
+$100.00 → 1,000,000
+$150.25 → 1,502,500
+$0.01 → 100 (minimum tick)
+$9,999.99 → 99,999,900
+
+Conversion Functions:
+// Decimal to OUCH
+uint32_t toOuchPrice(double price) {
+    return static_cast<uint32_t>(price * 10000.0);
+}
+
+// OUCH to decimal
+double fromOuchPrice(uint32_t ouchPrice) {
+    return ouchPrice / 10000.0;
+}</code></pre>
+        
+        <table>
+            <tr>
+                <th>Decimal Price</th>
+                <th>Stored Value</th>
+                <th>Calculation</th>
+            </tr>
+            <tr>
+                <td>$100.00</td>
+                <td>1,000,000</td>
+                <td>100.00 × 10,000</td>
+            </tr>
+            <tr>
+                <td>$150.25</td>
+                <td>1,502,500</td>
+                <td>150.25 × 10,000</td>
+            </tr>
+            <tr>
+                <td>$0.01</td>
+                <td>100</td>
+                <td>0.01 × 10,000</td>
+            </tr>
+            <tr>
+                <td>$9,999.99</td>
+                <td>99,999,900</td>
+                <td>9,999.99 × 10,000</td>
+            </tr>
+        </table>
+        
+        <h2>Time In Force (TIF) Options</h2>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>'0'</td>
+                <td>Day</td>
+                <td>Valid until market close</td>
+            </tr>
+            <tr>
+                <td>'3'</td>
+                <td>IOC</td>
+                <td>Immediate or Cancel - execute immediately, cancel unfilled portion</td>
+            </tr>
+            <tr>
+                <td>'4'</td>
+                <td>FOK</td>
+                <td>Fill or Kill - execute entire order immediately or cancel</td>
+            </tr>
+            <tr>
+                <td>'G'</td>
+                <td>GTC</td>
+                <td>Good Till Cancel - persists across trading sessions</td>
+            </tr>
+        </table>
+        
+        <h2>Trading Capacity</h2>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>'A'</td>
+                <td>Agency</td>
+                <td>Acting as agent for customer</td>
+            </tr>
+            <tr>
+                <td>'P'</td>
+                <td>Principal</td>
+                <td>Trading for own account</td>
+            </tr>
+            <tr>
+                <td>'R'</td>
+                <td>Riskless Principal</td>
+                <td>Simultaneous offsetting transaction</td>
+            </tr>
+        </table>
+        
+        <h2>Symbol Formatting</h2>
+        <p>Symbols are <strong>8 bytes, space-padded on the right</strong>.</p>
+        
+        <div class="info">
+            <strong>Examples:</strong><br>
+            <code>"AAPL    "  // Apple Inc.</code><br>
+            <code>"MSFT    "  // Microsoft</code><br>
+            <code>"GOOGL   "  // Alphabet (Class A)</code><br>
+            <code>"BRK.A   "  // Berkshire Hathaway (includes dot)</code><br>
+            <code>"T       "  // AT&T (1 character, 7 spaces)</code>
+        </div>
+        
+        <pre><code>void formatSymbol(const char* input, char* output) {
+    std::memset(output, ' ', 8);  // Fill with spaces
+    std::memcpy(output, input, std::min(strlen(input), 8ul));
+}</code></pre>
+        
+        <h2>Connection and Session Management</h2>
+        
+        <h3>Establishing Connection</h3>
+        <ol>
+            <li><strong>TCP Handshake:</strong> Client initiates TCP connection to exchange</li>
+            <li><strong>Login Message:</strong> Client sends login credentials (not implemented in simple version)</li>
+            <li><strong>Session Established:</strong> Exchange confirms, ready to accept orders</li>
+        </ol>
+        
+        <h3>Heartbeats</h3>
+        <ul>
+            <li>Exchange sends periodic heartbeat messages</li>
+            <li>Client must respond to avoid disconnection</li>
+            <li>Typical interval: 1-5 seconds</li>
+        </ul>
+        
+        <h3>Disconnection Handling</h3>
+        <ul>
+            <li>All open orders are <strong>automatically cancelled</strong> on disconnect</li>
+            <li>Client must reconnect and re-enter orders</li>
+            <li>Order IDs must be unique across sessions</li>
+        </ul>
+        
+        <h2>Error Handling</h2>
+        
+        <h3>Client-Side Validation</h3>
+        <p>Before sending order, validate:</p>
+        <ul>
+            <li>✓ Order ID is unique</li>
+            <li>✓ Symbol is valid and properly formatted</li>
+            <li>✓ Price is within tick size rules</li>
+            <li>✓ Quantity is within exchange limits</li>
+            <li>✓ Account has sufficient buying power</li>
+        </ul>
+        
+        <h3>Exchange Rejections</h3>
+        <pre><code>enum RejectReason {
+    INVALID_SYMBOL = 1,
+    INVALID_PRICE = 2,
+    INVALID_QUANTITY = 3,
+    DUPLICATE_ORDER_ID = 4,
+    MARKET_CLOSED = 5,
+    HALTED = 6,
+    INSUFFICIENT_FUNDS = 7
+};</code></pre>
+        
+        <h2>Performance Considerations</h2>
+        
+        <h3>Latency Optimization</h3>
+        <div class="highlight">
+            <strong>1. TCP_NODELAY:</strong> Disable Nagle's algorithm<br>
+            <strong>2. Socket Buffers:</strong> Increase buffer sizes<br>
+            <strong>3. Pre-allocated Structures:</strong> Reuse message structures
+        </div>
+        
+        <pre><code>// TCP_NODELAY
+int noDelay = 1;
+setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &noDelay, sizeof(noDelay));
+
+// Socket Buffers
+int bufSize = 2 * 1024 * 1024;  // 2 MB
+setsockopt(sock, SOL_SOCKET, SO_SNDBUF, &bufSize, sizeof(bufSize));
+
+// Pre-allocated Structures
+OuchEnterOrderMessage order;  // Allocate once
+// Reuse for multiple orders</code></pre>
+        
+        <h3>Throughput</h3>
+        <ul>
+            <li><strong>Typical:</strong> 10,000 - 50,000 orders/second per connection</li>
+            <li><strong>Burst:</strong> Up to 100,000 orders/second</li>
+            <li><strong>Message Size:</strong> 64 bytes = efficient network utilization</li>
+        </ul>
+        
+        <h2>Code Examples</h2>
+        
+        <h3>Sending an Order</h3>
+        <pre><code>#include "protocol_adapters.h"
+
+int main() {
+    // Connect to exchange
+    int sock = connectToExchange("127.0.0.1", 54321);
+    
+    // Create order
+    OuchEnterOrderMessage order;
+    std::memset(&order, 0, sizeof(order));
+    
+    order.clientOrderId = 12345;
+    std::memcpy(order.symbol, "AAPL    ", 8);
+    order.shares = 100;
+    order.price = 1502500;  // $150.25
+    order.side = 'B';
+    order.timeInForce = '0';  // Day
+    order.orderType = 'O';
+    order.capacity = 'A';  // Agency
+    
+    // Send order
+    send(sock, &order, sizeof(order), 0);
+    
+    // Receive acknowledgment
+    ExecutionReport ack;
+    recv(sock, &ack, sizeof(ack), 0);
+    
+    return 0;
+}</code></pre>
+        
+        <h3>Receiving Execution Reports</h3>
+        <pre><code>void listenForExecutions(int sock) {
+    ExecutionReport exec;
+    
+    while (true) {
+        ssize_t bytes = recv(sock, &exec, sizeof(exec), 0);
+        
+        if (bytes != sizeof(exec)) break;
+        
+        if (exec.msgType == 3) {  // Execution
+            std::cout << "FILLED: " << exec.execQty 
+                      << " @ $" << (exec.execPrice / 10000.0) << "\n";
+        }
+    }
+}</code></pre>
+        
+        <h2>Testing</h2>
+        
+        <h3>Unit Tests</h3>
+        <pre><code>TEST(OuchProtocol, PriceEncoding) {
+    EXPECT_EQ(toOuchPrice(150.25), 1502500);
+    EXPECT_DOUBLE_EQ(fromOuchPrice(1502500), 150.25);
+}
+
+TEST(OuchProtocol, SymbolFormatting) {
+    char symbol[8];
+    formatSymbol("AAPL", symbol);
+    EXPECT_EQ(std::string(symbol, 8), "AAPL    ");
+}
+
+TEST(OuchProtocol, MessageSize) {
+    EXPECT_EQ(sizeof(OuchEnterOrderMessage), 64);
+    EXPECT_EQ(sizeof(ExecutionReport), 32);
+}</code></pre>
+        
+        <h3>Integration Test</h3>
+        <pre><code># Run the test client
+./build/client_algo algo 127.0.0.1 12345 127.0.0.1 54321 100</code></pre>
+        
+        <h2>Beacon Integration</h2>
+        <div class="success">
+            <strong>✅ Implemented:</strong>
+            <ul>
+                <li>Enter Order Message (64 bytes)</li>
+                <li>Execution Reports (32 bytes)</li>
+                <li>Price encoding/decoding</li>
+                <li>Symbol formatting</li>
+                <li>Protocol adapter for normalization</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <strong>⏳ Not Yet Implemented:</strong>
+            <ul>
+                <li>Cancel Order / Replace Order</li>
+                <li>Order Accepted/Rejected messages</li>
+                <li>Order book (orders immediately fill)</li>
+                <li>Partial fills</li>
+                <li>Login/session management</li>
+            </ul>
+        </div>
+        
+        <h3>File Locations</h3>
+        <pre><code>src/apps/exchange_matching_engine/
+├── protocol_adapters.h          # OUCH decoder to normalized format
+└── main.cpp                     # Matching engine with OUCH support
+
+src/apps/client_algorithm/
+├── main_algo.cpp                # Client sending OUCH orders
+└── test_ouch.cpp                # OUCH test client (future)
+
+src/libs/exchange_protocols/nsdq/execution/ouch/
+├── v5.0/
+│   └── execution_message_types.h    # Official OUCH structures
+└── current/
+    └── messages_active.cpp          # Active version alias</code></pre>
+        
+        <h2>References</h2>
+        <ul>
+            <li>NASDAQ OUCH Specification v5.0</li>
+            <li>NASDAQ Market Data Standards</li>
+            <li>FIX Protocol comparison: OUCH is binary, FIX is text-based</li>
+            <li>Beacon Implementation: <code>src/apps/client_algorithm/main_algo.cpp</code></li>
+        </ul>
+        
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 30px 0;">
+        <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+            <strong>Last Updated:</strong> November 24, 2025 | 
+            <strong>Author:</strong> Bryan Camp | 
+            <strong>Version:</strong> 1.0
+        </p>
+    </div>
+</body>
+</html>

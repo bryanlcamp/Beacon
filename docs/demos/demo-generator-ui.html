@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon - Market Data Generator Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 25px;
+            left: 40px;
+            z-index: 102;
+        }
+        
+        .back-button a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+        
+        .back-button a:hover {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-button a:hover {
+            opacity: 1;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: start;
+            max-width: 1400px;
+        }
+        
+        .config-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .config-panel:last-child {
+            min-height: 100%;
+        }
+        
+        .global-settings-panel {
+            max-width: 260px;
+        }
+        
+        .btn-add-symbol {
+            padding: 8px 16px;
+            background: rgba(0, 255, 100, 0.15);
+            color: #00ff64;
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add-symbol:hover {
+            background: rgba(0, 255, 100, 0.25);
+        }
+        
+        .symbol-percentage-edit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .percentage-input {
+            width: 65px;
+            padding: 6px 10px;
+            background: rgba(0, 255, 100, 0.15);
+            border: 2px solid rgba(0, 255, 100, 0.3);
+            border-radius: 8px;
+            color: #00ff64;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .percentage-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.6);
+            background: rgba(0, 255, 100, 0.25);
+        }
+        
+        .percentage-symbol {
+            color: #00ff64;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .percentage-tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .percentage-tooltip::after {
+            content: "% of total messages";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 40, 40, 0.95);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            margin-top: 4px;
+        }
+        
+        .percentage-tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .minimal-tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .minimal-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: rgba(40, 40, 40, 0.95);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            margin-bottom: 4px;
+        }
+        
+        .minimal-tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .symbol-grids-container {
+            display: flex;
+        }
+        
+        .vertical-separator {
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .horizontal-separator {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+            margin: 25px 0;
+        }
+        
+        .price-qty-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            justify-content: start;
+            margin-right: 20px;
+        }
+        
+        .spread-volume-grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+            justify-content: start;
+            margin-left: 20px;
+        }
+        
+        .grid-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .grid-field .detail-label {
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        
+        /* Remove the generic input width rule - let specific classes control width */
+        
+        .empty-grid-cell {
+            /* Empty cell for grid spacing */
+        }
+        
+        .calendar-grid-cell {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+        
+        .price-range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .price-input {
+            width: 85px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .range-separator {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        
+        .quantity-range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .quantity-input {
+            width: 85px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .quantity-unit {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+        
+        .split-fields {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .field-group {
+            flex: 1;
+        }
+        
+        .field-group .detail-label {
+            margin-bottom: 6px;
+        }
+        
+        .spread-input-container,
+        .volume-input-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .spread-input {
+            width: 70px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .volume-input {
+            width: 70px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .spread-input:focus,
+        .volume-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .weight-input {
+            width: 60px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .weight-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .weight-slider {
+            width: 80px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+            margin: 2px 0;
+        }
+        
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00ff64;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .weight-slider::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            background: #00ff64;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        .dual-range-container {
+            position: relative;
+            width: 120px;
+            margin: 2px 0;
+        }
+        
+        .dual-range-slider {
+            width: 100%;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            border-radius: 10px;
+            outline: none;
+            position: absolute;
+            top: 0;
+            pointer-events: none;
+        }
+        
+        .dual-range-slider::-webkit-slider-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+        }
+        
+        .dual-range-slider::-moz-range-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+        }
+        
+        .dual-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00aaff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            pointer-events: all;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .dual-range-slider::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            background: #00aaff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        .range-display {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 2px;
+        }
+        
+        .dual-range-values {
+            position: relative;
+            height: 20px;
+            margin-top: 18px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .min-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-100%);
+            white-space: nowrap;
+        }
+        
+        .max-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-20%);
+            white-space: nowrap;
+        }
+        
+        .panel-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .burst-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .burst-grid .form-group {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.8rem;
+        }
+        
+        .form-input {
+            width: 85px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-select {
+            width: 85px;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .wide-select {
+            width: 180px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .symbol-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 2px;
+        }
+        
+        .symbol-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .symbol-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .symbol-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .symbol-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .symbol-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        
+        .symbol-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .symbol-percentage {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .symbol-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 0;
+        }
+        
+        .detail-item {
+            font-size: 0.9rem;
+        }
+        
+        .detail-label {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4px;
+        }
+        
+        .detail-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+
+        
+        .calendar-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: help;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-icon:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .calendar-icon::after {
+            content: attr(data-ohlcv);
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(245, 245, 245, 0.98);
+            color: #1a1a1a;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(200, 200, 200, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .calendar-icon::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            right: 8px;
+            border: 6px solid transparent;
+            border-top-color: rgba(245, 245, 245, 0.98);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-bottom: 2px;
+        }
+        
+        .calendar-icon:hover::after,
+        .calendar-icon:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .btn-success {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+            border: 1px solid rgba(0, 255, 100, 0.4);
+        }
+        
+        .btn-success:hover {
+            background: rgba(0, 255, 100, 0.3);
+        }
+        
+        .subtitle-bubble {
+            position: relative;
+            cursor: help;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .container > .subtitle-bubble {
+            display: block;
+            text-align: center;
+        }
+        
+        .subtitle-bubble:hover {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+        
+        .subtitle-bubble::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(245, 245, 245, 0.98);
+            color: #1a1a1a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(200, 200, 200, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .subtitle-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(245, 245, 245, 0.98);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-bottom: 2px;
+        }
+        
+        .subtitle-bubble:hover::after,
+        .subtitle-bubble:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .calendar-field {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            min-width: 40px;
+        }
+        
+        .calendar-field .calendar-icon {
+            margin-bottom: 0;
+        }
+        
+        .workflow-section {
+            margin: 30px 0 40px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .workflow-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .workflow-select {
+            flex: 1;
+            max-width: 300px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        
+        .workflow-select option {
+            background: #1a1a2e;
+            color: #ffffff;
+        }
+        
+        .btn-create-workflow {
+            padding: 8px 16px;
+            background: rgba(0, 255, 100, 0.15);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            border-radius: 6px;
+            color: rgba(0, 255, 100, 0.9);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-create-workflow:hover:not(:disabled) {
+            background: rgba(0, 255, 100, 0.2);
+            border-color: rgba(0, 255, 100, 0.4);
+        }
+        
+        .btn-create-workflow:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .btn-save-workflow {
+            padding: 8px 16px;
+            background: rgba(100, 150, 255, 0.15);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 6px;
+            color: rgba(100, 150, 255, 0.9);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
+        
+        .btn-save-workflow:hover {
+            background: rgba(100, 150, 255, 0.2);
+            border-color: rgba(100, 150, 255, 0.4);
+        }
+        
+        /* Demo Banner Styles */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(0, 170, 255, 0.12) 0%, rgba(0, 100, 200, 0.12) 100%);
+            border-bottom: 1px solid rgba(0, 170, 255, 0.25);
+            padding: 10px 20px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .demo-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 170, 255, 0.9);
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Adjust body padding to account for demo banner */
+        body {
+            padding-top: 50px;
+        }
+        
+        .workflow-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        
+        .symbol-remove-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .symbol-remove-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .symbol-remove-btn::after {
+            content: "Remove Symbol";
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(40, 40, 40, 0.95);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            margin-bottom: 4px;
+            font-weight: normal;
+        }
+        
+        .symbol-remove-btn:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .symbol-card {
+            position: relative;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        <div class="demo-content">
+            <span>DEMONSTRATION MODE</span>
+        </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="back-button">
+        <a href="market-data.html">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>Market Data.</h1>
+        <p class="subtitle-bubble" data-tooltip="Defaults are based on OHLCV">Smart Defaults. But you have Control.</p>
+        
+        <!-- Workflow Selection -->
+        <div class="workflow-section">
+            <div class="workflow-controls">
+                <span class="workflow-label">Workflow:</span>
+                <select class="workflow-select" id="workflowSelect" onchange="handleWorkflowSelection()">
+                    <option value="">Select a Workflow</option>
+                    <!-- Workflow files from: beacon/config/apps/generator/workflow/ -->
+                    <option value="sample_config.json">sample_config</option>
+                </select>
+                <button class="btn-create-workflow" id="createWorkflowBtn" onclick="createNewWorkflow()">+ Create</button>
+                <button class="btn btn-success" onclick="generateMarketData()" style="margin-left: auto;">Generate Market Data</button>
+            </div>
+        </div>
+
+        <div class="config-grid">
+            <!-- Configuration Panel -->
+            <div class="config-panel global-settings-panel">
+                <h2 class="panel-title">Dataset Creation</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Total Messages</label>
+                    <input type="text" class="form-input wide-select" value="10000" id="numMessages">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Output Format</label>
+                    <select class="form-select wide-select" id="exchange">
+                        <option value="nsdq">NASDAQ (ITCH v5.0)</option>
+                        <option value="nyse">NYSE (Pillar v3.2)</option>
+                        <option value="cme">CME (MBO v3.0)</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+                
+                <div class="horizontal-separator"></div>
+                
+                <h3 style="margin: 30px 0 20px 0; font-size: 1.2rem;">Wave Patterns</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Duration (ms)</label>
+                        <input type="text" class="form-input" value="300000" id="waveDuration">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amplitude (%)</label>
+                        <input type="text" class="form-input" value="120" id="waveAmplitude">
+                    </div>
+                </div>
+                
+                <div class="horizontal-separator"></div>
+                
+                <h3 style="margin: 30px 0 20px 0; font-size: 1.2rem;">Burst Events</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" checked style="margin-right: 8px;" id="burstEnabled">
+                        Enable Burst Patterns
+                    </label>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Burst Count</label>
+                        <input type="text" class="form-input" value="5" id="burstCount">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Duration (ms)</label>
+                        <input type="text" class="form-input" value="2000" id="burstDuration">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Intensity (%)</label>
+                        <input type="number" class="form-input" value="300" step="0.1" id="burstIntensity">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Frequency (ms)</label>
+                        <input type="number" class="form-input" value="60000" id="burstFrequency">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symbol Configuration Panel -->
+            <div class="config-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h2 class="panel-title" style="margin-bottom: 0;">Symbol Configuration</h2>
+                    <button class="btn-add-symbol" onclick="addSymbolPanel()">+ Add Symbol</button>
+                </div>
+                
+                <div class="symbol-list">
+                    <!-- Add AAPL to the symbol-list in 2-column format -->
+                    <!-- AAPL Symbol -->
+                    <div class="symbol-card" data-symbol="AAPL">
+                        <button class="symbol-remove-btn" onclick="removeSymbolPanel(this)">×</button>
+                        <div class="symbol-header">
+                            <div class="symbol-name">AAPL</div>
+                            <div class="symbol-percentage-edit percentage-tooltip">
+                                <input type="number" class="percentage-input" value="30" min="0" max="100" step="1"><span class="percentage-symbol">%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Side-by-side Grids -->
+                        <div class="symbol-grids-container">
+                            <!-- Price/Quantity Grid -->
+                            <div class="price-qty-grid">
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Price range for messages">Price Range</div>
+                                    <div class="dual-range-container">
+                                        <input type="range" class="dual-range-slider price-min" min="1" max="500" value="475" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                        <input type="range" class="dual-range-slider price-max" min="1" max="500" value="500" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                    </div>
+                                    <div class="dual-range-values">
+                                        <span class="min-value">$475.00</span>
+                                        <span class="max-value">$500.00</span>
+                                    </div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Quantity range for messages">Qty Range</div>
+                                    <div class="dual-range-container">
+                                        <input type="range" class="dual-range-slider qty-min" min="1" max="1000" value="10" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                        <input type="range" class="dual-range-slider qty-max" min="1" max="1000" value="1000" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                    </div>
+                                    <div class="dual-range-values">
+                                        <span class="min-value">10</span>
+                                        <span class="max-value">1000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Vertical Separator -->
+                            <div class="vertical-separator"></div>
+                            
+                            <!-- Spread/Volume Grid -->
+                            <div class="spread-volume-grid">
+                                <div class="grid-field">
+                                    <div class="detail-label">Spread %</div>
+                                    <input type="range" class="weight-slider" value="0.8" step="0.1" min="0" max="10" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">0.8</div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Price weighting 0-1">Price Wt</div>
+                                    <input type="range" class="weight-slider" value="0.65" step="0.01" min="0" max="1" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">0.65</div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label">Volume (M)</div>
+                                    <input type="range" class="weight-slider" value="14.36" step="0.01" min="0" max="100" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">14.36</div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Quantity weighting 0-1">Qty Wt</div>
+                                    <input type="range" class="weight-slider" value="0.75" step="0.01" min="0" max="1" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">0.75</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- AAPL Symbol -->
+                    <div class="symbol-card" data-symbol="AAPL">
+                        <button class="symbol-remove-btn" onclick="removeSymbolPanel(this)" title="Remove Symbol">×</button>
+                        <div class="symbol-header">
+                            <div class="symbol-name">AAPL</div>
+                            <div class="symbol-percentage-edit percentage-tooltip">
+                                <input type="number" class="percentage-input" value="30" min="0" max="100" step="1"><span class="percentage-symbol">%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Side-by-side Grids -->
+                        <div class="symbol-grids-container">
+                            <!-- Price/Quantity Grid -->
+                            <div class="price-qty-grid">
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Price range for messages">Price Range</div>
+                                    <div class="dual-range-container">
+                                        <input type="range" class="dual-range-slider price-min" min="1" max="500" value="220" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                        <input type="range" class="dual-range-slider price-max" min="1" max="500" value="300" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                    </div>
+                                    <div class="dual-range-values">
+                                        <span class="min-value">$220.00</span>
+                                        <span class="max-value">$300.00</span>
+                                    </div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Quantity range for messages">Qty Range</div>
+                                    <div class="dual-range-container">
+                                        <input type="range" class="dual-range-slider qty-min" min="1" max="1000" value="5" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                        <input type="range" class="dual-range-slider qty-max" min="1" max="1000" value="50" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                    </div>
+                                    <div class="dual-range-values">
+                                        <span class="min-value">5</span>
+                                        <span class="max-value">50</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Vertical Separator -->
+                            <div class="vertical-separator"></div>
+                            
+                            <!-- Spread/Volume Grid -->
+                            <div class="spread-volume-grid">
+                                <div class="grid-field">
+                                    <div class="detail-label">Spread %</div>
+                                    <input type="range" class="weight-slider" value="0.6" step="0.1" min="0" max="10" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">0.6</div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Price weighting 0-1">Price Wt</div>
+                                    <input type="number" class="weight-input" value="0.35" step="0.01" min="0" max="1">
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label">Volume (M)</div>
+                                    <input type="range" class="weight-slider" value="44.92" step="0.01" min="0" max="100" oninput="this.nextElementSibling.textContent=this.value">
+                                    <div class="range-display">44.92</div>
+                                </div>
+                                <div class="grid-field">
+                                    <div class="detail-label minimal-tooltip" data-tooltip="Quantity weighting 0-1">Qty Wt</div>
+                                    <input type="number" class="weight-input" value="0.45" step="0.01" min="0" max="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Interactive functionality for demo purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.querySelector('.btn-success');
+            const burstCheckbox = document.getElementById('burstEnabled');
+            const burstInputs = document.querySelectorAll('#burstCount, #burstDuration, #burstIntensity, #burstFrequency');
+            
+            // Generate button functionality
+            if (generateBtn) {
+                generateBtn.addEventListener('click', function() {
+                    this.textContent = 'Generating...';
+                    this.style.opacity = '0.7';
+                    
+                    setTimeout(() => {
+                        this.textContent = '✓ Data Generated';
+                        setTimeout(() => {
+                            this.textContent = 'Generate Market Data';
+                            this.style.opacity = '1';
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+            
+            // Burst pattern controls
+            function toggleBurstInputs() {
+                const isEnabled = burstCheckbox.checked;
+                burstInputs.forEach(input => {
+                    input.disabled = !isEnabled;
+                    input.style.opacity = isEnabled ? '1' : '0.5';
+                });
+            }
+            
+            // Lightweight keystroke validation - just block obviously bad characters
+            function validateNumericInput(event) {
+                const key = event.key;
+                
+                // Allow control keys (backspace, delete, arrow keys, etc.)
+                if (event.ctrlKey || event.metaKey || 
+                    ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(key)) {
+                    return true;
+                }
+                
+                // Only allow digits, comma, decimal point, and minus (for negative numbers)
+                if (!/[\d,.\-]/.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Comprehensive validation when user leaves field
+            function validateNumberField(input) {
+                const value = input.value.trim();
+                
+                // Empty is okay for optional fields
+                if (value === '') {
+                    return true;
+                }
+                
+                // Remove commas and check if it's a valid number
+                const cleanValue = value.replace(/,/g, '');
+                const num = parseFloat(cleanValue);
+                
+                // Must be a valid number
+                if (isNaN(num)) {
+                    return false;
+                }
+                
+                // Additional trading-specific validations
+                if (input.classList.contains('price-input') || input.classList.contains('form-input')) {
+                    // Prices should be positive
+                    if (num < 0) return false;
+                    
+                    // Reasonable price range (adjust as needed)
+                    if (num > 1000000) return false;
+                }
+                
+                if (input.classList.contains('quantity-input')) {
+                    // Quantities should be positive integers or decimals
+                    if (num <= 0) return false;
+                    
+                    // Reasonable quantity range
+                    if (num > 1000000) return false;
+                }
+                
+                return true;
+            }
+            
+            // Add error styling
+            function showFieldError(input) {
+                input.style.borderColor = '#ff4444';
+                input.style.boxShadow = '0 0 5px rgba(255, 68, 68, 0.3)';
+                input.title = 'Invalid value - please enter a valid number';
+            }
+            
+            // Remove error styling
+            function clearFieldError(input) {
+                input.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                input.style.boxShadow = '';
+                input.title = '';
+            }
+            
+            // Percentage validation for Generate button
+            function validatePercentages() {
+                const percentageInputs = document.querySelectorAll('.percentage-input');
+                let total = 0;
+                
+                percentageInputs.forEach(input => {
+                    const value = parseFloat(input.value) || 0;
+                    total += value;
+                });
+                
+                const generateBtn = document.querySelector('.btn-success');
+                const isValid = Math.abs(total - 100) < 0.01; // Allow for small floating point errors
+                
+                if (generateBtn) {
+                    generateBtn.disabled = !isValid;
+                    generateBtn.style.opacity = isValid ? '1' : '0.5';
+                    generateBtn.title = isValid ? '' : `Percentages must total 100%. Current total: ${total.toFixed(1)}%`;
+                }
+                
+                return isValid;
+            }
+            
+            // Apply validation to all numeric inputs
+            const numericInputs = document.querySelectorAll('input[type="text"], input[type="number"], .price-input, .quantity-input, .spread-input, .volume-input, .form-input, .percentage-input');
+            console.log('Found', numericInputs.length, 'numeric inputs for validation');
+            numericInputs.forEach(input => {
+                // Lightweight keystroke validation
+                input.addEventListener('keydown', validateNumericInput);
+                
+                // Comprehensive validation when leaving field
+                input.addEventListener('blur', function() {
+                    if (validateNumberField(this)) {
+                        clearFieldError(this);
+                    } else {
+                        showFieldError(this);
+                    }
+                });
+                
+                // Clear error styling when user starts typing again
+                input.addEventListener('input', function() {
+                    if (this.style.borderColor === 'rgb(255, 68, 68)') {
+                        clearFieldError(this);
+                    }
+                });
+                
+                // Clean paste content
+                input.addEventListener('paste', function(event) {
+                    setTimeout(() => {
+                        const value = this.value;
+                        // Remove obviously invalid characters
+                        const cleanValue = value.replace(/[^\d,.\-]/g, '');
+                        if (cleanValue !== value) {
+                            this.value = cleanValue;
+                        }
+                    }, 0);
+                });
+                
+                // Special handling for percentage inputs to validate Generate button
+                if (input.classList.contains('percentage-input')) {
+                    input.addEventListener('input', validatePercentages);
+                    input.addEventListener('blur', validatePercentages);
+                }
+            });
+            
+            // Initial percentage validation to set Generate button state
+            validatePercentages();
+            
+            // Initialize burst inputs state
+            toggleBurstInputs();
+            
+            // Add event listener for checkbox changes
+            burstCheckbox.addEventListener('change', toggleBurstInputs);
+        });
+        
+        // Load available workflows on page load
+        async function loadAvailableWorkflows() {
+            try {
+                const response = await fetch('/api/configs');
+                const configs = await response.json();
+                
+                const select = document.getElementById('workflowSelect');
+                // Clear existing options except the first one
+                while (select.children.length > 1) {
+                    select.removeChild(select.lastChild);
+                }
+                
+                // Add available configs
+                configs.forEach(config => {
+                    const option = document.createElement('option');
+                    option.value = config.name;
+                    option.textContent = config.name.replace('.json', '');
+                    select.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Failed to load workflows:', error);
+            }
+        }
+        
+        // Workflow Management Functions
+        function handleWorkflowSelection() {
+            const select = document.getElementById('workflowSelect');
+            const createBtn = document.getElementById('createWorkflowBtn');
+            
+            // Enable Create button only when "Select a Workflow" is selected (empty value)
+            createBtn.disabled = select.value !== '';
+            
+            // If a workflow is selected, load it
+            if (select.value && select.value !== '') {
+                loadWorkflow(select.value);
+            }
+        }
+        
+        async function createNewWorkflow() {
+            const workflowName = prompt('Enter workflow name:', '');
+            if (workflowName && workflowName.trim()) {
+                const cleanName = workflowName.trim();
+                const config = saveCurrentWorkflow();
+                
+                try {
+                    const response = await fetch(`/api/config/${cleanName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(config)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Add to dropdown and select it
+                        const select = document.getElementById('workflowSelect');
+                        const option = document.createElement('option');
+                        option.value = cleanName;
+                        option.textContent = cleanName;
+                        select.appendChild(option);
+                        select.value = cleanName;
+                        
+                        // Update button state
+                        handleWorkflowSelection();
+                        
+                        alert('Workflow created successfully: ' + cleanName);
+                    } else {
+                        alert('Failed to create workflow: ' + (result.error || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error creating workflow:', error);
+                    alert('Failed to create workflow: ' + error.message);
+                }
+            }
+        }
+        
+        async function loadWorkflow(configName) {
+            try {
+                const response = await fetch(`/api/config/${configName}`);
+                const config = await response.json();
+                
+                if (config.error) {
+                    alert('Failed to load workflow: ' + config.error);
+                    return;
+                }
+                
+                populateFormFromConfig(config);
+            } catch (error) {
+                console.error('Error loading workflow:', error);
+                alert('Failed to load workflow: ' + error.message);
+            }
+        }
+        
+        function populateFormFromConfig(config) {
+            // Clear existing symbols first
+            const symbolList = document.querySelector('.symbol-list');
+            symbolList.innerHTML = '';
+            
+            // Populate global settings
+            if (config.Global) {
+                const numMessages = document.getElementById('numMessages');
+                const exchange = document.getElementById('exchange');
+                
+                if (numMessages && config.Global.NumMessages) {
+                    numMessages.value = config.Global.NumMessages;
+                }
+                if (exchange && config.Global.Exchange) {
+                    exchange.value = config.Global.Exchange;
+                }
+            }
+            
+            // Populate wave settings
+            if (config.Wave) {
+                const waveDuration = document.getElementById('waveDuration');
+                const waveAmplitude = document.getElementById('waveAmplitude');
+                
+                if (waveDuration && config.Wave.WaveDurationMs) {
+                    waveDuration.value = config.Wave.WaveDurationMs / 1000; // Convert to seconds
+                }
+                if (waveAmplitude && config.Wave.WaveAmplitudePercent) {
+                    waveAmplitude.value = config.Wave.WaveAmplitudePercent;
+                }
+            }
+            
+            // Populate burst settings
+            if (config.Burst) {
+                const burstEnabled = document.getElementById('burstEnabled');
+                const burstIntensity = document.getElementById('burstIntensity');
+                const burstFrequency = document.getElementById('burstFrequency');
+                
+                if (burstEnabled) {
+                    burstEnabled.checked = config.Burst.Enabled;
+                }
+                if (burstIntensity && config.Burst.BurstIntensityPercent) {
+                    burstIntensity.value = config.Burst.BurstIntensityPercent;
+                }
+                if (burstFrequency && config.Burst.BurstFrequencyMs) {
+                    burstFrequency.value = config.Burst.BurstFrequencyMs;
+                }
+            }
+            
+            // Populate symbols
+            if (config.Symbols && Array.isArray(config.Symbols)) {
+                config.Symbols.forEach(symbol => {
+                    const panel = createSymbolPanelFromConfig(symbol);
+                    symbolList.appendChild(panel);
+                });
+            }
+            
+            console.log('Workflow loaded successfully');
+        }
+        
+        // Symbol Panel Management
+        function addSymbolPanel() {
+            const symbolName = prompt('Enter symbol name (e.g., TSLA, NVDA):', '');
+            if (!symbolName || !symbolName.trim()) return;
+            
+            const symbol = symbolName.trim().toUpperCase();
+            
+            // Check if symbol already exists
+            const existingSymbols = document.querySelectorAll('.symbol-card');
+            for (let card of existingSymbols) {
+                if (card.dataset.symbol === symbol) {
+                    alert('Symbol ' + symbol + ' already exists!');
+                    return;
+                }
+            }
+            
+            const symbolList = document.querySelector('.symbol-list');
+            const newPanel = createSymbolPanel(symbol);
+            symbolList.appendChild(newPanel);
+            
+            // Validate percentages after adding new symbol
+            setTimeout(validatePercentages, 10);
+        }
+        
+        function removeSymbolPanel(button) {
+            const symbolCard = button.closest('.symbol-card');
+            const symbolName = symbolCard.dataset.symbol;
+            
+            if (confirm('Remove ' + symbolName + ' symbol panel?')) {
+                symbolCard.remove();
+                
+                // Validate percentages after removing symbol
+                setTimeout(validatePercentages, 10);
+            }
+        }
+        
+        function createSymbolPanel(symbol) {
+            const panelHTML = `
+                <div class="symbol-card" data-symbol="${symbol}">
+                    <button class="symbol-remove-btn" onclick="removeSymbolPanel(this)" title="Remove Symbol">×</button>
+                    <div class="symbol-header">
+                        <div class="symbol-name">${symbol}</div>
+                        <div class="symbol-percentage-edit percentage-tooltip">
+                            <input type="number" class="percentage-input" value="50" min="0" max="100" step="1"><span class="percentage-symbol">%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Side-by-side Grids -->
+                    <div class="symbol-grids-container">
+                        <!-- Price/Quantity Grid -->
+                        <div class="price-qty-grid">
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Price range for messages">Price Range</div>
+                                <div class="dual-range-container">
+                                    <input type="range" class="dual-range-slider price-min" min="1" max="500" value="100" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                    <input type="range" class="dual-range-slider price-max" min="1" max="500" value="200" step="0.01" oninput="updateDualRangeDisplay(this, 'price')">
+                                </div>
+                                <div class="dual-range-values">
+                                    <span class="min-value">100.00</span>
+                                    <span class="max-value">200.00</span>
+                                </div>
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Quantity range for messages">Qty Range</div>
+                                <div class="dual-range-container">
+                                    <input type="range" class="dual-range-slider qty-min" min="1" max="1000" value="1" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                    <input type="range" class="dual-range-slider qty-max" min="1" max="1000" value="100" step="1" oninput="updateDualRangeDisplay(this, 'qty')">
+                                </div>
+                                <div class="dual-range-values">
+                                    <span class="min-value">1</span>
+                                    <span class="max-value">100</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vertical Separator -->
+                        <div class="vertical-separator"></div>
+                        
+                        <!-- Spread/Volume Grid -->
+                        <div class="spread-volume-grid">
+                            <div class="grid-field">
+                                <div class="detail-label">Spread %</div>
+                                <input type="range" class="weight-slider" value="1.0" step="0.1" min="0" max="10" oninput="this.nextElementSibling.textContent=this.value">
+                                <div class="range-display">1.0</div>
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Price weighting 0-1">Price Wt</div>
+                                <input type="range" class="weight-slider" value="0.35" step="0.01" min="0" max="1" oninput="this.nextElementSibling.textContent=this.value">
+                                <div class="range-display">0.35</div>
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label">Volume (M)</div>
+                                <input type="range" class="weight-slider" value="10.00" step="0.01" min="0" max="100" oninput="this.nextElementSibling.textContent=this.value">
+                                <div class="range-display">10.00</div>
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Quantity weighting 0-1">Qty Wt</div>
+                                <input type="range" class="weight-slider" value="0.45" step="0.01" min="0" max="1" oninput="this.nextElementSibling.textContent=this.value">
+                                <div class="range-display">0.45</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = panelHTML.trim();
+            return wrapper.firstChild;
+        }
+        
+        function createSymbolPanelFromConfig(symbolConfig) {
+            const symbol = symbolConfig.SymbolName || 'UNKNOWN';
+            const percentage = symbolConfig.PercentTotalMessages || 50;
+            const minPrice = symbolConfig.PriceRange?.MinPrice || 100.00;
+            const maxPrice = symbolConfig.PriceRange?.MaxPrice || 200.00;
+            const minQty = symbolConfig.QuantityRange?.MinQuantity || 1;
+            const maxQty = symbolConfig.QuantityRange?.MaxQuantity || 100;
+            const spread = symbolConfig.SpreadPercentage || 1.0;
+            const volume = (symbolConfig.PrevDay?.Volume || 10000000) / 1000000; // Convert to millions
+            
+            const panelHTML = `
+                <div class="symbol-card" data-symbol="${symbol}">
+                    <button class="symbol-remove-btn" onclick="removeSymbolPanel(this)" title="Remove Symbol">×</button>
+                    <div class="symbol-header">
+                        <div class="symbol-name">${symbol}</div>
+                        <div class="symbol-percentage-edit percentage-tooltip">
+                            <input type="number" class="percentage-input" value="${percentage}" min="0" max="100" step="1"><span class="percentage-symbol">%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Side-by-side Grids -->
+                    <div class="symbol-grids-container">
+                        <!-- Price/Quantity Grid -->
+                        <div class="price-qty-grid">
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Min Prc/Msg Generated">Min Price</div>
+                                <input type="number" class="price-input" value="${minPrice.toFixed(2)}" step="0.01" placeholder="Min">
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Min Qty/Msg Generated">Min Qty</div>
+                                <input type="number" class="quantity-input" value="${minQty}" step="1" min="1" placeholder="Min">
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Max Prc/Msg Generated">Max Price</div>
+                                <input type="number" class="price-input" value="${maxPrice.toFixed(2)}" step="0.01" placeholder="Max">
+                            </div>
+                            <div class="grid-field">
+                                <div class="detail-label minimal-tooltip" data-tooltip="Max Qty/Msg Generated">Max Qty</div>
+                                <input type="number" class="quantity-input" value="${maxQty}" step="1" min="1" placeholder="Max">
+                            </div>
+                        </div>
+                        
+                        <!-- Vertical Separator -->
+                        <div class="vertical-separator"></div>
+                        
+                        <!-- Spread/Volume Grid -->
+                        <div class="spread-volume-grid">
+                            <div class="grid-field">
+                                <div class="detail-label">Spread %</div>
+                                <input type="number" class="spread-input" value="${spread}" step="0.1" min="0" max="5.0">
+                            </div>
+                            <div class="empty-grid-cell"></div>
+                            <div class="grid-field">
+                                <div class="detail-label">Volume (M)</div>
+                                <input type="number" class="volume-input" value="${volume.toFixed(2)}" step="0.01" min="0">
+                            </div>
+                            <div class="calendar-grid-cell">
+                                <div class="calendar-field">
+                                    <div class="calendar-icon" title="Select Date"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = panelHTML.trim();
+            return wrapper.firstChild;
+        }
+        
+        function saveCurrentWorkflow() {
+            const config = {
+                "Global": {
+                    "NumMessages": parseInt(document.getElementById('numMessages')?.value || '10000'),
+                    "Exchange": document.getElementById('exchange')?.value || 'nsdq'
+                },
+                "Wave": {
+                    "WaveDurationMs": parseInt(document.getElementById('waveDuration')?.value || '300') * 1000,
+                    "WaveAmplitudePercent": parseFloat(document.getElementById('waveAmplitude')?.value || '120.0')
+                },
+                "Burst": {
+                    "Enabled": document.getElementById('burstEnabled')?.checked || false,
+                    "BurstIntensityPercent": parseFloat(document.getElementById('burstIntensity')?.value || '300.0'),
+                    "BurstFrequencyMs": parseInt(document.getElementById('burstFrequency')?.value || '60000')
+                },
+                "Symbols": []
+            };
+            
+            // Collect symbol data
+            const symbolCards = document.querySelectorAll('.symbol-card');
+            symbolCards.forEach(card => {
+                const symbolName = card.dataset.symbol;
+                const percentInput = card.querySelector('.percentage-input');
+                const priceInputs = card.querySelectorAll('.price-input');
+                const qtyInputs = card.querySelectorAll('.quantity-input');
+                const spreadInput = card.querySelector('.spread-input');
+                const volumeInput = card.querySelector('.volume-input');
+                
+                const symbolConfig = {
+                    "SymbolName": symbolName,
+                    "PercentTotalMessages": parseFloat(percentInput?.value || '50'),
+                    "SpreadPercentage": parseFloat(spreadInput?.value || '1.0'),
+                    "PriceRange": {
+                        "MinPrice": parseFloat(priceInputs[0]?.value || '100.00'),
+                        "MaxPrice": parseFloat(priceInputs[1]?.value || '200.00'),
+                        "Weight": 1.0
+                    },
+                    "QuantityRange": {
+                        "MinQuantity": parseInt(qtyInputs[0]?.value || '1'),
+                        "MaxQuantity": parseInt(qtyInputs[1]?.value || '100'),
+                        "Weight": 1.0
+                    },
+                    "PrevDay": {
+                        "OpenPrice": 0,
+                        "HighPrice": 0,
+                        "LowPrice": 0,
+                        "ClosePrice": 0,
+                        "Volume": parseInt((parseFloat(volumeInput?.value || '10') * 1000000))
+                    }
+                };
+                
+                config.Symbols.push(symbolConfig);
+            });
+            
+            return config;
+        }
+        
+        async function generateMarketData() {
+            const btn = event?.target || document.querySelector('.btn-success');
+            const originalText = btn ? btn.textContent : 'Generate Market Data';
+            
+            // Get selected workflow
+            const select = document.getElementById('workflowSelect');
+            const configName = select.value;
+            
+            if (!configName) {
+                alert('Please select or create a workflow first');
+                return;
+            }
+            
+            // Save current configuration first
+            const config = saveCurrentWorkflow();
+            
+            try {
+                if (btn) {
+                    btn.textContent = 'Saving configuration...';
+                    btn.disabled = true;
+                }
+                
+                // Save the current configuration
+                const saveResponse = await fetch(`/api/config/${configName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                const saveResult = await saveResponse.json();
+                if (!saveResult.success) {
+                    throw new Error(saveResult.error || 'Failed to save configuration');
+                }
+                
+                if (btn) {
+                    btn.textContent = 'Starting generator...';
+                }
+                
+                // Start the market data generator
+                const generateResponse = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ config_name: configName })
+                });
+                
+                const generateResult = await generateResponse.json();
+                
+                if (generateResult.success) {
+                    if (btn) {
+                        btn.textContent = '✓ Generator Started';
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.disabled = false;
+                        }, 3000);
+                    }
+                    alert(`Market data generator started successfully!\nPID: ${generateResult.pid}\n\nConfiguration saved as: ${configName}`);
+                    
+                    // Start monitoring generator status
+                    monitorGeneratorStatus();
+                } else {
+                    throw new Error(generateResult.error || 'Failed to start generator');
+                }
+                
+            } catch (error) {
+                console.error('Error generating market data:', error);
+                alert('Failed to generate market data: ' + error.message);
+                
+                if (btn) {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            }
+        }
+        
+        // Monitor generator status
+        async function monitorGeneratorStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                
+                console.log('Generator status:', status);
+                
+                // Continue monitoring if still running
+                if (status.status === 'running') {
+                    setTimeout(monitorGeneratorStatus, 2000); // Check every 2 seconds
+                }
+            } catch (error) {
+                console.error('Error checking generator status:', error);
+            }
+        }
+        
+        async function saveWorkflowAs() {
+            const workflowName = prompt('Save workflow as:', '');
+            if (workflowName && workflowName.trim()) {
+                const cleanName = workflowName.trim();
+                const config = saveCurrentWorkflow();
+                
+                try {
+                    const response = await fetch(`/api/config/${cleanName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(config)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Add to dropdown if not exists
+                        const select = document.getElementById('workflowSelect');
+                        let optionExists = false;
+                        for (let option of select.options) {
+                            if (option.value === cleanName) {
+                                optionExists = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!optionExists) {
+                            const option = document.createElement('option');
+                            option.value = cleanName;
+                            option.textContent = cleanName;
+                            select.appendChild(option);
+                        }
+                        
+                        select.value = cleanName;
+                        handleWorkflowSelection();
+                        
+                        alert('Workflow saved successfully: ' + cleanName);
+                    } else {
+                        alert('Failed to save workflow: ' + (result.error || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error saving workflow:', error);
+                    alert('Failed to save workflow: ' + error.message);
+                }
+            }
+        }
+
+        // Exchange-specific range defaults
+        const exchangeDefaults = {
+            "nsdq": {
+                priceRange: { min: 1, max: 500 },
+                quantityRange: { min: 1, max: 1000 },
+                spreadRange: { min: 0, max: 10 },
+                volumeRange: { min: 0, max: 100 },
+                weightRange: { min: 0, max: 1 }
+            },
+            "nyse": {
+                priceRange: { min: 1, max: 500 },
+                quantityRange: { min: 1, max: 1000 },
+                spreadRange: { min: 0, max: 15 },
+                volumeRange: { min: 0, max: 200 },
+                weightRange: { min: 0, max: 1 }
+            },
+            "cme": {
+                priceRange: { min: 1, max: 500 },
+                quantityRange: { min: 1, max: 1000 },
+                spreadRange: { min: 0, max: 8 },
+                volumeRange: { min: 0, max: 150 },
+                weightRange: { min: 0, max: 1 }
+            }
+        };
+        
+        // Update all input ranges based on selected exchange
+        function updateInputRanges(exchange) {
+            const defaults = exchangeDefaults[exchange];
+            if (!defaults) return;
+            
+            // Update all dual-range price sliders
+            document.querySelectorAll('.price-min, .price-max').forEach(slider => {
+                slider.min = defaults.priceRange.min;
+                slider.max = defaults.priceRange.max;
+                // Update display after range change
+                updateDualRangeDisplay(slider, 'price');
+            });
+            
+            // Update all dual-range quantity sliders
+            document.querySelectorAll('.qty-min, .qty-max').forEach(slider => {
+                slider.min = defaults.quantityRange.min;
+                slider.max = defaults.quantityRange.max;
+                // Update display after range change
+                updateDualRangeDisplay(slider, 'qty');
+            });
+            
+            // Update all spread sliders
+            document.querySelectorAll('input[type="range"]').forEach(slider => {
+                const label = slider.parentElement.querySelector('.detail-label');
+                if (label && label.textContent.includes('Spread')) {
+                    slider.min = defaults.spreadRange.min;
+                    slider.max = defaults.spreadRange.max;
+                    // Update value if it exceeds new max
+                    if (parseFloat(slider.value) > defaults.spreadRange.max) {
+                        slider.value = defaults.spreadRange.max;
+                        const display = slider.nextElementSibling;
+                        if (display && display.classList.contains('range-display')) {
+                            display.textContent = slider.value;
+                        }
+                    }
+                }
+                
+                // Update volume sliders
+                if (label && label.textContent.includes('Volume')) {
+                    slider.min = defaults.volumeRange.min;
+                    slider.max = defaults.volumeRange.max;
+                    // Update value if it exceeds new max
+                    if (parseFloat(slider.value) > defaults.volumeRange.max) {
+                        slider.value = defaults.volumeRange.max;
+                        const display = slider.nextElementSibling;
+                        if (display && display.classList.contains('range-display')) {
+                            display.textContent = slider.value;
+                        }
+                    }
+                }
+            });
+            
+            console.log(`Updated ranges for exchange: ${exchange}`);
+        }
+        
+        // Update dual-range slider displays
+        function updateDualRangeDisplay(slider, type) {
+            const container = slider.parentElement;
+            const minSlider = container.querySelector(`.${type}-min`);
+            const maxSlider = container.querySelector(`.${type}-max`);
+            const display = container.nextElementSibling;
+            
+            let minVal = parseFloat(minSlider.value);
+            let maxVal = parseFloat(maxSlider.value);
+            
+            // Swap values if they cross over
+            if (minVal > maxVal) {
+                const temp = minVal;
+                minVal = maxVal;
+                maxVal = temp;
+                minSlider.value = minVal;
+                maxSlider.value = maxVal;
+            }
+            
+            // Calculate positions as percentages
+            const minRange = parseFloat(minSlider.min);
+            const maxRange = parseFloat(minSlider.max);
+            const minPercent = ((minVal - minRange) / (maxRange - minRange)) * 100;
+            const maxPercent = ((maxVal - minRange) / (maxRange - minRange)) * 100;
+            
+            // Set z-index based on which handle is being dragged and position
+            if (slider === minSlider) {
+                minSlider.style.zIndex = '3';
+                maxSlider.style.zIndex = '2';
+            } else if (slider === maxSlider) {
+                minSlider.style.zIndex = '2';
+                maxSlider.style.zIndex = '3';
+            } else {
+                // Initial setup - put the rightmost handle on top
+                if (maxPercent > minPercent) {
+                    minSlider.style.zIndex = '2';
+                    maxSlider.style.zIndex = '3';
+                } else {
+                    minSlider.style.zIndex = '3';
+                    maxSlider.style.zIndex = '2';
+                }
+            }
+            
+            // Update display with correct min/max order positioned at handle locations
+            const valuesContainer = container.nextElementSibling;
+            const minDisplay = valuesContainer.querySelector('.min-value');
+            const maxDisplay = valuesContainer.querySelector('.max-value');
+            
+            // Calculate handle positions as percentages
+            const containerWidth = 120; // dual-range-container width
+            const minPosition = (minPercent / 100) * containerWidth;
+            const maxPosition = (maxPercent / 100) * containerWidth;
+            
+            // Position the value displays at handle locations
+            minDisplay.style.left = `${minPosition}px`;
+            maxDisplay.style.left = `${maxPosition}px`;
+            
+            // Update text content
+            if (type === 'price') {
+                minDisplay.textContent = `${minVal.toFixed(2)}`;
+                maxDisplay.textContent = `${maxVal.toFixed(2)}`;
+            } else if (type === 'qty') {
+                minDisplay.textContent = `${Math.round(minVal)}`;
+                maxDisplay.textContent = `${Math.round(maxVal)}`;
+            }
+        }
+        
+        // Add exchange change listener
+        function setupExchangeListener() {
+            const exchangeSelect = document.getElementById('exchange');
+            if (exchangeSelect) {
+                exchangeSelect.addEventListener('change', function() {
+                    updateInputRanges(this.value);
+                });
+                
+                // Set initial ranges based on current selection
+                updateInputRanges(exchangeSelect.value);
+            }
+        }
+        
+        // Initialize workflow controls and exchange ranges
+        document.addEventListener('DOMContentLoaded', function() {
+            handleWorkflowSelection(); // Set initial button state
+            loadAvailableWorkflows(); // Load existing workflows
+            setupExchangeListener(); // Set up exchange-specific ranges
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="homepageGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d2d2d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="80" rx="8" fill="url(#homepageGradient)"/>
+  
+  <!-- Capital B Icon with subtle light rays -->
+  <g transform="translate(20, 20)">
+    <!-- Very subtle light rays -->
+    <line x1="20" y1="10" x2="35" y2="5" stroke="#777777" stroke-width="1" opacity="0.4"/>
+    <line x1="20" y1="20" x2="38" y2="20" stroke="#888888" stroke-width="1.5" opacity="0.5"/>
+    <line x1="20" y1="30" x2="35" y2="35" stroke="#777777" stroke-width="1" opacity="0.4"/>
+    <line x1="20" y1="5" x2="30" y2="2" stroke="#666666" stroke-width="0.8" opacity="0.3"/>
+    <line x1="20" y1="35" x2="30" y2="38" stroke="#666666" stroke-width="0.8" opacity="0.3"/>
+    
+    <!-- Clean, readable B -->
+    <path d="M 10,10 L 10,30 M 10,10 L 20,10 Q 25,10 25,15 Q 25,17.5 20,17.5 L 10,17.5 M 10,22.5 L 20,22.5 Q 25,22.5 25,27.5 Q 25,30 20,30 L 10,30" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="2" 
+          stroke-linejoin="round" 
+          stroke-linecap="round"/>
+  </g>
+  
+  <!-- BEACON Text -->
+  <text x="80" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="300" fill="#ffffff">BEACON</text>
+  
+  <!-- Tagline -->
+  <text x="80" y="55" font-family="Arial, sans-serif" font-size="12" fill="#999999" opacity="0.8">TRADING SYSTEM</text>
+</svg>

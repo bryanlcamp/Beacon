@@ -81,6 +81,15 @@ class BeaconUnified:
             with open(self.config_file, 'r') as f:
                 self.config = json.load(f)
             
+            # Check if this is a proper system config
+            if 'system' not in self.config:
+                self._log("ERROR", "CONFIG", "This appears to be a component config, not a system config!")
+                self._log("INFO", "CONFIG", "Use one of these system configs instead:")
+                self._log("INFO", "CONFIG", "  config/system/startBeacon.json")
+                self._log("INFO", "CONFIG", "  config/system/startBeaconCME.json")
+                self._log("INFO", "CONFIG", "  config/system/startBeaconNasdaq.json")
+                return False
+            
             # Log what we loaded
             system = self.config.get('system', {})
             protocol = self.config.get('protocol', {})
@@ -107,7 +116,7 @@ class BeaconUnified:
                 if component_name.startswith('_'):
                     continue
                     
-                    if isinstance(component_info, dict) and component_info.get('enabled', False):
+                if isinstance(component_info, dict) and component_info.get('enabled', False):
                         config_file = self.beacon_root / component_info['config_file']
                         self._log("INFO", "CONFIG", f"Loading {component_name}: {config_file}")
                         
@@ -431,20 +440,28 @@ class BeaconUnified:
         """Epic startup banner"""
         system = self.config.get('system', {})
         print(f"\n{Colors.CYAN}{'='*70}")
-        print(f"🚀 {system.get('name', 'BEACON TRADING SYSTEM')} 🚀")
+        print(f"BEACON TRADING SYSTEM")
         print(f"{'='*70}{Colors.RESET}")
         print(f"{Colors.BOLD}Single Command. Single Config. Everything Just Works.{Colors.RESET}")
-        print(f"Protocol: {self.config['system']['protocol'].upper()}")
         
-        enabled = [name for name, comp in self.config['component_configs'].items() 
+        # Safely get protocol
+        protocol = system.get('protocol', 'unknown')
+        if not protocol:
+            protocol = self.config.get('protocol', {}).get('type', 'unknown')
+        print(f"Protocol: {protocol.upper()}")
+        
+        # Get enabled components
+        component_configs = self.config.get('component_configs', {})
+        enabled = [name for name, comp in component_configs.items() 
                   if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False)]
         print(f"Components: {', '.join(enabled)}")
         
         # Show config files being used
         print(f"{Colors.BOLD}Configuration Files:{Colors.RESET}")
-        for name, comp in self.config['component_configs'].items():
+        for name, comp in component_configs.items():
             if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False):
-                print(f"  {name}: {comp['config_file']}")
+                config_file = comp.get('config_file', 'unknown')
+                print(f"  {name}: {config_file}")
         print(f"{Colors.CYAN}{'='*70}{Colors.RESET}\n")
 
     def shutdown(self):
@@ -474,35 +491,35 @@ class BeaconUnified:
 
     def validate_and_setup_only(self) -> bool:
         """Validate configuration and ensure system is ready without running it"""
-        self._log("INFO", "🧪 DRY RUN: Validating system configuration and setup...")
+        self._log("INFO", "VALIDATION", "DRY RUN: Validating system configuration and setup...")
         
         # Load and validate config
         if not self.load_config():
-            self._log("ERROR", "❌ Configuration validation failed")
+            self._log("ERROR", "VALIDATION", "Configuration validation failed")
             return False
-        self._log("SUCCESS", "✅ Configuration loaded and validated")
+        self._log("SUCCESS", "VALIDATION", "Configuration loaded and validated")
         
         # Check and build system if needed (but don't run)
         if not self.ensure_system_built():
-            self._log("ERROR", "❌ Build system validation failed") 
+            self._log("ERROR", "VALIDATION", "Build system validation failed") 
             return False
-        self._log("SUCCESS", "✅ Build system validated - all binaries ready")
+        self._log("SUCCESS", "VALIDATION", "Build system validated - all binaries ready")
         
         # Load component configs from individual files
         if not self.load_component_configs():
-            self._log("ERROR", "❌ Component configuration validation failed")
+            self._log("ERROR", "VALIDATION", "Component configuration validation failed")
             return False
-        self._log("SUCCESS", "✅ Component configurations validated")
+        self._log("SUCCESS", "VALIDATION", "Component configurations validated")
         
         # Validate that all required binaries exist
         required_binaries = self.get_required_binaries()
         for component, binary_path in required_binaries.items():
             if not binary_path.exists():
-                self._log("ERROR", f"❌ Required binary missing: {component} at {binary_path}")
+                self._log("ERROR", "VALIDATION", f"Required binary missing: {component} at {binary_path}")
                 return False
-            self._log("SUCCESS", f"✅ Binary validated: {component}")
+            self._log("SUCCESS", "VALIDATION", f"Binary validated: {component}")
         
-        self._log("SUCCESS", "🎉 DRY RUN COMPLETE: System is ready for deployment!")
+        self._log("SUCCESS", "VALIDATION", "DRY RUN COMPLETE: System is ready for deployment!")
         return True
     
     def get_required_binaries(self) -> Dict[str, Path]:

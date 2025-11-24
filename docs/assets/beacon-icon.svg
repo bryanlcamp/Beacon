@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d2d2d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="30" cy="30" r="28" fill="url(#iconGradient)" stroke="#666666" stroke-width="2"/>
+  
+  <!-- Capital B with radiating light -->
+  <g transform="translate(30, 30)">
+    <!-- Light rays emanating from B -->
+    <line x1="0" y1="-8" x2="0" y2="-16" stroke="#aaaaaa" stroke-width="2" opacity="0.8"/>
+    <line x1="6" y1="-6" x2="12" y2="-12" stroke="#999999" stroke-width="1.5" opacity="0.7"/>
+    <line x1="8" y1="0" x2="16" y2="0" stroke="#aaaaaa" stroke-width="2" opacity="0.8"/>
+    <line x1="6" y1="6" x2="12" y2="12" stroke="#999999" stroke-width="1.5" opacity="0.7"/>
+    <line x1="0" y1="8" x2="0" y2="16" stroke="#aaaaaa" stroke-width="2" opacity="0.8"/>
+    <line x1="-6" y1="6" x2="-12" y2="12" stroke="#999999" stroke-width="1.5" opacity="0.7"/>
+    <line x1="-8" y1="0" x2="-16" y2="0" stroke="#aaaaaa" stroke-width="2" opacity="0.8"/>
+    <line x1="-6" y1="-6" x2="-12" y2="-12" stroke="#999999" stroke-width="1.5" opacity="0.7"/>
+    
+    <!-- Modern Recognizable B -->
+    <path d="M -4,-8 L -4,8 M -4,-8 L 2,-8 Q 4,-8 4,-5 Q 4,-3 2,-3 L -4,-3 M -4,0 L 2,0 Q 4,0 4,3 Q 4,6 2,6 L -4,6" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="1.5" 
+          stroke-linejoin="round" 
+          stroke-linecap="round"/>
+  </g>
+</svg>

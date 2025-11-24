@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CME Protocol Documentation - Beacon Trading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #00aaff;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            color: #ffffff;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px 0;
+            color: #00aaff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #ffffff;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .highlight {
+            background: rgba(0, 170, 255, 0.1);
+            padding: 15px;
+            border-left: 3px solid #00aaff;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 3px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../documentation-hub.html" class="back-link">← Back to Documentation</a>
+        
+        <h1>CME Protocol Documentation</h1>
+        <p><strong>Chicago Mercantile Exchange (CME) - iLink 3 Protocol Implementation</strong></p>
+        
+        <h2>Overview</h2>
+        <p><strong>CME Globex</strong> is the CME Group's electronic trading platform for derivatives. It handles futures and options contracts across multiple asset classes including equity indexes, interest rates, foreign exchange, energy, agriculture, and metals.</p>
+        
+        <div class="highlight">
+            <strong>Protocol Characteristics:</strong>
+            <ul>
+                <li><strong>Type:</strong> Binary, fixed-length messages (64 bytes)</li>
+                <li><strong>Transport:</strong> TCP (order entry), UDP Multicast (market data)</li>
+                <li><strong>Byte Order:</strong> Network byte order (big-endian)</li>
+                <li><strong>Platform:</strong> iLink 3 (CME's FIX-based protocol, simplified)</li>
+                <li><strong>Asset Classes:</strong> Futures, Options, Spreads</li>
+            </ul>
+        </div>
+        
+        <h2>Message Structure</h2>
+        <h3>New Order Single Message (64 bytes)</h3>
+        
+        <pre><code>struct CmeOrderEntryMessage {
+    uint64_t clientOrderId;      // 8 bytes: unique client order ID
+    char symbol[8];              // 8 bytes: futures symbol (e.g., "ESZ4    ")
+    uint32_t quantity;           // 4 bytes: number of contracts
+    uint32_t price;              // 4 bytes: price in 1/10000 dollars
+    char side;                   // 1 byte: 'B'=buy, 'S'=sell
+    char orderType;              // 1 byte: 'L'=limit, 'M'=market
+    char tif;                    // 1 byte: time in force
+    char capacity;               // 1 byte: trading capacity
+    uint16_t reserved;           // 2 bytes: reserved
+    char _padding[38];           // 38 bytes: padding to 64 bytes
+};</code></pre>
+        
+        <h3>Field Details</h3>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Valid Values</th>
+            </tr>
+            <tr>
+                <td><code>clientOrderId</code></td>
+                <td>uint64_t</td>
+                <td>Unique order identifier</td>
+                <td>1 - 2^64-1</td>
+            </tr>
+            <tr>
+                <td><code>symbol</code></td>
+                <td>char[8]</td>
+                <td>Futures contract symbol</td>
+                <td>"ESZ4    ", "NQH5    ", "ZNZ4    "</td>
+            </tr>
+            <tr>
+                <td><code>quantity</code></td>
+                <td>uint32_t</td>
+                <td>Number of contracts</td>
+                <td>1 - 999,999</td>
+            </tr>
+            <tr>
+                <td><code>price</code></td>
+                <td>uint32_t</td>
+                <td>Price in 1/10000 dollars</td>
+                <td>0 (market) or 1-999,999,999</td>
+            </tr>
+            <tr>
+                <td><code>side</code></td>
+                <td>char</td>
+                <td>Buy or sell</td>
+                <td>'B' = Buy, 'S' = Sell</td>
+            </tr>
+            <tr>
+                <td><code>orderType</code></td>
+                <td>char</td>
+                <td>Order type</td>
+                <td>'L' = Limit, 'M' = Market, 'S' = Stop</td>
+            </tr>
+        </table>
+        
+        <h2>CME Futures Symbols</h2>
+        <p>CME symbols use a <strong>root + month code + year</strong> format: <code>[ROOT][MONTH][YEAR]</code></p>
+        
+        <div class="highlight">
+            <strong>Examples:</strong><br>
+            <code>ESZ4</code> = E-mini S&P 500, December 2024<br>
+            <code>NQH5</code> = E-mini Nasdaq-100, March 2025<br>
+            <code>GCZ4</code> = Gold, December 2024<br>
+            <code>CLZ4</code> = Crude Oil, December 2024
+        </div>
+        
+        <h3>Popular CME Contracts</h3>
+        <table>
+            <tr>
+                <th>Symbol</th>
+                <th>Description</th>
+                <th>Contract Size</th>
+                <th>Tick Size</th>
+            </tr>
+            <tr>
+                <td>ES</td>
+                <td>E-mini S&P 500</td>
+                <td>$50 × S&P 500 Index</td>
+                <td>0.25 points = $12.50</td>
+            </tr>
+            <tr>
+                <td>NQ</td>
+                <td>E-mini Nasdaq-100</td>
+                <td>$20 × Nasdaq-100 Index</td>
+                <td>0.25 points = $5.00</td>
+            </tr>
+            <tr>
+                <td>YM</td>
+                <td>E-mini Dow</td>
+                <td>$5 × DJIA Index</td>
+                <td>1.00 point = $5.00</td>
+            </tr>
+            <tr>
+                <td>GC</td>
+                <td>Gold</td>
+                <td>100 troy ounces</td>
+                <td>$0.10/oz = $10.00</td>
+            </tr>
+            <tr>
+                <td>CL</td>
+                <td>Crude Oil (WTI)</td>
+                <td>1,000 barrels</td>
+                <td>$0.01/barrel = $10.00</td>
+            </tr>
+        </table>
+        
+        <h2>Price Encoding</h2>
+        <p>CME uses <strong>fixed-point encoding</strong> for price representation:</p>
+        <pre><code>Stored Value = Price × 10,000
+
+Examples:
+$4,550.00 → 45,500,000
+$15,750.25 → 157,502,500
+$85.50 → 855,000</code></pre>
+        
+        <h2>Trading Sessions</h2>
+        <p>CME operates <strong>nearly 24 hours</strong> with brief maintenance windows:</p>
+        
+        <table>
+            <tr>
+                <th>Session</th>
+                <th>Time (CT)</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Globex Evening</td>
+                <td>5:00 PM - 8:30 AM</td>
+                <td>Overnight electronic trading</td>
+            </tr>
+            <tr>
+                <td>RTH (Regular Trading Hours)</td>
+                <td>9:30 AM - 4:00 PM</td>
+                <td>Highest volume trading</td>
+            </tr>
+            <tr>
+                <td>Maintenance</td>
+                <td>5:00 PM - 6:00 PM</td>
+                <td>System maintenance (NO TRADING)</td>
+            </tr>
+        </table>
+        
+        <h2>Code Example</h2>
+        <h3>Sending a CME Order</h3>
+        <pre><code>CmeOrderEntryMessage order;
+std::memset(&order, 0, sizeof(order));
+
+order.clientOrderId = 445566;
+std::memcpy(order.symbol, "ESZ4    ", 8);  // E-mini S&P 500 Dec 2024
+order.quantity = 5;                         // 5 contracts
+order.price = 45500000;                     // $4,550.00
+order.side = 'B';                           // Buy (long)
+order.orderType = 'L';                      // Limit
+order.tif = '0';                            // Day
+order.capacity = 'P';                       // Principal
+
+// Send order
+ssize_t sent = send(sock, &order, sizeof(order), 0);</code></pre>
+        
+        <h2>Beacon Integration</h2>
+        <div class="success">
+            <strong>✅ Implemented:</strong>
+            <ul>
+                <li>New Order Single (64 bytes)</li>
+                <li>Execution Reports (32 bytes)</li>
+                <li>CME symbol format support</li>
+                <li>Auto-detection via symbol pattern matching</li>
+                <li>Protocol adapter for normalization</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <strong>⏳ Not Yet Implemented:</strong>
+            <ul>
+                <li>Cancel Order / Modify Order</li>
+                <li>Contract expiration handling</li>
+                <li>Margin calculations</li>
+                <li>Position limit enforcement</li>
+            </ul>
+        </div>
+        
+        <h2>Testing</h2>
+        <p>Run the CME test client:</p>
+        <pre><code># Start matching engine in CME mode
+cd exchange_matching_engine
+./build/exchange_matching_engine 54321 cme
+
+# In another terminal, run CME test client
+cd client_algorithm
+./build/test_cme 127.0.0.1 54321 10</code></pre>
+        
+        <h2>Performance Considerations</h2>
+        <div class="highlight">
+            <strong>CME Co-location (Aurora, IL) Latency Targets:</strong>
+            <ul>
+                <li>Order-to-acknowledgment: <strong>100-500 microseconds</strong></li>
+                <li>Market data latency: <strong>50-200 microseconds</strong></li>
+                <li>Round-trip (order → fill): <strong>200-800 microseconds</strong></li>
+            </ul>
+        </div>
+        
+        <h2>References</h2>
+        <ul>
+            <li>CME iLink 3 Specification</li>
+            <li>CME Globex Market Data Platform</li>
+            <li>CME Group Contract Specifications</li>
+            <li>Beacon Implementation: <code>src/apps/client_algorithm/test_cme.cpp</code></li>
+        </ul>
+        
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 30px 0;">
+        <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+            <strong>Last Updated:</strong> November 24, 2025 | 
+            <strong>Author:</strong> Bryan Camp | 
+            <strong>Version:</strong> 1.0
+        </p>
+    </div>
+</body>
+</html>
