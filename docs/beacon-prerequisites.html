@@ -184,109 +184,71 @@
         <a href="documentation-hub.html" class="back-link">← Back to Documentation</a>
         
         <h1>Prerequisites</h1>
-        <p>Before installing and running Beacon, ensure your system meets the following requirements and has the necessary dependencies installed.</p>
+        <p>System requirements and dependencies for Beacon.</p>
         
         <h2>System Requirements</h2>
         
-        <div class="requirement-grid">
-            <div class="requirement-card">
-                <div class="requirement-header">Operating System</div>
-                <div class="requirement-version">Linux (Ubuntu 20.04+) or macOS (10.15+)</div>
-                <p>Beacon is optimized for Unix-like systems with low-latency networking capabilities.</p>
-                <div class="check-command">uname -a</div>
-            </div>
-            
-            <div class="requirement-card">
-                <div class="requirement-header">CPU Architecture</div>
-                <div class="requirement-version">x86_64 (Intel/AMD) or ARM64 (Apple Silicon)</div>
-                <p>Multi-core processor recommended for optimal performance with parallel processing.</p>
-                <div class="check-command">lscpu | grep Architecture</div>
-            </div>
-            
-            <div class="requirement-card">
-                <div class="requirement-header">Memory</div>
-                <div class="requirement-version">Minimum: 8 GB RAM, Recommended: 16+ GB</div>
-                <p>Higher memory allows for larger market data datasets and multiple concurrent algorithms.</p>
-                <div class="check-command">free -h</div>
-            </div>
-            
-            <div class="requirement-card">
-                <div class="requirement-header">Storage</div>
-                <div class="requirement-version">Minimum: 10 GB free space, Recommended: SSD</div>
-                <p>SSD storage significantly improves build times and data loading performance.</p>
-                <div class="check-command">df -h</div>
-            </div>
-        </div>
-        
-        <h2>Required Dependencies</h2>
-        
-        <h3>Build Tools</h3>
         <table>
             <tr>
                 <th>Component</th>
-                <th>Minimum Version</th>
-                <th>Purpose</th>
-                <th>Check Command</th>
+                <th>Requirement</th>
+                <th>Check</th>
+            </tr>
+            <tr>
+                <td><strong>OS</strong></td>
+                <td>Linux (Ubuntu 20.04+) or macOS (10.15+)</td>
+                <td><code>uname -a</code></td>
+            </tr>
+            <tr>
+                <td><strong>CPU</strong></td>
+                <td>x86_64 or ARM64, multi-core recommended</td>
+                <td><code>lscpu | grep Architecture</code></td>
+            </tr>
+            <tr>
+                <td><strong>Memory</strong></td>
+                <td>8 GB minimum, 16+ GB recommended</td>
+                <td><code>free -h</code></td>
+            </tr>
+            <tr>
+                <td><strong>Storage</strong></td>
+                <td>10 GB free space, SSD recommended</td>
+                <td><code>df -h</code></td>
+            </tr>
+        </table>
+        
+        <h2>Required Dependencies</h2>
+        
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Version</th>
+                <th>Check</th>
             </tr>
             <tr>
                 <td><strong>CMake</strong></td>
                 <td>3.16+</td>
-                <td>Build system configuration</td>
                 <td><code>cmake --version</code></td>
             </tr>
             <tr>
                 <td><strong>GCC/Clang</strong></td>
                 <td>GCC 9+ or Clang 10+</td>
-                <td>C++ compiler with C++17 support</td>
-                <td><code>gcc --version</code> or <code>clang --version</code></td>
+                <td><code>gcc --version</code></td>
             </tr>
             <tr>
                 <td><strong>Make/Ninja</strong></td>
                 <td>Any recent version</td>
-                <td>Build execution</td>
-                <td><code>make --version</code> or <code>ninja --version</code></td>
+                <td><code>make --version</code></td>
             </tr>
             <tr>
                 <td><strong>Git</strong></td>
                 <td>2.20+</td>
-                <td>Source code management</td>
                 <td><code>git --version</code></td>
             </tr>
         </table>
         
-        <h3>Runtime Libraries</h3>
-        <table>
-            <tr>
-                <th>Library</th>
-                <th>Version</th>
-                <th>Purpose</th>
-                <th>Installation</th>
-            </tr>
-            <tr>
-                <td><strong>pthread</strong></td>
-                <td>Built-in</td>
-                <td>Multi-threading support</td>
-                <td>Standard with most systems</td>
-            </tr>
-            <tr>
-                <td><strong>Socket libraries</strong></td>
-                <td>Built-in</td>
-                <td>Network communication</td>
-                <td>Standard with most systems</td>
-            </tr>
-            <tr>
-                <td><strong>nlohmann/json</strong></td>
-                <td>3.9+</td>
-                <td>JSON configuration parsing</td>
-                <td>Included in <code>vendor/</code></td>
-            </tr>
-            <tr>
-                <td><strong>GoogleTest</strong></td>
-                <td>1.10+</td>
-                <td>Unit testing framework</td>
-                <td>Included in <code>vendor/</code></td>
-            </tr>
-        </table>
+        <div class="highlight">
+            <strong>Note:</strong> pthread, sockets, nlohmann/json, and GoogleTest are included or built-in.
+        </div>
         
         <h2>Platform-Specific Installation</h2>
         
@@ -328,126 +290,37 @@ sudo dnf install cmake git ninja-build
 # Verify installation
 cmake --version && gcc --version && git --version</code></pre>
         
-        <h2>Network Configuration</h2>
+        <h2>Network Setup</h2>
         
         <div class="warning">
-            <strong>⚠️ Network Requirements:</strong><br>
-            Beacon uses UDP multicast and TCP connections for market data and order flow. Ensure your firewall and network configuration allow these protocols on the configured ports (default: 8000-9000 range).
+            <strong>⚠️ Firewall:</strong> Allow ports 8000-9000 (TCP/UDP) for Beacon communication.
         </div>
         
-        <h3>Firewall Configuration</h3>
-        <pre><code># Ubuntu/Debian - Allow Beacon ports
-sudo ufw allow 8000:9000/tcp
-sudo ufw allow 8000:9000/udp
+        <pre><code># Ubuntu/Debian
+sudo ufw allow 8000:9000/tcp && sudo ufw allow 8000:9000/udp
 
-# CentOS/RHEL/Fedora - Allow Beacon ports
+# CentOS/RHEL/Fedora
 sudo firewall-cmd --permanent --add-port=8000-9000/tcp
 sudo firewall-cmd --permanent --add-port=8000-9000/udp
-sudo firewall-cmd --reload</code></pre>
-        
-        <h3>Loopback Interface</h3>
-        <p>Beacon can run entirely on localhost for development and testing:</p>
-        <pre><code># Test loopback networking
-ping 127.0.0.1
+sudo firewall-cmd --reload
 
-# Verify multicast support
-ip maddr show</code></pre>
+# Test localhost connectivity
+ping 127.0.0.1</code></pre>
         
         <h2>Performance Optimization (Optional)</h2>
         
         <div class="highlight">
-            <strong>For Production Deployments:</strong><br>
-            These optimizations are recommended for low-latency trading environments but not required for development or testing.
+            <strong>Production Only:</strong> CPU isolation, memory tuning, and network buffer optimization for low-latency trading. Not required for development.
         </div>
         
-        <h3>CPU Isolation</h3>
-        <pre><code># Reserve CPU cores for Beacon (add to /etc/default/grub)
-GRUB_CMDLINE_LINUX="isolcpus=2,3,4,5"
-
-# Update GRUB and reboot
-sudo update-grub && sudo reboot</code></pre>
+        <h2>Quick Check</h2>
         
-        <h3>Memory Settings</h3>
-        <pre><code># Increase shared memory limits (add to /etc/sysctl.conf)
-kernel.shmmax = 17179869184
-kernel.shmall = 4194304
-
-# Apply settings
-sudo sysctl -p</code></pre>
-        
-        <h3>Network Tuning</h3>
-        <pre><code># Increase network buffer sizes (add to /etc/sysctl.conf)
-net.core.rmem_max = 134217728
-net.core.wmem_max = 134217728
-net.ipv4.udp_mem = 102400 873800 16777216
-
-# Apply settings
-sudo sysctl -p</code></pre>
-        
-        <h2>Verification Script</h2>
-        <p>Run this script to verify your system meets all prerequisites:</p>
-        
-        <pre><code>#!/bin/bash
-# Beacon Prerequisites Check
-
-echo "=== Beacon Prerequisites Check ==="
-echo
-
-# Check OS
-echo "Operating System:"
-uname -a
-echo
-
-# Check CPU
-echo "CPU Information:"
-lscpu | grep -E "(Architecture|CPU|Model)"
-echo
-
-# Check Memory
-echo "Memory:"
-free -h
-echo
-
-# Check Storage
-echo "Storage:"
-df -h /
-echo
-
-# Check Build Tools
-echo "Build Tools:"
-cmake --version 2>/dev/null || echo "❌ CMake not found"
-gcc --version 2>/dev/null | head -1 || echo "❌ GCC not found"
-make --version 2>/dev/null | head -1 || echo "❌ Make not found"
-git --version 2>/dev/null || echo "❌ Git not found"
-echo
-
-echo "✅ Prerequisites check complete!"
-echo "If any tools are missing, install them using the platform-specific instructions above."</code></pre>
+        <pre><code># Verify all prerequisites
+cmake --version && gcc --version && make --version && git --version</code></pre>
         
         <div class="success">
-            <strong>✅ Ready to Proceed:</strong><br>
-            Once all prerequisites are met, you can proceed to the <a href="system/getting-started.html" style="color: #28a745;">Getting Started</a> guide for installation and setup instructions.
+            <strong>✅ Next:</strong> <a href="system/getting-started.html" style="color: #28a745;">Getting Started Guide</a>
         </div>
-        
-        <h2>Troubleshooting</h2>
-        
-        <h3>Common Issues</h3>
-        
-        <h4>CMake Version Too Old</h4>
-        <p><strong>Error:</strong> <code>CMake 3.16 or higher is required</code></p>
-        <p><strong>Solution:</strong> Install a newer version from the official CMake website or use a newer Linux distribution.</p>
-        
-        <h4>Compiler Not Found</h4>
-        <p><strong>Error:</strong> <code>No CMAKE_CXX_COMPILER could be found</code></p>
-        <p><strong>Solution:</strong> Install build-essential (Ubuntu) or Development Tools (CentOS/Fedora).</p>
-        
-        <h4>Permission Denied (Network Ports)</h4>
-        <p><strong>Error:</strong> <code>bind: Permission denied</code></p>
-        <p><strong>Solution:</strong> Check firewall settings or use ports > 1024 for non-root execution.</p>
-        
-        <h4>Multicast Not Working</h4>
-        <p><strong>Error:</strong> Market data not received</p>
-        <p><strong>Solution:</strong> Verify multicast routing: <code>ip route show</code> and ensure loopback interface supports multicast.</p>
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 30px 0;">
         <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
