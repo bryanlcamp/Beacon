@@ -52,7 +52,7 @@ set(GENERATOR_SOURCES
 # Test executable macro
 macro(GeneratorTest test_name)
     add_executable(${test_name} ${ARGN})
-    target_link_libraries(${test_name} ${GTEST_LIB} ${GTEST_MAIN_LIB} pthread)
+    target_link_libraries(${test_name} ${GTEST_LIB} ${GTEST_MAIN_LIB} pthread beacon_exchanges)
     
     # Add the generator sources to the test
     target_sources(${test_name} PRIVATE ${GENERATOR_SOURCES})

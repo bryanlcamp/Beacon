@@ -81,8 +81,8 @@ class BeaconUnified:
             with open(self.config_file, 'r') as f:
                 self.config = json.load(f)
             
-            # Check if this is a proper system config
-            if 'system' not in self.config:
+            # Check if this is a proper system config (accept both 'system' and 'system_config' keys)
+            if 'system' not in self.config and 'system_config' not in self.config:
                 self._log("ERROR", "CONFIG", "This appears to be a component config, not a system config!")
                 self._log("INFO", "CONFIG", "Use one of these system configs instead:")
                 self._log("INFO", "CONFIG", "  config/system/startBeacon.json")
@@ -90,8 +90,8 @@ class BeaconUnified:
                 self._log("INFO", "CONFIG", "  config/system/startBeaconNasdaq.json")
                 return False
             
-            # Log what we loaded
-            system = self.config.get('system', {})
+            # Log what we loaded (handle both system and system_config keys)
+            system = self.config.get('system', self.config.get('system_config', {}))
             protocol = self.config.get('protocol', {})
             
             self._log("SUCCESS", "CONFIG", f"{system.get('name', 'Beacon')} v{system.get('version', '1.0')}")
@@ -103,40 +103,58 @@ class BeaconUnified:
             return False
 
     def load_component_configs(self) -> bool:
-        """Load the individual component configuration files specified in startBeacon.json"""
+        """Load component configurations (either from files or directly from system config)"""
         try:
-            self._log("INFO", "CONFIG", "Loading component configuration files...")
+            self._log("INFO", "CONFIG", "Loading component configurations...")
             
-            # Get the component config file paths from the master config
+            # Check if we have the new format with component_configs section
             component_configs = self.config.get('component_configs', {})
             
-            # Load each enabled component's config file
-            for component_name, component_info in component_configs.items():
-                # Skip _comment entries
-                if component_name.startswith('_'):
-                    continue
-                    
-                if isinstance(component_info, dict) and component_info.get('enabled', False):
-                        config_file = self.beacon_root / component_info['config_file']
-                        self._log("INFO", "CONFIG", f"Loading {component_name}: {config_file}")
+            if component_configs:
+                # New format: load from separate config files
+                for component_name, component_info in component_configs.items():
+                    # Skip _comment entries
+                    if component_name.startswith('_'):
+                        continue
                         
-                        if config_file.exists():
-                            with open(config_file, 'r') as f:
-                                config_data = json.load(f)
+                    if isinstance(component_info, dict) and component_info.get('enabled', False):
+                            config_file = self.beacon_root / component_info['config_file']
+                            self._log("INFO", "CONFIG", f"Loading {component_name}: {config_file}")
                             
-                            # Apply quick_config overrides based on component type
-                            self._apply_quick_config_overrides(component_name, config_data)
-                            
-                            # Apply legacy execution parameter overrides (backward compatibility)
-                            if component_name == 'client_algorithm':
-                                self._apply_execution_overrides(config_data)
-                            
-                            # Store the loaded config
-                            setattr(self, f"{component_name}_config", config_data)
-                            self._log("SUCCESS", "CONFIG", f"✓ {component_name} config loaded")
-                        else:
-                            self._log("ERROR", "CONFIG", f"✗ Config file not found: {config_file}")
-                            return False
+                            if config_file.exists():
+                                with open(config_file, 'r') as f:
+                                    config_data = json.load(f)
+                                
+                                # Apply quick_config overrides based on component type
+                                self._apply_quick_config_overrides(component_name, config_data)
+                                
+                                # Apply legacy execution parameter overrides (backward compatibility)
+                                if component_name == 'client_algorithm':
+                                    self._apply_execution_overrides(config_data)
+                                
+                                # Store the loaded config
+                                setattr(self, f"{component_name}_config", config_data)
+                                self._log("SUCCESS", "CONFIG", f"✓ {component_name} config loaded")
+                            else:
+                                self._log("ERROR", "CONFIG", f"✗ Config file not found: {config_file}")
+                                return False
+            else:
+                # Legacy format: components are direct sections in the system config
+                self._log("INFO", "CONFIG", "Using legacy format - components are inline in system config")
+                
+                for component_name in ['generator', 'playback', 'matching_engine', 'client_algorithm']:
+                    component_info = self.config.get(component_name, {})
+                    
+                    if component_info.get('enabled', False):
+                        self._log("INFO", "CONFIG", f"Processing inline {component_name} config")
+                        
+                        # Apply conversions for the new simplified generator format
+                        config_data = component_info.copy()
+                        self._apply_quick_config_overrides(component_name, config_data)
+                        
+                        # Store the loaded config
+                        setattr(self, f"{component_name}_config", config_data)
+                        self._log("SUCCESS", "CONFIG", f"✓ {component_name} config processed")
             
             return True
             
@@ -159,14 +177,32 @@ class BeaconUnified:
                 config_data[param] = value
                 
         elif component_name == 'generator':
-            # Apply generator parameters
-            gen_config = quick_config.get('generator', {})
-            if 'symbols' in gen_config:
-                config_data['generation']['symbols'] = gen_config['symbols']
-            if 'message_count' in gen_config:
-                config_data['generation']['message_count'] = gen_config['message_count']
-            if 'output_file' in gen_config:
-                config_data['output']['file'] = gen_config['output_file']
+            # Convert to simple format that matches the new ConfigFileParser
+            system_config = self.config.get('system', self.config.get('system_config', {}))
+            
+            # Get exchange from system protocol or generator protocol
+            exchange = system_config.get('protocol', config_data.get('protocol', 'nasdaq')).lower()
+            # Map protocol names to exchange names
+            if exchange == 'itch' or exchange == 'itch_50':
+                exchange = 'nasdaq'
+            elif exchange == 'cme' or exchange == 'cme_mdp3':
+                exchange = 'cme'
+            
+            # Get other parameters from generator config or defaults
+            message_count = config_data.get('message_count', 10000)
+            symbols_list = config_data.get('symbols', ['AAPL', 'MSFT', 'GOOGL'])
+            trade_probability = config_data.get('trade_probability', 0.15)
+            flush_interval = config_data.get('flush_interval', 1000)
+            
+            # Replace entire config with simple format
+            config_data.clear()
+            config_data.update({
+                'exchange': exchange,
+                'message_count': message_count, 
+                'symbols': symbols_list,
+                'trade_probability': trade_probability,
+                'flush_interval': flush_interval
+            })
                 
         elif component_name == 'matching_engine':
             # Apply matching engine parameters
@@ -202,24 +238,43 @@ class BeaconUnified:
     def check_build_status(self) -> dict:
         """Check which binaries exist and which need building"""
         status = {}
+        
+        # Check both new format (component_configs) and legacy format (direct components)
         component_configs = self.config.get('component_configs', {})
         
-        for component_name, component_info in component_configs.items():
-            # Skip _comment entries
-            if component_name.startswith('_'):
-                continue
-                
-            if isinstance(component_info, dict) and component_info.get('enabled', False):
-                binary_path = self.required_binaries.get(component_name)
-                if binary_path:
-                    exists = binary_path.exists()
-                    status[component_name] = {
-                        'binary_path': binary_path,
-                        'exists': exists,
-                        'enabled': True
-                    }
-                    if not exists:
-                        self.build_required = True
+        if component_configs:
+            # New format
+            for component_name, component_info in component_configs.items():
+                # Skip _comment entries
+                if component_name.startswith('_'):
+                    continue
+                    
+                if isinstance(component_info, dict) and component_info.get('enabled', False):
+                    binary_path = self.required_binaries.get(component_name)
+                    if binary_path:
+                        exists = binary_path.exists()
+                        status[component_name] = {
+                            'binary_path': binary_path,
+                            'exists': exists,
+                            'enabled': True
+                        }
+                        if not exists:
+                            self.build_required = True
+        else:
+            # Legacy format - check direct component sections
+            for component_name in ['generator', 'playback', 'matching_engine', 'client_algorithm']:
+                component_info = self.config.get(component_name, {})
+                if component_info.get('enabled', False):
+                    binary_path = self.required_binaries.get(component_name)
+                    if binary_path:
+                        exists = binary_path.exists()
+                        status[component_name] = {
+                            'binary_path': binary_path,
+                            'exists': exists,
+                            'enabled': True
+                        }
+                        if not exists:
+                            self.build_required = True
         
         return status
 
@@ -362,16 +417,32 @@ class BeaconUnified:
             self._log("INFO", name.upper(), f"Starting: {' '.join(cmd)}")
             
             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-            time.sleep(1.5)  # Startup delay
             
-            if process.poll() is None:
-                self.processes[name] = process
-                self._log("SUCCESS", name.upper(), f"Started (PID: {process.pid})")
-                return True
+            # Generator is a special case - it runs and completes, not a long-running service
+            if name == "generator":
+                stdout, _ = process.communicate()  # Wait for completion
+                if process.returncode == 0:
+                    self._log("SUCCESS", name.upper(), f"Completed successfully")
+                    # Show the generator output
+                    for line in stdout.strip().split('\n'):
+                        if line.strip():
+                            self._log("INFO", name.upper(), line)
+                    return True
+                else:
+                    self._log("ERROR", name.upper(), f"Failed with exit code {process.returncode}: {stdout}")
+                    return False
             else:
-                stdout, _ = process.communicate()
-                self._log("ERROR", name.upper(), f"Failed: {stdout}")
-                return False
+                # For long-running services, check if they started successfully
+                time.sleep(1.5)  # Startup delay
+                
+                if process.poll() is None:
+                    self.processes[name] = process
+                    self._log("SUCCESS", name.upper(), f"Started (PID: {process.pid})")
+                    return True
+                else:
+                    stdout, _ = process.communicate()
+                    self._log("ERROR", name.upper(), f"Failed: {stdout}")
+                    return False
                 
         except Exception as e:
             self._log("ERROR", name.upper(), f"Exception: {e}")
@@ -382,42 +453,75 @@ class BeaconUnified:
         self._log("INFO", "SYSTEM", "🚀 LAUNCHING BEACON TRADING SYSTEM")
         
         component_configs = self.config.get('component_configs', {})
-        startup_order = self.config['system'].get('startup_sequence', ['matching_engine', 'client_algorithm', 'playback'])
+        system_config = self.config.get('system', self.config.get('system_config', {}))
+        startup_order = system_config.get('startup_sequence', ['matching_engine', 'client_algorithm', 'playback'])
+        
+        # For legacy format, determine startup order from enabled components
+        if not component_configs:
+            startup_order = [name for name in ['generator', 'matching_engine', 'client_algorithm', 'playback'] 
+                           if self.config.get(name, {}).get('enabled', False)]
+        
         success = True
         
         # Start components in the specified order
         for component_name in startup_order:
-            component_info = component_configs.get(component_name, {})
-            
-            if component_info.get('enabled', False):
-                config_file_path = self.beacon_root / component_info['config_file']
+            if component_configs:
+                # New format: use component_configs
+                component_info = component_configs.get(component_name, {})
+                if component_info.get('enabled', False):
+                    config_file_path = self.beacon_root / component_info['config_file']
+                else:
+                    continue
+            else:
+                # Legacy format: use direct component sections
+                component_info = self.config.get(component_name, {})
+                if not component_info.get('enabled', False):
+                    continue
+                # Create temporary config file from the component data
+                import tempfile
+                if not hasattr(self, f"{component_name}_config"):
+                    continue
+                config_data = getattr(self, f"{component_name}_config")
                 
-                if component_name == 'matching_engine':
-                    success &= self.start_component("matching_engine", "matching_engine/matching_engine", ["--config", str(config_file_path)])
-                    
-                elif component_name == 'client_algorithm':
-                    # Get execution parameters from master config or algorithm config
-                    exec_params = self.config.get('execution_parameters', {})
-                    args = ["--config", str(config_file_path)]
-                    
-                    # Add execution parameters as command line args if specified
-                    if exec_params:
-                        if 'symbol' in exec_params:
-                            args.extend(["--symbol", exec_params['symbol']])
-                        if 'side' in exec_params:
-                            args.extend(["--side", exec_params['side']])
-                        if 'shares' in exec_params:
-                            args.extend(["--shares", str(exec_params['shares'])])
-                        if 'price' in exec_params:
-                            args.extend(["--price", str(exec_params['price'])])
-                    
-                    success &= self.start_component("algorithm", "client_algorithm/AlgoTwapProtocol", args)
-                    
-                elif component_name == 'playback':
-                    success &= self.start_component("playback", "playback/playback", ["--config", str(config_file_path)])
-                    
-                elif component_name == 'generator':
-                    success &= self.start_component("generator", "generator/generator", ["--config", str(config_file_path)])
+                # Create temp file for this component
+                fd, config_file_path = tempfile.mkstemp(suffix=f'_{component_name}.json')
+                try:
+                    with os.fdopen(fd, 'w') as f:
+                        json.dump(config_data, f, indent=2)
+                    config_file_path = Path(config_file_path)  # Convert to Path object
+                except:
+                    os.close(fd)
+                    raise
+                
+            if component_name == 'matching_engine':
+                success &= self.start_component("matching_engine", "matching_engine/matching_engine", ["--config", str(config_file_path)])
+                
+            elif component_name == 'client_algorithm':
+                # Get execution parameters from master config or algorithm config
+                exec_params = self.config.get('execution_parameters', {})
+                args = ["--config", str(config_file_path)]
+                
+                # Add execution parameters as command line args if specified
+                if exec_params:
+                    if 'symbol' in exec_params:
+                        args.extend(["--symbol", exec_params['symbol']])
+                    if 'side' in exec_params:
+                        args.extend(["--side", exec_params['side']])
+                    if 'shares' in exec_params:
+                        args.extend(["--shares", str(exec_params['shares'])])
+                    if 'price' in exec_params:
+                        args.extend(["--price", str(exec_params['price'])])
+                
+                success &= self.start_component("algorithm", "client_algorithm/AlgoTwapProtocol", args)
+                
+            elif component_name == 'playback':
+                success &= self.start_component("playback", "playback/playback", ["--config", str(config_file_path)])
+                
+            elif component_name == 'generator':
+                # Generator uses -i for input and -o for output
+                config_data = getattr(self, f"{component_name}_config")
+                output_file = component_info.get('output_file', 'generated_data.bin') if component_configs else config_data.get('output_file', 'generated_data.bin')
+                success &= self.start_component("generator", "generator/generator", ["-i", str(config_file_path), "-o", output_file])
 
         return success
 
@@ -452,16 +556,27 @@ class BeaconUnified:
         
         # Get enabled components
         component_configs = self.config.get('component_configs', {})
-        enabled = [name for name, comp in component_configs.items() 
-                  if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False)]
-        print(f"Components: {', '.join(enabled)}")
         
-        # Show config files being used
-        print(f"{Colors.BOLD}Configuration Files:{Colors.RESET}")
-        for name, comp in component_configs.items():
-            if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False):
-                config_file = comp.get('config_file', 'unknown')
-                print(f"  {name}: {config_file}")
+        if component_configs:
+            # New format
+            enabled = [name for name, comp in component_configs.items() 
+                      if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False)]
+            print(f"Components: {', '.join(enabled)}")
+            
+            # Show config files being used
+            print(f"{Colors.BOLD}Configuration Files:{Colors.RESET}")
+            for name, comp in component_configs.items():
+                if not name.startswith('_') and isinstance(comp, dict) and comp.get('enabled', False):
+                    config_file = comp.get('config_file', 'unknown')
+                    print(f"  {name}: {config_file}")
+        else:
+            # Legacy format
+            enabled = [name for name in ['generator', 'playback', 'matching_engine', 'client_algorithm']
+                      if self.config.get(name, {}).get('enabled', False)]
+            print(f"Components: {', '.join(enabled)}")
+            
+            # Show that configs are inline
+            print(f"{Colors.BOLD}Configuration:{Colors.RESET} Inline system config")
         print(f"{Colors.CYAN}{'='*70}{Colors.RESET}\n")
 
     def shutdown(self):

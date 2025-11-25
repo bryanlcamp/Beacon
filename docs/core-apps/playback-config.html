@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon - Playback Engine Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 25px;
+            left: 40px;
+            z-index: 102;
+        }
+        
+        .back-button a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+        
+        .back-button a:hover {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+            align-items: start;
+        }
+        
+        .config-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        
+        .form-select option {
+            background: #1a1a2e;
+            color: #ffffff;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .config-list {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .config-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .config-item:last-child {
+            border-bottom: none;
+        }
+        
+        .config-name {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+        }
+        
+        .config-status {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .btn-success {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+            border: 1px solid rgba(0, 255, 100, 0.4);
+        }
+        
+        .btn-success:hover {
+            background: rgba(0, 255, 100, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Back button -->
+    <div class="back-button">
+        <a href="../documentation-hub.html">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>Playback Engine.</h1>
+        <p class="subtitle">Market data playback configuration with UDP transmission</p>
+
+        <div class="config-grid">
+            <!-- Network Configuration -->
+            <div class="config-panel">
+                <h2 class="panel-title">Network Configuration</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Protocol</label>
+                    <select class="form-select" id="protocol">
+                        <option value="udp" selected>UDP</option>
+                        <option value="tcp">TCP</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Host</label>
+                        <input type="text" class="form-input" value="127.0.0.1" id="host">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Port</label>
+                        <input type="number" class="form-input" value="12345" id="port">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Multicast Address</label>
+                        <input type="text" class="form-input" value="239.255.0.1" id="multicastAddress">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Multicast TTL</label>
+                        <input type="number" class="form-input" value="1" id="multicastTtl">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Socket Buffer Size</label>
+                    <input type="number" class="form-input" value="65536" id="socketBufferSize">
+                </div>
+            </div>
+
+            <!-- Playback Settings -->
+            <div class="config-panel">
+                <h2 class="panel-title">Playback Settings</h2>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="loopMode">
+                        <label class="form-label" for="loopMode">Loop Mode</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="realTime" checked>
+                        <label class="form-label" for="realTime">Real Time Playback</label>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Speed Multiplier</label>
+                        <input type="number" class="form-input" value="1.0" step="0.1" id="speedMultiplier">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Batch Size</label>
+                        <input type="number" class="form-input" value="100" id="batchSize">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Message Delay (μs)</label>
+                    <input type="number" class="form-input" value="1000" id="messageDelay">
+                </div>
+            </div>
+
+            <!-- Authorities Configuration -->
+            <div class="config-panel">
+                <h2 class="panel-title">Authorities</h2>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="authoritiesEnabled" checked>
+                        <label class="form-label" for="authoritiesEnabled">Enable Authorities</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Default Authority</label>
+                    <select class="form-select" id="defaultAuthority">
+                        <option value="continuous" selected>Continuous</option>
+                        <option value="burst">Burst</option>
+                        <option value="chaos">Chaos</option>
+                        <option value="wave">Wave</option>
+                        <option value="null">Null</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Authority Configurations</label>
+                    <div class="config-list">
+                        <div class="config-item">
+                            <span class="config-name">authority_burst.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-name">authority_chaos.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-name">authority_continuous.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-name">authority_null.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-name">authority_wave.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Senders Configuration -->
+            <div class="config-panel">
+                <h2 class="panel-title">Senders</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Default Sender</label>
+                    <select class="form-select" id="defaultSender">
+                        <option value="udp_loopback" selected>UDP Loopback</option>
+                        <option value="tcp_loopback">TCP Loopback</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Sender Configurations</label>
+                    <div class="config-list">
+                        <div class="config-item">
+                            <span class="config-name">sender_udp_loopback.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-name">sender_tcp_loopback.json</span>
+                            <span class="config-status">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="resetToDefaults()">Reset to Defaults</button>
+            <button class="btn btn-success" onclick="saveConfiguration()">Save Configuration</button>
+        </div>
+    </div>
+
+    <script>
+        function resetToDefaults() {
+            // Network defaults
+            document.getElementById('protocol').value = 'udp';
+            document.getElementById('host').value = '127.0.0.1';
+            document.getElementById('port').value = '12345';
+            document.getElementById('multicastAddress').value = '239.255.0.1';
+            document.getElementById('multicastTtl').value = '1';
+            document.getElementById('socketBufferSize').value = '65536';
+            
+            // Playback defaults
+            document.getElementById('loopMode').checked = false;
+            document.getElementById('realTime').checked = true;
+            document.getElementById('speedMultiplier').value = '1.0';
+            document.getElementById('batchSize').value = '100';
+            document.getElementById('messageDelay').value = '1000';
+            
+            // Authorities defaults
+            document.getElementById('authoritiesEnabled').checked = true;
+            document.getElementById('defaultAuthority').value = 'continuous';
+            
+            // Senders defaults
+            document.getElementById('defaultSender').value = 'udp_loopback';
+            
+            alert('Configuration reset to defaults');
+        }
+        
+        function saveConfiguration() {
+            const config = {
+                application: {
+                    name: "Beacon Playback Engine",
+                    version: "1.0.0",
+                    description: "Market data playback engine with configurable transmission modes",
+                    architecture: "playbook -> playback (UDP) -> market_data_receiver"
+                },
+                network: {
+                    output: {
+                        protocol: document.getElementById('protocol').value,
+                        host: document.getElementById('host').value,
+                        port: parseInt(document.getElementById('port').value),
+                        multicast_address: document.getElementById('multicastAddress').value,
+                        multicast_ttl: parseInt(document.getElementById('multicastTtl').value),
+                        socket_buffer_size: parseInt(document.getElementById('socketBufferSize').value)
+                    }
+                },
+                playback: {
+                    loop_mode: document.getElementById('loopMode').checked,
+                    real_time: document.getElementById('realTime').checked,
+                    speed_multiplier: parseFloat(document.getElementById('speedMultiplier').value),
+                    batch_size: parseInt(document.getElementById('batchSize').value),
+                    message_delay_us: parseInt(document.getElementById('messageDelay').value)
+                },
+                authorities: {
+                    enabled: document.getElementById('authoritiesEnabled').checked,
+                    default_authority: document.getElementById('defaultAuthority').value,
+                    authority_configs: [
+                        "authorities/authority_burst.json",
+                        "authorities/authority_chaos.json",
+                        "authorities/authority_continuous.json",
+                        "authorities/authority_null.json",
+                        "authorities/authority_wave.json"
+                    ]
+                },
+                senders: {
+                    default_sender: document.getElementById('defaultSender').value,
+                    sender_configs: [
+                        "senders/sender_udp_loopback.json",
+                        "senders/sender_tcp_loopback.json"
+                    ]
+                }
+            };
+            
+            // Create filename with timestamp
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+            const filename = `playback-config-${timestamp}.json`;
+            
+            // Download the config file
+            const dataStr = JSON.stringify(config, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            URL.revokeObjectURL(url);
+            
+            alert(`Playback configuration saved as ${filename}`);
+        }
+    </script>
+</body>
+</html>

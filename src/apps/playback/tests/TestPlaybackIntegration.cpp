@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <filesystem>
 #include <fstream>
+#include "exchanges/protocol_common.h"
 #include <thread>
 #include <chrono>
 #include "../BinaryInputFileReader.h"
@@ -251,7 +252,7 @@ TEST_F(TestPlaybackIntegration, ExchangeFormatDetection) {
     
     // Simulate format detection logic
     bool formatValid = true;
-    std::string detectedFormat = "nsdq"; // Default
+    std::string detectedFormat = std::string{beacon::exchanges::ExchangeTypeToString(beacon::exchanges::ExchangeType::NASDAQ)}; // Default
     
     // Check first few messages for format indicators
     for (size_t i = 0; i < std::min(reader.size(), size_t(5)); i++) {
@@ -270,7 +271,7 @@ TEST_F(TestPlaybackIntegration, ExchangeFormatDetection) {
     }
     
     EXPECT_TRUE(formatValid);
-    EXPECT_EQ(detectedFormat, "nsdq");
+    EXPECT_EQ(detectedFormat, std::string{beacon::exchanges::ExchangeTypeToString(beacon::exchanges::ExchangeType::NASDAQ)});
 }
 
 TEST_F(TestPlaybackIntegration, ErrorHandlingAndRecovery) {

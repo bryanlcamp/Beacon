@@ -30,6 +30,7 @@ macro(PlaybackTest test_name)
         gtest 
         gtest_main
         beacon_utils
+        beacon_exchanges
     )
     
     # Copy test data files to build directory (if they exist)

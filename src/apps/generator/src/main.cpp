@@ -143,8 +143,8 @@ int main(int argc, char* argv[]) {
         }
 
         // Create the ConfigProvider and load the configuration
-        beacon::market_data_generator::config::ConfigProvider configProvider("", outputFilePath);
-        if (!configProvider.loadConfig(configFilePath)) {
+        beacon::market_data_generator::config::ConfigProvider configProvider(outputFilePath);
+        if (!configProvider.LoadConfig(configFilePath)) {
             std::cerr << "[Error] Configuration loading failed. Please check the configuration file and try again.\n";
             return 1;
         }
@@ -158,15 +158,15 @@ int main(int argc, char* argv[]) {
 
         // Configure CSV mode if requested
         if (csvOutput) {
-            configProvider.setCsvMode(true);
+            configProvider.SetCsvMode(true);
         }
         
         // Create message generator with the configured provider
         beacon::market_data_generator::MessageGenerator generator(configProvider);
-        size_t numMessages = generator.getMessageCount();
+        size_t numMessages = generator.GetMessageCount();
         
         // Generate messages (CSV or binary based on the serializer configured in ConfigProvider)
-        generator.generateMessages(outputFilePath, numMessages, configFilePath);
+        generator.GenerateMessages(outputFilePath, numMessages, configFilePath);
     }
     catch (const std::exception& e) {
         std::cerr << "[Error] " << e.what() << "\n";

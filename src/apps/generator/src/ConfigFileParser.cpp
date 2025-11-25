@@ -28,103 +28,62 @@ void ConfigFileParser::parse(const std::string& filename) {
     throw std::runtime_error("JSON parsing error in " + filename + ": " + e.what());
   }
   
-  // Parse required Global section
-  if (!j.contains("Global")) {
-    throw std::runtime_error("Missing required 'Global' section in configuration file.");
-  }
-  _globalConfig = parseGlobal(j["Global"]);
+  // Parse simple format only
+  parseSimpleFormat(j);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void ConfigFileParser::parseSimpleFormat(const nlohmann::json& j) {
   
-  // Parse optional Wave section (use defaults if missing)
-  if (j.contains("Wave")) {
-    _globalConfig.GlobalWaveConfig = parseWaveConfig(j["Wave"]);
+  // Parse Global settings from simple format
+  _globalConfig.Exchange = j.value("exchange", "nasdaq");
+  _globalConfig.NumMessages = j.value("message_count", 10000);
+  _globalConfig.TradeProbability = j.value("trade_probability", 0.15);
+  _globalConfig.FlushInterval = j.value("flush_interval", 1000);
+  
+  // Parse symbols from simple array format
+  auto symbols_array = j["symbols"];
+  if (!symbols_array.is_array()) {
+    throw std::runtime_error("'symbols' must be an array in simple format");
   }
   
-  // Parse optional Burst section (use defaults if missing)
-  if (j.contains("Burst")) {
-    _globalConfig.GlobalBurstConfig = parseBurstConfig(j["Burst"]);
-  }
+  _symbols.clear();
+  double percent_per_symbol = 100.0 / symbols_array.size();
   
-  // Parse required Symbols section
-  if (!j.contains("Symbols")) {
-    throw std::runtime_error("Missing required 'Symbols' section in configuration file.");
+  for (const auto& symbol_name : symbols_array) {
+    if (!symbol_name.is_string()) {
+      throw std::runtime_error("All symbols must be strings");
+    }
+    
+    // Create default symbol configuration
+    PriceRange defaultPriceRange{100.0, 200.0, 1.0};
+    QuantityRange defaultQuantityRange{1, 100, 1.0};
+    PreviousDay defaultPrevDay{150.0, 155.0, 145.0, 152.0, 1000000};
+    
+    SymbolConfig symbolConfig(
+      symbol_name.get<std::string>(),
+      percent_per_symbol,
+      0.5, // Default 0.5% spread
+      defaultPriceRange,
+      defaultQuantityRange,
+      defaultPrevDay
+    );
+    
+    _symbols.push_back(symbolConfig);
   }
-  if (j["Symbols"].empty()) {
-    throw std::runtime_error("'Symbols' section cannot be empty. At least one symbol must be defined.");
-  }
-  for (const auto& item : j["Symbols"]) {
-    _symbols.push_back(parseSymbol(item));
-  }
-}
-
-ConfigFileParser::PriceRange ConfigFileParser::parsePriceRange(const json& j) {
-  PriceRange pr;
-  pr.MinPrice = j.value("MinPrice", 0.0);
-  pr.MaxPrice = j.value("MaxPrice", 0.0);
-  pr.Weight = j.value("Weight", 1.0);
-  return pr;
-}
-
-ConfigFileParser::QuantityRange ConfigFileParser::parseQuantityRange(const json& j) {
-  QuantityRange qr;
-  qr.MinQuantity = j.value("MinQuantity", 0);
-  qr.MaxQuantity = j.value("MaxQuantity", 0);
-  qr.Weight = j.value("Weight", 1.0);
-  return qr;
-}
-
-ConfigFileParser::PreviousDay ConfigFileParser::parsePreviousDay(const json& j) {
-  PreviousDay pd;
-  pd.OpenPrice = j.value("OpenPrice", 0.0);
-  pd.HighPrice = j.value("HighPrice", 0.0);
-  pd.LowPrice = j.value("LowPrice", 0.0);
-  pd.ClosePrice = j.value("ClosePrice", 0.0);
-  pd.Volume = j.value("Volume", 0);
-  return pd;
-}
-
-ConfigFileParser::SymbolConfig ConfigFileParser::parseSymbol(const json& j) {
-  std::string symbolName = j.value("SymbolName", "");
-  double percentTotalMessages = j.value("PercentTotalMessages", 0.0);
-  double spreadPercentage = j.value("SpreadPercentage", 0.0);
-  PriceRange priceRange;
-  QuantityRange quantityRange;
-  PreviousDay previousDay;
-  if (j.contains("PriceRange")) priceRange = parsePriceRange(j["PriceRange"]);
-  if (j.contains("QuantityRange")) quantityRange = parseQuantityRange(j["QuantityRange"]);
-  if (j.contains("PrevDay")) previousDay = parsePreviousDay(j["PrevDay"]);
-  return SymbolConfig(symbolName, percentTotalMessages, spreadPercentage, priceRange, quantityRange, previousDay);
-}
-
-ConfigFileParser::GlobalConfig ConfigFileParser::parseGlobal(const json& j) {
-  GlobalConfig gc;
-  gc.NumMessages = j.value("NumMessages", 0);
-  gc.Exchange = j.value("Exchange", "");
-  
-  // Optional fields with reasonable defaults
-  gc.TradeProbability = j.value("TradeProbability", 0.1); // Default 10% trades
-  gc.FlushInterval = j.value("FlushInterval", 1000);       // Default flush every 1000 messages
-  gc.SpreadPercentage = j.value("SpreadPercentage", 0.5);  // Default 0.5% spread
-  
-  // Coordination settings with defaults
-  gc.BurstTogether = j.value("BurstTogether", false);
-  gc.WaveTogether = j.value("WaveTogether", true);
-  
-  return gc;
-}
-
-ConfigFileParser::WaveConfig ConfigFileParser::parseWaveConfig(const json& j) {
-  WaveConfig wc;
-  wc.WaveDurationMs = j.value("WaveDurationMs", 300000);          // Default 5 minutes
-  wc.WaveAmplitudePercent = j.value("WaveAmplitudePercent", 100.0); // Default 100% (flat)
-  return wc;
-}
-
-ConfigFileParser::BurstConfig ConfigFileParser::parseBurstConfig(const json& j) {
-  BurstConfig bc;
-  bc.Enabled = j.value("Enabled", false);                          // Default disabled
-  bc.BurstIntensityPercent = j.value("BurstIntensityPercent", 300.0); // Default 3x intensity
-  bc.BurstFrequencyMs = j.value("BurstFrequencyMs", 60000);        // Default 1 minute between bursts
-  return bc;
 }
 
 } // namespace market_data_generator

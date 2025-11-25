@@ -1,0 +1,8 @@
+{
+  "exchange": "nasdaq",
+  "message_count": 10000,
+  "symbols": ["AAPL", "MSFT", "GOOGL"],
+  "trade_probability": 0.15,
+  "flush_interval": 1000,
+  "output_format": "binary"
+}

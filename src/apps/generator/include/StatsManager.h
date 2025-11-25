@@ -27,9 +27,9 @@ struct SymbolStats {
 
 class StatsManager {
 public:
-    void updateStats(const std::string& symbol, bool isBid, size_t quantity, double price);
-    void updateTradeStats(const std::string& symbol, size_t quantity, double price);
-    void printStats(size_t totalMessages, double elapsedSeconds) const;
+    void UpdateStats(const std::string& symbol, bool isBid, size_t quantity, double price);
+    void UpdateTradeStats(const std::string& symbol, size_t quantity, double price);
+    void PrintStats(size_t totalMessages, double elapsedSeconds) const;
 private:
     std::unordered_map<std::string, SymbolStats> _symbolStats;
 };

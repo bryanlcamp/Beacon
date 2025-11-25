@@ -42,14 +42,10 @@ target_include_directories(playback PRIVATE
     ${BEACON_ROOT}/src/apps/common
 )
 
-# Add exchanges as an INTERFACE library for header-only usage
-add_library(exchanges INTERFACE)
-target_include_directories(exchanges INTERFACE
-  ${CMAKE_SOURCE_DIR}/libs/exchanges
+# Link against common libraries
+target_link_libraries(playback PRIVATE
+    beacon_exchanges
 )
-
-# Link exchanges to playback
-target_link_libraries(playback PRIVATE exchanges)
 
 # Enable warnings
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")

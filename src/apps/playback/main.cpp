@@ -257,7 +257,7 @@ private:
         }
         
         // Default to NSDQ format if no config found
-        _exchangeFormat = "nsdq";
+        _exchangeFormat = std::string{beacon::exchanges::ExchangeTypeToString(beacon::exchanges::ExchangeType::NASDAQ)};
         std::cout << "[INFO] No generator config found, defaulting to NSDQ format" << std::endl;
         return validateBinaryFormat();
     }
@@ -292,7 +292,8 @@ private:
         }
         
         // Validate exchange format
-        if (_exchangeFormat != "nsdq" && _exchangeFormat != "cme" && _exchangeFormat != "nyse") {
+        auto exchangeType = beacon::exchanges::StringToExchangeType(_exchangeFormat);
+        if (exchangeType == beacon::exchanges::ExchangeType::INVALID) {
             std::cerr << "[ERROR] Unsupported exchange format: " << _exchangeFormat << std::endl;
             return false;
         }

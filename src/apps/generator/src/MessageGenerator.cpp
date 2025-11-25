@@ -21,54 +21,77 @@
 #include <iostream>
 #include <random>
 #include <sstream>
+#include <string_view>
 #include <unordered_map>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+#include <ranges>
 
 namespace beaconserialize = beacon::market_data_generator::serializers;
 namespace beaconconfig = beacon::market_data_generator::config;
+
+// Constants for message generation
+static constexpr size_t PRICE_UPDATE_INTERVAL = 10; // Update market every 10 messages
 
 namespace beacon::market_data_generator {
 
   MessageGenerator::MessageGenerator(const beaconconfig::ConfigProvider& configProvider)
   {
     // Get the serializer from the config provider
-    _serializer = configProvider.getSerializer();
+    _serializer = configProvider.GetSerializer();
     
     // Use the new methods from ConfigProvider
-    auto symbolsForGeneration = configProvider.getSymbolsForGeneration();
-    _messageCount = configProvider.getMessageCount();
-    _tradeProbability = configProvider.getTradeProbability();
-    _flushInterval = configProvider.getFlushInterval();
-    _waveConfig = configProvider.getWaveConfig();
-    _burstConfig = configProvider.getBurstConfig();
+    auto symbolsForGeneration = configProvider.GetSymbolsForGeneration();
+    _messageCount = configProvider.GetMessageCount();
+    _tradeProbability = configProvider.GetTradeProbability();
+    _flushInterval = configProvider.GetFlushInterval();
 
-    // Convert SymbolData to SymbolParameters
+    // Convert SymbolData to SymbolParameters using C++20 features
+    _symbols.reserve(symbolsForGeneration.size());
     for (const auto& symbolData : symbolsForGeneration) {
-        SymbolParameters symbolParams;
-        symbolParams.symbol = symbolData.symbolName;
-        symbolParams.percent = symbolData.weight; // weight field contains the percent (1-100)
-        symbolParams.spread_percent = symbolData.spreadPercent;
-        symbolParams.price_range.min_price = symbolData.minPrice;
-        symbolParams.price_range.max_price = symbolData.maxPrice;
-        symbolParams.price_range.weight = 1.0; // Default weight for price generation
-
-        // Similarly, handle quantity_range
-        symbolParams.quantity_range.min_quantity = 1;
-        symbolParams.quantity_range.max_quantity = 100;
-        symbolParams.quantity_range.weight = 1.0; // Default weight
-
-        _symbols.push_back(symbolParams);
+        _symbols.emplace_back(SymbolParameters{
+            .symbol = symbolData.symbolName,
+            .percent = symbolData.weight, // weight field contains the percent (1-100)
+            .spread_percent = symbolData.spreadPercent,
+            .price_range = {
+                .min_price = symbolData.minPrice,
+                .max_price = symbolData.maxPrice,
+                .weight = 1.0 // Default weight for price generation
+            },
+            .quantity_range = {
+                .min_quantity = 1,
+                .max_quantity = 100,
+                .weight = 1.0 // Default weight
+            }
+        });
     }
   }
 
-  void MessageGenerator::generateMessages(const std::string& outputPath, size_t numMessages, const std::string& configPath) {
+  void MessageGenerator::GenerateMessages(std::string_view outputPath, size_t numMessages, std::string_view configPath) {
     // Start timing
-    auto startTime = std::chrono::high_resolution_clock::now();
+    const auto startTime = std::chrono::high_resolution_clock::now();
     
-    // Calculate the number of messages for each symbol based on percentages
+    // Calculate message distribution across symbols
+    const auto messagesPerSymbol = CalculateMessageDistribution(numMessages);
+    
+    // Print generation header and configuration info
+    PrintGenerationHeader(numMessages, configPath);
+
+    // Initialize generation state
+    std::mt19937 generator{std::random_device{}()};
+    std::unordered_map<std::string, MarketState> marketState;
+    size_t globalSequenceNumber = 1;
+    
+    // Generate all messages
+    GenerateMessagesForAllSymbols(messagesPerSymbol, numMessages, marketState, globalSequenceNumber, generator);
+    
+    // End timing and print results
+    const auto endTime = std::chrono::high_resolution_clock::now();
+    const std::chrono::duration<double> elapsed = endTime - startTime;
+    
+    std::cout << "\n>>> File generation complete: " << outputPath << " <<<\n\n";
+    _statsManager.PrintStats(numMessages, elapsed.count());
+  }
+
+  std::vector<size_t> MessageGenerator::CalculateMessageDistribution(size_t numMessages) const {
     std::vector<size_t> messagesPerSymbol;
     size_t totalMessagesAssigned = 0;
     
@@ -79,22 +102,21 @@ namespace beacon::market_data_generator {
     }
 
     // Adjust for rounding errors to ensure the total number of messages matches numMessages
-    // CRITICAL: Must check which direction to adjust to avoid unsigned integer underflow
-    // Example: If rounding gives us 30,000 messages but we only want 10,000, we need to
-    // subtract 20,000. With unsigned integers, 10,000 - 30,000 would wrap to ~18 quintillion!
     if (totalMessagesAssigned != numMessages) {
       if (totalMessagesAssigned < numMessages) {
-        // Need to add messages
         size_t adjustment = numMessages - totalMessagesAssigned;
         messagesPerSymbol[0] += adjustment;
-      } else {
-        // Need to remove messages
+      }
+      else {
         size_t adjustment = totalMessagesAssigned - numMessages;
         messagesPerSymbol[0] -= adjustment;
       }
     }
+    
+    return messagesPerSymbol;
+  }
 
-    // Print header and generation info
+  void MessageGenerator::PrintGenerationHeader(size_t numMessages, std::string_view configPath) const {
     std::cout << "\n";
     std::cout << "═══════════════════════════════════════════════════════════════════════════════════════════════════════\n";
     std::cout << "                        EXCHANGE MARKET DATA GENERATOR - STARTING                                      \n";
@@ -112,34 +134,37 @@ namespace beacon::market_data_generator {
     std::cout << "\n\n";
     
     if (!configPath.empty()) {
-      // Extract just the filename from the path
       size_t lastSlash = configPath.find_last_of("/\\");
-      std::string filename = (lastSlash != std::string::npos) ? configPath.substr(lastSlash + 1) : configPath;
+      const std::string filename = (lastSlash != std::string_view::npos) ? 
+          std::string{configPath.substr(lastSlash + 1)} : std::string{configPath};
       std::cout << "Generating messages (using " << filename << ")...\n";
-    } else {
+    }
+    else {
       std::cout << "Generating messages...\n";
     }
+  }
 
-    // Use the Mersenne Twister algorithm with a random seed.
-    std::random_device seedGenerator;
-    auto randomSeed = seedGenerator();
-    std::mt19937 gen(randomSeed);
-
-    // Get current time once - don't make system calls for every message
-    std::time_t currentTime = std::time(nullptr);    // Market state: track the most recent bid and ask prices and their sequence numbers for each symbol
-    struct MarketState {
-        double bidPrice = 0.0;
-        double askPrice = 0.0;
-        size_t bidSeqNum = 0;
-        size_t askSeqNum = 0;
-    };
-    std::unordered_map<std::string, MarketState> marketState; // {symbol -> MarketState}
-    size_t globalSequenceNumber = 1; // Start sequence numbers at 1
+  void MessageGenerator::GenerateMessagesForAllSymbols(
+      const std::vector<size_t>& messagesPerSymbol,
+      size_t numMessages,
+      std::unordered_map<std::string, MarketState>& marketState,
+      size_t& globalSequenceNumber,
+      std::mt19937& generator) {
       
       // Generate messages for each symbol
       for (size_t i = 0; i < _symbols.size(); i++) {
-          const SymbolParameters& symbolParams = _symbols[i];
-          size_t messagesForSymbol = messagesPerSymbol[i];
+          GenerateMessagesForSymbol(_symbols[i], messagesPerSymbol[i], marketState, globalSequenceNumber, generator);
+      }
+  }
+
+  void MessageGenerator::GenerateMessagesForSymbol(
+      const SymbolParameters& symbolParams,
+      size_t messagesForSymbol,
+      std::unordered_map<std::string, MarketState>& marketState,
+      size_t& globalSequenceNumber,
+      std::mt19937& generator) {
+
+          const std::time_t currentTime = std::time(nullptr); // Get current time for this symbol
 
           const auto& priceRange = symbolParams.price_range;
           const auto& quantityRange = symbolParams.quantity_range;
@@ -154,31 +179,11 @@ namespace beacon::market_data_generator {
 
           for (size_t j = 0; j < messagesForSymbol; j++) {
               // Randomly decide if this is a trade using configured probability
-              bool isTrade = (std::generate_canonical<double, 10>(gen) < _tradeProbability);
+              bool isTrade = (std::generate_canonical<double, 10>(generator) < _tradeProbability);
               
               double bidPrice, askPrice;
               size_t sourceSeqNum = 0;
               double tradePrice = 0.0;
-              
-              // Calculate current message index across all symbols for wave/burst calculations
-              size_t globalMessageIndex = 0;
-              for (size_t k = 0; k < i; k++) {
-                  globalMessageIndex += messagesPerSymbol[k];
-              }
-              globalMessageIndex += j;
-              
-              // Calculate wave and burst effects
-              double waveAmplitude = calculateWaveAmplitude(globalMessageIndex, numMessages);
-              bool isInBurst = shouldGenerateBurst(globalMessageIndex);
-              double burstIntensity = 0.0;
-              static size_t lastBurstStart = 0;
-              
-              if (isInBurst) {
-                  lastBurstStart = globalMessageIndex;
-                  burstIntensity = calculateBurstIntensity(globalMessageIndex, lastBurstStart);
-              } else if (globalMessageIndex > lastBurstStart) {
-                  burstIntensity = calculateBurstIntensity(globalMessageIndex, lastBurstStart);
-              }
 
               if (isTrade) {
                 // For trades, use the current market state
@@ -194,47 +199,22 @@ namespace beacon::market_data_generator {
                     // No market state yet, skip this trade
                     continue;
                 }
-              } else {
+              }
+              else {
                 // For orders, update market prices periodically to create realistic price movement
                 // This ensures bid and ask move together (not independently on each message)
-                static constexpr size_t PRICE_UPDATE_INTERVAL = 10; // Update market every 10 messages
-                bool shouldUpdatePrices = (j % PRICE_UPDATE_INTERVAL == 0) || (marketState.find(symbolParams.symbol) == marketState.end());
+                bool shouldUpdatePrices = ShouldUpdateMarketPrices(j, symbolParams.symbol, marketState);
                 
                 if (shouldUpdatePrices) {
-                    // Generate new prices with proper market microstructure
-                    // Use weighted random to allow skewing price distribution within range
-                    double randomFactor = std::generate_canonical<double, 10>(gen);
-                    double weightedFactor = std::pow(randomFactor, priceRange.weight);
-                    double basePrice = priceRange.min_price + weightedFactor * (priceRange.max_price - priceRange.min_price);
-
-                    // Apply wave effect: wave amplitude shifts the entire price range
-                    // Positive amplitude pushes prices higher, negative pushes lower
-                    double priceRange_size = priceRange.max_price - priceRange.min_price;
-                    double waveShift = waveAmplitude * priceRange_size * 0.2; // 20% of range max shift
-                    basePrice += waveShift;
+                    // Generate new bid/ask prices using extracted method
+                    auto priceResult = GenerateBidAskPrices(symbolParams, generator);
+                    bidPrice = priceResult.first;
+                    askPrice = priceResult.second;
                     
-                    // Apply burst effect: burst intensity increases volatility/spread
-                    // Higher burst intensity means more aggressive price movements
-                    double burstVolatilityMultiplier = 1.0 + (burstIntensity * 2.0); // Up to 3x volatility during bursts
-                    double adjustedSpread = spread * burstVolatilityMultiplier;
-
-                    // Generate bid and ask with proper spread (potentially enhanced by burst)
-                    // Bid is below base, ask is above base - maintaining proper market structure
-                    bidPrice = std::clamp(basePrice - adjustedSpread / 2.0, priceRange.min_price, priceRange.max_price);
-                    askPrice = std::clamp(basePrice + adjustedSpread / 2.0, priceRange.min_price, priceRange.max_price);
-                    
-                    // Safety check: ensure bid < ask after clamping
-                    // If clamping causes inversion, push ask up by spread amount
-                    if (bidPrice >= askPrice) {
-                        askPrice = bidPrice + adjustedSpread;
-                    }
-
-                    // Update the market state with BOTH bid and ask together
-                    marketState[symbolParams.symbol].bidPrice = bidPrice;
-                    marketState[symbolParams.symbol].askPrice = askPrice;
-                    marketState[symbolParams.symbol].bidSeqNum = globalSequenceNumber;
-                    marketState[symbolParams.symbol].askSeqNum = globalSequenceNumber;
-                } else {
+                    // Update market state using extracted method
+                    UpdateMarketState(symbolParams.symbol, bidPrice, askPrice, globalSequenceNumber, marketState);
+                }
+                else {
                     // Use existing market prices (bid and ask stay consistent)
                     auto& state = marketState[symbolParams.symbol];
                     bidPrice = state.bidPrice;
@@ -243,104 +223,109 @@ namespace beacon::market_data_generator {
               }
 
               // Generate a quantity using the uniform distribution
-              size_t quantity = quantityDist(gen);
+              size_t quantity = quantityDist(generator);
 
-              // Create the message
+              // Create the message with explicit logic instead of nested ternaries
+              MessageType messageType;
+              std::string side;
+              double price;
+              size_t sequenceNum;
+              
+              if (isTrade) {
+                  messageType = MessageType::Last;
+                  side = "Trade";
+                  price = tradePrice;
+                  sequenceNum = sourceSeqNum;
+              }
+              else {
+                  // Determine if this is a bid (buy) or ask (sell) order
+                  bool isBuy = (j % 2 == 0);
+                  messageType = isBuy ? MessageType::Bid : MessageType::Ask;
+                  side = isBuy ? "Buy" : "Sell";
+                  price = isBuy ? bidPrice : askPrice;
+                  sequenceNum = globalSequenceNumber;
+              }
+              
               Message message(
                   symbolParams.symbol,
-                  isTrade ? MessageType::Last : (j % 2 == 0 ? MessageType::Bid : MessageType::Ask),
-                  isTrade ? "Trade" : (j % 2 == 0 ? "Buy" : "Sell"),
+                  messageType,
+                  side,
                   quantity,
-                  isTrade ? tradePrice : (j % 2 == 0 ? bidPrice : askPrice),
-                  isTrade ? sourceSeqNum : globalSequenceNumber, // Use source sequence number for trades
-                  currentTime // Use the cached timestamp
+                  price,
+                  sequenceNum,
+                  currentTime
               );
 
               _serializer->serializeMessage(message);
               
               // Update statistics
               if (isTrade) {
-                  _statsManager.updateTradeStats(symbolParams.symbol, quantity, tradePrice);
-              } else {
+                  _statsManager.UpdateTradeStats(symbolParams.symbol, quantity, tradePrice);
+              }
+              else {
                   bool isBuy = (j % 2 == 0);
                   double price = isBuy ? bidPrice : askPrice;
-                  _statsManager.updateStats(symbolParams.symbol, isBuy, quantity, price);
+                  _statsManager.UpdateStats(symbolParams.symbol, isBuy, quantity, price);
               }
 
               // Increment the global sequence number
               globalSequenceNumber++;
           }
-      }
-
-      // End timing
-      auto endTime = std::chrono::high_resolution_clock::now();
-      std::chrono::duration<double> elapsed = endTime - startTime;
-
-      std::cout << "\n>>> File generation complete: " << outputPath << " <<<\n\n";
-      _statsManager.printStats(numMessages, elapsed.count());
   }
 
-  size_t MessageGenerator::getMessageCount() const {
-      return _messageCount; // Use the correct variable name
+  size_t MessageGenerator::GetMessageCount() const noexcept {
+      return _messageCount;
   }
 
-  double MessageGenerator::calculateWaveAmplitude(size_t messageIndex, size_t totalMessages) const {
-      // Calculate the current position in the wave cycle (0.0 to 1.0)
-      double wavePosition = static_cast<double>(messageIndex) / static_cast<double>(totalMessages);
+  std::pair<double, double> MessageGenerator::GenerateBidAskPrices(
+      const SymbolParameters& symbolParams, 
+      std::mt19937& generator) const {
       
-      // Calculate the wave phase based on the duration
-      // Multiple complete wave cycles can occur during the total message generation
-      double totalDurationMs = static_cast<double>(totalMessages); // Assume 1 message per ms for simplicity
-      double waveCycles = totalDurationMs / static_cast<double>(_waveConfig.WaveDurationMs);
-      double wavePhase = wavePosition * waveCycles * 2.0 * M_PI; // Convert to radians
+      const auto& priceRange = symbolParams.price_range;
       
-      // Generate sine wave with the configured amplitude
-      // Wave amplitude affects price movement: 0% = flat market, 100% = maximum volatility
-      double sineValue = std::sin(wavePhase); // -1.0 to 1.0
-      double amplitude = (_waveConfig.WaveAmplitudePercent / 100.0) * sineValue; // Scale by percentage
+      // Generate new prices with proper market microstructure
+      // Use weighted random to allow skewing price distribution within range
+      const auto randomFactor = std::generate_canonical<double, 10>(generator);
+      const auto weightedFactor = std::pow(randomFactor, priceRange.weight);
+      const auto basePrice = priceRange.min_price + weightedFactor * (priceRange.max_price - priceRange.min_price);
+
+      // Calculate spread based on symbol's configured spread percentage
+      double spread = (priceRange.max_price - priceRange.min_price) * (symbolParams.spread_percent / 100.0);
+
+      // Generate bid and ask with proper spread
+      // Bid is below base, ask is above base - maintaining proper market structure
+      double bidPrice = std::clamp(basePrice - spread / 2.0, priceRange.min_price, priceRange.max_price);
+      double askPrice = std::clamp(basePrice + spread / 2.0, priceRange.min_price, priceRange.max_price);
       
-      return amplitude; // Returns value between -WaveAmplitudePercent/100 and +WaveAmplitudePercent/100
+      // Safety check: ensure bid < ask after clamping
+      // If clamping causes inversion, push ask up by spread amount
+      if (bidPrice >= askPrice) {
+          askPrice = bidPrice + spread;
+      }
+      
+      return std::make_pair(bidPrice, askPrice);
   }
 
-  bool MessageGenerator::shouldGenerateBurst(size_t messageIndex) const {
-      if (!_burstConfig.Enabled) {
-          return false;
-      }
+  bool MessageGenerator::ShouldUpdateMarketPrices(
+      size_t messageIndex, 
+      std::string_view symbol,
+      const std::unordered_map<std::string, MarketState>& marketState) const noexcept {
       
-      // Simple burst logic: generate bursts at regular intervals based on frequency
-      // BurstFrequencyMs determines how often bursts occur
-      size_t burstInterval = _burstConfig.BurstFrequencyMs;
-      if (burstInterval == 0) {
-          return false; // Avoid division by zero
-      }
-      
-      // Check if we're at a burst interval (every BurstFrequencyMs messages)
-      return (messageIndex % burstInterval) == 0;
+      return (messageIndex % PRICE_UPDATE_INTERVAL == 0) || !marketState.contains(std::string{symbol});
   }
 
-  double MessageGenerator::calculateBurstIntensity(size_t messageIndex, size_t burstStart) const {
-      if (!_burstConfig.Enabled) {
-          return 0.0;
-      }
+  void MessageGenerator::UpdateMarketState(
+      std::string_view symbol,
+      double bidPrice,
+      double askPrice,
+      size_t sequenceNumber,
+      std::unordered_map<std::string, MarketState>& marketState) const {
       
-      // Calculate how far we are into the current burst
-      size_t burstPosition = messageIndex - burstStart;
-      // Use a fixed burst duration of 1/10th the frequency for sharp spikes
-      size_t burstDuration = std::max(static_cast<size_t>(_burstConfig.BurstFrequencyMs / 10), static_cast<size_t>(10));
-      
-      if (burstPosition >= burstDuration) {
-          return 0.0; // Past the end of the burst
-      }
-      
-      // Create a burst intensity that ramps up and then down (bell curve-like)
-      double burstProgress = static_cast<double>(burstPosition) / static_cast<double>(burstDuration);
-      
-      // Use a sine wave for the burst envelope (0 to π gives a nice peak)
-      double burstEnvelope = std::sin(burstProgress * M_PI);
-      
-      // Scale by the configured burst intensity percentage
-      double intensity = (_burstConfig.BurstIntensityPercent / 100.0) * burstEnvelope;
-      
-      return intensity; // Returns 0.0 to BurstIntensityPercent/100
+      auto& state = marketState[std::string{symbol}];
+      state.bidPrice = bidPrice;
+      state.askPrice = askPrice;
+      state.bidSeqNum = sequenceNumber;
+      state.askSeqNum = sequenceNumber;
   }
+
 } // namespace beacon::market_data_generator

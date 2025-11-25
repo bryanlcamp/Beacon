@@ -166,81 +166,62 @@ private:
 };
 
 TEST_F(TestConfigProvider, LoadsValidConfig) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_TRUE(provider.loadConfig("TestValidConfig.json"));
-    EXPECT_EQ(provider.getMessageCount(), 1000);
-    EXPECT_FALSE(provider.getSymbolsForGeneration().empty());
-    EXPECT_EQ(provider.getTradeProbability(), 0.15);
-    EXPECT_EQ(provider.getFlushInterval(), 500);
+    ConfigProvider provider("Output.bin");
+    EXPECT_TRUE(provider.LoadConfig("TestValidConfig.json"));
+    EXPECT_EQ(provider.GetMessageCount(), 1000);
+    EXPECT_FALSE(provider.GetSymbolsForGeneration().empty());
+    EXPECT_EQ(provider.GetTradeProbability(), 0.15);
+    EXPECT_EQ(provider.GetFlushInterval(), 500);
 }
 
 TEST_F(TestConfigProvider, FailsOnMissingFile) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("NonexistentConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("NonexistentConfig.json"));
 }
 
 TEST_F(TestConfigProvider, FailsOnMalformedConfig) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("TestMalformedConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("TestMalformedConfig.json"));
 }
 
 TEST_F(TestConfigProvider, ValidatesExchangeType) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("TestInvalidExchangeConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("TestInvalidExchangeConfig.json"));
 }
 
 TEST_F(TestConfigProvider, ValidatesNumMessages) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("TestZeroMessagesConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("TestZeroMessagesConfig.json"));
 }
 
 TEST_F(TestConfigProvider, ValidatesSymbolPercentages) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("TestInvalidPercentagesConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("TestInvalidPercentagesConfig.json"));
 }
 
 TEST_F(TestConfigProvider, ValidatesSymbolsNotEmpty) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_FALSE(provider.loadConfig("TestMissingSymbolsConfig.json"));
+    ConfigProvider provider("Output.bin");
+    EXPECT_FALSE(provider.LoadConfig("TestMissingSymbolsConfig.json"));
 }
 
 TEST_F(TestConfigProvider, CreatesCorrectSerializer) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_TRUE(provider.loadConfig("TestValidConfig.json"));
-    
-    auto serializer = provider.getSerializer();
+    ConfigProvider provider("Output.bin");
+    EXPECT_TRUE(provider.LoadConfig("TestValidConfig.json"));
+
+    auto serializer = provider.GetSerializer();
     EXPECT_NE(serializer, nullptr);
 }
 
 TEST_F(TestConfigProvider, CsvModeToggle) {
-    ConfigProvider provider("", "Output.csv");
-    EXPECT_TRUE(provider.loadConfig("TestValidConfig.json"));
+    ConfigProvider provider("Output.csv");
+    EXPECT_TRUE(provider.LoadConfig("TestValidConfig.json"));
     
     // Test binary mode (default)
-    auto binarySerializer = provider.getSerializer();
+    auto binarySerializer = provider.GetSerializer();
     EXPECT_NE(binarySerializer, nullptr);
     
     // Test CSV mode
-    provider.setCsvMode(true);
-    auto csvSerializer = provider.getSerializer();
+    provider.SetCsvMode(true);
+    auto csvSerializer = provider.GetSerializer();
     EXPECT_NE(csvSerializer, nullptr);
-}
-
-TEST_F(TestConfigProvider, WaveConfigurationLoaded) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_TRUE(provider.loadConfig("TestValidConfig.json"));
-    
-    const auto& waveConfig = provider.getWaveConfig();
-    EXPECT_EQ(waveConfig.WaveDurationMs, 60000);
-    EXPECT_EQ(waveConfig.WaveAmplitudePercent, 150.0);
-}
-
-TEST_F(TestConfigProvider, BurstConfigurationLoaded) {
-    ConfigProvider provider("", "Output.bin");
-    EXPECT_TRUE(provider.loadConfig("TestValidConfig.json"));
-    
-    const auto& burstConfig = provider.getBurstConfig();
-    EXPECT_TRUE(burstConfig.Enabled);
-    EXPECT_EQ(burstConfig.BurstIntensityPercent, 200.0);
-    EXPECT_EQ(burstConfig.BurstFrequencyMs, 30000);
 }

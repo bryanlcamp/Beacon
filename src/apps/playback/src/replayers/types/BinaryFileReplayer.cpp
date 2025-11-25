@@ -14,6 +14,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <nlohmann/json.hpp>
+#include "exchanges/protocol_common.h"
 #include "config_provider.h"
 #include "serializers/nsdq_serializer.h"
 #include "serializers/cme_serializer.h"
@@ -89,10 +90,12 @@ bool ConfigProvider::loadConfig(const std::string& configName) {
     _exchange = configJson["exchange"].get<std::string>();
     std::transform(_exchange.begin(), _exchange.end(), _exchange.begin(), ::tolower);
 
-    if (_exchange != "nsdq" && _exchange != "cme" && _exchange != "nyse") {
+    auto exchangeType = beacon::exchanges::StringToExchangeType(_exchange);
+    if (exchangeType == beacon::exchanges::ExchangeType::INVALID) {
+      const auto validTypes = beacon::exchanges::GetValidExchangeTypes();
       throw std::runtime_error(
         "Unsupported exchange: '" + _exchange +
-        "'. Valid exchanges are: 'nsdq', 'cme', 'nyse'."
+        "'. Valid exchanges are: '" + std::string{validTypes[0]} + "', '" + std::string{validTypes[1]} + "', '" + std::string{validTypes[2]} + "'."
       );
     }
   } 
@@ -127,23 +130,28 @@ bool ConfigProvider::loadConfig(const std::string& configName) {
 }
 
 std::unique_ptr<serializers::IMarketDataSerializer> ConfigProvider::createSerializer() const {
-  if (_exchange == "nsdq") {
-    // Create serializer for NASDAQ with flush interval
-    return std::make_unique<serializers::NsdqMarketDataSerializer>(_outputFilePath, _flushInterval);
-  } 
-  else if (_exchange == "cme") {
-    // Create serializer for CME
-    return std::make_unique<serializers::CmeMarketDataSerializer>(_outputFilePath);
-  } 
-  else if (_exchange == "nyse") {
-    // Create serializer for NYSE
-    return std::make_unique<serializers::NyseMarketDataSerializer>(_outputFilePath);
-  } 
-  else {
-    throw std::runtime_error(
-      "Unsupported exchange: '" + _exchange +
-      "'. Valid exchanges are: 'nsdq', 'cme', 'nyse'. Ensure the exchange is correctly specified in the configuration file."
-    );
+  auto exchangeType = beacon::exchanges::StringToExchangeType(_exchange);
+  
+  switch (exchangeType) {
+    case beacon::exchanges::ExchangeType::NASDAQ:
+      // Create serializer for NASDAQ with flush interval
+      return std::make_unique<serializers::NsdqMarketDataSerializer>(_outputFilePath, _flushInterval);
+      
+    case beacon::exchanges::ExchangeType::CME:
+      // Create serializer for CME
+      return std::make_unique<serializers::CmeMarketDataSerializer>(_outputFilePath);
+      
+    case beacon::exchanges::ExchangeType::NYSE:
+      // Create serializer for NYSE
+      return std::make_unique<serializers::NyseMarketDataSerializer>(_outputFilePath);
+      
+    case beacon::exchanges::ExchangeType::INVALID:
+    default:
+      const auto validTypes = beacon::exchanges::GetValidExchangeTypes();
+      throw std::runtime_error(
+        "Unsupported exchange: '" + _exchange +
+        "'. Valid exchanges are: '" + std::string{validTypes[0]} + "', '" + std::string{validTypes[1]} + "', '" + std::string{validTypes[2]} + "'. Ensure the exchange is correctly specified in the configuration file."
+      );
   }
 }
 

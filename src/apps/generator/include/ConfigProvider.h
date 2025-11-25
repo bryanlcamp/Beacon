@@ -12,6 +12,7 @@
 #pragma once
 
 #include "ConfigFileParser.h"
+#include "exchanges/protocol_common.h"
 #include "serializers/MarketDataSerializer.h"
 #include <memory>
 #include <string>
@@ -30,71 +31,77 @@ struct SymbolData {
 
 class ConfigProvider {
   public:
+    /// @brief Constructor for loading configuration from file (exchange type determined from config).
+    /// @param outputFilePath The file path for serialized output.
+    explicit ConfigProvider(const std::string& outputFilePath);
+
     /// @brief Constructor.
-    /// @param exchangeType The type of exchange to use (e.g., "CME").
+    /// @param exchangeType The type of exchange to use (e.g., "nsdq", "cme", "nyse") - will be converted to enum.
     /// @param outputFilePath The file path for serialized output.
     ConfigProvider(const std::string& exchangeType, const std::string& outputFilePath);
+    
+    /// @brief Constructor with ExchangeType enum.
+    /// @param exchangeType The exchange type as an enum value.
+    /// @param outputFilePath The file path for serialized output.
+    ConfigProvider(beacon::exchanges::ExchangeType exchangeType, const std::string& outputFilePath);
+
+    /// @brief Get the current exchange type.
+    /// @return The exchange type as an enum value.
+    [[nodiscard]] beacon::exchanges::ExchangeType GetExchangeType() const noexcept;
+    
+    /// @brief Get the current exchange type as a string.
+    /// @return The exchange type as a string (e.g., "nsdq", "cme", "nyse").
+    [[nodiscard]] std::string GetExchangeTypeString() const noexcept;
 
     /// @brief Get the serializer based on the type.
-    std::unique_ptr<serializers::IMarketDataSerializer> getSerializer() const;
+    std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> GetSerializer() const;
 
     /// @brief Get the symbols for generation.
     /// @return A vector of SymbolData objects.
-    std::vector<SymbolData> getSymbolsForGeneration() const;
+    std::vector<SymbolData> GetSymbolsForGeneration() const;
 
     /// @brief Get the total message count.
     /// @return The number of messages to generate.
-    size_t getMessageCount() const;
+    size_t GetMessageCount() const;
 
     /// @brief Get the trade probability.
     /// @return The probability (0.0-1.0) that a message is a trade.
-    double getTradeProbability() const;
+    double GetTradeProbability() const;
 
     /// @brief Get the flush interval.
     /// @return The number of messages between buffer flushes.
-    size_t getFlushInterval() const;
-
-    /// @brief Get the wave configuration.
-    /// @return The wave configuration object.
-    const ::market_data_generator::ConfigFileParser::WaveConfig& getWaveConfig() const;
-
-    /// @brief Get the burst configuration.
-    /// @return The burst configuration object.
-    const ::market_data_generator::ConfigFileParser::BurstConfig& getBurstConfig() const;
+    size_t GetFlushInterval() const;
 
     /// @brief Load symbols from a configuration file.
     /// @param configPath The path to the configuration file.
-    void loadSymbolsFromConfig(const std::string& configPath);
+    void LoadSymbolsFromConfig(const std::string& configPath);
 
     /// @brief Load configuration from a file.
     /// @param configPath The path to the configuration file.
-    bool loadConfig(const std::string& configPath);
+    bool LoadConfig(const std::string& configPath);
 
     /// @brief Create a serializer based on the exchange type.
-    std::unique_ptr<serializers::IMarketDataSerializer> createSerializer() const;
+    std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> CreateSerializer() const;
 
     /// @brief Enable CSV output mode instead of binary exchange format.
     /// @param csvMode True to enable CSV output, false for binary exchange format.
-    void setCsvMode(bool csvMode);
+    void SetCsvMode(bool csvMode);
+
+
 
   private:
-    std::string _exchangeType; // The type of exchange (e.g., "CME").
     std::string _outputFilePath; // The file path for serialized output.
 
     // Use the new ConfigFileParser
     std::unique_ptr<::market_data_generator::ConfigFileParser> _configParser;
     
-    std::string _exchange; // The exchange name (e.g., "nsdq").
+    beacon::exchanges::ExchangeType _exchange = beacon::exchanges::ExchangeType::INVALID; // The exchange type.
     std::vector<SymbolData> _symbols; // Symbols for generation.
     size_t _messageCount = 10000; // Default message count.
     double _tradeProbability = 0.1; // Default 10% trades.
     size_t _flushInterval = 1000; // Default flush every 1000 messages.
     double _defaultSpreadPercent = 0.5; // Default 0.5% spread.
     bool _csvMode = false; // True for CSV output, false for binary
-    
-    // Wave and burst configuration storage
-    ::market_data_generator::ConfigFileParser::WaveConfig _waveConfig;
-    ::market_data_generator::ConfigFileParser::BurstConfig _burstConfig;
 };
 
 } // namespace beacon::market_data_generator::config

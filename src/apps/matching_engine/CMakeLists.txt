@@ -18,4 +18,7 @@ add_executable(matching_engine
 
 # Link pthread for threading support
 find_package(Threads REQUIRED)
-target_link_libraries(matching_engine Threads::Threads)
+target_link_libraries(matching_engine 
+    Threads::Threads
+    beacon_exchanges
+)

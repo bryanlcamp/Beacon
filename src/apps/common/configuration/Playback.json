@@ -1,43 +1,16 @@
 {
-  "application": {
-    "name": "Beacon Playback Engine",
-    "version": "1.0.0", 
-    "description": "Market data playback engine with configurable transmission modes",
-    "architecture": "playbook -> playback (UDP) -> market_data_receiver"
+  "data_source": {
+    "type": "file",
+    "file_path": "outputs/nyse_session_001.dat",
+    "loop_playback": true
   },
-  "network": {
-    "output": {
-      "protocol": "udp",
-      "host": "127.0.0.1",
-      "port": 12345,
-      "multicast_address": "239.255.0.1",
-      "multicast_ttl": 1,
-      "socket_buffer_size": 65536
-    }
-  },
-  "playback": {
-    "loop_mode": false,
-    "real_time": true,
-    "speed_multiplier": 1.0,
-    "batch_size": 100,
-    "message_delay_us": 1000
-  },
-  "authorities": {
-    "enabled": true,
-    "default_authority": "continuous",
-    "authority_configs": [
-      "authorities/authority_burst.json",
-      "authorities/authority_chaos.json", 
-      "authorities/authority_continuous.json",
-      "authorities/authority_null.json",
-      "authorities/authority_wave.json"
-    ]
-  },
-  "senders": {
-    "default_sender": "udp_loopback",
-    "sender_configs": [
-      "senders/sender_udp_loopback.json",
-      "senders/sender_tcp_loopback.json"
-    ]
+  "batch_size": 100,
+  "replay_speed_factor": 1.0,
+  "burst_mode": "continuous",
+  "disaster_mode": {
+    "enabled": false,
+    "drop_rate": 0.01,
+    "crash_count": 2,
+    "crash_duration_seconds": 30
   }
 }

@@ -45,32 +45,9 @@ namespace market_data_generator {
             }
         }; // End PreviousDay
 
-        /// @brief Wave configuration - always present market rhythm
-        struct WaveConfig {
-            int WaveDurationMs = 300000;          // Wave cycle duration (5 minutes default)
-            double WaveAmplitudePercent = 100.0;  // Wave intensity (100% = flat, 150% = 1.5x variation)
-            
-            bool validate() const {
-                return WaveDurationMs > 0 && WaveAmplitudePercent >= 50.0 && WaveAmplitudePercent <= 500.0;
-            }
-        }; // End WaveConfig
 
-        /// @brief Burst configuration - optional market events
-        struct BurstConfig {
-            bool Enabled = false;                 // Enable/disable burst events
-            double BurstIntensityPercent = 300.0; // Burst spike intensity (300% = 3x)
-            int BurstFrequencyMs = 60000;         // Time between bursts (1 minute default)
-            
-            bool validate() const {
-                // If disabled, validation always passes
-                if (!Enabled) return true;
-                // If enabled, validate the parameters
-                return BurstIntensityPercent > 100.0 && BurstIntensityPercent <= 1000.0 &&
-                       BurstFrequencyMs > 1000; // At least 1 second between bursts
-            }
-        }; // End BurstConfig
 
-        /// @brief Global configuration for the generator
+        /// @brief Simplified global configuration for the generator
         class GlobalConfig {
         public:
             GlobalConfig() = default;
@@ -79,26 +56,13 @@ namespace market_data_generator {
             std::string Exchange;
             double TradeProbability = 0.0;
             int FlushInterval = 0;
-            double SpreadPercentage = 0.0;
-            
-            // Coordination settings
-            bool BurstTogether = false;           // Coordinate burst timing across symbols
-            bool WaveTogether = true;             // Coordinate wave timing across symbols
-            
-            // Always-present wave and optional burst configurations
-            WaveConfig GlobalWaveConfig;
-            BurstConfig GlobalBurstConfig;
             
             bool validate() const {
-                // Only validate essential fields - optional fields have reasonable defaults
-                return NumMessages > 0 && !Exchange.empty() &&
-                       GlobalWaveConfig.validate() &&
-                       GlobalBurstConfig.validate();
+                return NumMessages > 0 && !Exchange.empty();
             }
         }; // End class GlobalConfig
 
-        /// @brief Per symbol in the .json config file.
-        /// @remark There can, and likely will be, multiple symbols.
+        /// @brief Simplified symbol configuration
         class SymbolConfig {
         public:
             SymbolConfig(const std::string& symbolName,
@@ -123,12 +87,6 @@ namespace market_data_generator {
             QuantityRange quantityRange;
             PreviousDay previousDay;
             
-            // Optional per-symbol wave/burst overrides
-            bool HasSymbolWaveConfig = false;
-            WaveConfig SymbolWaveConfig;
-            bool HasSymbolBurstConfig = false;
-            BurstConfig SymbolBurstConfig;
-            
             bool validate() const {
                 return !SymbolName.empty() &&
                        PercentTotalMessages >= 0.0 && PercentTotalMessages <= 100.0 &&
@@ -144,8 +102,6 @@ namespace market_data_generator {
         
         const std::vector<SymbolConfig>& getSymbols() const { return _symbols; }
         const GlobalConfig& getGlobalConfig() const { return _globalConfig; }
-        const WaveConfig& getWaveConfig() const { return _globalConfig.GlobalWaveConfig; }
-        const BurstConfig& getBurstConfig() const { return _globalConfig.GlobalBurstConfig; }
 
     private:
         /// @brief Private data members.
@@ -153,16 +109,15 @@ namespace market_data_generator {
         GlobalConfig _globalConfig;
 
         /// @brief Private helper functions.
+        void parseSimpleFormat(const nlohmann::json& j);
+        bool isSimpleFormat(const nlohmann::json& j) const;
         void validate() const {
             if (!_globalConfig.validate()) {
                 // Add debug info to identify the exact issue
                 std::string debugInfo = "NumMessages: " + std::to_string(_globalConfig.NumMessages) + 
                                        ", Exchange: '" + _globalConfig.Exchange + "'" +
-                                       ", WaveValid: " + std::to_string(_globalConfig.GlobalWaveConfig.validate()) +
-                                       ", BurstValid: " + std::to_string(_globalConfig.GlobalBurstConfig.validate()) +
-                                       ", WaveAmp: " + std::to_string(_globalConfig.GlobalWaveConfig.WaveAmplitudePercent) +
-                                       ", BurstEnabled: " + std::to_string(_globalConfig.GlobalBurstConfig.Enabled) +
-                                       ", BurstIntensity: " + std::to_string(_globalConfig.GlobalBurstConfig.BurstIntensityPercent);
+                                       ", TradeProbability: " + std::to_string(_globalConfig.TradeProbability) +
+                                       ", FlushInterval: " + std::to_string(_globalConfig.FlushInterval);
                 throw std::runtime_error("Configuration validation failed: Global configuration is invalid. Debug: " + debugInfo);
             }
             if (_symbols.empty()) {
@@ -185,12 +140,5 @@ namespace market_data_generator {
         }
 
         void parse(const std::string& filename);
-        static PriceRange parsePriceRange(const nlohmann::json& j);
-        static QuantityRange parseQuantityRange(const nlohmann::json& j);
-        static PreviousDay parsePreviousDay(const nlohmann::json& j);
-        static WaveConfig parseWaveConfig(const nlohmann::json& j);
-        static BurstConfig parseBurstConfig(const nlohmann::json& j);
-        static SymbolConfig parseSymbol(const nlohmann::json& j);
-        static GlobalConfig parseGlobal(const nlohmann::json& j);
     }; // End class ConfigFileParser
 } // namespace market_data_generator

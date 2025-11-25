@@ -49,6 +49,11 @@ target_include_directories(generator PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+# Link against common libraries
+target_link_libraries(generator PRIVATE
+    beacon_exchanges
+)
+
 # Debug: Print the BEACON_ROOT to verify it's correct
 message(STATUS "BEACON_ROOT is: ${BEACON_ROOT}")
 message(STATUS "Looking for nlohmann at: ${BEACON_ROOT}/vendor/nlohmann/")
