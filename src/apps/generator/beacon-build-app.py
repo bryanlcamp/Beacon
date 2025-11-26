@@ -29,7 +29,7 @@ def clean_build_dirs():
             print(f"[CLEAN] Removing {build_path}")
             shutil.rmtree(build_path, ignore_errors=True)
 
-def build_mode(mode, run_tests=False):
+def build_mode(mode, run_test=False):
     """Build application in specified mode"""
     script_dir = Path(__file__).parent
     build_dir = script_dir / f"build-{mode}"
@@ -97,14 +97,14 @@ def build_mode(mode, run_tests=False):
         else:
             print(f"[WARNING] Binary not found: {source_bin}")
     
-    # Run tests if requested
-    if run_tests:
-        print(f"[TEST] Running {APP_NAME} tests")
+    # Run test if requested
+    if run_test:
+        print(f"[TEST] Running {APP_NAME} test")
         try:
             subprocess.run(["ctest", "--output-on-failure"], cwd=build_dir, check=True)
-            print(f"[SUCCESS] Tests passed")
+            print(f"[SUCCESS] Test passed")
         except subprocess.CalledProcessError as e:
-            print(f"[ERROR] Tests failed: {e}")
+            print(f"[ERROR] Test failed: {e}")
             return False
     
     # Cleanup build directory
@@ -117,8 +117,8 @@ def main():
     parser = argparse.ArgumentParser(description=f"Build {APP_NAME} application")
     parser.add_argument("--mode", choices=["debug", "release", "all", "clean"], 
                        default="all", help="Build mode (default: all)")
-    parser.add_argument("--run-tests", action="store_true", 
-                       help="Run tests after building (default: false)")
+    parser.add_argument("--run-test", action="store_true", 
+                       help="Run test after building (default: false)")
     
     args = parser.parse_args()
     
@@ -131,7 +131,7 @@ def main():
     
     for mode in modes:
         print(f"[START] Building {APP_NAME} in {mode} mode")
-        if not build_mode(mode, args.run_tests):
+        if not build_mode(mode, args.run_test):
             print(f"[FAILED] {APP_NAME} {mode} build failed")
             return 1
         print(f"[SUCCESS] {APP_NAME} {mode} build completed")
