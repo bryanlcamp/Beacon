@@ -4,7 +4,7 @@
 // to measure microsecond-level tick-to-trade latency WITHOUT impacting
 // the hot path performance.
 
-#include "../../../include/hft/profiling/latency_tracker.h"
+#include "hft/profiling/latency_tracker.h"
 #include <iostream>
 #include <iomanip>
 

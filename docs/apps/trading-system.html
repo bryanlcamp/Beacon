@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Trading System</title>
+    <style>
+        :root {
+            --bg-primary: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            --bg-panel: rgba(255, 255, 255, 0.05);
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-primary: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --color-success: #00ff64;
+            --color-primary: #00aaff;
+            --color-warning: #ffaa00;
+            --color-error: #ff4444;
+            --spacing-lg: 24px;
+            --radius-lg: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .title-main {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-primary);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+        }
+
+        .system-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: 1px solid;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: rgba(0, 255, 100, 0.15);
+            color: var(--color-success);
+            border-color: rgba(0, 255, 100, 0.3);
+        }
+
+        .btn-warning {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--color-warning);
+            border-color: rgba(255, 170, 0, 0.3);
+        }
+
+        .btn-error {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--color-error);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        .btn-primary {
+            background: rgba(0, 170, 255, 0.15);
+            color: var(--color-primary);
+            border-color: rgba(0, 170, 255, 0.3);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .component-status {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .component-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .component-state {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .state-idle { color: var(--text-muted); }
+        .state-ready { color: var(--color-primary); }
+        .state-running { color: var(--color-success); }
+        .state-error { color: var(--color-error); }
+
+        .component-details {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .log-output {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+        }
+
+        .log-timestamp {
+            color: var(--text-muted);
+        }
+
+        .log-component {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .log-message {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title-main">Beacon Trading System</h1>
+        <p class="subtitle">Integrated Market Data Generator • Playback • Algorithm • Matching Engine</p>
+
+        <div class="panel">
+            <h2 class="section-title">System Controls</h2>
+            
+            <div class="system-controls">
+                <button class="btn btn-success" id="startSystemBtn" onclick="tradingSystem.startSystem()">
+                    Start Trading System
+                </button>
+                <button class="btn btn-warning" id="pauseSystemBtn" onclick="tradingSystem.pauseSystem()" disabled>
+                    Pause System
+                </button>
+                <button class="btn btn-error" id="stopSystemBtn" onclick="tradingSystem.stopSystem()" disabled>
+                    Stop System
+                </button>
+                <button class="btn btn-primary" id="resetSystemBtn" onclick="tradingSystem.resetSystem()">
+                    Reset All
+                </button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 class="section-title">Component Status</h2>
+            
+            <div class="status-grid">
+                <div class="component-status">
+                    <div class="component-name">Market Data Generator</div>
+                    <div class="component-state state-idle" id="generatorState">Idle</div>
+                    <div class="component-details" id="generatorDetails">Ready to generate data</div>
+                </div>
+                
+                <div class="component-status">
+                    <div class="component-name">Data Playback</div>
+                    <div class="component-state state-idle" id="playbackState">Idle</div>
+                    <div class="component-details" id="playbackDetails">Waiting for data source</div>
+                </div>
+                
+                <div class="component-status">
+                    <div class="component-name">Client Algorithm</div>
+                    <div class="component-state state-idle" id="algorithmState">Idle</div>
+                    <div class="component-details" id="algorithmDetails">Waiting for market data</div>
+                </div>
+                
+                <div class="component-status">
+                    <div class="component-name">Matching Engine</div>
+                    <div class="component-state state-idle" id="matchingState">Idle</div>
+                    <div class="component-details" id="matchingDetails">Ready to process orders</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 class="section-title">System Log</h2>
+            
+            <div class="log-output" id="systemLog">
+                <div class="log-entry">
+                    <span class="log-timestamp">[00:00:00]</span>
+                    <span class="log-component">[SYSTEM]</span>
+                    <span class="log-message">Trading system initialized and ready</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MarketDataGenerator {
+            constructor() {
+                this.symbols = new Map();
+                this.totalMessages = 10000;
+                this.outputFormat = 'nsdq';
+                
+                this.exchangeDefaults = {
+                    nsdq: { priceRange: [1, 500], qtyRange: [1, 1000], spreadRange: [0, 10] },
+                    nyse: { priceRange: [1, 500], qtyRange: [1, 1000], spreadRange: [0, 15] },
+                    cme: { priceRange: [1, 500], qtyRange: [1, 1000], spreadRange: [0, 8] }
+                };
+            }
+
+            addSymbol(symbolName, percentage) {
+                const symbol = symbolName.trim().toUpperCase();
+                const defaults = this.exchangeDefaults[this.outputFormat];
+                
+                this.symbols.set(symbol, {
+                    percentage: percentage,
+                    priceRange: [...defaults.priceRange],
+                    qtyRange: [...defaults.qtyRange],
+                    spreadRange: [...defaults.spreadRange]
+                });
+                
+                return true;
+            }
+
+            async generateMarketData() {
+                return new Promise((resolve) => {
+                    const data = [];
+                    const symbols = Array.from(this.symbols.entries());
+                    
+                    for (let i = 0; i < this.totalMessages; i++) {
+                        const randomPercent = Math.random() * 100;
+                        let cumulative = 0;
+                        let selectedSymbol = null;
+                        
+                        for (const [symbol, config] of symbols) {
+                            cumulative += config.percentage;
+                            if (randomPercent <= cumulative) {
+                                selectedSymbol = { symbol, config };
+                                break;
+                            }
+                        }
+                        
+                        if (!selectedSymbol) {
+                            selectedSymbol = { symbol: symbols[0][0], config: symbols[0][1] };
+                        }
+                        
+                        const { symbol, config } = selectedSymbol;
+                        const price = this.randomInRange(config.priceRange[0], config.priceRange[1]);
+                        const quantity = Math.floor(this.randomInRange(config.qtyRange[0], config.qtyRange[1]));
+                        const spread = this.randomInRange(config.spreadRange[0], config.spreadRange[1]);
+                        
+                        data.push({
+                            timestamp: Date.now() + i * 100,
+                            symbol: symbol,
+                            price: price.toFixed(2),
+                            quantity: quantity,
+                            spread: spread.toFixed(4),
+                            side: Math.random() < 0.5 ? 'BUY' : 'SELL'
+                        });
+                    }
+                    
+                    resolve(data);
+                });
+            }
+
+            randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+        }
+
+        class TradingSystemController {
+            constructor() {
+                this.generator = new MarketDataGenerator();
+                this.systemRunning = false;
+                this.logContainer = document.getElementById('systemLog');
+                this.init();
+            }
+            
+            init() {
+                this.generator.addSymbol('AAPL', 25);
+                this.generator.addSymbol('GOOGL', 25);
+                this.generator.addSymbol('MSFT', 25);
+                this.generator.addSymbol('TSLA', 25);
+                
+                this.log('SYSTEM', 'All components initialized');
+                this.updateComponentStatus('generator', 'ready', 'Configured with 4 symbols');
+            }
+            
+            async startSystem() {
+                if (this.systemRunning) return;
+                
+                this.log('SYSTEM', 'Starting integrated trading system...');
+                
+                try {
+                    this.updateComponentStatus('generator', 'running', 'Generating market data...');
+                    const marketData = await this.generator.generateMarketData();
+                    this.log('GENERATOR', `Generated ${marketData.length} market data records`);
+                    this.updateComponentStatus('generator', 'ready', `Generated ${marketData.length} records`);
+                    
+                    this.updateComponentStatus('playback', 'running', 'Processing market data...');
+                    this.log('PLAYBACK', 'Market data loaded into trading system');
+                    
+                    setTimeout(() => {
+                        this.updateComponentStatus('algorithm', 'running', 'Processing market data...');
+                        this.log('ALGORITHM', 'Client algorithm analyzing market data');
+                        
+                        setTimeout(() => {
+                            this.updateComponentStatus('matching', 'running', 'Processing orders...');
+                            this.log('MATCHING', 'Matching engine processing trades');
+                            
+                            setTimeout(() => {
+                                this.log('TRADING', 'Full trading system is now operational');
+                                this.systemRunning = true;
+                                this.updateSystemButtons();
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                    
+                } catch (error) {
+                    this.log('ERROR', `Failed to start system: ${error.message}`);
+                    this.updateComponentStatus('generator', 'error', error.message);
+                }
+            }
+            
+            pauseSystem() {
+                if (!this.systemRunning) return;
+                
+                this.log('SYSTEM', 'Trading system paused');
+                this.updateComponentStatus('playback', 'ready', 'Paused');
+                this.updateComponentStatus('algorithm', 'ready', 'Paused');
+                this.updateComponentStatus('matching', 'ready', 'Paused');
+                this.updateSystemButtons();
+            }
+            
+            stopSystem() {
+                if (!this.systemRunning) return;
+                
+                this.log('SYSTEM', 'Trading system stopped');
+                this.systemRunning = false;
+                this.resetComponentStates();
+                this.updateSystemButtons();
+            }
+            
+            resetSystem() {
+                this.stopSystem();
+                this.logContainer.innerHTML = '';
+                this.init();
+                this.log('SYSTEM', 'System reset complete');
+            }
+            
+            updateComponentStatus(component, state, details) {
+                const stateElement = document.getElementById(`${component}State`);
+                const detailsElement = document.getElementById(`${component}Details`);
+                
+                if (stateElement) {
+                    stateElement.textContent = state.charAt(0).toUpperCase() + state.slice(1);
+                    stateElement.className = `component-state state-${state}`;
+                }
+                
+                if (detailsElement) {
+                    detailsElement.textContent = details;
+                }
+            }
+            
+            resetComponentStates() {
+                this.updateComponentStatus('generator', 'ready', 'Ready to generate data');
+                this.updateComponentStatus('playback', 'idle', 'Waiting for data source');
+                this.updateComponentStatus('algorithm', 'idle', 'Waiting for market data');
+                this.updateComponentStatus('matching', 'idle', 'Ready to process orders');
+            }
+            
+            updateSystemButtons() {
+                const startBtn = document.getElementById('startSystemBtn');
+                const pauseBtn = document.getElementById('pauseSystemBtn');
+                const stopBtn = document.getElementById('stopSystemBtn');
+                
+                startBtn.disabled = this.systemRunning;
+                pauseBtn.disabled = !this.systemRunning;
+                stopBtn.disabled = !this.systemRunning;
+            }
+            
+            log(component, message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <span class="log-timestamp">[${timestamp}]</span>
+                    <span class="log-component">[${component}]</span>
+                    <span class="log-message">${message}</span>
+                `;
+                
+                this.logContainer.appendChild(logEntry);
+                this.logContainer.scrollTop = this.logContainer.scrollHeight;
+            }
+        }
+        
+        // Initialize the trading system
+        window.tradingSystem = new TradingSystemController();
+    </script>
+</body>
+</html>

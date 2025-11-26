@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Market Data Generator - Modular</title>
+    <style>
+        /* CSS Custom Properties for Consistent Theming */
+        :root {
+            --bg-primary: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            --bg-panel: rgba(255, 255, 255, 0.05);
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-primary: rgba(255, 255, 255, 0.1);
+            --border-focus: rgba(0, 170, 255, 0.5);
+            
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            
+            --color-success: #00ff64;
+            --color-primary: #00aaff;
+            --color-warning: #ffaa00;
+            --color-error: #ff4444;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Typography */
+        .title-main {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .generator-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .generator-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-panel);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-primary);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px var(--spacing-md);
+            border: 1px solid;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: rgba(0, 170, 255, 0.15);
+            color: var(--color-primary);
+            border-color: rgba(0, 170, 255, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: rgba(0, 170, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: rgba(0, 255, 100, 0.15);
+            color: var(--color-success);
+            border-color: rgba(0, 255, 100, 0.3);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: rgba(0, 255, 100, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(100, 150, 255, 0.15);
+            color: rgba(100, 150, 255, 0.9);
+            border-color: rgba(100, 150, 255, 0.3);
+        }
+
+        .btn-warning {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--color-warning);
+            border-color: rgba(255, 170, 0, 0.3);
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: rgba(255, 170, 0, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Symbol Cards CSS */
+        .symbols-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .symbol-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .symbol-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .symbol-percentage-edit {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .percentage-input {
+            width: 65px;
+            padding: 6px 10px;
+            background: rgba(0, 255, 100, 0.15);
+            border: 2px solid rgba(0, 255, 100, 0.3);
+            border-radius: 8px;
+            color: #00ff64;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .percentage-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.6);
+            background: rgba(0, 255, 100, 0.25);
+        }
+        
+        .percentage-symbol {
+            color: #00ff64;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .symbol-remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .symbol-remove-btn:hover {
+            background: rgba(255, 0, 0, 0.9);
+        }
+
+        .symbol-grids-container {
+            display: flex;
+        }
+        
+        .vertical-separator {
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .price-qty-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            justify-content: start;
+            margin-right: 16px;
+        }
+        
+        .paired-controls {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .paired-controls .grid-field:first-child {
+            flex: 2;
+        }
+        
+        .paired-controls .grid-field:last-child {
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .spread-volume-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: start;
+            margin-left: 16px;
+            min-width: 100px;
+        }
+        
+        .grid-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .grid-field .detail-label {
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .dual-range-container {
+            position: relative;
+            width: 120px;
+            margin: 2px 0;
+        }
+        
+        .dual-range-slider {
+            width: 100%;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            border-radius: 10px;
+            outline: none;
+            position: absolute;
+            top: 0;
+            pointer-events: none;
+        }
+        
+        .dual-range-slider::-webkit-slider-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+        }
+        
+        .dual-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00aaff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            pointer-events: all;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .dual-range-values {
+            position: relative;
+            height: 30px;
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .min-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        .max-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        .weight-slider {
+            width: 70px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+            margin: 2px 0;
+        }
+        
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00ff64;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .range-display {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .percentage-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: var(--spacing-md);
+        }
+
+        .status-complete { color: var(--color-success); }
+        .status-remaining { color: var(--text-muted); }
+        .status-over { color: var(--color-error); }
+
+        .w-full { width: 100%; }
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-primary) 50%, transparent 100%);
+            margin: var(--spacing-lg) 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title-main">Market Data Generator</h1>
+        <p class="subtitle">Create Customized Market Datasets.</p>
+
+        <div class="generator-layout">
+            <div class="panel">
+                <h2 class="section-title mb-lg">Configuration</h2>
+                
+                <div class="form-group">
+                    <label class="field-label">Total Messages</label>
+                    <input type="number" class="form-input" id="totalMessages" value="10000" min="1000" step="1000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="field-label">Output Format</label>
+                    <select class="form-input" id="outputFormat">
+                        <option value="nsdq">NASDAQ (ITCH v5.0)</option>
+                        <option value="nyse">NYSE (Pillar v3.2)</option>
+                        <option value="cme">CME (MBO v3.0)</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+                
+                <div class="separator"></div>
+                
+
+                
+                <div class="form-group">
+                    <label class="field-label">Dataset Filename</label>
+                    <input type="text" id="filenameInput" class="form-input" placeholder="dataset-marketdata-20251125" value="dataset-marketdata-20251125">
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-success w-full" id="generateButton">Generate</button>
+                </div>
+
+
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="section-title">Symbols</h2>
+                    <div style="display: flex; align-items: center;">
+                        <span id="percentageStatus" class="percentage-status status-remaining">100.0% remaining</span>
+                        <button class="btn btn-primary" onclick="addSymbol()">+ Add Symbol</button>
+                    </div>
+                </div>
+                
+                <div class="symbols-grid" id="symbolsContainer">
+                    <!-- Dynamically generated by module -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import MarketDataGenerator from './generator-module.js';
+        
+        // Initialize and expose globally for onclick handlers
+        window.generator = new MarketDataGenerator();
+        window.generatorInstance = window.generator; // Also expose as generatorInstance for symbol card handlers
+        
+        // Add validation function
+        function validateGenerate() {
+            const filename = document.getElementById('filenameInput').value.trim();
+            const generateButton = document.getElementById('generateButton');
+            const hasSymbols = generator.state.symbols.size > 0;
+            const percentageValid = Math.abs(generator.getRemainingPercentage()) < 0.01;
+            const filenameValid = filename.length > 0;
+            
+            // Combine all validation requirements
+            generateButton.disabled = !(hasSymbols && percentageValid && filenameValid);
+        }
+        
+        window.generator.init();
+        
+        // Set up callback to re-validate when generator state changes
+        window.generator.setUpdateCallback(() => {
+            validateGenerate();
+        });
+        
+        // Initial validation to set proper state
+        validateGenerate();
+        
+        // Monitor filename input for validation
+        document.getElementById('filenameInput').addEventListener('input', validateGenerate);
+        
+        // Add click handler for generate button
+        document.getElementById('generateButton').addEventListener('click', window.generateDataset);
+
+        // Global functions for HTML onclick handlers
+        window.addSymbol = () => {
+            generator.addSymbol();
+        };
+        
+        window.generateDataset = async () => {
+            const filenameInput = document.getElementById('filenameInput');
+            const generateButton = document.getElementById('generateButton');
+            
+            let filename = filenameInput.value.trim();
+            if (!filename) {
+                // Generate default filename with date
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                filename = `dataset-marketdata-${year}${month}${day}`;
+                
+                // If that might be taken, add time
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                filename = `dataset-marketdata-${year}${month}${day}-${hours}${minutes}${seconds}`;
+            }
+            
+            // Get file extension based on output format
+            const outputFormat = document.getElementById('outputFormat').value;
+            let extension;
+            switch(outputFormat) {
+                case 'cme': extension = '.cme'; break;
+                case 'nyse': extension = '.nyse'; break;
+                case 'nsdq': extension = '.nsdq'; break;
+                case 'csv': extension = '.csv'; break;
+                default: extension = '.dat'; break;
+            }
+            
+            // Add extension if not present
+            if (!filename.toLowerCase().endsWith(extension)) {
+                filename += extension;
+            }
+            
+            // Disable controls during generation
+            generateButton.disabled = true;
+            filenameInput.disabled = true;
+            generateButton.textContent = 'Generating...';
+            
+            try {
+                // Simulate generation process
+                const config = generator.exportConfiguration();
+                
+                // Create dataset content (placeholder for now)
+                const datasetContent = `# Generated Dataset\n# Format: ${outputFormat}\n# Timestamp: ${new Date().toISOString()}\n# Configuration: ${JSON.stringify(config, null, 2)}`;
+                
+                const blob = new Blob([datasetContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                alert(`Dataset generated: ${filename}\nNote: Move to /usr/datasets/ directory`);
+                
+            } catch (error) {
+                alert(`Generation failed: ${error.message}`);
+            } finally {
+                // Re-enable controls
+                generateButton.textContent = 'Generate';
+                filenameInput.disabled = false;
+                validateGenerate(); // Re-validate to set proper disabled state
+            }
+        };
+    </script>
+</body>
+</html>

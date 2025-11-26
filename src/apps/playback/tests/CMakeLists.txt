@@ -18,19 +18,20 @@ macro(PlaybackTest test_name)
     )
     
     target_include_directories(${test_name} PRIVATE
-        ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include
-        ${CMAKE_SOURCE_DIR}/include
-        ${CMAKE_SOURCE_DIR}/src/apps/playback
-        ${CMAKE_SOURCE_DIR}/src/apps/playback/src
-        ${CMAKE_SOURCE_DIR}/src/apps/playback/src/interfaces
-        ${CMAKE_SOURCE_DIR}/vendor/nlohmann
+        ${BEACON_ROOT}/vendor/googletest/googletest/include
+        ${BEACON_ROOT}/include
+        ${BEACON_ROOT}/libs
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/interfaces
+        ${BEACON_ROOT}/vendor/nlohmann
     )
     
     target_link_libraries(${test_name} 
         gtest 
         gtest_main
-        beacon_utils
-        beacon_exchanges
+        # beacon_utils     # Commented out - library doesn't exist
+        # beacon_exchanges # Commented out - library doesn't exist
     )
     
     # Copy test data files to build directory (if they exist)

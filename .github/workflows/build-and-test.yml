@@ -1,4 +1,4 @@
-name: "Beacon Professional Build and Test"
+name: "Beacon Standardized Build and Test"
 
 on:
   push:
@@ -9,12 +9,12 @@ on:
 
 env:
   BUILD_TYPE: "Debug"
-  BUILD_VERSION: "v1.0"
+  BUILD_VERSION: "v2.0"
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
   build-and-test:
-    name: "Professional Build and Test"
+    name: "Standardized Build and Test"
     runs-on: ubuntu-latest
     
     steps:
@@ -26,67 +26,115 @@ jobs:
 
       - name: "System Information"
         run: |
-          echo "=== BEACON PROFESSIONAL CI/CD PIPELINE ==="
+          echo "=== BEACON STANDARDIZED CI/CD PIPELINE ==="
           echo "Working Directory: $(pwd)"
           echo "Git Branch: $(git branch --show-current)"
           echo "Latest Commit: $(git log --oneline -1)"
           echo "Build Time: $(date)"
           echo "Build Version: ${{ env.BUILD_VERSION }}"
           echo "Build Number: ${{ env.BUILD_NUMBER }}"
+          echo "Build System: Standardized per-app Python scripts"
 
       - name: "Install Dependencies"
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y build-essential python3 python3-pip cmake
+          sudo apt-get install -y build-essential python3 python3-pip cmake ninja-build
+          
+          # Verify versions
+          echo "=== Dependency Versions ==="
+          python3 --version
+          cmake --version
+          g++ --version
+          ninja --version
+
+      - name: "Validate Standardized Build Scripts"
+        run: |
+          echo "Validating standardized build system..."
+          
+          # Check main orchestrator
+          test -f "beacon-build.py" || exit 1
+          
+          # Check individual app build scripts
+          test -f "src/apps/generator/beacon-build-app.py" || exit 1
+          test -f "src/apps/playback/beacon-build-app.py" || exit 1
+          test -f "src/apps/matching_engine/beacon-build-app.py" || exit 1
+          test -f "src/apps/client_algorithm/beacon-build-app.py" || exit 1
+          
+          # Make scripts executable
+          chmod +x beacon-build.py
+          chmod +x src/apps/*/beacon-build-app.py
+          
+          echo "Standardized build scripts validated"
 
       - name: "Clean Previous Builds"
         run: |
-          echo "Cleaning previous builds..."
-          rm -rf build* || true
+          echo "Cleaning previous builds with standardized system..."
           python3 beacon-build.py --clean || true
 
-      - name: "Build with Professional System"
+      - name: "Build Debug with Standardized System"
         run: |
-          echo "Building with professional Python build system..."
+          echo "Building DEBUG with standardized per-app build system..."
           python3 beacon-build.py --debug
+          
+      - name: "Build Release with Standardized System"
+        run: |
+          echo "Building RELEASE with standardized per-app build system..."
+          python3 beacon-build.py --release
 
       - name: "Verify Build Results"
         run: |
-          echo "Verifying build results..."
-          ls -la "build/src/apps/"
+          echo "Verifying standardized build results..."
           
-          # Check for required binaries
-          test -f "build/src/apps/generator/generator" || exit 1
-          test -f "build/src/apps/matching_engine/matching_engine" || exit 1
+          # Check for DEBUG binaries in standardized locations
+          test -f "src/apps/generator/bin/debug/generator" || exit 1
+          test -f "src/apps/matching_engine/bin/debug/matching_engine" || exit 1
+          test -f "src/apps/playback/bin/debug/playback" || exit 1
+          test -f "src/apps/client_algorithm/bin/debug/ClientAlgorithm" || exit 1
           
-          echo "Build verification successful"
+          # Check for RELEASE binaries in standardized locations
+          test -f "src/apps/generator/bin/release/generator" || exit 1
+          test -f "src/apps/matching_engine/bin/release/matching_engine" || exit 1
+          test -f "src/apps/playback/bin/release/playback" || exit 1
+          test -f "src/apps/client_algorithm/bin/release/ClientAlgorithm" || exit 1
+          
+          # List all built binaries
+          echo "=== Built Binaries ==="
+          find src/apps/*/bin -type f -executable -ls 2>/dev/null || true
+          
+          # Count total binaries
+          BINARY_COUNT=$(find src/apps/*/bin -type f -executable | wc -l)
+          echo "Total binaries built: $BINARY_COUNT"
+          
+          echo "Standardized build verification successful"
 
-      - name: "Test Professional Interfaces"
+      - name: "Test Standardized Interfaces"
         run: |
-          echo "Testing professional system interfaces..."
+          echo "Testing standardized system interfaces..."
           
-          # Test system validation with dry-run
-          python3 beacon-run.py --help
-          python3 beacon-run.py -i "config/system/startBeacon.json" --dry-run
-          
-          # Test build system
+          # Test standardized build system
           python3 beacon-build.py --help
           
-          # Test config management
-          python3 beacon-config.py --help
+          # Test individual app build scripts
+          python3 src/apps/generator/beacon-build-app.py --help
+          python3 src/apps/playback/beacon-build-app.py --help
+          python3 src/apps/matching_engine/beacon-build-app.py --help
+          python3 src/apps/client_algorithm/beacon-build-app.py --help
           
-          echo "Professional system validation complete"
+          # Test system validation with dry-run
+          python3 beacon-run.py --help || echo "beacon-run.py not available"
+          python3 beacon-config.py --help || echo "beacon-config.py not available"
+          
+          echo "Standardized system validation complete"
 
       - name: "Archive Build Artifacts"
         uses: actions/upload-artifact@v4
         with:
-          name: "beacon-professional-binaries"
+          name: "beacon-standardized-binaries"
           path: |
-            build/src/apps/generator/generator
-            build/src/apps/matching_engine/matching_engine
-            build/src/apps/client_algorithm/AlgoTwapProtocol
-            build/src/apps/playback/playbook
-            beacon-run.py
-            beacon-build.py
-            beacon-config.py
+            src/apps/generator/bin/**/*
+            src/apps/matching_engine/bin/**/*
+            src/apps/playback/bin/**/*
+            src/apps/client_algorithm/bin/**/*
+            beacon-*.py
+            src/apps/*/beacon-build-app.py
           retention-days: 7

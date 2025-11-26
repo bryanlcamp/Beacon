@@ -23,6 +23,7 @@
 #include "src/authorities/RulesEngine.h"
 #include "src/authorities/RuleFactory.h"
 #include "PlaybackState.h"
+#include "exchanges/protocol_common.h"
 
 namespace fs = std::filesystem;
 

@@ -27,45 +27,11 @@ private:
         // Valid config
         std::ofstream validConfig("TestValidConfig.json");
         validConfig << R"({
-  "Global": {
-    "NumMessages": 1000,
-    "Exchange": "nsdq",
-    "TradeProbability": 0.15,
-    "FlushInterval": 500
-  },
-  "Wave": {
-    "WaveDurationMs": 60000,
-    "WaveAmplitudePercent": 150.0
-  },
-  "Burst": {
-    "Enabled": true,
-    "BurstIntensityPercent": 200.0,
-    "BurstFrequencyMs": 30000
-  },
-  "Symbols": [
-    {
-      "SymbolName": "TEST",
-      "PercentTotalMessages": 100.0,
-      "SpreadPercentage": 0.5,
-      "PriceRange": {
-        "MinPrice": 100.0,
-        "MaxPrice": 200.0,
-        "Weight": 1.0
-      },
-      "QuantityRange": {
-        "MinQuantity": 1,
-        "MaxQuantity": 100,
-        "Weight": 1.0
-      },
-      "PrevDay": {
-        "OpenPrice": 150.0,
-        "HighPrice": 160.0,
-        "LowPrice": 140.0,
-        "ClosePrice": 155.0,
-        "Volume": 10000
-      }
-    }
-  ]
+  "exchange": "nasdaq",
+  "message_count": 1000,
+  "symbols": ["AAPL", "MSFT"],
+  "trade_probability": 0.15,
+  "flush_interval": 500
 })";
         validConfig.close();
 
@@ -77,91 +43,46 @@ private:
         // Zero messages config
         std::ofstream zeroConfig("TestZeroMessagesConfig.json");
         zeroConfig << R"({
-  "Global": {
-    "NumMessages": 0,
-    "Exchange": "nsdq"
-  },
-  "Wave": {
-    "WaveDurationMs": 60000,
-    "WaveAmplitudePercent": 100.0
-  },
-  "Burst": {
-    "Enabled": false
-  },
-  "Symbols": []
+  "exchange": "nasdaq",
+  "message_count": 0,
+  "symbols": [],
+  "trade_probability": 0.15,
+  "flush_interval": 1000
 })";
         zeroConfig.close();
 
         // Invalid exchange config
         std::ofstream invalidExchange("TestInvalidExchangeConfig.json");
         invalidExchange << R"({
-  "Global": {
-    "NumMessages": 1000,
-    "Exchange": "InvalidExchange"
-  },
-  "Wave": {
-    "WaveDurationMs": 60000,
-    "WaveAmplitudePercent": 100.0
-  },
-  "Burst": {
-    "Enabled": false
-  },
-  "Symbols": []
+  "exchange": "InvalidExchange",
+  "message_count": 1000,
+  "symbols": ["AAPL"],
+  "trade_probability": 0.15,
+  "flush_interval": 1000
 })";
         invalidExchange.close();
 
         // Missing symbols config
         std::ofstream missingSymbols("TestMissingSymbolsConfig.json");
         missingSymbols << R"({
-  "Global": {
-    "NumMessages": 1000,
-    "Exchange": "nsdq"
-  },
-  "Wave": {
-    "WaveDurationMs": 60000,
-    "WaveAmplitudePercent": 100.0
-  },
-  "Burst": {
-    "Enabled": false
-  },
-  "Symbols": []
+  "exchange": "nasdaq",
+  "message_count": 1000,
+  "symbols": [],
+  "trade_probability": 0.15,
+  "flush_interval": 1000
 })";
         missingSymbols.close();
 
-        // Invalid percentages config
-        std::ofstream invalidPercentages("TestInvalidPercentagesConfig.json");
-        invalidPercentages << R"({
-  "Global": {
-    "NumMessages": 1000,
-    "Exchange": "nsdq"
-  },
-  "Wave": {
-    "WaveDurationMs": 60000,
-    "WaveAmplitudePercent": 100.0
-  },
-  "Burst": {
-    "Enabled": false
-  },
-  "Symbols": [
-    {
-      "SymbolName": "TEST1",
-      "PercentTotalMessages": 60.0,
-      "SpreadPercentage": 0.5,
-      "PriceRange": {"MinPrice": 100.0, "MaxPrice": 200.0, "Weight": 1.0},
-      "QuantityRange": {"MinQuantity": 1, "MaxQuantity": 100, "Weight": 1.0},
-      "PrevDay": {"OpenPrice": 150.0, "HighPrice": 160.0, "LowPrice": 140.0, "ClosePrice": 155.0, "Volume": 10000}
-    },
-    {
-      "SymbolName": "TEST2",
-      "PercentTotalMessages": 50.0,
-      "SpreadPercentage": 0.5,
-      "PriceRange": {"MinPrice": 100.0, "MaxPrice": 200.0, "Weight": 1.0},
-      "QuantityRange": {"MinQuantity": 1, "MaxQuantity": 100, "Weight": 1.0},
-      "PrevDay": {"OpenPrice": 150.0, "HighPrice": 160.0, "LowPrice": 140.0, "ClosePrice": 155.0, "Volume": 10000}
-    }
-  ]
+        // Invalid symbols format config
+        std::ofstream invalidSymbols("TestInvalidPercentagesConfig.json");
+        invalidSymbols << R"({
+  "exchange": "nasdaq",
+  "message_count": 1000,
+  "symbols": [123, "AAPL"],
+  "trade_probability": 0.15,
+  "flush_interval": 1000
 })";
-        invalidPercentages.close();
+        invalidSymbols.close();
     }
 };
 
@@ -194,7 +115,7 @@ TEST_F(TestConfigProvider, ValidatesNumMessages) {
     EXPECT_FALSE(provider.LoadConfig("TestZeroMessagesConfig.json"));
 }
 
-TEST_F(TestConfigProvider, ValidatesSymbolPercentages) {
+TEST_F(TestConfigProvider, ValidatesSymbolsFormat) {
     ConfigProvider provider("Output.bin");
     EXPECT_FALSE(provider.LoadConfig("TestInvalidPercentagesConfig.json"));
 }

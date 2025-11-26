@@ -43,6 +43,7 @@ add_executable(generator
 # Include directories relative to the Beacon root
 target_include_directories(generator PRIVATE
     ${BEACON_ROOT}/vendor
+    ${BEACON_ROOT}/libs
     ${BEACON_ROOT}/src/libs/exchange_protocols
     ${BEACON_ROOT}/src/apps/common
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -50,9 +51,9 @@ target_include_directories(generator PRIVATE
 )
 
 # Link against common libraries
-target_link_libraries(generator PRIVATE
-    beacon_exchanges
-)
+# target_link_libraries(generator PRIVATE
+#     beacon_exchanges
+# )
 
 # Debug: Print the BEACON_ROOT to verify it's correct
 message(STATUS "BEACON_ROOT is: ${BEACON_ROOT}")

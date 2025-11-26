@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Workspace - Market Data & Trading System</title>
+    <style>
+        /* CSS Custom Properties for Consistent Theming */
+        :root {
+            --bg-primary: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            --bg-panel: rgba(255, 255, 255, 0.05);
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-primary: rgba(255, 255, 255, 0.1);
+            --border-focus: rgba(0, 170, 255, 0.5);
+            
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            
+            --color-success: #00ff64;
+            --color-primary: #00aaff;
+            --color-warning: #ffaa00;
+            --color-error: #ff4444;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Typography */
+        .title-main {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .workspace-container {
+            display: grid;
+            grid-template-columns: 220px 260px 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) {
+            .workspace-container {
+                grid-template-columns: 200px 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .settings-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .workspace-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-sidebar {
+                display: none;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-panel);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-primary);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px var(--spacing-md);
+            border: 1px solid;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: rgba(0, 170, 255, 0.15);
+            color: var(--color-primary);
+            border-color: rgba(0, 170, 255, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: rgba(0, 170, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: rgba(0, 255, 100, 0.15);
+            color: var(--color-success);
+            border-color: rgba(0, 255, 100, 0.3);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: rgba(0, 255, 100, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(100, 150, 255, 0.15);
+            color: rgba(100, 150, 255, 0.9);
+            border-color: rgba(100, 150, 255, 0.3);
+        }
+
+        /* Symbol Cards */
+        .symbols-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .symbol-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .symbol-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .symbol-percentage-edit {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .percentage-input {
+            width: 65px;
+            padding: 6px 10px;
+            background: rgba(0, 255, 100, 0.15);
+            border: 2px solid rgba(0, 255, 100, 0.3);
+            border-radius: 8px;
+            color: #00ff64;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .percentage-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 100, 0.6);
+            background: rgba(0, 255, 100, 0.25);
+        }
+        
+        .percentage-symbol {
+            color: #00ff64;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+
+
+        .symbol-remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .symbol-remove-btn:hover {
+            background: rgba(255, 0, 0, 0.9);
+        }
+
+        /* Symbol grids container */
+        .symbol-grids-container {
+            display: flex;
+        }
+        
+        .vertical-separator {
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .price-qty-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            justify-content: start;
+            margin-right: 16px;
+        }
+        
+        .paired-controls {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .paired-controls .grid-field:first-child {
+            flex: 2;
+        }
+        
+        .paired-controls .grid-field:last-child {
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .spread-volume-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: start;
+            margin-left: 16px;
+            min-width: 100px;
+        }
+        
+        .grid-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .grid-field .detail-label {
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Dual Range Sliders */
+        .dual-range-container {
+            position: relative;
+            width: 120px;
+            margin: 2px 0;
+        }
+        
+        .dual-range-slider {
+            width: 100%;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            border-radius: 10px;
+            outline: none;
+            position: absolute;
+            top: 0;
+            pointer-events: none;
+        }
+        
+        .dual-range-slider::-webkit-slider-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+        }
+        
+        .dual-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00aaff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            pointer-events: all;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .dual-range-values {
+            position: relative;
+            height: 30px;
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .min-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        .max-value {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        /* Weight Sliders */
+        .weight-slider {
+            width: 70px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+            margin: 2px 0;
+        }
+        
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #00ff64;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .range-display {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        /* Playback Controls */
+        .playback-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .playback-status {
+            grid-column: span 2;
+        }
+
+        .data-source-display {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .source-text {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .source-details {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .speed-control {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .speed-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .speed-slider {
+            flex: 1;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #00aaff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .speed-display {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #00aaff;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .playback-options {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .transport-controls {
+            grid-column: span 2;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 16px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00aaff, #00ff64);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .playback-progress {
+            grid-column: span 2;
+            margin-top: 16px;
+        }
+
+        .progress-info {
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+        }
+
+        /* Status Indicators */
+        .percentage-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: var(--spacing-md);
+        }
+
+        .status-complete { color: var(--color-success); }
+        .status-remaining { color: var(--text-muted); }
+        .status-over { color: var(--color-error); }
+
+        /* Navigation Sidebar */
+        .nav-sidebar {
+            background: var(--bg-panel);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-primary);
+            height: fit-content;
+        }
+
+        .nav-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 170, 255, 0.15);
+            border-color: rgba(0, 170, 255, 0.3);
+            color: var(--color-primary);
+        }
+
+        .nav-item-text {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .nav-status {
+            font-size: 1.1rem;
+            margin-left: 8px;
+        }
+
+        .status-complete { color: var(--color-success); }
+        .status-incomplete { color: var(--text-muted); }
+        .status-error { color: var(--color-error); }
+
+        /* Main Content Area */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Workspace Sections */
+        .workspace-section {
+            background: var(--bg-panel);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-primary);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-content {
+            width: 100%;
+        }
+
+        /* Utilities */
+        .w-full { width: 100%; }
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-primary) 50%, transparent 100%);
+            margin: var(--spacing-lg) 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title-main">Beacon Workspace</h1>
+        <p class="subtitle">Market Data Generator & Trading System Configuration</p>
+
+        <div class="workspace-container">
+            <!-- Navigation Sidebar -->
+            <div class="nav-sidebar">
+                <div class="nav-title">Workflow</div>
+                <div class="nav-items">
+                    <div class="nav-item active" onclick="workspace.showSection('generator')">
+                        <span class="nav-item-text">Generator</span>
+                        <span class="nav-status status-complete" id="generatorStatus">✓</span>
+                    </div>
+                    <div class="nav-item" onclick="workspace.showSection('playback')">
+                        <span class="nav-item-text">Playback</span>
+                        <span class="nav-status status-incomplete" id="playbackStatus">○</span>
+                    </div>
+                    <div class="nav-item" onclick="workspace.showSection('clientalgo')">
+                        <span class="nav-item-text">Client Algo</span>
+                        <span class="nav-status status-incomplete" id="clientalgoStatus">○</span>
+                    </div>
+                    <div class="nav-item" onclick="workspace.showSection('matching')">
+                        <span class="nav-item-text">Matching Engine</span>
+                        <span class="nav-status status-incomplete" id="matchingStatus">○</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Settings Panel -->
+            <div class="panel settings-panel">
+                <h2 class="section-title mb-lg">Global Settings</h2>
+                
+                <div class="form-group">
+                    <label class="field-label">Total Messages</label>
+                    <input type="number" class="form-input" id="totalMessages" value="10000" min="1000" step="1000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="field-label">Output Format</label>
+                    <select class="form-input" id="outputFormat">
+                        <option value="nsdq">NASDAQ (ITCH v5.0)</option>
+                        <option value="nyse">NYSE (Pillar v3.2)</option>
+                        <option value="cme">CME (MBO v3.0)</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="form-group">
+                    <button class="btn btn-secondary w-full" onclick="saveConfiguration()">Save Config</button>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="form-group">
+                    <button class="btn btn-success w-full" id="runBtn" onclick="runWorkflow()" disabled>Run Workflow</button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Generator Section -->
+                <div class="content-section active" id="generatorSection">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="section-title">Market Data Generator</h2>
+                            <div style="display: flex; align-items: center;">
+                                <span id="percentageStatus" class="percentage-status status-remaining">100.0% remaining</span>
+                                <button class="btn btn-primary" onclick="addSymbol()">+ Add Symbol</button>
+                            </div>
+                        </div>
+                        
+                        <div class="symbols-grid" id="symbolsContainer">
+                            <!-- Symbol cards will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playback Section -->
+                <div class="content-section" id="playbackSection">
+                    <div class="workspace-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Playback Configuration</h2>
+                        </div>
+                        <div class="section-content">
+                            <div class="playback-controls">
+                                <div class="playback-status">
+                                    <label class="field-label">Data Source</label>
+                                    <div class="data-source-display" id="dataSourceDisplay">
+                                        <span class="source-text">No data generated yet</span>
+                                        <span class="source-details" id="sourceDetails"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="speed-control">
+                                    <label class="field-label">Playback Speed</label>
+                                    <div class="speed-slider-container">
+                                        <input type="range" id="playbackSpeed" class="speed-slider" min="1" max="100" value="1" step="1" oninput="workspace.updatePlaybackSpeed(this.value)">
+                                        <div class="speed-display"><span id="speedValue">1</span>x</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="playback-options">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="loopMode" onchange="workspace.updateLoopMode(this.checked)">
+                                        <span class="checkmark"></span>
+                                        Continuous Loop
+                                    </label>
+                                </div>
+                                
+                                <div class="transport-controls">
+                                    <button class="btn btn-success" id="playBtn" onclick="workspace.playback.play()" disabled>▶ Play</button>
+                                    <button class="btn btn-secondary" id="pauseBtn" onclick="workspace.playback.pause()" disabled>⏸ Pause</button>
+                                    <button class="btn btn-secondary" id="stopBtn" onclick="workspace.playback.stop()" disabled>⏹ Stop</button>
+                                </div>
+                                
+                                <div class="playback-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <div class="progress-info">
+                                        <span id="progressText">Ready</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Algorithm Section (Placeholder) -->
+                <div class="content-section" id="clientalgoSection">
+                    <div class="workspace-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Client Algorithm Configuration</h2>
+                        </div>
+                        <div class="section-content">
+                            <p style="text-align: center; color: var(--text-muted); font-style: italic;">Coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matching Engine Section (Placeholder) -->
+                <div class="content-section" id="matchingSection">
+                    <div class="workspace-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Matching Engine Configuration</h2>
+                        </div>
+                        <div class="section-content">
+                            <p style="text-align: center; color: var(--text-muted); font-style: italic;">Coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { MarketDataGenerator } from './generator-module.js';
+        
+        class BeaconWorkspace {
+            constructor() {
+                this.generator = new MarketDataGenerator('symbolsContainer');
+                this.initPlayback();
+                this.init();
+            }
+
+            init() {
+                this.generator.init();
+                this.showSection('generator'); // Start with generator section
+            }
+
+            showSection(sectionName) {
+                // Hide all content sections
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(section => section.classList.remove('active'));
+                
+                // Show selected section
+                const targetSection = document.getElementById(sectionName + 'Section');
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Update navigation
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => item.classList.remove('active'));
+                
+                const activeNav = document.querySelector(`[onclick="workspace.showSection('${sectionName}')"]`);
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                }
+            }
+
+            // Delegate generator methods to the module
+            addSymbol() {
+                this.generator.addSymbol();
+            }
+
+            removeSymbol(symbol) {
+                this.generator.removeSymbol(symbol);
+            }
+
+
+
+            // Generator delegation methods - let the module handle all generator logic
+            exportConfiguration() {
+                return this.generator.exportConfiguration();
+            }
+
+            exportConfiguration() {
+                return {
+                    totalMessages: this.state.totalMessages,
+                    outputFormat: this.state.outputFormat,
+                    symbols: Object.fromEntries(this.state.symbols),
+                    timestamp: new Date().toISOString()
+                };
+            }
+
+            // Playback functionality
+            updatePlaybackSource(generatedData) {
+                const display = document.getElementById('dataSourceDisplay');
+                const sourceText = display.querySelector('.source-text');
+                const sourceDetails = document.getElementById('sourceDetails');
+                
+                if (generatedData) {
+                    sourceText.textContent = `Generated dataset ready`;
+                    sourceDetails.textContent = `${generatedData.symbols.length} symbols, ${generatedData.totalMessages} messages, ${generatedData.outputFormat.toUpperCase()} format`;
+                    document.getElementById('playBtn').disabled = false;
+                } else {
+                    sourceText.textContent = 'No data generated yet';
+                    sourceDetails.textContent = '';
+                    document.getElementById('playBtn').disabled = true;
+                }
+            }
+
+            updatePlaybackSpeed(value) {
+                document.getElementById('speedValue').textContent = value;
+            }
+
+            updateLoopMode(enabled) {
+                this.state.loopMode = enabled;
+            }
+
+            initPlayback() {
+                this.playback = {
+                    play: () => {
+                        const config = this.exportConfiguration();
+                        if (!config || config.symbols.length === 0) return;
+                        
+                        document.getElementById('playBtn').disabled = true;
+                        document.getElementById('pauseBtn').disabled = false;
+                        document.getElementById('stopBtn').disabled = false;
+                        document.getElementById('progressText').textContent = `Playing generated data...`;
+                        
+                        let progress = 0;
+                        const interval = setInterval(() => {
+                            progress += 2;
+                            document.getElementById('progressFill').style.width = `${progress}%`;
+                            if (progress >= 100) {
+                                clearInterval(interval);
+                                workspace.playback.stop();
+                            }
+                        }, 100);
+                    },
+                    
+                    pause: () => {
+                        document.getElementById('playBtn').disabled = false;
+                        document.getElementById('pauseBtn').disabled = true;
+                        document.getElementById('progressText').textContent = 'Paused';
+                    },
+                    
+                    stop: () => {
+                        document.getElementById('playBtn').disabled = false;
+                        document.getElementById('pauseBtn').disabled = true;
+                        document.getElementById('stopBtn').disabled = true;
+                        document.getElementById('progressFill').style.width = '0%';
+                        document.getElementById('progressText').textContent = 'Ready';
+                    }
+                };
+            }
+        }
+
+        // Global Functions (called from HTML onclick)
+        let workspace;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            workspace = new BeaconWorkspace();
+        });
+
+        function addSymbol() {
+            workspace.addSymbol();
+        }
+
+        function saveConfiguration() {
+            const config = workspace.exportConfiguration();
+            
+            // Create download
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `beacon-config-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            
+            alert('Configuration saved and downloaded!');
+        }
+
+        function runWorkflow() {
+            const config = workspace.exportConfiguration();
+            alert('Workflow started!');
+        }
+
+        function runGenerator() {
+            const config = workspace.exportConfiguration();
+            alert('Generator started!');
+        }
+    </script>
+</body>
+</html>

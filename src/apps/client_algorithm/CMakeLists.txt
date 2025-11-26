@@ -15,20 +15,31 @@ message(STATUS "🚀 CLIENT ALGORITHM CMAKE v4.0 - COMPLETELY REWRITTEN 🚀")
 set(CMAKE_CXX_STANDARD 17)  # Use C++17 for maximum CI compatibility
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Determine the Beacon root directory (SAME AS GENERATOR)
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    # Standalone build
+    set(BEACON_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../..")
+else()
+    # Part of larger build
+    set(BEACON_ROOT "${CMAKE_SOURCE_DIR}")
+endif()
+
 # Add local include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Add common configuration directory for centralized configs
-include_directories(${CMAKE_SOURCE_DIR}/src/apps/common)
+include_directories(${BEACON_ROOT}/src/apps/common)
 
-# Add project-wide includes
-include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/vendor)
-include_directories(${CMAKE_SOURCE_DIR}/vendor/nlohmann)
+# Add project-wide includes - FIXED FOR PROPER HEADER RESOLUTION
+include_directories(${BEACON_ROOT}/include)
+include_directories(${BEACON_ROOT}/libs)
+include_directories(${BEACON_ROOT}/src/libs)
+include_directories(${BEACON_ROOT}/vendor)
+include_directories(${BEACON_ROOT}/vendor/nlohmann)
 
 # Define source files with full paths
 set(CLIENT_ALGO_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(COMMON_SRC_DIR ${CMAKE_SOURCE_DIR}/src/apps/common)
+set(COMMON_SRC_DIR ${BEACON_ROOT}/src/apps/common)
 
 # MEGA DEBUG: Print everything for CI/CD troubleshooting
 message(STATUS "=== MEGA-FIXED v4.0 CLIENT ALGORITHM CMAKE DEBUG INFO ===")
@@ -36,6 +47,7 @@ message(STATUS "📁 Client Algorithm Source Dir: ${CLIENT_ALGO_SRC_DIR}")
 message(STATUS "📁 Common Source Dir: ${COMMON_SRC_DIR}")
 message(STATUS "📁 Current Source Dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 message(STATUS "📁 Project Source Dir: ${CMAKE_SOURCE_DIR}")
+message(STATUS "📁 BEACON ROOT: ${BEACON_ROOT}")
 
 # List all files in the source directory
 file(GLOB SOURCE_FILES "${CLIENT_ALGO_SRC_DIR}/*.cpp")

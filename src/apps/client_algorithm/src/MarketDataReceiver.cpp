@@ -22,7 +22,7 @@
 // Beacon HFT infrastructure for message decoding
 #include <hft/ringbuffer/spsc_ringbuffer.h>
 #include <hft/core/cpu_pause.h>
-#include "libs/exchange_protocols/nsdq/market_data/itch/current/messages_active.h"
+#include "exchange_protocols/nsdq/market_data/itch/current/messages_active.h"
 
 using namespace beacon::hft::ringbuffer;
 using namespace beacon::nsdq::market_data::itch;

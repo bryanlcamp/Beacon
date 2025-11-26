@@ -1,7 +1,0 @@
-{
-  "exchange": "nsdq",
-  "message_count": 100,
-  "symbols": ["AAPL", "MSFT"],
-  "trade_probability": 0.2,
-  "flush_interval": 50
-}
