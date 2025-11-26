@@ -196,17 +196,28 @@
         }
         
         .cta-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             padding: 0;
             background: none;
-            color: #007acc;
             text-decoration: none;
-            font-weight: 300;
-            font-size: 3rem;
             border: none;
             border-radius: 0;
             transition: all 0.3s ease;
             margin: 0;
+        }
+        
+        .cta-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        
+        .cta-arrow {
+            color: #007acc;
+            font-size: 3rem;
+            font-weight: 700;
         }
         
         .cta-button:hover {
@@ -272,7 +283,11 @@
                 margin-bottom: 120px;
             }
             
-            .cta-button {
+            .cta-text {
+                font-size: 0.9rem;
+            }
+            
+            .cta-arrow {
                 font-size: 2.5rem;
             }
         }
@@ -342,7 +357,10 @@
         
         <!-- Call to Action -->
         <div class="cta-section">
-            <a href="docs/" class="cta-button">→</a>
+            <a href="docs/" class="cta-button">
+                <span class="cta-text">Let's Get Started!</span>
+                <span class="cta-arrow">→</span>
+            </a>
         </div>
     </div>
 </body>
