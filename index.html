@@ -197,15 +197,15 @@
         
         .cta-button {
             display: inline-block;
-            padding: 16px 32px;
+            padding: 20px 24px;
             background: linear-gradient(135deg, #007acc 0%, #005a99 100%);
-            color: #000000;
+            color: #ffffff;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-radius: 8px;
+            font-weight: 300;
+            font-size: 2rem;
+            border-radius: 50%;
             transition: all 0.3s ease;
-            margin: 0 10px;
+            margin: 0;
         }
         
         .cta-button:hover {
@@ -213,16 +213,7 @@
             box-shadow: 0 10px 25px rgba(0, 122, 204, 0.3);
         }
         
-        .cta-button.secondary {
-            background: transparent;
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .cta-button.secondary:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
-        }
+
         
         @media (max-width: 768px) {
             .container {
@@ -281,9 +272,8 @@
             }
             
             .cta-button {
-                display: block;
-                margin: 10px 0;
-                padding: 14px 28px;
+                padding: 18px 22px;
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -355,8 +345,7 @@
         
         <!-- Call to Action -->
         <div class="cta-section">
-            <a href="docs/" class="cta-button">Get Started</a>
-            <a href="docs/architecture.md" class="cta-button secondary">View Architecture</a>
+            <a href="docs/" class="cta-button">→</a>
         </div>
     </div>
 </body>
