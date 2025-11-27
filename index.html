@@ -119,9 +119,9 @@
         .hft-indicators {
             margin-top: 50px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            max-width: 700px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -263,8 +263,8 @@
             }
             
             .hft-indicators {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
                 margin-top: 40px;
             }
             
@@ -331,6 +331,10 @@
             <div class="metric">
                 <div class="metric-value">&lt; 10μs</div>
                 <div class="metric-label">Latency</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value"></div>
+                <div class="metric-label"></div>
             </div>
         </div>
         
