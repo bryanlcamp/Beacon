@@ -491,6 +491,83 @@
             background: linear-gradient(90deg, transparent 0%, var(--border-primary) 50%, transparent 100%);
             margin: var(--spacing-lg) 0;
         }
+
+        /* Slide-up Input Styles */
+        .add-symbol-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .slide-input {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 8px;
+            padding: 8px 10px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            width: 200px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .slide-input.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .slide-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .slide-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .slide-input.error {
+            border-color: #ff6b6b;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .error-message {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 215px;
+            padding: 6px 10px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 4px;
+            color: #ff6b6b;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 101;
+            white-space: nowrap;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
     </style>
 </head>
 <body>
@@ -542,7 +619,11 @@
                     <h2 class="section-title">Symbols</h2>
                     <div style="display: flex; align-items: center;">
                         <span id="percentageStatus" class="percentage-status status-remaining">100.0% remaining</span>
-                        <button class="btn btn-primary" onclick="addSymbol()">+ Add Symbol</button>
+                        <div class="add-symbol-container">
+                            <div class="error-message" id="errorMessage"></div>
+                            <input type="text" class="slide-input" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)">
+                            <button class="btn btn-primary" id="addSymbolBtn" onclick="toggleAddSymbol()">+ Add Symbol</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -552,6 +633,8 @@
             </div>
         </div>
     </div>
+
+
 
     <script type="module">
         import { MarketDataGenerator } from './generator-module.js';
@@ -589,9 +672,79 @@
         document.getElementById('generateButton').addEventListener('click', window.generateDataset);
 
         // Global functions for HTML onclick handlers
-        window.addSymbol = () => {
-            generator.addSymbol();
+        let inputActive = false;
+        
+        window.toggleAddSymbol = () => {
+            const input = document.getElementById('symbolInput');
+            const button = document.getElementById('addSymbolBtn');
+            
+            if (!inputActive) {
+                input.classList.add('active');
+                input.focus();
+                input.value = '';
+                button.textContent = 'Cancel';
+                inputActive = true;
+            } else {
+                input.classList.remove('active');
+                button.textContent = '+ Add Symbol';
+                inputActive = false;
+            }
         };
+
+        window.showError = (message) => {
+            const input = document.getElementById('symbolInput');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Show error styling
+            input.classList.add('error');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+            
+            // Clear error after 3 seconds
+            setTimeout(() => {
+                input.classList.remove('error');
+                errorMsg.classList.remove('show');
+            }, 3000);
+        };
+
+        window.confirmAddSymbol = () => {
+            const input = document.getElementById('symbolInput');
+            const button = document.getElementById('addSymbolBtn');
+            const symbolName = input.value.trim().toUpperCase();
+            
+            if (symbolName) {
+                // Check if symbol already exists
+                const existingSymbols = document.querySelectorAll('.symbol-card');
+                for (let card of existingSymbols) {
+                    if (card.dataset.symbol === symbolName) {
+                        showError(`Symbol ${symbolName} already exists!`);
+                        return;
+                    }
+                }
+                
+                generator.addSymbolByName(symbolName);
+                input.classList.remove('active');
+                button.textContent = '+ Add Symbol';
+                inputActive = false;
+            }
+        };
+
+        // Handle input events
+        document.getElementById('symbolInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmAddSymbol();
+            } else if (e.key === 'Escape') {
+                toggleAddSymbol();
+            }
+        });
+        
+        // Hide input when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = e.target.closest('.add-symbol-container');
+            if (!container && inputActive) {
+                toggleAddSymbol();
+            }
+        });
         
         window.generateDataset = async () => {
             const filenameInput = document.getElementById('filenameInput');
