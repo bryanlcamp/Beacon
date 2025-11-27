@@ -501,8 +501,9 @@
         .slide-input {
             position: absolute;
             bottom: 100%;
-            right: 0;
-            margin-bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            margin-bottom: 40px;
             padding: 8px 10px;
             border: 1px solid var(--border-primary);
             border-radius: var(--radius-sm);
@@ -511,17 +512,35 @@
             font-size: 13px;
             width: 200px;
             opacity: 0;
-            transform: translateY(20px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             z-index: 100;
         }
-
+        
         .slide-input.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
             pointer-events: all;
         }
+        
+        .input-connector {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 32px;
+            background: var(--border-primary);
+            margin-bottom: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .input-connector.active {
+            opacity: 1;
+        }
+
+
 
         .slide-input:focus {
             outline: none;
@@ -541,8 +560,9 @@
         .error-message {
             position: absolute;
             bottom: 100%;
-            right: 0;
-            margin-bottom: 215px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            margin-bottom: 50px;
             padding: 6px 10px;
             background: rgba(255, 107, 107, 0.1);
             border: 1px solid rgba(255, 107, 107, 0.3);
@@ -551,16 +571,18 @@
             font-size: 12px;
             font-weight: 500;
             opacity: 0;
-            transform: translateY(10px);
             transition: all 0.3s ease;
             pointer-events: none;
             z-index: 101;
             white-space: nowrap;
         }
+        
+        .error-message.show {
+            transform: translateX(-50%) translateY(0);
+        }
 
         .error-message.show {
             opacity: 1;
-            transform: translateY(0);
         }
 
         @keyframes shake {
@@ -622,6 +644,7 @@
                         <div class="add-symbol-container">
                             <div class="error-message" id="errorMessage"></div>
                             <input type="text" class="slide-input" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)">
+                            <div class="input-connector" id="inputConnector"></div>
                             <button class="btn btn-primary" id="addSymbolBtn" onclick="toggleAddSymbol()">+ Add Symbol</button>
                         </div>
                     </div>
@@ -677,15 +700,18 @@
         window.toggleAddSymbol = () => {
             const input = document.getElementById('symbolInput');
             const button = document.getElementById('addSymbolBtn');
+            const connector = document.getElementById('inputConnector');
             
             if (!inputActive) {
                 input.classList.add('active');
+                connector.classList.add('active');
                 input.focus();
                 input.value = '';
                 button.textContent = 'Cancel';
                 inputActive = true;
             } else {
                 input.classList.remove('active');
+                connector.classList.remove('active');
                 button.textContent = '+ Add Symbol';
                 inputActive = false;
             }
@@ -710,6 +736,7 @@
         window.confirmAddSymbol = () => {
             const input = document.getElementById('symbolInput');
             const button = document.getElementById('addSymbolBtn');
+            const connector = document.getElementById('inputConnector');
             const symbolName = input.value.trim().toUpperCase();
             
             if (symbolName) {
@@ -722,8 +749,12 @@
                     }
                 }
                 
-                generator.addSymbolByName(symbolName);
+                // Call the generator method that exists
+                if (generator && generator.addSymbol) {
+                    generator.addSymbol(symbolName);
+                }
                 input.classList.remove('active');
+                connector.classList.remove('active');
                 button.textContent = '+ Add Symbol';
                 inputActive = false;
             }
