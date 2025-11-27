@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prerequisites - Beacon Trading System</title>
+    <title>Installation Guide - Beacon Trading System</title>
     <style>
         * {
             margin: 0;
@@ -45,6 +45,7 @@
             padding: 40px 20px;
             position: relative;
             z-index: 2;
+            margin-top: 5vh;
         }
         
         .back-link {
@@ -66,14 +67,14 @@
         
         .page-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
         
         .page-header h1 {
             font-size: 4.5rem;
             font-weight: 800;
             letter-spacing: -2px;
-            margin-bottom: 12px;
+            margin-bottom: 0px;
             color: #ffffff;
         }
         
@@ -84,6 +85,8 @@
             opacity: 0.8;
             letter-spacing: 0.5px;
             text-align: center;
+            margin-top: -5px;
+            margin-bottom: 25px;
         }
         
         .content-title {
@@ -149,21 +152,46 @@
         
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            background: rgba(255, 255, 255, 0.03);
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
         th, td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
+            border: none;
+            padding: 16px 20px;
             text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         
         th {
-            background: rgba(107, 182, 255, 0.2);
+            background: linear-gradient(135deg, rgba(107, 182, 255, 0.25) 0%, rgba(107, 182, 255, 0.15) 100%);
             color: #ffffff;
             font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        td code {
+            background: rgba(107, 182, 255, 0.15);
+            color: #6bb6ff;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
         
         ul, ol {
@@ -176,11 +204,24 @@
         }
         
         .highlight {
-            background: rgba(107, 182, 255, 0.1);
-            padding: 15px;
-            border-left: 3px solid #6bb6ff;
-            margin: 15px 0;
-            border-radius: 0 6px 6px 0;
+            background: linear-gradient(135deg, rgba(107, 182, 255, 0.12) 0%, rgba(107, 182, 255, 0.08) 100%);
+            padding: 25px 30px;
+            border: 1px solid rgba(107, 182, 255, 0.25);
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(107, 182, 255, 0.1);
+            position: relative;
+        }
+        
+        .highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #6bb6ff 0%, rgba(107, 182, 255, 0.5) 100%);
+            border-radius: 2px 0 0 2px;
         }
         
         .warning {
@@ -250,17 +291,15 @@
     <div class="container">
         <header class="page-header">
             <h1>Beacon.</h1>
-            <p class="tagline">System Requirements.</p>
+            <p class="tagline">Installation Guide.</p>
         </header>
         
+        <p>Beacon checks your system. If anything is missing it tells you how to install it.</p>
+        
         <div class="highlight">
-            <strong>Quick Start:</strong> Install Git → Clone repo → Run verification script<br>
+            Install Git → Clone repo → Run verification script<br>
             <code>git clone https://github.com/bryanlcamp/Beacon.git && cd beacon && ./scripts/check-prerequisites.sh</code>
         </div>
-        
-        <p>Beacon checks your system requirements. If anything is missing, it tells you how to install it.</p>
-        
-        <h2>Requirements</h2>
         
         <table>
             <tr>
@@ -294,7 +333,6 @@
                 <td><code>git --version</code></td>
             </tr>
         </table>
-        
 
     </div>
 </body>

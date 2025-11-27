@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+            background: #0a0a15;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -24,7 +24,7 @@
             overflow: hidden;
         }
         
-        /* Distinct light rays showing the path forward */
+        /* Sharp geometric light rays */
         body::before {
             content: '';
             position: absolute;
@@ -33,15 +33,30 @@
             right: 0;
             bottom: 0;
             background: 
-                /* Central ray - strongest */
-                linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.05) 50%, transparent 75%),
-                /* Left rays */
-                linear-gradient(185deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
-                linear-gradient(190deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%),
-                /* Right rays */
-                linear-gradient(175deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
-                linear-gradient(170deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
+                /* Primary ray - strongest */
+                linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
+                /* Secondary rays */
+                linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
+                linear-gradient(130deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
             z-index: 1;
+            pointer-events: none;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 20px;
+            z-index: 102;
+            color: #6bb6ff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-3px);
         }
         
         .container {
@@ -81,12 +96,6 @@
             margin-bottom: 50px;
         }
         
-        @media (max-width: 768px) {
-            .doc-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
         .doc-section {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -97,7 +106,7 @@
         .doc-section h2 {
             font-size: 1.3rem;
             margin-bottom: 15px;
-            color: #007acc;
+            color: #6bb6ff;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 5px;
         }
@@ -117,7 +126,7 @@
         }
         
         .doc-links a:hover {
-            color: #007acc;
+            color: #6bb6ff;
         }
         
         .description {
@@ -125,20 +134,34 @@
             color: rgba(255, 255, 255, 0.6);
             margin-left: 5px;
         }
+        
+        @media (max-width: 768px) {
+            .doc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-button {
+                top: 20px;
+                left: 20px;
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Back Button -->
+    <a href="../index.html" class="back-button">←</a>
+    
     <div class="container">
         <header>
             <h1>Beacon.</h1>
-            <p class="subtitle">Documentation.</p>
         </header>
         
         <div class="doc-grid">
             <div class="doc-section">
                 <h2>Getting Started</h2>
                 <ul class="doc-links">
-                    <li><a href="beacon-prerequisites.html">Prerequisites</a> <span class="description">- System requirements</span></li>
+                    <li><a href="installation-guide.html">Installation Guide</a> <span class="description">- System requirements</span></li>
                     <li><a href="system/getting-started.html">Getting Started</a> <span class="description">- Installation and setup</span></li>
                     <li><a href="system/architecture.html">Architecture</a> <span class="description">- System design</span></li>
                     <li><a href="system/building.html">Build System</a> <span class="description">- Compilation process</span></li>
@@ -163,7 +186,7 @@
             </div>
             
             <div class="doc-section">
-                <h2><a href="native-exchange-support.html" style="color: #007acc; text-decoration: none;">Native Exchange Support</a></h2>
+                <h2><a href="native-exchange-support.html" style="color: #6bb6ff; text-decoration: none;">Native Exchange Support</a></h2>
                 <ul class="doc-links">
                     <li><a href="exchange_protocols/nsdq/nasdaq-ouch.html">NASDAQ OUCH</a> <span class="description">- v5.0 protocol</span></li>
                     <li><a href="exchange_protocols/nyse/nyse-pillar.html">NYSE Pillar</a> <span class="description">- v3.2 protocol</span></li>
