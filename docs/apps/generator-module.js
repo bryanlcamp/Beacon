@@ -35,21 +35,24 @@ export class MarketDataGenerator {
         });
     }
 
-    addSymbol() {
-        const symbolName = prompt('Enter symbol name (e.g., AAPL, MSFT):');
-        if (!symbolName?.trim()) return;
+    addSymbol(symbolName = null) {
+        // If no symbol name provided, use the old prompt method
+        if (!symbolName) {
+            symbolName = prompt('Enter symbol name (e.g., AAPL, MSFT):');
+            if (!symbolName?.trim()) return;
+        }
         
         const symbol = symbolName.trim().toUpperCase();
         
         if (this.state.symbols.has(symbol)) {
-            alert(`Symbol ${symbol} already exists!`);
-            return;
+            // Don't show alert here - let the caller handle it
+            return false;
         }
         
         const remaining = this.getRemainingPercentage();
         if (remaining <= 0) {
             alert('No percentage remaining. Remove symbols first.');
-            return;
+            return false;
         }
         
         const defaultPercentage = Math.min(20, remaining);
@@ -69,6 +72,7 @@ export class MarketDataGenerator {
         
         this.createSymbolCard(symbol);
         this.updateUI();
+        return true;
     }
 
     removeSymbol(symbol) {

@@ -740,18 +740,13 @@
             const symbolName = input.value.trim().toUpperCase();
             
             if (symbolName) {
-                // Check if symbol already exists
-                const existingSymbols = document.querySelectorAll('.symbol-card');
-                for (let card of existingSymbols) {
-                    if (card.dataset.symbol === symbolName) {
+                // Call the generator method that now handles duplicates
+                if (generator && generator.addSymbol) {
+                    const success = generator.addSymbol(symbolName);
+                    if (success === false) {
                         showError(`Symbol ${symbolName} already exists!`);
                         return;
                     }
-                }
-                
-                // Call the generator method that exists
-                if (generator && generator.addSymbol) {
-                    generator.addSymbol(symbolName);
                 }
                 input.classList.remove('active');
                 connector.classList.remove('active');
