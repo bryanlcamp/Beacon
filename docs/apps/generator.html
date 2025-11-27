@@ -42,10 +42,30 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-primary);
+            background: #0a0a15;
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Sharp geometric light rays */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                /* Primary ray - strongest */
+                linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
+                /* Secondary rays */
+                linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
+                linear-gradient(130deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Typography */
@@ -81,9 +101,11 @@
 
         /* Layout */
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px 16px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .generator-layout {
@@ -91,6 +113,8 @@
             grid-template-columns: 280px 1fr;
             gap: 20px;
             align-items: start;
+            position: relative;
+            left: -50px;
         }
 
         @media (max-width: 1024px) {
@@ -104,7 +128,7 @@
         .panel {
             background: var(--bg-panel);
             border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
+            padding: var(--spacing-md);
             border: 1px solid var(--border-primary);
         }
 
@@ -442,6 +466,24 @@
         .status-remaining { color: var(--text-muted); }
         .status-over { color: var(--color-error); }
 
+        .back-link {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 102;
+            color: #6bb6ff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+            transform: translateX(-3px);
+        }
+        
         .w-full { width: 100%; }
         .mb-lg { margin-bottom: var(--spacing-lg); }
         .separator {
@@ -452,9 +494,13 @@
     </style>
 </head>
 <body>
+    <a href="../documentation-hub.html" class="back-link">←</a>
+    
     <div class="container">
-        <h1 class="title-main">Market Data Generator</h1>
-        <p class="subtitle">Create Customized Market Datasets.</p>
+        <div class="brand" style="text-align: center; margin-bottom: 30px;">
+            <h1 style="font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; color: #ffffff; margin-bottom: 8px;">Beacon.</h1>
+            <p style="font-size: 1.6rem; font-weight: 400; color: #ffffff; opacity: 0.8; letter-spacing: 0.5px; margin-top: -5px; margin-bottom: 0;">Market Data Generator.</p>
+        </div>
 
         <div class="generator-layout">
             <div class="panel">
@@ -508,7 +554,7 @@
     </div>
 
     <script type="module">
-        import MarketDataGenerator from './generator-module.js';
+        import { MarketDataGenerator } from './generator-module.js';
         
         // Initialize and expose globally for onclick handlers
         window.generator = new MarketDataGenerator();
