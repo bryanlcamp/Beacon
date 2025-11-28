@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Trading Pipeline</title>
+    <link rel="stylesheet" href="../css/beacon-ui.css">
+    <style>
+        /* Pipeline-specific styles */
+        .pipeline-progress .progress-step.completed {
+            opacity: 1 !important;
+        }
+        
+        .pipeline-step {
+            transition: max-height 0.5s ease-out, opacity 0.3s ease;
+        }
+        
+        .pipeline-step.completed {
+            max-height: 60px;
+            overflow: hidden;
+        }
+        
+        .pipeline-steps {
+            min-height: 600px;
+        }
+        
+        /* Hide back button in pipeline mode */
+        .back-button {
+            display: none !important;
+        }
+        
+        /* Hide page title duplication in embedded components */
+        .pipeline-step .page-header {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="pipeline-container">
+            <!-- Pipeline controller will render here -->
+        </div>
+    </div>
+    
+    <script type="module">
+        import { PipelineController } from './pipeline/PipelineController.js';
+        
+        // Initialize pipeline when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                new PipelineController('pipeline-container');
+            } catch (error) {
+                console.error('Failed to initialize pipeline:', error);
+                document.getElementById('pipeline-container').innerHTML = `
+                    <div style="color: var(--color-error); text-align: center; padding: var(--space-xl);">
+                        <h3>Pipeline Initialization Error</h3>
+                        <p>${error.message}</p>
+                        <p style="font-size: var(--font-size-sm); margin-top: var(--space-md);">
+                            Check the browser console for more details.
+                        </p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

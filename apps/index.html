@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Applications</title>
+    <link rel="stylesheet" href="../css/beacon-ui.css">
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Beacon.</h1>
+            <p class="page-subtitle">Trading Applications</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Available Applications</h2>
+                <p class="card-description">Interactive trading tools and interfaces</p>
+            </div>
+            
+            <div style="display: grid; gap: var(--space-lg); margin-top: var(--space-lg);">
+                <a href="generator.html" class="app-card">
+                    <div class="app-card-icon">🎯</div>
+                    <div class="app-card-content">
+                        <h3>Market Data Generator</h3>
+                        <p>Configure symbols and generate realistic market data for testing strategies</p>
+                        <div class="app-card-badge">Standalone</div>
+                    </div>
+                </a>
+                
+                <a href="pipeline.html" class="app-card">
+                    <div class="app-card-icon">⚡</div>
+                    <div class="app-card-content">
+                        <h3>Complete Trading Pipeline</h3>
+                        <p>End-to-end workflow: Generate → Stream → Execute → Monitor</p>
+                        <div class="app-card-badge">Full Pipeline</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .app-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--timing-fast) var(--easing-standard);
+        }
+        
+        .app-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+        
+        .app-card-icon {
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-primary);
+        }
+        
+        .app-card-content {
+            flex: 1;
+        }
+        
+        .app-card-content h3 {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-sm);
+            color: var(--text-primary);
+        }
+        
+        .app-card-content p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.5;
+        }
+        
+        .app-card-badge {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--color-primary);
+            color: white;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</body>
+</html>
