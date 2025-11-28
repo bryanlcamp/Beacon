@@ -297,14 +297,11 @@
         }
 
         .symbol-remove-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
             width: 20px;
             height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 100, 100, 0.8);
+            color: white;
+            border: none;
             border-radius: 50%;
             cursor: pointer;
             font-size: 12px;
@@ -312,6 +309,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             transition: all 0.2s ease;
         }
 
@@ -684,12 +682,11 @@
     <a href="../documentation-hub.html" class="back-link">←</a>
     
     <div class="container">
-        <div class="brand" style="text-align: left; margin-bottom: 15px;">
-            <h1 style="font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; color: #ffffff; margin-bottom: 0; display: inline;">Beacon.</h1>
-            <span style="font-size: 1.6rem; font-weight: 400; color: #ffffff; opacity: 0.8; letter-spacing: 0.5px; margin-left: 12px;">Market Data Generator.</span>
-        </div>
-
         <div class="generator-layout">
+            <div class="brand" style="text-align: left; margin-bottom: 15px; grid-column: 1 / -1;">
+                <h1 style="font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; color: #ffffff; margin-bottom: 0; display: inline;">Beacon.</h1>
+                <span style="font-size: 1.6rem; font-weight: 400; color: #ffffff; opacity: 0.8; letter-spacing: 0.5px; margin-left: 12px;">Market Data Generator.</span>
+            </div>
             <div class="panel">
                 <h2 class="section-title mb-lg">Dataset</h2>
                 
