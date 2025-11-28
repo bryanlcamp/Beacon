@@ -723,7 +723,6 @@
                             <input type="text" class="slide-input" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)">
                             <div class="input-connector" id="inputConnector"></div>
                             <button class="btn btn-primary" id="addSymbolBtn" onclick="toggleAddSymbol()">+ Add Symbol</button>
-                            <button class="btn btn-secondary" id="collapseAllBtn" onclick="toggleAllCards()" style="margin-left: 8px;">⏷ Collapse All</button>
                         </div>
                     </div>
                 </div>
@@ -818,22 +817,6 @@
                 button.textContent = '+ Add Symbol';
                 inputActive = false;
             }
-        };
-
-        window.toggleAllCards = () => {
-            const button = document.getElementById('collapseAllBtn');
-            const cards = document.querySelectorAll('.symbol-card');
-            const isCollapsing = !button.textContent.includes('Expand');
-            
-            cards.forEach(card => {
-                if (isCollapsing) {
-                    card.classList.add('collapsed');
-                } else {
-                    card.classList.remove('collapsed');
-                }
-            });
-            
-            button.textContent = isCollapsing ? '⏶ Expand All' : '⏷ Collapse All';
         };
 
         window.showError = (message) => {
