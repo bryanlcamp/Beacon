@@ -248,6 +248,7 @@
             margin-bottom: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            transition: all 0.2s ease;
         }
 
         .symbol-header {
@@ -469,6 +470,53 @@
             margin-top: 20px;
         }
 
+        /* Collapsible Card Styles */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 6px;
+        }
+
+        .card-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+            margin: -4px -4px 6px -4px;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .collapse-toggle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: bold;
+            transition: transform 0.2s ease;
+            line-height: 1;
+        }
+
+        .card-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.2s ease;
+        }
+
+        .symbol-card.collapsed .card-content {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .symbol-card.collapsed .collapse-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .symbol-card.collapsed {
+            padding: 8px 10px;
+        }
+
+        .symbol-card.collapsed .card-header {
+            margin-bottom: 0;
+        }
+
         .percentage-status {
             font-size: 0.9rem;
             font-weight: 600;
@@ -675,6 +723,7 @@
                             <input type="text" class="slide-input" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)">
                             <div class="input-connector" id="inputConnector"></div>
                             <button class="btn btn-primary" id="addSymbolBtn" onclick="toggleAddSymbol()">+ Add Symbol</button>
+                            <button class="btn btn-secondary" id="collapseAllBtn" onclick="toggleAllCards()" style="margin-left: 8px;">⏷ Collapse All</button>
                         </div>
                     </div>
                 </div>
@@ -769,6 +818,22 @@
                 button.textContent = '+ Add Symbol';
                 inputActive = false;
             }
+        };
+
+        window.toggleAllCards = () => {
+            const button = document.getElementById('collapseAllBtn');
+            const cards = document.querySelectorAll('.symbol-card');
+            const isCollapsing = !button.textContent.includes('Expand');
+            
+            cards.forEach(card => {
+                if (isCollapsing) {
+                    card.classList.add('collapsed');
+                } else {
+                    card.classList.remove('collapsed');
+                }
+            });
+            
+            button.textContent = isCollapsing ? '⏶ Expand All' : '⏷ Collapse All';
         };
 
         window.showError = (message) => {

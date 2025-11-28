@@ -92,17 +92,22 @@ export class MarketDataGenerator {
         
         const cardHTML = `
             <div class="symbol-card" data-symbol="${symbol}">
-                <button class="symbol-remove-btn" onclick="generatorInstance.removeSymbol('${symbol}')" title="Remove Symbol">×</button>
-                <div class="symbol-header">
-                    <div class="symbol-name">${symbol}</div>
-                    <div class="symbol-percentage-edit percentage-tooltip">
-                        <input type="number" class="percentage-input" value="${data.percentage}" min="0" max="100" step="1"
-                               onchange="generatorInstance.updateSymbolData('${symbol}', 'percentage', this.value)">
-                        <span class="percentage-symbol">%</span>
+                <div class="card-header" onclick="generatorInstance.toggleCard(event, '${symbol}')">
+                    <div class="symbol-header">
+                        <div class="symbol-name">${symbol}</div>
+                        <div class="symbol-percentage-edit percentage-tooltip">
+                            <input type="number" class="percentage-input" value="${data.percentage}" min="0" max="100" step="1"
+                                   onchange="generatorInstance.updateSymbolData('${symbol}', 'percentage', this.value)"
+                                   onclick="event.stopPropagation()">
+                            <span class="percentage-symbol">%</span>
+                        </div>
+                        <button class="symbol-remove-btn" onclick="event.stopPropagation(); generatorInstance.removeSymbol('${symbol}')" title="Remove Symbol">×</button>
                     </div>
+                    <span class="collapse-toggle">▼</span>
                 </div>
                 
-                <div class="symbol-grids-container">
+                <div class="card-content">
+                    <div class="symbol-grids-container">
                     <div class="price-qty-grid">
                         <div class="paired-controls">
                             <div class="grid-field">
@@ -156,6 +161,7 @@ export class MarketDataGenerator {
                             <div class="range-display">${data.volumeM}</div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         `;
@@ -452,6 +458,15 @@ export class MarketDataGenerator {
     // Utility method for random number in range
     randomInRange(min, max) {
         return Math.random() * (max - min) + min;
+    }
+
+    // Toggle card collapse state
+    toggleCard(event, symbol) {
+        event.stopPropagation();
+        const card = document.querySelector(`[data-symbol="${symbol}"]`);
+        if (card) {
+            card.classList.toggle('collapsed');
+        }
     }
 }
 
