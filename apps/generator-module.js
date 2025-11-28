@@ -93,7 +93,6 @@ export class MarketDataGenerator {
         const cardHTML = `
             <div class="symbol-card" data-symbol="${symbol}">
                 <div class="card-header" onclick="generatorInstance.toggleCard(event, '${symbol}')">
-                    <span class="collapse-toggle">▼</span>
                     <div class="symbol-header">
                         <div class="symbol-name">${symbol}</div>
                         <div class="symbol-percentage-edit percentage-tooltip">
@@ -103,7 +102,10 @@ export class MarketDataGenerator {
                             <span class="percentage-symbol">%</span>
                         </div>
                     </div>
-                    <button class="symbol-remove-btn" onclick="event.stopPropagation(); generatorInstance.removeSymbol('${symbol}')" title="Remove Symbol">×</button>
+                    <div class="header-controls">
+                        <span class="collapse-toggle">▼</span>
+                        <button class="symbol-remove-btn" onclick="event.stopPropagation(); generatorInstance.removeSymbol('${symbol}')" title="Remove Symbol">×</button>
+                    </div>
                 </div>
                 
                 <div class="card-content">
