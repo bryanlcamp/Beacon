@@ -101,6 +101,8 @@ export class MarketDataGenerator {
                                    onclick="event.stopPropagation()">
                             <span class="percentage-symbol">%</span>
                         </div>
+                    </div>
+                    <div class="header-controls">
                         <span class="collapse-toggle">▼</span>
                         <button class="symbol-remove-btn" onclick="event.stopPropagation(); generatorInstance.removeSymbol('${symbol}')" title="Remove Symbol">×</button>
                     </div>
