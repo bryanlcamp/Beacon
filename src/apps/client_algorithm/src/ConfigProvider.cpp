@@ -1,21 +1,27 @@
 /*
  * =============================================================================
- * Project:      Beacon
- * Application:  client_algorithm
- * File:         config_provider.cpp
- * Purpose:      Implementation of configuration management for trading algorithm.
- *               Handles JSON parsing and validation of per-product settings.
- * Author:       Bryan Camp
+ * Project:   Beacon
+ * Application: client_algorithm
+ * Purpose:   Configuration management for trading algorithm using 4-library architecture
+ * Author:    Bryan Camp
  * =============================================================================
  */
 
+// C++ standard library
 #include <cmath>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+
+// Third-party libraries
 #include <nlohmann/json.hpp>
-#include "ConfigProvider.h"
+
+// Application headers
+#include "../include/ConfigProvider.h"
+
+// Beacon libraries (4-library architecture)
+// Removed problematic include as beacon_algorithm doesn't exist yet
 
 namespace beacon::client_algorithm {
 
@@ -31,51 +37,18 @@ bool ConfigProvider::loadFromFile(const std::string& filepath) {
         nlohmann::json j;
         file >> j;
         
-        // Parse each section
-        if (!parseMarketDataConfig(j)) {
-            std::cerr << "ERROR: Failed to parse market_data config section\n";
-            return false;
-        }
-        
-        if (!parseExchangeConfig(j)) {
-            std::cerr << "ERROR: Failed to parse exchange config section\n";
-            return false;
-        }
-        
-        if (!parseTradingConfig(j)) {
-            std::cerr << "ERROR: Failed to parse trading config section\n";
-            return false;
-        }
-        
-        if (!parseRiskManagementConfig(j)) {
-            std::cerr << "ERROR: Failed to parse risk_management config section\n";
-            return false;
-        }
-        
-        if (!parseProducts(j)) {
-            std::cerr << "ERROR: Failed to parse products array\n";
+        // Parse each section using improved error handling
+        if (!parseMarketDataConfig(j) || !parseExchangeConfig(j) || 
+            !parseTradingConfig(j) || !parseRiskManagementConfig(j) || 
+            !parseProducts(j)) {
             return false;
         }
         
         // Build index for fast lookups
         buildSymbolIndex();
         
-        std::cout << "Configuration loaded successfully:\n";
-        std::cout << "  - Market Data: " << market_data_config_.host << ":" 
-                  << market_data_config_.port << "\n";
-        std::cout << "  - Exchange: " << exchange_config_.host << ":" 
-                  << exchange_config_.port << "\n";
-    std::cout << "  Risk (PnL): warning=" << risk_config_.pnl_drawdown_warning 
-              << ", alert=" << risk_config_.pnl_drawdown_alert 
-              << ", hard_stop=" << risk_config_.pnl_drawdown_hard_stop << std::endl;
-    std::cout << "  Risk (Rejects): warning=" << risk_config_.order_reject_warning 
-              << ", alert=" << risk_config_.order_reject_alert 
-              << ", hard_stop=" << risk_config_.order_reject_hard_stop << std::endl;
-    std::cout << "  Risk (Burst): warning=" << risk_config_.order_messaging_burst_warning 
-              << ", alert=" << risk_config_.order_messaging_burst_alert 
-              << ", hard_stop=" << risk_config_.order_messaging_burst_hard_stop << " orders/sec" << std::endl;
-        std::cout << "  - Products: " << products_.size() 
-                  << " (" << getEnabledProductCount() << " enabled)\n";
+        // Summary output
+        printConfigSummary();
         
         return true;
         
@@ -155,53 +128,40 @@ bool ConfigProvider::parseTradingConfig(const nlohmann::json& j) {
 bool ConfigProvider::parseRiskManagementConfig(const nlohmann::json& j) {
     if (!j.contains("risk_management")) {
         std::cerr << "WARNING: Missing 'risk_management' section, using defaults\n";
-        return true;  // Optional section, use defaults
+        return true;
     }
     
     const auto& risk = j["risk_management"];
     
+    // Parse risk parameters directly from JSON (removed beacon_algorithm dependency)
     if (risk.contains("pnl_drawdown_warning")) {
         risk_config_.pnl_drawdown_warning = risk["pnl_drawdown_warning"].get<double>();
     }
-    
     if (risk.contains("pnl_drawdown_alert")) {
         risk_config_.pnl_drawdown_alert = risk["pnl_drawdown_alert"].get<double>();
     }
-    
     if (risk.contains("pnl_drawdown_hard_stop")) {
         risk_config_.pnl_drawdown_hard_stop = risk["pnl_drawdown_hard_stop"].get<double>();
     }
-    
     if (risk.contains("order_reject_warning")) {
         risk_config_.order_reject_warning = risk["order_reject_warning"].get<uint32_t>();
     }
-    
     if (risk.contains("order_reject_alert")) {
         risk_config_.order_reject_alert = risk["order_reject_alert"].get<uint32_t>();
     }
-    
     if (risk.contains("order_reject_hard_stop")) {
         risk_config_.order_reject_hard_stop = risk["order_reject_hard_stop"].get<uint32_t>();
     }
     
-    // Validate PnL thresholds are in correct order
+    // Validate thresholds
     if (!risk_config_.validatePnL()) {
         std::cerr << "WARNING: PnL drawdown thresholds not in correct order!\n";
-        std::cerr << "  Expected: warning >= alert >= hard_stop (all negative)\n";
-        std::cerr << "  Got: warning=" << risk_config_.pnl_drawdown_warning
-                  << " alert=" << risk_config_.pnl_drawdown_alert
-                  << " hard_stop=" << risk_config_.pnl_drawdown_hard_stop << "\n";
-        std::cerr << "  Continuing with these values, but check your configuration!\n";
+        printRiskValidationWarning();
     }
     
-    // Validate reject thresholds are in correct order
     if (!risk_config_.validateRejects()) {
         std::cerr << "WARNING: Order reject thresholds not in correct order!\n";
-        std::cerr << "  Expected: warning <= alert <= hard_stop (all positive)\n";
-        std::cerr << "  Got: warning=" << risk_config_.order_reject_warning
-                  << " alert=" << risk_config_.order_reject_alert
-                  << " hard_stop=" << risk_config_.order_reject_hard_stop << "\n";
-        std::cerr << "  Continuing with these values, but check your configuration!\n";
+        printRejectValidationWarning();
     }
     
     return true;
@@ -348,6 +308,46 @@ size_t ConfigProvider::getEnabledProductCount() const {
         }
     }
     return count;
+}
+
+void ConfigProvider::printConfigSummary() const {
+    std::cout << "Configuration loaded successfully:\n";
+    std::cout << "  - Market Data: " << market_data_config_.host << ":" 
+              << market_data_config_.port << "\n";
+    std::cout << "  - Exchange: " << exchange_config_.host << ":" 
+              << exchange_config_.port << "\n";
+    std::cout << "  - Products: " << products_.size() 
+              << " (" << getEnabledProductCount() << " enabled)\n";
+    
+    printRiskSummary();
+}
+
+void ConfigProvider::printRiskSummary() const {
+    std::cout << "  Risk (PnL): warning=" << risk_config_.pnl_drawdown_warning 
+              << ", alert=" << risk_config_.pnl_drawdown_alert 
+              << ", hard_stop=" << risk_config_.pnl_drawdown_hard_stop << "\n";
+    std::cout << "  Risk (Rejects): warning=" << risk_config_.order_reject_warning 
+              << ", alert=" << risk_config_.order_reject_alert 
+              << ", hard_stop=" << risk_config_.order_reject_hard_stop << "\n";
+    std::cout << "  Risk (Burst): warning=" << risk_config_.order_messaging_burst_warning 
+              << ", alert=" << risk_config_.order_messaging_burst_alert 
+              << ", hard_stop=" << risk_config_.order_messaging_burst_hard_stop << " orders/sec\n";
+}
+
+void ConfigProvider::printRiskValidationWarning() const {
+    std::cerr << "  Expected: warning >= alert >= hard_stop (all negative)\n";
+    std::cerr << "  Got: warning=" << risk_config_.pnl_drawdown_warning
+              << " alert=" << risk_config_.pnl_drawdown_alert
+              << " hard_stop=" << risk_config_.pnl_drawdown_hard_stop << "\n";
+    std::cerr << "  Continuing with these values, but check your configuration!\n";
+}
+
+void ConfigProvider::printRejectValidationWarning() const {
+    std::cerr << "  Expected: warning <= alert <= hard_stop (all positive)\n";
+    std::cerr << "  Got: warning=" << risk_config_.order_reject_warning
+              << " alert=" << risk_config_.order_reject_alert
+              << " hard_stop=" << risk_config_.order_reject_hard_stop << "\n";
+    std::cerr << "  Continuing with these values, but check your configuration!\n";
 }
 
 } // namespace beacon::client_algorithm

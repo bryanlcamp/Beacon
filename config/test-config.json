@@ -1,0 +1,9 @@
+{
+  "totalMessages": 10000,
+  "outputFormat": "nsdq",
+  "symbols": {
+    "AAPL": {
+      "percentage": 100
+    }
+  }
+}

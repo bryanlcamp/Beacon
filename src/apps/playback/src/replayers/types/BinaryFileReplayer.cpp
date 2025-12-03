@@ -14,7 +14,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <nlohmann/json.hpp>
-#include "exchanges/protocol_common.h"
+#include "protocol_common.h"
 #include "config_provider.h"
 #include "serializers/nsdq_serializer.h"
 #include "serializers/cme_serializer.h"

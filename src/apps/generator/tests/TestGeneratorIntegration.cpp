@@ -2,7 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
-#include "exchanges/protocol_common.h"
+#include "protocol_common.h"
 #include "../include/ConfigProvider.h"
 #include "../include/MessageGenerator.h"
 

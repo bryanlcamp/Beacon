@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <filesystem>
 #include <fstream>
-#include "exchanges/protocol_common.h"
+#include "protocol_common.h"
 #include <thread>
 #include <chrono>
 #include "../BinaryInputFileReader.h"

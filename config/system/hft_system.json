@@ -1,0 +1,34 @@
+{
+  "market_data": {
+    "protocol": "nasdaq",
+    "host": "127.0.0.1",
+    "port": 12345,
+    "multicast_address": "239.255.0.1"
+  },
+  "exchange": {
+    "host": "127.0.0.1", 
+    "port": 9000,
+    "protocol": "ouch"
+  },
+  "threading": {
+    "core_affinity": {
+      "market_data_core": 0,
+      "trading_logic_core": 1,
+      "execution_core": 2
+    }
+  },
+  "performance": {
+    "queue_sizes": {
+      "market_data_queue": 32768,
+      "execution_queue": 16384
+    },
+    "batch_sizes": {
+      "market_data_batch": 1,
+      "order_batch": 10
+    }
+  },
+  "logging": {
+    "level": "info",
+    "file": "logs/beacon_hft.log"
+  }
+}

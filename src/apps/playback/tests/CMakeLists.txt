@@ -30,8 +30,7 @@ macro(PlaybackTest test_name)
     target_link_libraries(${test_name} 
         gtest 
         gtest_main
-        # beacon_utils     # Commented out - library doesn't exist
-        # beacon_exchanges # Commented out - library doesn't exist
+        beacon_exchanges  # NEW: Unified exchanges library
     )
     
     # Copy test data files to build directory (if they exist)

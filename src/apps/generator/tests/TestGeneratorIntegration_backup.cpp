@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 #include <filesystem>
-#include "exchanges/protocol_common.h"
+#include "protocol_common.h"
 #include "../include/ConfigProvider.h"
 #include "../include/MessageGenerator.h"
 

@@ -9,7 +9,7 @@
 // Version-specific include replaced with protocol abstraction
 
 // OUCH protocol messages using version abstraction
-#include "libs/exchange_protocols/nsdq/execution/ouch/current/messages_active.cpp"
+#include "protocols/nsdq/execution/ouch/current/messages_active.cpp"
 
 TEST(OUCHMessagesTest, Placeholder) {
     // Placeholder until OUCH messages are fully defined

@@ -14,6 +14,8 @@
 #include <string>
 #include <unordered_map>
 
+namespace beacon::generator {
+
 struct SymbolStats {
     size_t orders = 0;
     size_t trades = 0;
@@ -33,3 +35,4 @@ public:
 private:
     std::unordered_map<std::string, SymbolStats> _symbolStats;
 };
+}

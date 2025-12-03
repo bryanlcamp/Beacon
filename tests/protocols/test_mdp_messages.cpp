@@ -6,7 +6,7 @@
 // =============================================================================
 
 #include <gtest/gtest.h>
-#include "libs/exchange_protocols/cme/market_data/mdp_mbo/current/messages_active.h"
+#include "exchanges/include/protocols/cme/market_data/mdp_mbo/current/messages_active.h"
 #include <cstring>
 
 using namespace beacon::cme::market_data;

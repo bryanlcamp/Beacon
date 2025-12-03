@@ -13,7 +13,7 @@
 #include <cstdint>
 #include <string>
 
-namespace beacon::market_data_generator {
+namespace beacon::generator {
 
   enum class MessageType {
       Bid,

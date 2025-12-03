@@ -9,11 +9,13 @@
  * =============================================================================
  */
 
-#include "../include/StatsManager.h"
+#include <StatsManager.h>
 
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+
+namespace beacon::generator {
 
 void StatsManager::UpdateStats(const std::string& symbol, bool isBid, size_t quantity, double price) {
     auto& stats = _symbolStats[symbol];
@@ -138,4 +140,5 @@ void StatsManager::PrintStats(size_t totalMessages [[maybe_unused]], double elap
               << "\n\n";
     
     std::cout << "═══════════════════════════════════════════════════════════════════════════════════════════════════════\n";
+}
 }

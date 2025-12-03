@@ -6,7 +6,7 @@
 // =============================================================================
 
 #include <gtest/gtest.h>
-#include "libs/exchange_protocols/nyse/market_data/pillar_market_data/current/messages_active.h"
+#include "protocols/nyse/market_data/pillar_market_data/current/messages_active.h"
 #include <cstring>
 
 using namespace beacon::nyse::market_data;

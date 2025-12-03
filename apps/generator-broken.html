@@ -3,31 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon Market Data Generator</title>
-    <link rel="stylesheet" href="../css/beacon-ui.css">
+    <title>Beacon Market Data Generator - Modular</title>
+    <style>
+        /* CSS Custom Properties for Consistent Theming */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --accent-green: #00ff64;
+            --accent-blue: #0099ff;
+            --accent-red: #ff4444;
+            --accent-yellow: #ffaa00;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        }
 
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Background pattern - subtle geometric rays */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                /* Sharp geometric light rays */
+                linear-gradient(45deg, transparent 0%, rgba(0, 255, 100, 0.02) 50%, transparent 100%),
+                linear-gradient(-45deg, transparent 0%, rgba(0, 153, 255, 0.02) 50%, transparent 100%),
+                linear-gradient(90deg, transparent 0%, rgba(255, 170, 0, 0.01) 50%, transparent 100%);
+            background-size: 200px 200px, 300px 300px, 150px 150px;
+            background-position: 
+                /* Primary ray - strongest */
+                0 0,
+                /* Secondary rays */
+                100px 100px,
+                200px 50px;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .section-title {
+            color: var(--accent-green);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+        }
+
+        .separator {
+            height: 1px;
+            background: var(--border-color);
+            margin: var(--spacing-lg) 0;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .field-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.9rem;
+        }
+        
+        .form-input, .btn {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        /* Style number input spinner buttons */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Buttons */
+        .btn {
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), #0077cc);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0088ff, #0066bb);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-green), #00cc44);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #00ff77, #00bb33);
+        }
+        
+        .btn-success:disabled {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-red), #cc3333);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #ff5555, #bb2222);
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        /* Utility Classes */
+        .mb-sm { margin-bottom: var(--spacing-sm); }
+        .mb-md { margin-bottom: var(--spacing-md); }
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .mt-md { margin-top: var(--spacing-md); }
+        .text-center { text-align: center; }
+        .text-small { font-size: 0.875rem; }
+        .text-muted { color: var(--text-muted); }
+
+        /* Symbol Cards CSS */
+        .symbols-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-tertiary);
+        }
+        
+        .symbol-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--bg-secondary);
+            transition: all 0.2s ease;
+        }
+        
+        .symbol-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 153, 255, 0.1);
+        }
+        
+        .symbol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .symbol-name {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--accent-green);
+        }
+        
+        .symbol-percentage {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .symbol-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+        
+        .range-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .range-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+        
+        .dual-range-container {
+            position: relative;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .range-input {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--bg-tertiary);
+            outline: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .range-input::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .range-track {
+            height: 4px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+            position: absolute;
+            top: 0;
+        }
+        
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: var(--spacing-xs);
+            font-family: var(--font-mono);
+        }
+        
+        .remove-btn {
+            background: transparent;
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            width: auto;
+            margin-top: var(--spacing-sm);
+        }
+        
+        .remove-btn:hover {
+            background: var(--accent-red);
+            color: var(--bg-primary);
+        }
+
+        /* Add Symbol Controls */
+        .add-symbol-container {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .add-symbol-btn {
+            background: linear-gradient(135deg, var(--accent-green), #00cc44);
+            border: none;
+            color: var(--bg-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        
+        .add-symbol-btn:hover {
+            background: linear-gradient(135deg, #00ff77, #00bb33);
+            transform: translateY(-1px);
+        }
+
+        .percentage-remaining {
+            text-align: center;
+            margin: var(--spacing-md) 0;
+            font-size: 0.9rem;
+        }
+
+        .percentage-valid {
+            color: var(--accent-green);
+        }
+
+        .percentage-invalid {
+            color: var(--accent-red);
+        }
+
+        /* Panel Headers */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Collapsible Card Styles */
+        .card-collapsible .symbol-controls {
+            max-height: 200px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .card-collapsible.collapsed .symbol-controls {
+            max-height: 0;
+            opacity: 0;
+        }
+        
+        .card-collapsible .symbol-header {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .card-collapsible .symbol-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+        }
+        
+        .collapse-indicator {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+        
+        .card-collapsible.collapsed .collapse-indicator {
+            transform: rotate(-90deg);
+        }
+
+        /* Back Link */
+        .back-link {
+            position: fixed;
+            top: var(--spacing-lg);
+            left: var(--spacing-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-green);
+            transform: translateX(-2px);
+        }
+
+        /* Form Input Focus States */
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+        }
+
+        /* Demo mode banner */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--accent-red);
+            color: white;
+            text-align: center;
+            padding: var(--spacing-sm);
+            font-weight: 600;
+            z-index: 1000;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Slide-up Input Styles */
+        .symbol-input-container {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .symbol-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+        }
+        
+        .symbol-input.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .symbol-input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 2px rgba(0, 255, 100, 0.1);
+        }
+        
+        .symbol-input.error {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.1);
+        }
+        
+        .input-connector {
+            width: 2px;
+            height: 20px;
+            background: var(--border-color);
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scaleY(0);
+        }
+        
+        .input-connector.active {
+            opacity: 1;
+            transform: scaleY(1);
+            background: var(--accent-green);
+        }
+        
+        .error-message {
+            color: var(--accent-red);
+            font-size: 0.8rem;
+            margin-top: var(--spacing-xs);
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Symbol input button states */
+        .add-symbol-btn.cancel-mode {
+            background: linear-gradient(135deg, var(--accent-red), #cc3333);
+        }
+        
+        .add-symbol-btn.cancel-mode:hover {
+            background: linear-gradient(135deg, #ff5555, #bb2222);
+        }
+    </style>
 </head>
 <body>
     <a href="../docs/documentation-hub.html" class="back-link">←</a>
     
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Beacon.</h1>
-            <p class="page-subtitle">Market Data Generator.</p>
+        <div class="header">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+                <h1 style="font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; color: #ffffff; margin-bottom: 0; display: inline;">Beacon.</h1>
+                <h2 style="font-size: 1.5rem; font-weight: 400; color: #00ff64; margin-bottom: 0; align-self: flex-end;">Market Data Generator</h2>
+            </div>
+            <p style="font-size: 1.1rem; color: #cccccc; margin-top: 8px;">Generate realistic market data for backtesting and development</p>
         </div>
 
-        <div class="generator-layout">
+        <div class="main-content">
             <div class="panel">
-                <h2 class="section-title mb-lg">Configuration</h2>
+                <h2 class="section-title mb-lg">Dataset</h2>
                 
                 <div class="form-group">
-                    <label class="field-label">Total Messages</label>
-                    <input type="number" class="input" id="totalMessages" value="10000" min="1000" step="1000">
+                    <label class="field-label">Configuration</label>
+                    <select class="form-input" id="configSelect">
+                        <option value="">Loading configurations...</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
+                    <label class="field-label">Total Messages</label>
+                    <input type="number" class="form-input" id="totalMessages" value="10000" min="1000" step="1000">
+                </div>
+                
+                <div class="separator"></div>
+                
+                <div class="form-group">
                     <label class="field-label">Output Format</label>
-                    <select class="input" id="outputFormat">
+                    <select class="form-input" id="outputFormat">
                         <option value="nsdq">NASDAQ (ITCH v5.0)</option>
                         <option value="nyse">NYSE (Pillar v3.2)</option>
                         <option value="cme">CME (MBO v3.0)</option>
@@ -35,15 +609,19 @@
                     </select>
                 </div>
                 
-                <div class="separator"></div>
-                
                 <div class="form-group">
-                    <label class="field-label">Dataset Filename</label>
-                    <input type="text" id="filenameInput" class="input" placeholder="dataset-marketdata-20251125" value="dataset-marketdata-20251125">
+                    <label class="field-label">Output Filename</label>
+                    <input type="text" id="filenameInput" class="form-input" placeholder="ds-marketdata-20251125.bin" value="ds-marketdata-20251125.bin">
                 </div>
                 
                 <div class="form-group">
                     <button class="btn btn-success w-full" id="generateButton">Generate</button>
+                </div>
+
+                <div class="form-group">
+                    <div id="generateStatus" style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px; font-size: 13px; min-height: 20px; display: none;">
+                        <span id="statusText">Ready to generate...</span>
+                    </div>
                 </div>
             </div>
 
@@ -51,97 +629,378 @@
                 <div class="panel-header">
                     <h2 class="section-title">Symbols</h2>
                     <div style="display: flex; align-items: center;">
-                        <span id="percentageStatus" class="percentage-status status-remaining">100.0% remaining</span>
-                        <div class="add-symbol-container">
-                            <div class="error-message" id="errorMessage"></div>
-                            <input type="text" class="slide-input" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)">
-                            <div class="input-connector" id="inputConnector"></div>
-                            <button class="btn btn-primary" id="addSymbolBtn">+ Add Symbol</button>
-                        </div>
+                        <button class="add-symbol-btn" id="addSymbolBtn" onclick="toggleAddSymbol()">+ Add Symbol</button>
                     </div>
                 </div>
                 
-                <div class="symbols-grid" id="symbolsContainer">
-                    <!-- Dynamically generated by our new architecture -->
+                <div class="add-symbol-container">
+                    <div id="inputConnector" class="input-connector"></div>
+                    <input type="text" id="symbolInput" class="symbol-input" placeholder="Enter symbol (e.g., AAPL)" maxlength="8" onkeypress="if(event.key==='Enter') confirmAddSymbol()">
+                    <div id="errorMessage" class="error-message"></div>
+                </div>
+                
+                <div id="symbolsContainer" class="symbols-container">
+                    <div class="text-center text-muted" style="padding: var(--spacing-lg);">
+                        No symbols added yet. Click "Add Symbol" to get started.
+                    </div>
+                </div>
+                
+                <div class="percentage-remaining">
+                    <span id="percentageDisplay" class="percentage-valid">Remaining: 100.0%</span>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script type="importmap">
-    {
-        "imports": {
-            "config/constants.js": "./config/constants.js",
-            "utils/dom.js": "./utils/dom.js", 
-            "utils/errors.js": "./utils/errors.js",
-            "utils/validation.js": "./utils/validation.js",
-            "components/EditBox.js": "./components/EditBox.js",
-            "components/Button.js": "./components/Button.js", 
-            "components/NotificationSystem.js": "./components/NotificationSystem.js",
-            "services/BackendService.js": "./services/BackendService.js",
-            "generator/GeneratorState.js": "./generator/GeneratorState.js",
-            "generator/Generator.js": "./generator/Generator.js"
-        }
-    }
-    </script>
-    
+
     <script type="module">
-        import { MarketDataGenerator } from 'generator/Generator.js';
+        import { MarketDataGenerator } from './generator-module.js';
         
-        let generator;
-        let inputActive = false;
+        // BRUTAL MODE: Detect demo mode
+        const isLocal = window.location.protocol === 'file:' || 
+                       window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' ||
+                       window.location.hostname === '';
         
-        // Initialize generator when DOM is ready
-        document.addEventListener('DOMContentLoaded', async () => {
+        const isDemoMode = !isLocal;
+        
+        // Add demo banner if in demo mode
+        if (isDemoMode) {
+            const banner = document.createElement('div');
+            banner.className = 'demo-banner';
+            banner.textContent = 'DEMO MODE ONLY';
+            document.body.insertBefore(banner, document.body.firstChild);
+            
+            // Adjust page content for banner
+            document.body.style.paddingTop = '40px';
+        }
+
+        // Initialize and expose globally for onclick handlers
+        window.generator = new MarketDataGenerator();
+        window.generatorInstance = window.generator; // Also expose as generatorInstance for symbol card handlers
+        
+        // Define all functions first
+        window.showStatus = (message, isError = false) => {
+            const statusDiv = document.getElementById('generateStatus');
+            const statusText = document.getElementById('statusText');
+            statusDiv.style.display = 'block';
+            statusText.textContent = message;
+            statusDiv.style.background = isError ? 'rgba(255, 68, 68, 0.15)' : 'rgba(0, 255, 100, 0.15)';
+            statusDiv.style.border = isError ? '1px solid rgba(255, 68, 68, 0.3)' : '1px solid rgba(0, 255, 100, 0.3)';
+        };
+
+        window.getDefaultConfigName = async () => {
             try {
-                generator = new MarketDataGenerator();
-                await generator.initExternal(document.getElementById('symbolsContainer'));
-                
-                // Set up add symbol functionality
-                setupAddSymbolInterface();
-                
-                // Set up generate button
-                setupGenerateButton();
-                
-                console.log('Generator initialized successfully');
-                
-            } catch (error) {
-                console.error('Failed to initialize generator:', error);
-                const container = document.getElementById('symbolsContainer');
-                if (container) {
-                    container.innerHTML = `
-                        <div style="color: var(--color-error); text-align: center; padding: var(--space-xl);">
-                            <h3>Initialization Error</h3>
-                            <p>${error.message}</p>
-                        </div>
-                    `;
+                const response = await fetch('/api/app-directories');
+                if (response.ok) {
+                    const appDirs = await response.json();
+                    return appDirs?.Generator?.Config?.Default || null;
                 }
+            } catch (error) {
+                console.warn('Could not load app directories config:', error);
+            }
+            return null;
+        };
+
+        window.generateDateConfigName = () => {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `cfg-${year}${month}${day}`;
+        };
+
+        window.createDefaultConfig = async (configName) => {
+            try {
+                const defaultConfig = generator.exportConfiguration();
+                const response = await fetch(`/api/config/standalone/${configName}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(defaultConfig)
+                });
+                if (response.ok) {
+                    console.log(`Created new default config: ${configName}`);
+                }
+            } catch (error) {
+                console.warn('Could not create default config:', error);
+            }
+            return false;
+        };
+
+        window.showCorruptFileMessage = () => {
+            const statusDiv = document.getElementById('generateStatus');
+            const statusText = document.getElementById('statusText');
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(255, 255, 255, 0.03)';
+            statusDiv.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            statusText.innerHTML = '<em style="font-size: 11px; color: rgba(255, 255, 255, 0.6); font-style: italic;">File Corrupt. Please Re-Create.</em>';
+        };
+
+        window.deleteCorruptConfig = async (configName) => {
+            try {
+                await fetch(`/api/config/standalone/${configName}`, { method: 'DELETE' });
+                console.log(`Deleted corrupt config: ${configName}`);
+            } catch (error) {
+                console.warn('Could not delete corrupt config:', error);
+            }
+        };
+
+        window.validateConfig = (config) => {
+            if (!config || typeof config !== 'object') return false;
+            if (config.totalMessages && (isNaN(config.totalMessages) || config.totalMessages < 1)) return false;
+            if (config.outputFormat && typeof config.outputFormat !== 'string') return false;
+            if (config.symbols && typeof config.symbols !== 'object') return false;
+            if (config.symbols) {
+                for (const [symbol, data] of Object.entries(config.symbols)) {
+                    if (typeof symbol !== 'string' || !data || typeof data !== 'object') return false;
+                    if (data.percentage !== undefined && (isNaN(data.percentage) || data.percentage < 0 || data.percentage > 100)) return false;
+                }
+            }
+            return true;
+        };
+
+        window.loadSelectedConfig = async (configName) => {
+            if (!configName) return;
+            try {
+                window.showStatus('Loading configuration...');
+                const response = await fetch(`/api/config/standalone/${configName}`);
+                if (response.ok) {
+                    const config = await response.json();
+                    if (!window.validateConfig(config)) {
+                        window.showCorruptFileMessage();
+                        await window.deleteCorruptConfig(configName);
+                        setTimeout(async () => {
+                            const newConfigName = window.generateDateConfigName();
+                            await window.createDefaultConfig(newConfigName);
+                            await loadConfigurations();
+                        }, 3000);
+                        return;
+                    }
+                    generator.clearAllSymbols();
+                    if (config.totalMessages) {
+                        document.getElementById('totalMessages').value = config.totalMessages;
+                    }
+                    if (config.outputFormat) {
+                        document.getElementById('outputFormat').value = config.outputFormat;
+                    }
+                    let filename;
+                    const outputFormat = config.outputFormat || document.getElementById('outputFormat').value;
+                    const extension = outputFormat === 'csv' ? '.csv' : '.bin';
+                    if (configName.startsWith('cfg-')) {
+                        filename = configName.replace('cfg-', 'ds-') + extension;
+                    } else {
+                        filename = 'ds-' + configName + extension;
+                    }
+                    document.getElementById('filenameInput').value = filename;
+                    if (config.symbols) {
+                        for (const [symbol, data] of Object.entries(config.symbols)) {
+                            generator.state.symbols.set(symbol, data);
+                            generator.createSymbolCard(symbol);
+                        }
+                        setTimeout(() => {
+                            for (const symbol of generator.state.symbols.keys()) {
+                                const card = document.querySelector(`[data-symbol="${CSS.escape(symbol)}"]`);
+                                if (card) {
+                                    const priceMinSlider = card.querySelector('.price-min');
+                                    const qtyMinSlider = card.querySelector('.qty-min');
+                                    if (priceMinSlider) generator.updateDualRange(symbol, 'price', priceMinSlider);
+                                    if (qtyMinSlider) generator.updateDualRange(symbol, 'qty', qtyMinSlider);
+                                }
+                            }
+                        }, 100);
+                    }
+                    window.showStatus(`Configuration '${configName}' loaded successfully`);
+                    setTimeout(() => {
+                        document.getElementById('generateStatus').style.display = 'none';
+                    }, 2000);
+                } else {
+                    window.showStatus('Failed to load configuration', true);
+                }
+            } catch (error) {
+                window.showCorruptFileMessage();
+                await window.deleteCorruptConfig(configName);
+                setTimeout(async () => {
+                    const newConfigName = window.generateDateConfigName();
+                    await window.createDefaultConfig(newConfigName);
+                    await loadConfigurations();
+                }, 3000);
+            }
+        };
+
+        async function loadConfigurations() {
+            try {
+                const response = await fetch('/api/configs/standalone');
+                const select = document.getElementById('configSelect');
+                select.innerHTML = '';
+                let configs = [];
+                if (response.ok) {
+                    configs = await response.json();
+                }
+                configs.forEach(config => {
+                    const option = document.createElement('option');
+                    option.value = config.name;
+                    option.textContent = `${config.name}.json`;
+                    select.appendChild(option);
+                });
+                const defaultConfigName = await window.getDefaultConfigName();
+                let configToLoad = null;
+                if (defaultConfigName) {
+                    const defaultName = defaultConfigName.replace('.json', '');
+                    const defaultExists = configs.some(config => config.name === defaultName);
+                    if (defaultExists) {
+                        configToLoad = defaultName;
+                    }
+                }
+                if (!configToLoad) {
+                    const newConfigName = window.generateDateConfigName();
+                    await window.createDefaultConfig(newConfigName);
+                    const option = document.createElement('option');
+                    option.value = newConfigName;
+                    option.textContent = `${newConfigName}.json`;
+                    select.appendChild(option);
+                    select.value = newConfigName;
+                    configToLoad = newConfigName;
+                }
+                if (configToLoad) {
+                    select.value = configToLoad;
+                    await window.loadSelectedConfig(configToLoad);
+                }
+            } catch (error) {
+                console.warn('Could not load configurations:', error);
+                const newConfigName = window.generateDateConfigName();
+                const select = document.getElementById('configSelect');
+                select.innerHTML = `<option value="${newConfigName}" selected>${newConfigName}.json</option>`;
+            }
+        }
+
+        window.generateDataset = async () => {
+            const filenameInput = document.getElementById('filenameInput');
+            const configSelect = document.getElementById('configSelect');
+            const configName = configSelect.value;
+            const filename = filenameInput.value.trim();
+            
+            if (isDemoMode) {
+                window.showStatus('Demo Mode: Download Beacon to generate real datasets', true);
+                return;
+            }
+            
+            if (!configName) {
+                window.showStatus('Please select a configuration', true);
+                return;
+            }
+            
+            try {
+                window.showStatus('Saving configuration...');
+                
+                const config = generator.exportConfiguration();
+                const saveResponse = await fetch(`/api/config/standalone/${configName}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                
+                if (saveResponse.ok) {
+                    window.showStatus('Configuration saved. Starting generator...');
+                    
+                    const generateResponse = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            config_name: configName,
+                            output_filename: filename
+                        })
+                    });
+                    
+                    const result = await generateResponse.json();
+                    
+                    if (result.success) {
+                        window.showStatus(`Generator started (PID: ${result.pid}). Generating dataset...`);
+                        monitorGeneration(filename, configName);
+                    } else {
+                        window.showStatus(`Generation failed: ${result.error || 'Unknown error'}`, true);
+                    }
+                } else {
+                    throw new Error('Failed to save configuration');
+                }
+            } catch (error) {
+                window.showStatus(`Generation failed: ${error.message}`, true);
+            }
+        };
+
+        async function monitorGeneration(filename, configName) {
+            while (true) {
+                try {
+                    const statusResponse = await fetch('/api/status');
+                    const status = await statusResponse.json();
+                    
+                    if (status.running === false) {
+                        if (status.exit_code === 0) {
+                            window.showStatus(`✅ Dataset generation complete! File: ${filename}, Config: ${configName}.json`);
+                        } else {
+                            window.showStatus(`❌ Dataset generation failed! Check generator logs for details.`, true);
+                        }
+                        break;
+                    } else {
+                        window.showStatus(`Generating dataset... (PID: ${status.pid})`);
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                } catch (error) {
+                    console.error('Status check failed:', error);
+                    window.showStatus(`❌ Lost connection to generator process. Generation may still be running in background.`, true);
+                    break;
+                }
+            }
+        }
+        
+        // Add validation function
+        function validateGenerate() {
+            const filename = document.getElementById('filenameInput').value.trim();
+            const generateButton = document.getElementById('generateButton');
+            const hasSymbols = generator.state.symbols.size > 0;
+            const percentageValid = Math.abs(generator.getRemainingPercentage()) < 0.01;
+            const filenameValid = filename.length > 0;
+            
+            // In demo mode, always disable generate button
+            if (isDemoMode) {
+                generateButton.disabled = true;
+                return;
+            }
+            
+            // Combine all validation requirements
+            generateButton.disabled = !(hasSymbols && percentageValid && filenameValid);
+        }
+        
+        window.generator.init();
+        
+        // Set up callback to re-validate when generator state changes
+        window.generator.setUpdateCallback(() => {
+            validateGenerate();
+        });
+        
+        // Initial validation to set proper state
+        validateGenerate();
+        
+        // Monitor filename input for validation
+        document.getElementById('filenameInput').addEventListener('input', validateGenerate);
+        
+        // Add click handler for generate button
+        document.getElementById('generateButton').addEventListener('click', window.generateDataset);
+        
+        // Add change handler for config selector
+        document.getElementById('configSelect').addEventListener('change', (e) => {
+            if (e.target.value) {
+                window.loadSelectedConfig(e.target.value);
             }
         });
         
-        function setupAddSymbolInterface() {
-            const addBtn = document.getElementById('addSymbolBtn');
-            const symbolInput = document.getElementById('symbolInput');
-            
-            addBtn.addEventListener('click', toggleAddSymbol);
-            symbolInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    confirmAddSymbol();
-                } else if (e.key === 'Escape') {
-                    toggleAddSymbol();
-                }
-            });
-            
-            // Hide input when clicking outside
-            document.addEventListener('click', (e) => {
-                const container = e.target.closest('.add-symbol-container');
-                if (!container && inputActive) {
-                    toggleAddSymbol();
-                }
-            });
-        }
+        // Load configurations on page load
+        loadConfigurations();
+
+        // Global functions for HTML onclick handlers
+        let inputActive = false;
         
-        function toggleAddSymbol() {
+        window.toggleAddSymbol = () => {
             const input = document.getElementById('symbolInput');
             const button = document.getElementById('addSymbolBtn');
             const connector = document.getElementById('inputConnector');
@@ -159,65 +1018,69 @@
                 button.textContent = '+ Add Symbol';
                 inputActive = false;
             }
-        }
-        
-        function confirmAddSymbol() {
+        };
+
+        window.showError = (message) => {
+            const input = document.getElementById('symbolInput');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Show error styling
+            input.classList.add('error');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+        };
+
+        window.clearError = () => {
+            const input = document.getElementById('symbolInput');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            input.classList.remove('error');
+            errorMsg.classList.remove('show');
+        };
+
+        window.confirmAddSymbol = () => {
             const input = document.getElementById('symbolInput');
             const button = document.getElementById('addSymbolBtn');
             const connector = document.getElementById('inputConnector');
             const symbolName = input.value.trim().toUpperCase();
             
-            if (symbolName && generator) {
-                const success = generator.addSymbol(symbolName);
-                if (success) {
-                    input.classList.remove('active');
-                    connector.classList.remove('active');
-                    button.textContent = '+ Add Symbol';
-                    inputActive = false;
-                } else {
-                    showError(`Failed to add ${symbolName}`);
+            if (symbolName) {
+                // Call the generator method that now handles duplicates
+                if (generator && generator.addSymbol) {
+                    const success = generator.addSymbol(symbolName);
+                    if (success === false) {
+                        showError('Symbol already added.');
+                        return;
+                    }
                 }
+                input.classList.remove('active');
+                connector.classList.remove('active');
+                button.textContent = '+ Add Symbol';
+                inputActive = false;
             }
-        }
+        };
+
+        // Handle input events
+        document.getElementById('symbolInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmAddSymbol();
+            } else if (e.key === 'Escape') {
+                toggleAddSymbol();
+            }
+        });
         
-        function showError(message) {
-            const input = document.getElementById('symbolInput');
-            const errorMsg = document.getElementById('errorMessage');
-            
-            input.classList.add('error');
-            errorMsg.textContent = message;
-            errorMsg.classList.add('show');
-            
-            setTimeout(() => {
-                input.classList.remove('error');
-                errorMsg.classList.remove('show');
-            }, 3000);
-        }
+        // Clear error when user starts typing
+        document.getElementById('symbolInput').addEventListener('input', () => {
+            clearError();
+        });
         
-        // All symbol management is now handled by the Generator class
-        
-        function setupGenerateButton() {
-            const generateBtn = document.getElementById('generateButton');
-            generateBtn.addEventListener('click', async () => {
-                if (!generator) return;
-                
-                const config = generator.state.exportConfig();
-                const filename = document.getElementById('filenameInput').value.trim() || 'dataset';
-                
-                // Create mock dataset file
-                const content = JSON.stringify(config, null, 2);
-                const blob = new Blob([content], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${filename}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-            });
-        }
-        
-        // Expose generator globally 
-        window.generator = generator;
+        // Hide input when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = e.target.closest('.add-symbol-container');
+            if (!container && inputActive) {
+                toggleAddSymbol();
+            }
+        });
     </script>
 </body>
 </html>

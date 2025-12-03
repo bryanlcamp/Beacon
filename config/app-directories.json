@@ -1,0 +1,15 @@
+{
+  "Generator": {
+    "Config": {
+      "Path": "beacon/usr/config/generator/",
+      "Default": "dscfg-20251129.json"
+    },
+    "Dataset": {
+      "Path": "beacon/usr/datasets/",
+      "Pipeline": "nsdq"
+    },
+    "Binary": {
+      "Path": "beacon/bin/qpps/generator/release/"
+    }
+  }
+}

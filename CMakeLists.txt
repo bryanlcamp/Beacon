@@ -54,11 +54,15 @@ add_library(beacon_utils STATIC
 target_include_directories(beacon_utils PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # Add subdirectories for libraries - with error handling
+
+# Build the unified exchange protocols library (exchange_lib) at the top level
+# This ensures beacon_exchanges is built once and available to all apps
 if(EXISTS ${CMAKE_SOURCE_DIR}/src/libs/exchange_protocols/CMakeLists.txt)
     add_subdirectory(src/libs/exchange_protocols)
-    message(STATUS "Added exchange_protocols")
+    message(STATUS "Added unified exchange_protocols library (beacon_exchanges)")
+    # Apps should link with: target_link_libraries(<app> PRIVATE beacon::exchanges)
 else()
-    message(WARNING "Skipping exchange_protocols - CMakeLists.txt not found")
+    message(WARNING "Skipping exchange_protocols library - CMakeLists.txt not found")
 endif()
 
 # Add subdirectories for applications - with error handling  

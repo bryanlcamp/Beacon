@@ -1,0 +1,11 @@
+{
+  "system_config": "config/system/hft_system.json",
+  "algorithm": {
+    "name": "my_momentum",
+    "config": {
+      "symbol": "AAPL",
+      "window_size": 20,
+      "momentum_threshold": 0.02
+    }
+  }
+}

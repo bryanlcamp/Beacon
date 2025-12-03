@@ -15,131 +15,95 @@
 #include <stdexcept>
 
 #include "../include/ConfigProvider.h"
-#include "exchanges/protocol_common.h"
-#include "../include/serializers/NsdqSerializer.h"
-#include "../include/serializers/CmeSerializer.h"
-#include "../include/serializers/NyseSerializer.h"
-#include "../include/serializers/CsvSerializer.h"
+#include <beacon_exchange/protocol_common.h>  // Use your new exchange library
+#include <nlohmann/json.hpp>
 
-namespace beacon::market_data_generator::config {
+namespace beacon::generator {
 
 ConfigProvider::ConfigProvider(const std::string& outputFilePath)
-    : _outputFilePath(outputFilePath), _exchange(beacon::exchanges::ExchangeType::NASDAQ) {
-    // Default constructor - exchange will be set when config is loaded
+    : _outputFilePath(outputFilePath), _exchange(beacon::exchange::ExchangeType::NASDAQ) {
+    // Updated to use new enum
 }
 
 ConfigProvider::ConfigProvider(const std::string& exchangeType, const std::string& outputFilePath)
     : _outputFilePath(outputFilePath) {
-    // Convert exchange string to lowercase for consistency
     std::string exchangeLower = exchangeType;
     std::transform(exchangeLower.begin(), exchangeLower.end(), exchangeLower.begin(), ::tolower);
     
-    // Convert to enum
-    _exchange = beacon::exchanges::StringToExchangeType(exchangeLower);
+    // Use new exchange library
+    _exchange = beacon::exchange::StringToExchangeType(exchangeLower);
     
-    // Validate exchange type
-    if (_exchange == beacon::exchanges::ExchangeType::INVALID) {
-        const auto validTypes = beacon::exchanges::GetValidExchangeTypes();
-        throw std::invalid_argument(
-            "Invalid exchange type: '" + exchangeType + 
-            "'. Valid exchanges are: '" + std::string{validTypes[0]} + "', '" + std::string{validTypes[1]} + "', '" + std::string{validTypes[2]} + "'."
-        );
+    if (_exchange == beacon::exchange::ExchangeType::INVALID) {
+        throw std::invalid_argument("Invalid exchange type: '" + exchangeType + "'.");
     }
 }
 
-ConfigProvider::ConfigProvider(beacon::exchanges::ExchangeType exchangeType, const std::string& outputFilePath)
+ConfigProvider::ConfigProvider(beacon::exchange::ExchangeType exchangeType, const std::string& outputFilePath)
     : _outputFilePath(outputFilePath), _exchange(exchangeType) {
-    // Validate exchange type
-    if (_exchange == beacon::exchanges::ExchangeType::INVALID) {
+    // Updated to use new enum type
+    if (_exchange == beacon::exchange::ExchangeType::INVALID) {
         throw std::invalid_argument("Invalid exchange type: cannot be INVALID");
     }
 }
 
 bool ConfigProvider::LoadConfig(const std::string& configPath) {
     try {
-        // Load and parse configuration file
-        _configParser = std::make_unique<::market_data_generator::ConfigFileParser>(configPath);
-        
-        // Extract global configuration
-        const auto& globalConfig = _configParser->getGlobalConfig();
-        _messageCount = globalConfig.NumMessages;
-        
-        // Convert exchange string to enum
-        std::string exchangeLower = globalConfig.Exchange;
-        std::transform(exchangeLower.begin(), exchangeLower.end(), exchangeLower.begin(), ::tolower);
-        _exchange = beacon::exchanges::StringToExchangeType(exchangeLower);
-        
-        // Extract optional configuration values
-        if (globalConfig.TradeProbability > 0.0) {
-            _tradeProbability = globalConfig.TradeProbability;
-        }
-        if (globalConfig.FlushInterval > 0) {
-            _flushInterval = globalConfig.FlushInterval;
+        // Replace ConfigFileParser with direct JSON parsing (eliminate redundant class)
+        std::ifstream file(configPath);
+        if (!file.is_open()) {
+            std::cerr << "Could not open configuration file: " << configPath << std::endl;
+            return false;
         }
         
-        // Validate exchange
-        if (_exchange == beacon::exchanges::ExchangeType::INVALID) {
-            const auto validTypes = beacon::exchanges::GetValidExchangeTypes();
-            throw std::runtime_error(
-                "Unsupported exchange: '" + globalConfig.Exchange +
-                "'. Valid exchanges are: '" + std::string{validTypes[0]} + "', '" + std::string{validTypes[1]} + "', '" + std::string{validTypes[2]} + "'."
-            );
-        }
+        nlohmann::json config;
+        file >> config;
         
-        // Convert symbols from ConfigFileParser to ConfigProvider format
-        _symbols.clear();
-        for (const auto& symbol : _configParser->getSymbols()) {
-            SymbolData symbolData;
-            symbolData.symbolName = symbol.SymbolName;
-            symbolData.weight = symbol.PercentTotalMessages; // PercentTotalMessages from JSON
-            symbolData.minPrice = symbol.priceRange.MinPrice;
-            symbolData.maxPrice = symbol.priceRange.MaxPrice;
-            symbolData.spreadPercent = symbol.SpreadPercentage;
+        // Parse settings directly (no ConfigFileParser needed)
+        std::string exchangeStr = config.value("exchange", "nasdaq");
+        std::transform(exchangeStr.begin(), exchangeStr.end(), exchangeStr.begin(), ::tolower);
+        _exchange = beacon::exchange::StringToExchangeType(exchangeStr);
+        
+        _messageCount = config.value("message_count", 10000);
+        _tradeProbability = config.value("trade_probability", 0.1);
+        _flushInterval = config.value("flush_interval", 1000);
+        
+        // Parse symbols array
+        if (config.contains("symbols") && config["symbols"].is_array()) {
+            _symbols.clear();
+            double percentPerSymbol = 100.0 / config["symbols"].size();
             
-            _symbols.push_back(symbolData);
+            for (const auto& symbolName : config["symbols"]) {
+                if (symbolName.is_string()) {
+                    SymbolData symbolData;
+                    symbolData.symbolName = symbolName.get<std::string>();
+                    symbolData.weight = percentPerSymbol;
+                    symbolData.minPrice = 100.0;  // Default values
+                    symbolData.maxPrice = 200.0;
+                    symbolData.spreadPercent = _defaultSpreadPercent;
+                    
+                    _symbols.push_back(symbolData);
+                }
+            }
         }
-
+        
         return true;
         
-    } 
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         std::cerr << "[ConfigProvider] Error loading config: " << e.what() << std::endl;
         return false;
     }
 }
 
-std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> ConfigProvider::CreateSerializer() const {
-    // If CSV mode is enabled, use CSV serializer regardless of exchange type
-    if (_csvMode) {
-        return std::make_unique<beacon::market_data_generator::serializers::CsvMarketDataSerializer>(_outputFilePath);
-    }
-    
-    // Otherwise, use exchange-specific binary serializer
-    using beacon::exchanges::ExchangeType;
-    switch (_exchange) {
-        case ExchangeType::NASDAQ:
-            return std::make_unique<beacon::market_data_generator::serializers::NsdqMarketDataSerializer>(_outputFilePath, _flushInterval);
-            
-        case ExchangeType::CME:
-            return std::make_unique<beacon::market_data_generator::serializers::CmeMarketDataSerializer>(_outputFilePath);
-            
-        case ExchangeType::NYSE:
-            return std::make_unique<beacon::market_data_generator::serializers::NyseMarketDataSerializer>(_outputFilePath);
-            
-        case ExchangeType::INVALID:
-        default:
-            const auto validTypes = beacon::exchanges::GetValidExchangeTypes();
-            throw std::runtime_error(
-                "Unsupported exchange: '" + std::string{beacon::exchanges::ExchangeTypeToString(_exchange)} +
-                "'. Valid exchanges are: '" + std::string{validTypes[0]} + "', '" + std::string{validTypes[1]} + "', '" + std::string{validTypes[2]} + "'. Ensure the exchange is correctly specified in the configuration file."
-            );
-    }
-}
+// DELETE OLD CONFLICTING METHODS - replaced by new unified approach
+// std::unique_ptr<beacon::exchanges::serializers::ISerializeMarketData> ConfigProvider::CreateSerializer() const {
+//     // This method conflicts with the new GetSerializer() that returns UnifiedMarketDataSerializer
+// }
 
-std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> ConfigProvider::GetSerializer() const {
-    return CreateSerializer();
-}
+// std::unique_ptr<beacon::exchanges::serializers::ISerializeMarketData> ConfigProvider::GetSerializer() const {
+//     return CreateSerializer();  // This also conflicts with new approach
+// }
 
+// ...existing getter methods unchanged...
 std::vector<SymbolData> ConfigProvider::GetSymbolsForGeneration() const {
     return _symbols;
 }
@@ -160,14 +124,12 @@ void ConfigProvider::SetCsvMode(bool csvMode) {
     _csvMode = csvMode;
 }
 
-beacon::exchanges::ExchangeType ConfigProvider::GetExchangeType() const noexcept {
+beacon::exchange::ExchangeType ConfigProvider::GetExchangeType() const noexcept {
     return _exchange;
 }
 
 std::string ConfigProvider::GetExchangeTypeString() const noexcept {
-    return std::string{beacon::exchanges::ExchangeTypeToString(_exchange)};
+    return beacon::exchange::ExchangeTypeToString(_exchange);
 }
 
-
-
-} // namespace beacon::market_data_generator::config
+} // namespace beacon::generator::config

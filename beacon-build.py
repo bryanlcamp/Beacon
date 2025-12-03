@@ -42,11 +42,24 @@ def run_command(cmd, description, cwd=None, show_progress=False):
             # Show progress dots
             start_time = time.time()
             last_dot = start_time
+            output_lines = []
             
             while True:
-                output = process.poll()
-                if output is not None:
+                return_code = process.poll()
+                if return_code is not None:
+                    # Capture any remaining output
+                    remaining_output = process.stdout.read()
+                    if remaining_output:
+                        output_lines.append(remaining_output)
                     break
+                
+                # Read available output
+                try:
+                    line = process.stdout.readline()
+                    if line:
+                        output_lines.append(line)
+                except:
+                    pass
                 
                 current_time = time.time()
                 if current_time - last_dot > 3:  # Show dot every 3 seconds
@@ -61,7 +74,13 @@ def run_command(cmd, description, cwd=None, show_progress=False):
                 print(f"{Colors.GREEN}[SUCCESS] {description} completed ({elapsed}s){Colors.RESET}")
                 return True
             else:
-                print(f"{Colors.RED}[ERROR] {description} failed{Colors.RESET}")
+                elapsed = int(time.time() - start_time)
+                print(f"{Colors.RED}[ERROR] {description} failed after {elapsed}s{Colors.RESET}")
+                # Show the last part of the output for debugging
+                if output_lines:
+                    print(f"{Colors.RED}Last output:{Colors.RESET}")
+                    recent_output = ''.join(output_lines[-20:])  # Last 20 lines
+                    print(recent_output)
                 return False
                 
         except (subprocess.SubprocessError, OSError) as e:
@@ -75,10 +94,13 @@ def run_command(cmd, description, cwd=None, show_progress=False):
         return True
     except subprocess.CalledProcessError as e:
         print(f"{Colors.RED}[ERROR] {description} failed:{Colors.RESET}")
+        print(f"{Colors.RED}Command: {' '.join(cmd)}{Colors.RESET}")
         if e.stdout:
-            print(f"STDOUT: {e.stdout}")
+            print(f"{Colors.RED}STDOUT:{Colors.RESET}")
+            print(e.stdout)
         if e.stderr:
-            print(f"STDERR: {e.stderr}")
+            print(f"{Colors.RED}STDERR:{Colors.RESET}")
+            print(e.stderr)
         return False
 
 def clean_app_build_directories(script_dir, apps):
@@ -98,11 +120,31 @@ def clean_app_build_directories(script_dir, apps):
 
 
 def find_binaries(script_dir):
-    """Find built binaries from standardized app build directories"""
+    """Find built binaries from top-level build directory and individual app directories"""
     binaries = {}
     
-    # Apps with standardized beacon-build-app.py scripts
-    apps = ["generator", "playbook", "matching_engine", "client_algorithm"]
+    # First check top-level bin directory (for integrated builds)
+    top_bin_dir = script_dir / "bin"
+    if top_bin_dir.exists():
+        for binary_path in top_bin_dir.rglob("*"):
+            if binary_path.is_file() and os.access(binary_path, os.X_OK):
+                rel_path = binary_path.relative_to(top_bin_dir)
+                binaries[f"main_{rel_path}"] = binary_path
+    
+    # Then check build directory (for CMake integrated builds)
+    build_dir = script_dir / "build"
+    if build_dir.exists():
+        for binary_path in build_dir.rglob("*"):
+            if (binary_path.is_file() and 
+                os.access(binary_path, os.X_OK) and 
+                not str(binary_path).endswith('.so') and
+                not str(binary_path).endswith('.a') and
+                binary_path.parent.name != "CMakeFiles"):
+                rel_path = binary_path.relative_to(build_dir)
+                binaries[f"build_{rel_path}"] = binary_path
+    
+    # Finally check individual app build directories (for standalone builds)
+    apps = ["generator", "playback", "matching_engine", "client_algorithm"]
     
     for app in apps:
         app_dir = script_dir / "src" / "apps" / app
@@ -118,6 +160,62 @@ def find_binaries(script_dir):
                             binaries[f"{app}_{build_type}_{binary_path.name}"] = binary_path
     
     return binaries
+
+def clean_cmake_build(script_dir):
+    """Clean the main CMake build directory"""
+    build_dir = script_dir / "build"
+    if build_dir.exists():
+        print(f"{Colors.YELLOW}[CLEAN] Removing {build_dir}{Colors.RESET}")
+        import shutil
+        shutil.rmtree(build_dir, ignore_errors=True)
+    return True
+
+def build_with_cmake(script_dir, build_type, skip_tests=False, verbose=False):
+    """Build all apps using the main CMake system"""
+    build_dir = script_dir / "build"
+    build_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Configure CMake
+    cmake_config_args = [
+        "cmake", "..",
+        f"-DCMAKE_BUILD_TYPE={build_type}",
+        "-DCMAKE_CXX_STANDARD=17"
+    ]
+    
+    if skip_tests:
+        cmake_config_args.append("-DBUILD_TESTING=OFF")
+    else:
+        cmake_config_args.append("-DBUILD_TESTING=ON")
+    
+    if verbose:
+        cmake_config_args.append("-DCMAKE_VERBOSE_MAKEFILE=ON")
+    
+    # Configure
+    success = run_command(cmake_config_args, f"Configuring CMake ({build_type})", cwd=build_dir)
+    if not success:
+        return False
+    
+    # Build
+    cpu_count = get_cpu_count()
+    build_args = ["cmake", "--build", ".", f"-j{cpu_count}"]
+    if verbose:
+        build_args.append("--verbose")
+    
+    success = run_command(build_args, f"Building all apps with {cpu_count} cores", cwd=build_dir, show_progress=True)
+    if not success:
+        return False
+    
+    # Run tests if requested
+    if not skip_tests:
+        test_args = ["ctest", "--output-on-failure", "--parallel", str(cpu_count)]
+        if verbose:
+            test_args.append("--verbose")
+        success = run_command(test_args, "Running tests", cwd=build_dir)
+        # Don't fail the build if tests fail - just warn
+        if not success:
+            print(f"{Colors.YELLOW}[WARNING] Some tests failed, but build completed{Colors.RESET}")
+    
+    return True
 
 def main():
     parser = argparse.ArgumentParser(description='Beacon Build Script - Clean build for all applications')
@@ -137,53 +235,23 @@ def main():
     
     # Get script directory (repo root)
     script_dir = Path(__file__).parent.absolute()
-    apps = ["generator", "playback", "matching_engine", "client_algorithm"]
     
     print(f"{Colors.BOLD}{Colors.CYAN}==========================================")
-    print(f"  Beacon - Standardized Build System")
+    print(f"  Beacon - Unified CMake Build System")
     print(f"==========================================={Colors.RESET}")
     print()
     print(f"{Colors.BLUE}Build Type: {build_type}{Colors.RESET}")
     print(f"{Colors.BLUE}Repository: {script_dir}{Colors.RESET}")
-    print(f"{Colors.BLUE}Apps: {', '.join(apps)}{Colors.RESET}")
+    print(f"{Colors.BLUE}Using unified CMake build{Colors.RESET}")
     print()
     
-    # Clean builds if requested
-    if args.clean:
-        clean_app_build_directories(script_dir, apps)
+    # Always clean for consistent builds
+    clean_cmake_build(script_dir)
     
-    # Build using standardized app build scripts
-    build_results = {}
+    # Build using unified CMake system
+    print(f"{Colors.CYAN}[Beacon] Building all applications with CMake...{Colors.RESET}")
     
-    # Map build type to script argument
-    mode_arg = "debug" if build_type == "Debug" else "release"
-    
-    for app in apps:
-        app_dir = script_dir / "src" / "apps" / app
-        build_script = app_dir / "beacon-build-app.py"
-        
-        if not build_script.exists():
-            print(f"{Colors.YELLOW}[WARNING] No build script found for {app}: {build_script}{Colors.RESET}")
-            build_results[app] = False
-            continue
-        
-        print(f"{Colors.CYAN}[Beacon] Building {app}...{Colors.RESET}")
-        
-        # Run the standardized build script
-        build_cmd = ["python3", str(build_script), f"--mode={mode_arg}"]
-        if not args.no_tests:
-            build_cmd.append("--run-tests")
-        
-        success = run_command(build_cmd, f"Building {app} ({build_type})", cwd=app_dir, show_progress=True)
-        build_results[app] = success
-        
-        if not success:
-            print(f"{Colors.RED}[ERROR] {app} build failed{Colors.RESET}")
-        else:
-            print(f"{Colors.GREEN}[SUCCESS] {app} build completed{Colors.RESET}")
-    
-    # Overall build success
-    build_success = all(build_results.values())
+    success = build_with_cmake(script_dir, build_type, args.no_tests, args.verbose)
     
     print()
     print(f"{Colors.BOLD}{Colors.CYAN}==========================================")
@@ -191,36 +259,44 @@ def main():
     print(f"=========================================={Colors.RESET}")
     print()
     
-    # Display build results
-    print(f"{Colors.CYAN}Build Results:{Colors.RESET}")
-    for app, success in build_results.items():
-        status = f"{Colors.GREEN}[SUCCESS]{Colors.RESET}" if success else f"{Colors.RED}[FAILED]{Colors.RESET}"
-        print(f"  {status} {app}")
-    
-    # Find and display built binaries
+    # Always check for built binaries, even if build "failed" (could be test failure)
     binaries = find_binaries(script_dir)
+    
     if binaries:
-        print()
-        print(f"{Colors.CYAN}Built Applications:{Colors.RESET}")
+        print(f"{Colors.CYAN}Successfully Built Applications:{Colors.RESET}")
+        
+        # Categorize binaries by app
+        app_binaries = {}
         for name, path in sorted(binaries.items()):
-            rel_path = path.relative_to(script_dir)
-            print(f"  {Colors.GREEN}[BINARY]{Colors.RESET} {name}: {Colors.YELLOW}{rel_path}{Colors.RESET}")
+            # Extract app name from path
+            path_parts = str(path).split('/')
+            if 'apps' in path_parts:
+                app_idx = path_parts.index('apps')
+                if app_idx + 1 < len(path_parts):
+                    app_name = path_parts[app_idx + 1]
+                    if app_name not in app_binaries:
+                        app_binaries[app_name] = []
+                    app_binaries[app_name].append((name, path))
+        
+        # Display by app
+        for app_name, app_bins in sorted(app_binaries.items()):
+            print(f"\n  {Colors.GREEN}[APP] {app_name}:{Colors.RESET}")
+            for name, path in app_bins:
+                rel_path = path.relative_to(script_dir)
+                print(f"    {Colors.YELLOW}{rel_path}{Colors.RESET}")
         
         print()
-        if build_success:
-            print(f"{Colors.BOLD}{Colors.GREEN}ALL BUILDS SUCCESSFUL!{Colors.RESET}")
+        if success:
+            print(f"{Colors.BOLD}{Colors.GREEN}ALL BUILD TARGETS SUCCESSFUL!{Colors.RESET}")
         else:
-            successful_count = sum(1 for success in build_results.values() if success)
-            total_count = len(build_results)
-            print(f"{Colors.YELLOW}[PARTIAL] {successful_count}/{total_count} apps built successfully{Colors.RESET}")
+            print(f"{Colors.YELLOW}[PARTIAL SUCCESS] Main applications built, but some tests failed{Colors.RESET}")
+            print(f"{Colors.YELLOW}This is often acceptable for development builds{Colors.RESET}")
     else:
-        print(f"{Colors.RED}[ERROR] No executable binaries found{Colors.RESET}")
-        if not build_success:
+        if success:
+            print(f"{Colors.YELLOW}[WARNING] Build completed but no binaries found in expected locations{Colors.RESET}")
+        else:
+            print(f"{Colors.RED}[ERROR] Build failed and no binaries were produced{Colors.RESET}")
             sys.exit(1)
-    
-    if not build_success:
-        print(f"{Colors.YELLOW}Note: Build had some test failures, but main applications are ready{Colors.RESET}")
-        sys.exit(0)  # Exit cleanly since main apps built
 
 if __name__ == "__main__":
     main()

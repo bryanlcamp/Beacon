@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Dataset Generator - Professional HFT Platform</title>
+    
+    <style>
+        /* ...existing generator styles... */
+        
+        /* Demo banner styling */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #00aaff;
+            color: #ffffff;
+            text-align: center;
+            padding: 8px 0;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 1000;
+            letter-spacing: 1px;
+            display: none;
+        }
+        
+        body.demo-mode .demo-banner {
+            display: block;
+        }
+        
+        body.demo-mode .beacon-page-header {
+            top: 36px;
+        }
+        
+        body.demo-mode .beacon-page-content {
+            padding-top: 116px;
+        }
+        
+        /* Demo mode generate button styling */
+        body.demo-mode .btn-success {
+            background: rgba(255, 170, 0, 0.15);
+            color: #ffaa00;
+            border-color: rgba(255, 170, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE - Download Beacon for full functionality</div>
+    
+    <!-- ...existing generator content... -->
+
+    <script type="module">
+        // Single source of truth demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled - GitHub Pages detected');
+        }
+        
+        // ...existing generator JavaScript...
+        
+        // Demo mode handling for generate button
+        window.generateDataset = async () => {
+            if (isDemo) {
+                window.showStatus('Demo Mode: Download Beacon for real dataset generation', true);
+                return;
+            }
+            
+            // ...existing generate functionality for localhost...
+        };
+    </script>
+</body>
+</html>

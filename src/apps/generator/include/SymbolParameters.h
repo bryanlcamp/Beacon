@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <string>
 
+namespace beacon::generator {
 // Each symbol must generate messages within this min/max quantity.
 struct QuantityRange {
     uint32_t min_quantity;
@@ -38,3 +39,4 @@ struct SymbolParameters {
     PriceRange price_range; // Singular price range
     QuantityRange quantity_range; // Singular quantity range
 };
+} // namespace beacon::generator    

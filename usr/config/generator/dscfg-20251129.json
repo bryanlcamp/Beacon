@@ -1,0 +1,18 @@
+{
+  "totalMessages": 10000,
+  "outputFormat": "nsdq",
+  "symbols": {
+    "AAPL": {
+      "percentage": 100,
+      "priceMin": 1,
+      "priceMax": 200,
+      "qtyMin": 1,
+      "qtyMax": 100,
+      "spreadPercent": 1,
+      "priceWeight": 0.35,
+      "volumeM": 10,
+      "qtyWeight": 0.45
+    }
+  },
+  "timestamp": "2025-11-29T16:08:13.610Z"
+}

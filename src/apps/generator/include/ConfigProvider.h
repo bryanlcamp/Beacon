@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * Project:      Beacon
- * Application:  exchange_market_data_generator
+ * Application:  generator
  * Purpose:      Provides configuration management for the market data generator,
  *               including parsing JSON config files and instantiating the
  *               appropriate exchange-specific serializer.
@@ -11,14 +11,18 @@
 
 #pragma once
 
-#include "ConfigFileParser.h"
-#include "exchanges/protocol_common.h"
-#include "serializers/MarketDataSerializer.h"
+#include <beacon_exchange/protocol_common.h>
+#include "UnifiedSerializer.h"
 #include <memory>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
-namespace beacon::market_data_generator::config {
+// Use nlohmann/json from your vendor directory - correct path
+#include <nlohmann/json.hpp>
+
+namespace beacon::generator::config {
 
 /// @brief Represents data for a symbol, including its distribution weight and price range.
 struct SymbolData {
@@ -40,21 +44,30 @@ class ConfigProvider {
     /// @param outputFilePath The file path for serialized output.
     ConfigProvider(const std::string& exchangeType, const std::string& outputFilePath);
     
-    /// @brief Constructor with ExchangeType enum.
-    /// @param exchangeType The exchange type as an enum value.
-    /// @param outputFilePath The file path for serialized output.
-    ConfigProvider(beacon::exchanges::ExchangeType exchangeType, const std::string& outputFilePath);
+    /// @brief Constructor with ExchangeType enum using NEW enum.
+    ConfigProvider(beacon::exchange::ExchangeType exchangeType, const std::string& outputFilePath);
 
-    /// @brief Get the current exchange type.
-    /// @return The exchange type as an enum value.
-    [[nodiscard]] beacon::exchanges::ExchangeType GetExchangeType() const noexcept;
+    /**
+     * @brief Get serializer using NEW unified approach
+     */
+    std::unique_ptr<beacon::generator::UnifiedMarketDataSerializer> GetSerializer() const {
+        std::string exchangeStr = beacon::exchange::ExchangeTypeToString(_exchange);
+        return std::make_unique<beacon::generator::UnifiedMarketDataSerializer>(exchangeStr, _outputFilePath);
+    }
+
+    /**
+     * @brief Get exchange type using new exchange library
+     */
+    [[nodiscard]] beacon::exchange::ExchangeType GetExchangeType() const noexcept {
+        return _exchange;
+    }
     
-    /// @brief Get the current exchange type as a string.
-    /// @return The exchange type as a string (e.g., "nsdq", "cme", "nyse").
-    [[nodiscard]] std::string GetExchangeTypeString() const noexcept;
-
-    /// @brief Get the serializer based on the type.
-    std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> GetSerializer() const;
+    /**
+     * @brief Get exchange type string using new exchange library
+     */
+    [[nodiscard]] std::string GetExchangeTypeString() const noexcept {
+        return beacon::exchange::ExchangeTypeToString(_exchange);
+    }
 
     /// @brief Get the symbols for generation.
     /// @return A vector of SymbolData objects.
@@ -72,30 +85,61 @@ class ConfigProvider {
     /// @return The number of messages between buffer flushes.
     size_t GetFlushInterval() const;
 
-    /// @brief Load symbols from a configuration file.
-    /// @param configPath The path to the configuration file.
-    void LoadSymbolsFromConfig(const std::string& configPath);
-
-    /// @brief Load configuration from a file.
-    /// @param configPath The path to the configuration file.
-    bool LoadConfig(const std::string& configPath);
-
-    /// @brief Create a serializer based on the exchange type.
-    std::unique_ptr<beacon::market_data_generator::serializers::IMarketDataSerializer> CreateSerializer() const;
+    /// @brief Load configuration from JSON file (integrated parsing - no ConfigFileParser needed)
+    bool LoadConfig(const std::string& configPath) {
+        std::ifstream file(configPath);
+        if (!file.is_open()) {
+            return false;
+        }
+        
+        nlohmann::json config;
+        try {
+            file >> config;
+            
+            // Parse exchange type
+            if (config.contains("exchange")) {
+                std::string exchangeStr = config["exchange"];
+                _exchange = beacon::exchange::StringToExchangeType(exchangeStr);
+            }
+            
+            // Parse symbols
+            if (config.contains("symbols") && config["symbols"].is_array()) {
+                _symbols.clear();
+                for (const auto& symbolConfig : config["symbols"]) {
+                    SymbolData symbol;
+                    symbol.symbolName = symbolConfig.value("symbol", "");
+                    symbol.weight = symbolConfig.value("weight", 10.0);
+                    symbol.minPrice = symbolConfig.value("min_price", 100.0);
+                    symbol.maxPrice = symbolConfig.value("max_price", 200.0);
+                    symbol.spreadPercent = symbolConfig.value("spread_percent", _defaultSpreadPercent);
+                    _symbols.push_back(symbol);
+                }
+            }
+            
+            // Parse other settings
+            _messageCount = config.value("message_count", _messageCount);
+            _tradeProbability = config.value("trade_probability", _tradeProbability);
+            _flushInterval = config.value("flush_interval", _flushInterval);
+            
+            return true;
+            
+        } catch (const std::exception& e) {
+            std::cerr << "Error parsing config: " << e.what() << std::endl;
+            return false;
+        }
+    }
 
     /// @brief Enable CSV output mode instead of binary exchange format.
     /// @param csvMode True to enable CSV output, false for binary exchange format.
     void SetCsvMode(bool csvMode);
 
-
-
   private:
     std::string _outputFilePath; // The file path for serialized output.
-
-    // Use the new ConfigFileParser
-    std::unique_ptr<::market_data_generator::ConfigFileParser> _configParser;
     
-    beacon::exchanges::ExchangeType _exchange = beacon::exchanges::ExchangeType::INVALID; // The exchange type.
+    // Remove ConfigFileParser dependency - no longer needed
+    // std::unique_ptr<::market_data_generator::ConfigFileParser> _configParser;
+    
+    beacon::exchange::ExchangeType _exchange = beacon::exchange::ExchangeType::INVALID;  // Use new enum
     std::vector<SymbolData> _symbols; // Symbols for generation.
     size_t _messageCount = 10000; // Default message count.
     double _tradeProbability = 0.1; // Default 10% trades.
@@ -104,4 +148,4 @@ class ConfigProvider {
     bool _csvMode = false; // True for CSV output, false for binary
 };
 
-} // namespace beacon::market_data_generator::config
+} // namespace beacon::generator::config

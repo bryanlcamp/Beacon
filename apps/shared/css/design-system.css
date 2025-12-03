@@ -1,0 +1,282 @@
+/**
+ * Beacon HFT Platform - Professional Design System
+ * Preserves your beautiful visual design with professional CSS architecture
+ */
+
+/* Your gorgeous color system - preserved exactly */
+:root {
+    /* Brand Colors */
+    --beacon-primary: #00aaff;
+    --beacon-success: #00ff64;
+    --beacon-warning: #ffaa00;
+    --beacon-error: #ff4444;
+    
+    /* Background System */
+    --bg-primary: linear-gradient(135deg, #0a0a15 0%, #0d1020 25%, #060d28 50%, #0d1020 75%, #0a0a15 100%);
+    --bg-panel: rgba(255, 255, 255, 0.05);
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --bg-overlay: rgba(0, 0, 0, 0.8);
+    
+    /* Border System */
+    --border-primary: rgba(255, 255, 255, 0.1);
+    --border-focus: rgba(0, 170, 255, 0.5);
+    --border-success: rgba(0, 255, 100, 0.3);
+    --border-error: rgba(255, 68, 68, 0.3);
+    
+    /* Text System */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --text-inverse: #000000;
+    
+    /* Spacing System */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    
+    /* Radius System */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Shadow System */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
+    /* Typography System */
+    --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+    
+    /* Animation System */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Base Reset - Professional Foundation */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Your gorgeous body styling - preserved exactly */
+body {
+    font-family: var(--font-family-primary);
+    background: #0a0a15;
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Your stunning geometric light rays - preserved exactly */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
+        linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%),
+        linear-gradient(130deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Professional Typography Scale */
+.beacon-h1 { font-size: 2.5rem; font-weight: var(--font-weight-extrabold); line-height: 1.2; }
+.beacon-h2 { font-size: 2rem; font-weight: var(--font-weight-bold); line-height: 1.3; }
+.beacon-h3 { font-size: 1.75rem; font-weight: var(--font-weight-bold); line-height: 1.4; }
+.beacon-h4 { font-size: 1.5rem; font-weight: var(--font-weight-semibold); line-height: 1.4; }
+.beacon-h5 { font-size: 1.25rem; font-weight: var(--font-weight-semibold); line-height: 1.5; }
+.beacon-h6 { font-size: 1.125rem; font-weight: var(--font-weight-medium); line-height: 1.5; }
+
+.beacon-body-lg { font-size: 1.125rem; line-height: 1.6; }
+.beacon-body { font-size: 1rem; line-height: 1.6; }
+.beacon-body-sm { font-size: 0.875rem; line-height: 1.5; }
+.beacon-caption { font-size: 0.75rem; line-height: 1.4; font-weight: var(--font-weight-medium); }
+
+/* Professional Brand System */
+.beacon-brand {
+    font-size: 6rem;
+    font-weight: var(--font-weight-black);
+    letter-spacing: -3px;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.beacon-brand-sm {
+    font-size: 3rem;
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: -2px;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.beacon-brand-xs {
+    font-size: 2rem;
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: -1px;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+/* Professional Button System */
+.beacon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.beacon-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.beacon-btn-primary {
+    background: rgba(0, 170, 255, 0.15);
+    color: var(--beacon-primary);
+    border-color: rgba(0, 170, 255, 0.3);
+}
+
+.beacon-btn-primary:hover:not(:disabled) {
+    background: rgba(0, 170, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.beacon-btn-success {
+    background: rgba(0, 255, 100, 0.15);
+    color: var(--beacon-success);
+    border-color: var(--border-success);
+}
+
+.beacon-btn-success:hover:not(:disabled) {
+    background: rgba(0, 255, 100, 0.25);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Professional Panel System - Your beautiful panels preserved */
+.beacon-panel {
+    background: var(--bg-panel);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-primary);
+    position: relative;
+    z-index: 2;
+}
+
+.beacon-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Professional Form System */
+.beacon-form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.beacon-form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.beacon-form-input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: all var(--transition-normal);
+}
+
+.beacon-form-input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.1);
+}
+
+/* Professional Layout System */
+.beacon-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    position: relative;
+    z-index: 2;
+}
+
+.beacon-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.beacon-grid-2 { grid-template-columns: 1fr 1fr; }
+.beacon-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.beacon-grid-sidebar { grid-template-columns: 300px 1fr; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .beacon-grid-sidebar { grid-template-columns: 1fr; }
+    .beacon-grid-2, .beacon-grid-3 { grid-template-columns: 1fr; }
+}
+
+/* Professional Utility Classes */
+.beacon-text-center { text-align: center; }
+.beacon-text-right { text-align: right; }
+.beacon-hidden { display: none; }
+.beacon-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* Professional Animation Classes */
+.beacon-fade-in {
+    animation: beaconFadeIn 0.3s ease-in-out;
+}
+
+.beacon-slide-up {
+    animation: beaconSlideUp 0.3s ease-in-out;
+}
+
+@keyframes beaconFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes beaconSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

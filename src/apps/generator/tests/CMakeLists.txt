@@ -44,9 +44,10 @@ set(GENERATOR_SOURCES
     ${GENERATOR_ROOT}/src/MessageGenerator.cpp
     ${GENERATOR_ROOT}/src/StatsManager.cpp
     ${GENERATOR_ROOT}/src/serializers/CsvSerializer.cpp
-    ${GENERATOR_ROOT}/src/serializers/NsdqSerializer.cpp
-    ${GENERATOR_ROOT}/src/serializers/CmeSerializer.cpp
-    ${GENERATOR_ROOT}/src/serializers/NyseSerializer.cpp
+    # Removed scattered serializers - now using unified exchanges library:
+    # ${GENERATOR_ROOT}/src/serializers/NsdqSerializer.cpp  <- DELETED
+    # ${GENERATOR_ROOT}/src/serializers/CmeSerializer.cpp   <- DELETED  
+    # ${GENERATOR_ROOT}/src/serializers/NyseSerializer.cpp  <- DELETED
 )
 
 # Test executable macro
