@@ -5,9 +5,321 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dataset Generator. - Beacon HFT Platform</title>
     
-    <!-- Import shared design system -->
+    <!-- Import shared design system ONLY -->
     <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
-    <link rel="stylesheet" href="./styles/dataset-generator.css">
+    
+    <!-- App-specific styles - minimal overrides only -->
+    <style>
+        /* Dataset Generator specific layout */
+        .app-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .app-container {
+            padding-top: 128px;
+        }
+
+        /* Main panels layout */
+        .main-panels {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        /* Configuration panels */
+        .dataset-config-panel,
+        .product-config-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 0;
+            transition: all var(--transition-normal);
+        }
+
+        .dataset-config-panel:hover,
+        .product-config-panel:hover {
+            border-color: var(--border-accent);
+            background: rgba(0, 170, 255, 0.02);
+        }
+
+        /* Panel headers */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px 12px 0 0;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .panel-header:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .panel-title {
+            color: var(--beacon-primary);
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-bold);
+            margin: 0;
+        }
+
+        /* Panel header controls - for buttons and collapse indicator */
+        .panel-header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-collapse-indicator {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: all var(--transition-normal);
+        }
+
+        /* Panel content */
+        .panel-content {
+            padding: 24px;
+        }
+
+        /* Product cards grid */
+        #productsContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .datacard {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 0;
+            transition: all var(--transition-normal);
+        }
+
+        .datacard:hover {
+            border-color: var(--border-accent);
+            background: rgba(0, 170, 255, 0.05);
+        }
+
+        .datacard-header {
+            background: rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+        }
+
+        .datacard-title {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: var(--font-weight-bold);
+            margin: 0;
+        }
+
+        .datacard-content {
+            padding: 8px 12px;
+        }
+
+        /* Form layouts */
+        .dataset-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .form-row-triple {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Config management row */
+        .config-management-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .config-combo-container {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Compact add symbol button for header */
+        .add-symbol-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 255, 100, 0.2);
+            border: 1px solid rgba(0, 255, 100, 0.4);
+            border-radius: 4px;
+            color: #00ff64;
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-bold);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+
+        .add-symbol-btn:hover:not(:disabled) {
+            background: rgba(0, 255, 100, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 255, 100, 0.3);
+        }
+
+        .add-symbol-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Product panel header layout */
+        .product-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .symbol-input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .add-symbol-input {
+            width: 100%;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all var(--transition-normal);
+            box-sizing: border-box;
+            height: 32px;
+        }
+
+        .add-symbol-input:focus {
+            outline: none;
+            border-color: var(--beacon-primary);
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .add-symbol-input.duplicate {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .symbol-error-msg {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            color: #dc3545;
+            font-size: 0.75rem;
+            margin-top: 2px;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all var(--transition-normal);
+            pointer-events: none;
+        }
+
+        .symbol-error-msg.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .allocation-display {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Panel header with symbol controls - SIMPLIFIED */
+        .panel-header-symbol-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .panel-header-symbol-controls .symbol-input-container {
+            flex: 0.5; /* HALF SIZE - was flex: 1 */
+            position: relative;
+        }
+
+        .panel-header-symbol-controls .add-symbol-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all var(--transition-normal);
+            box-sizing: border-box;
+            height: 36px;
+        }
+
+        .panel-header-symbol-controls .add-symbol-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .panel-header-symbol-controls .add-symbol-input:focus {
+            outline: none;
+            border-color: var(--beacon-primary);
+            background: rgba(0, 170, 255, 0.1);
+            font-style: normal;
+        }
+
+        .panel-header-symbol-controls .add-symbol-input.duplicate {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            font-style: normal;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-panels {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #productsContainer {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,6 +363,31 @@
                     <div class="panel-collapse-indicator">−</div>
                 </div>
                 <div class="panel-content">
+                    <!-- Config Load/Save Row - FIRST LINE - FIXED -->
+                    <div class="config-management-row">
+                        <div class="config-combo-container">
+                            <select class="config-combo" id="configSelect" onchange="DatasetGenerator.handleConfigSelection()">
+                                <option value="" disabled selected>Select or create config...</option>
+                            </select>
+                            <input type="text" class="config-input" id="configInput" 
+                                   placeholder="Enter config name (letters, numbers, _ - only)"
+                                   style="display: none;"
+                                   onkeydown="DatasetGenerator.handleConfigInputKey(event)"
+                                   onblur="DatasetGenerator.handleConfigInputBlur()">
+                        </div>
+                        <button class="config-new-btn" id="configNewBtn" 
+                                onclick="DatasetGenerator.createNewConfig()" 
+                                title="Create new config">+</button>
+                        <button class="config-save-btn" id="configSaveBtn" 
+                                onclick="DatasetGenerator.saveCurrentConfig()" 
+                                title="Save current config"
+                                style="display: none;">💾</button>
+                        <button class="config-cancel-btn" id="configCancelBtn" 
+                                onclick="DatasetGenerator.cancelNewConfig()" 
+                                title="Cancel and go back to dropdown"
+                                style="display: none;">✕</button>
+                    </div>
+
                     <div class="dataset-row">
                         <div class="form-group">
                             <input type="number" class="form-input required-empty" id="numMessagesInput" 
@@ -83,138 +420,61 @@
             <!-- Product Configuration Panel -->
             <div class="product-config-panel" data-panel="product-config">
                 <div class="panel-header" onclick="DatasetGenerator.togglePanel('product-config')">
-                    <h3 class="panel-title">Symbols</h3>
-                    <div class="panel-collapse-indicator">−</div>
-                </div>
-                <div class="panel-content">
-                    <div class="product-panel-header">
+                    <div class="panel-header-symbol-controls" onclick="event.stopPropagation()">
                         <div class="symbol-input-container">
                             <input type="text" class="add-symbol-input" id="symbolInput" 
-                                   placeholder="Enter a Symbol" maxlength="10"
+                                   placeholder="Enter a Product" maxlength="10"
+                                   style="font-style: italic;"
                                    oninput="DatasetGenerator.validateSymbolInput(event)" 
                                    onkeydown="DatasetGenerator.handleSymbolInput(event)">
                             <div class="symbol-error-msg" id="symbolError">Symbol already exists</div>
                         </div>
-                        
-                        <div class="allocation-display">
-                            <span class="allocation-percentage" id="allocationPercentage">100%</span>
-                        </div>
                     </div>
-
+                    
+                    <div class="allocation-display">
+                        <span class="allocation-percentage" id="allocationPercentage">0% Allocated</span>
+                    </div>
+                </div>
+                <div class="panel-content">
                     <div id="productsContainer">
                         <!-- Product cards will be dynamically added here -->
                     </div>
                 </div>
             </div>
         </section>
-    </main>
-    
-    <!-- Scripts -->
+    </main>        <!-- Scripts -->
     <script src="../../../data/market_data.js"></script>
     <script>
-        // Force override with working market data structure
-        console.log('🔧 Setting up guaranteed working market data...');
+        // Let the external market_data.js file handle all symbol definitions
+        console.log('🔧 Market data loaded from external file');
         
-        window.MARKET_DATA = {
-            'AAPL': {
-                name: 'Apple Inc.',
-                sector: 'Technology',
-                simulationProfile: { basePrice: 190.00, volatilityFactor: 0.02, avgDailyVolume: 50000000 },
-                priceRange: { min: 185.00, max: 200.00 },
-                quantityRange: { min: 100, max: 2000 },
-                spreadPercent: 0.02,
-                category: "mega-cap-tech"
-            },
-            'MSFT': {
-                name: 'Microsoft Corporation',
-                sector: 'Technology',
-                simulationProfile: { basePrice: 420.00, volatilityFactor: 0.02, avgDailyVolume: 20000000 },
-                priceRange: { min: 405.00, max: 435.00 },
-                quantityRange: { min: 100, max: 1500 },
-                spreadPercent: 0.02,
-                category: "mega-cap-tech"
-            },
-            'NVDA': {
-                name: 'NVIDIA Corporation',
-                sector: 'Technology',
-                simulationProfile: { basePrice: 890.00, volatilityFactor: 0.04, avgDailyVolume: 45000000 },
-                priceRange: { min: 860.00, max: 920.00 },
-                quantityRange: { min: 25, max: 500 },
-                spreadPercent: 0.04,
-                category: "mega-cap-tech"
-            },
-            'SPY': {
-                name: 'SPDR S&P 500 ETF',
-                sector: 'ETF',
-                simulationProfile: { basePrice: 460.00, volatilityFactor: 0.01, avgDailyVolume: 60000000 },
-                priceRange: { min: 450.00, max: 470.00 },
-                quantityRange: { min: 100, max: 3000 },
-                spreadPercent: 0.01,
-                category: "major-etf"
-            },
-            'TSLA': {
-                name: 'Tesla Inc.',
-                sector: 'Consumer Discretionary',
-                simulationProfile: { basePrice: 250.00, volatilityFactor: 0.06, avgDailyVolume: 75000000 },
-                priceRange: { min: 230.00, max: 270.00 },
-                quantityRange: { min: 50, max: 1000 },
-                spreadPercent: 0.06,
-                category: "high-volatility"
-            },
-            'QQQ': {
-                name: 'Invesco QQQ Trust',
-                sector: 'ETF',
-                simulationProfile: { basePrice: 386.00, volatilityFactor: 0.01, avgDailyVolume: 40000000 },
-                priceRange: { min: 375.00, max: 395.00 },
-                quantityRange: { min: 100, max: 2500 },
-                spreadPercent: 0.01,
-                category: "major-etf"
-            },
-            // Add common symbols that users might try
-            'AMZN': {
-                name: 'Amazon.com Inc.',
-                sector: 'Consumer Discretionary',
-                simulationProfile: { basePrice: 155.00, volatilityFactor: 0.03, avgDailyVolume: 35000000 },
-                priceRange: { min: 150.00, max: 165.00 },
-                quantityRange: { min: 50, max: 800 },
-                spreadPercent: 0.03,
-                category: "mega-cap-tech"
-            },
-            'GOOG': {
-                name: 'Alphabet Inc.',
-                sector: 'Technology',
-                simulationProfile: { basePrice: 175.00, volatilityFactor: 0.025, avgDailyVolume: 25000000 },
-                priceRange: { min: 170.00, max: 185.00 },
-                quantityRange: { min: 100, max: 1000 },
-                spreadPercent: 0.025,
-                category: "mega-cap-tech"
-            }
-        };
-        
-        // Force override MarketDataUtils
-        window.MarketDataUtils = {
-            getSymbol: function(ticker) {
-                const symbol = ticker.toUpperCase();
-                console.log(`🔍 MarketDataUtils.getSymbol called for ${symbol}`);
-                const result = window.MARKET_DATA[symbol];
-                if (result) {
-                    console.log(`✅ Found data for ${symbol}:`, result);
-                    return result;
-                } else {
-                    console.log(`❌ No data found for ${symbol}. Available symbols:`, Object.keys(window.MARKET_DATA));
-                    return null;
+        // Verify the data loaded properly
+        if (typeof window.MARKET_DATA !== 'undefined') {
+            console.log('✅ Market data available:', Object.keys(window.MARKET_DATA));
+        } else {
+            console.warn('⚠️ Market data not loaded - using fallback');
+            // Minimal fallback if external file fails
+            window.MARKET_DATA = {
+                'AAPL': {
+                    priceRange: { min: 185.00, max: 200.00 },
+                    quantityRange: { min: 100, max: 2000 },
+                    spreadPercent: 0.02
                 }
-            },
-            getAllSymbols: function() {
-                return Object.keys(window.MARKET_DATA);
-            }
-        };
+            };
+        }
         
-        console.log('🎯 Market data setup complete. Available symbols:', Object.keys(window.MARKET_DATA));
-        
-        // Test the lookup immediately
-        console.log('🧪 Testing AAPL lookup:', window.MarketDataUtils.getSymbol('AAPL'));
-        console.log('🧪 Testing AMZN lookup:', window.MarketDataUtils.getSymbol('AMZN'));
+        // Ensure MarketDataUtils exists
+        if (typeof window.MarketDataUtils === 'undefined') {
+            window.MarketDataUtils = {
+                getSymbol: function(ticker) {
+                    const symbol = ticker.toUpperCase();
+                    return window.MARKET_DATA[symbol] || null;
+                },
+                getAllSymbols: function() {
+                    return Object.keys(window.MARKET_DATA || {});
+                }
+            };
+        }
     </script>
     <script src="./scripts/dataset-generator.js"></script>
 </body>

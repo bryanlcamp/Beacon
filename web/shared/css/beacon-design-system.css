@@ -482,44 +482,333 @@ body.demo-mode .beacon-page-content {
     color: #ffffff;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .doc-sections {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
+/* ===============================
+   FORM COMPONENTS - UNIVERSAL
+   =============================== */
+
+/* Form Groups and Labels */
+.form-group {
+    margin-bottom: 12px;
 }
 
-@media (max-width: 768px) {
-    body.landing-page {
-        padding: 40px 30px;
-    }
-    
-    .doc-sections {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 0 16px;
-    }
-    
-    .doc-hero h1 {
-        font-size: 2.5rem;
-    }
-    
-    .beacon-search-field {
-        width: 140px;
-    }
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: block;
 }
 
-@media (max-width: 480px) {
-    .beacon-page-nav {
-        padding: 0 16px;
-    }
+/* Form Inputs - COMPACT SIZE */
+.form-input, .form-select {
+    width: 100%;
+    padding: 6px 12px;    /* Compact padding */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.85rem;   /* Smaller font */
+    font-family: inherit;
+    transition: all var(--transition-normal);
+    box-sizing: border-box;
+    height: 32px;         /* Consistent height */
+}
+
+/* FIXED: Proper select dropdown styling */
+.form-select {
+    cursor: pointer;
     
-    .beacon-nav-actions {
-        gap: 12px;
-    }
+    /* Remove default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     
-    .doc-hero h1 {
-        font-size: 2rem;
-    }
+    /* Custom dropdown arrow - smaller */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    padding-right: 28px; /* Make room for smaller arrow */
+}
+
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--beacon-primary);
+    background-color: rgba(0, 170, 255, 0.1);
+}
+
+/* Prevent number input styling on selects */
+.form-select::-webkit-outer-spin-button,
+.form-select::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    display: none !important;
+}
+
+.form-select[type=number] {
+    -moz-appearance: textfield !important;
+}
+
+/* Select options */
+.form-select option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 8px 12px;
+}
+
+/* ===============================
+   BUTTON SYSTEM - UNIVERSAL
+   =============================== */
+
+/* Primary Generate Button */
+.generate-btn {
+    width: 100%;
+    background: rgba(0, 255, 100, 0.2);
+    border: 1px solid rgba(0, 255, 100, 0.4);
+    border-radius: 6px;   /* Slightly larger radius for main action */
+    color: #00ff64;
+    padding: 8px 16px;    /* Compact padding */
+    font-size: 0.9rem;    /* Smaller font */
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    margin-top: 12px;     /* Less margin */
+    text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
+    font-family: inherit;
+    height: 36px;         /* Slightly taller than inputs for emphasis */
+}
+
+.generate-btn:hover:not(:disabled) {
+    background: rgba(0, 255, 100, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(0, 255, 100, 0.3);
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Config Management Buttons - COMPACT SIZE */
+.config-new-btn, .config-save-btn, .config-cancel-btn {
+    width: 32px;          /* Match add-symbol-btn size */
+    height: 32px;         /* Match add-symbol-btn size */
+    border-radius: 4px;   /* Match add-symbol-btn radius */
+    font-size: 1rem;      /* Smaller font */
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid;
+    font-family: inherit;
+}
+
+.config-new-btn {
+    background: rgba(0, 170, 255, 0.2);
+    border-color: rgba(0, 170, 255, 0.4);
+    color: var(--beacon-primary);
+}
+
+.config-new-btn:hover {
+    background: rgba(0, 170, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.config-save-btn {
+    background: rgba(0, 255, 100, 0.2);
+    border-color: rgba(0, 255, 100, 0.4);
+    color: #00ff64;
+}
+
+.config-save-btn:hover {
+    background: rgba(0, 255, 100, 0.3);
+    transform: translateY(-1px);
+}
+
+.config-cancel-btn {
+    background: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.4);
+    color: #dc3545;
+}
+
+.config-cancel-btn:hover {
+    background: rgba(220, 53, 69, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Config Dropdown - COMPACT SIZE */
+.config-combo {
+    width: 100%;
+    height: 32px;         /* Match button height */
+    padding: 6px 32px 6px 12px; /* Compact padding */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.85rem;   /* Smaller font */
+    font-family: inherit;
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    box-sizing: border-box;
+    
+    /* Remove default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Custom dropdown arrow - smaller */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center; /* Closer to edge */
+    background-size: 12px; /* Smaller arrow */
+}
+
+.config-combo:focus {
+    outline: none;
+    border-color: var(--beacon-primary);
+    background-color: rgba(0, 170, 255, 0.1);
+}
+
+.config-combo option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 8px 12px;
+}
+
+/* Prevent number input styling from being applied to select */
+.config-combo::-webkit-outer-spin-button,
+.config-combo::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    display: none !important;
+}
+
+.config-combo[type=number] {
+    -moz-appearance: textfield !important;
+}
+
+/* Config Input - COMPACT SIZE */
+.config-input {
+    width: 100%;
+    height: 32px;         /* Match button height */
+    padding: 6px 12px;    /* Compact padding */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.85rem;   /* Smaller font */
+    font-family: inherit;
+    transition: all var(--transition-normal);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+.config-input:focus {
+    outline: none;
+    border-color: var(--beacon-primary);
+    background: rgba(0, 170, 255, 0.1);
+}
+
+/* Small Controls */
+.percentage-spinner {
+    width: 60px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0 4px;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.percentage-spinner:focus {
+    outline: none;
+    border-color: var(--beacon-primary);
+    background: rgba(0, 170, 255, 0.1);
+}
+
+.remove-btn {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 50%;
+    color: #dc3545;
+    width: 18px;
+    height: 18px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: inherit;
+}
+
+.remove-btn:hover {
+    background: rgba(220, 53, 69, 0.4);
+    transform: scale(1.1);
+}
+
+/* Config State Indicators */
+.config-combo.loaded {
+    border-color: #00ff64;
+    background: rgba(0, 255, 100, 0.05);
+}
+
+.config-combo.modified {
+    border-color: #ffa500;
+    background: rgba(255, 165, 0, 0.05);
+}
+
+/* Allocation Percentage Display - Global and Individual Cards */
+.allocation-percentage {
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-bold);
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-normal);
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    min-width: 80px;
+}
+
+.allocation-percentage.perfect {
+    color: #00ff64 !important;
+    background: rgba(0, 255, 100, 0.1) !important;
+    border-color: rgba(0, 255, 100, 0.3) !important;
+    text-shadow: 0 0 6px rgba(0, 255, 100, 0.4);
+}
+
+.allocation-percentage.error {
+    color: #dc3545 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+    border-color: rgba(220, 53, 69, 0.3) !important;
+    text-shadow: 0 0 6px rgba(220, 53, 69, 0.4);
+}
+
+/* Datacard Controls Layout */
+.datacard-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.percentage-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-medium);
 }

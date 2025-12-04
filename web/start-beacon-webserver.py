@@ -18,19 +18,16 @@ def check_python_version():
     return True
 
 def install_requirements():
-    """Install Flask for proper web server functionality"""
-    requirements = ["flask"]
+    """Install Flask and flask-cors for proper web server functionality"""
+    requirements = ["flask", "flask-cors"]
     
     print("📦 Installing Python dependencies...")
     for package in requirements:
         try:
-            __import__(package)
+            __import__(package.replace('-', '_'))  # flask-cors imports as flask_cors
             print(f"   ✅ {package} already installed")
         except ImportError:
             print(f"   📥 Installing {package}...")
-            # Try different install approaches for cross-platform compatibility
-            install_flags = ["--break-system-packages", "--user"]
-            
             for flags in [["--break-system-packages"], ["--user"], []]:
                 result = subprocess.run([
                     sys.executable, "-m", "pip", "install", package

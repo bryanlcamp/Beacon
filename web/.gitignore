@@ -1,0 +1,33 @@
+# Python cache and temporary files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Don't expose server implementation on GitHub Pages
+scripts/
+
+# Local development files
+.env
+.env.local

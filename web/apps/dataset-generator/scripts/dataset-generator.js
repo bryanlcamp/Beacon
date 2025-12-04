@@ -18,7 +18,9 @@
         // Application state
         productCounter: 0,
         isDemo: false,
-        collapsedPanels: new Set(), // Track which panels are collapsed
+        collapsedPanels: new Set(),
+        currentConfig: null, // Track currently loaded config
+        configModified: false, // Track if config has been modified
         
         // Initialize application
         init: function() {
@@ -36,180 +38,514 @@
         loadInitialSymbols: function() {
             console.log('🔄 Dataset Generator ready - no default symbols loaded');
             this.updateAllocationDisplay();
-            // Panel clicks should work via inline onclick in HTML
+            this.loadAvailableConfigs();
         },
 
-        // Simple toggle function - called directly from HTML onclick
-        togglePanel: function(panelType) {
-            console.log(`🔄 togglePanel called for: ${panelType}`);
-            
-            const panel = document.querySelector(`[data-panel="${panelType}"]`);
-            if (!panel) {
-                console.error(`❌ Panel not found: ${panelType}`);
-                return;
-            }
-            
-            // Simple toggle
-            if (panel.classList.contains('collapsed')) {
-                panel.classList.remove('collapsed');
-                console.log(`📖 Expanded ${panelType}`);
-            } else {
-                panel.classList.add('collapsed');
-                console.log(`📕 Collapsed ${panelType}`);
-            }
-            
-            // Update indicator
-            const indicator = panel.querySelector('.panel-collapse-indicator');
-            if (indicator) {
-                indicator.textContent = panel.classList.contains('collapsed') ? '＋' : '−';
-            }
-        },
-        
-        // Check if symbol already exists
-        symbolExists: function(symbol) {
-            const existingTitles = document.querySelectorAll('.datacard-title');
-            return Array.from(existingTitles).some(title => 
-                title.textContent.trim().toUpperCase() === symbol.toUpperCase()
-            );
-        },
-        
-        // Validate symbol input as user types
-        validateSymbolInput: function(event) {
-            const input = event.target;
-            const symbol = input.value.trim().toUpperCase();
-            const errorMsg = document.getElementById('symbolError');
-            
-            if (!symbol) {
-                input.classList.remove('duplicate');
-                errorMsg.classList.remove('show');
-                return;
-            }
-
-            if (this.symbolExists(symbol)) {
-                input.classList.add('duplicate');
-                errorMsg.textContent = 'Symbol already exists';
-                errorMsg.style.color = '#dc3545';
-                errorMsg.classList.add('show');
-                return;
-            }
-
-            // Allow any symbol - remove market data validation
-            input.classList.remove('duplicate');
-            errorMsg.classList.remove('show');
-        },
-        
-        // Handle symbol input (Enter key)
-        handleSymbolInput: function(event) {
-            if (event.key === 'Enter') {
-                const input = event.target;
-                const symbol = input.value.trim().toUpperCase();
+        // Load available configs from Flask backend
+        loadAvailableConfigs: async function() {
+            try {
+                const flaskUrl = this.isDemo ? 
+                    'https://your-production-flask-server.com' : 
+                    'http://localhost:8080';  // ✅ Fixed port
                 
-                if (!symbol || this.symbolExists(symbol)) return;
+                const response = await fetch(`${flaskUrl}/api/configs`);
+                if (!response.ok) {
+                    console.warn('Could not load configs from Flask server');
+                    return;
+                }
+                
+                const configs = await response.json();
+                this.populateConfigDropdown(configs);
+                console.log('✅ Loaded available configs:', configs);
+                
+            } catch (error) {
+                console.warn('Could not connect to Flask server for configs:', error.message);
+            }
+        },
 
-                // Allow any symbol to be added
-                this.addProductWithSymbol(symbol);
-                input.value = '';
-                input.classList.remove('duplicate');
-                document.getElementById('symbolError').classList.remove('show');
+        // Populate config dropdown with available files
+        populateConfigDropdown: function(configs) {
+            const select = document.getElementById('configSelect');
+            
+            // Clear existing options except placeholder
+            while (select.children.length > 1) {
+                select.removeChild(select.lastChild);
+            }
+            
+            // Add config files
+            configs.forEach(config => {
+                const option = document.createElement('option');
+                option.value = config.name;
+                option.textContent = config.name;
+                select.appendChild(option);
+            });
+        },
+
+        // Handle config selection from dropdown
+        handleConfigSelection: function() {
+            const select = document.getElementById('configSelect');
+            const selectedConfig = select.value;
+            
+            if (selectedConfig && selectedConfig !== this.currentConfig) {
+                console.log(`📂 Loading config: ${selectedConfig}`);
+                this.loadConfig(selectedConfig);
             }
         },
-        
-        // Add product with symbol data - FIXED market data lookup
-        addProductWithSymbol: function(symbol) {
-            let marketData;
+
+        // Create new config mode - IMPROVED: Show cancel button
+        createNewConfig: function() {
+            const select = document.getElementById('configSelect');
+            const input = document.getElementById('configInput');
+            const newBtn = document.getElementById('configNewBtn');
+            const saveBtn = document.getElementById('configSaveBtn');
+            const cancelBtn = document.getElementById('configCancelBtn');
             
-            console.log(`🔍 Looking up market data for ${symbol}...`);
-            console.log(`🔍 MarketDataUtils exists:`, typeof MarketDataUtils !== 'undefined');
-            console.log(`🔍 window.MARKET_DATA exists:`, typeof window.MARKET_DATA !== 'undefined');
+            // Switch to input mode
+            select.style.display = 'none';
+            input.style.display = 'block';
+            input.value = '';
+            input.focus();
             
-            // FIXED: Direct check of window.MARKET_DATA first - this was working before
-            if (window.MARKET_DATA && window.MARKET_DATA[symbol.toUpperCase()]) {
-                const bundled = window.MARKET_DATA[symbol.toUpperCase()];
-                console.log(`✅ Found market data for ${symbol} directly:`, bundled);
-                marketData = {
-                    symbol,
-                    priceRange: bundled.priceRange,
-                    quantityRange: bundled.quantityRange,
-                    spreadPercent: bundled.spreadPercent,
-                    volume: bundled.simulationProfile ? 
-                           Math.round(bundled.simulationProfile.avgDailyVolume / 1000000) : 25
-                };
-            } else {
-                console.log(`⚠️ No direct market data found for ${symbol} in window.MARKET_DATA`);
-                console.log(`🔍 Available symbols in MARKET_DATA:`, window.MARKET_DATA ? Object.keys(window.MARKET_DATA) : 'MARKET_DATA not available');
-            }
+            newBtn.style.display = 'none';
+            saveBtn.style.display = 'flex';
+            cancelBtn.style.display = 'flex';
             
-            // Use generic defaults for any symbol not found in market data
-            if (!marketData) {
-                console.log(`📦 Using generic defaults for ${symbol}`);
-                marketData = {
-                    symbol,
-                    priceRange: { min: 100, max: 200 },
-                    quantityRange: { min: 100, max: 1000 },
-                    spreadPercent: 0.5,
-                    volume: 25
-                };
-            }
+            // Clear current config state
+            this.currentConfig = null;
+            this.configModified = false;
+            this.updateConfigState();
             
-            this.addProductWithMarketData(symbol, marketData);
+            console.log('➕ Switched to new config mode');
         },
-        
-        // Add product card with market data
-        addProductWithMarketData: function(symbol, marketData) {
-            console.log(`📊 Adding ${symbol} with market data`);
-            this.productCounter++;
+
+        // Handle config input key events
+        handleConfigInputKey: function(event) {
+            if (event.key === 'Enter') {
+                this.saveCurrentConfig();
+            } else if (event.key === 'Escape') {
+                this.cancelNewConfig();
+            }
+        },
+
+        // Handle config input blur - FIXED: Allow canceling
+        handleConfigInputBlur: function() {
+            // Allow user to cancel by clicking elsewhere or using escape
+        },
+
+        // Cancel new config creation - IMPROVED: Hide cancel button
+        cancelNewConfig: function() {
+            const select = document.getElementById('configSelect');
+            const input = document.getElementById('configInput');
+            const newBtn = document.getElementById('configNewBtn');
+            const saveBtn = document.getElementById('configSaveBtn');
+            const cancelBtn = document.getElementById('configCancelBtn');
             
-            const priceRange = marketData.priceRange || { min: 100, max: 200 };
-            const quantityRange = marketData.quantityRange || { min: 100, max: 1000 };
-            const spreadPercent = marketData.spreadPercent || 0.5;
-            const volumeM = marketData.volume || 25;
+            // Switch back to dropdown mode
+            select.style.display = 'block';
+            input.style.display = 'none';
             
+            newBtn.style.display = 'flex';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+            
+            // Reset to no selection
+            select.value = '';
+            this.updateConfigState();
+            
+            console.log('❌ Cancelled new config creation');
+        },
+
+        // Validate filename for cross-platform compatibility
+        validateFileName: function(fileName) {
+            // Remove invalid characters: / \ : * ? " < > | $ % ^ ! ` and other special chars
+            // Also remove emojis and non-ASCII characters
+            const cleaned = fileName
+                .replace(/[\/\\:*?"<>|$%^!`~@#&+={}[\]';,]/g, '')  // Remove invalid chars
+                .replace(/[^\x20-\x7E]/g, '')  // Remove non-ASCII (including emojis)
+                .replace(/\s+/g, '_')  // Replace spaces with underscores
+                .trim();
+            
+            // Ensure it's not empty after cleaning
+            return cleaned || 'config';
+        },
+
+        // Save current configuration - FIXED: No validation required for config save
+        saveCurrentConfig: async function() {
+            const input = document.getElementById('configInput');
+            const select = document.getElementById('configSelect');
+            
+            let configName = input.style.display !== 'none' ? 
+                           input.value.trim() : 
+                           select.value;
+            
+            if (!configName) {
+                alert('Please enter a config name');
+                return;
+            }
+            
+            // Clean filename for cross-platform compatibility
+            configName = this.validateFileName(configName);
+            
+            // Strip extension and add .json
+            configName = configName.replace(/\.[^/.]+$/, '') + '.json';
+            
+            // Generate current config - SIMPLIFIED: No form validation required
+            const config = this.generateCurrentConfigForSave(configName);
+            
+            try {
+                await this.saveConfigToFlask(configName, config);
+                
+                // Update UI state
+                this.currentConfig = configName;
+                this.configModified = false;
+                this.updateConfigState();
+                
+                // Refresh dropdown and select the saved config
+                await this.loadAvailableConfigs();
+                select.value = configName;
+                
+                // Switch back to dropdown mode
+                if (input.style.display !== 'none') {
+                    this.cancelNewConfig();
+                    select.value = configName;
+                }
+                
+                console.log(`✅ Saved config: ${configName}`);
+                this.showNotification(`Saved: ${configName}`, 'success');
+                
+            } catch (error) {
+                console.error('❌ Failed to save config:', error);
+                alert(`Failed to save config: ${error.message}`);
+            }
+        },
+
+        // Generate config for saving - NO validation required
+        generateCurrentConfigForSave: function(fileName) {
+            const numMessages = document.getElementById('numMessagesInput').value || '1000';
+            const exchange = document.getElementById('exchangeSelect').value;
+            const saveAs = document.getElementById('saveAsInput').value || 'dataset';
+            
+            // Collect all symbol data (can be empty)
+            const symbols = [];
+            const symbolCards = document.querySelectorAll('.datacard');
+            
+            symbolCards.forEach((card) => {
+                const id = card.id.replace('product-', '');
+                const symbol = card.querySelector('.datacard-title').textContent.trim();
+                const allocation = parseInt(card.querySelector(`#percentage-${id}`).value);
+                
+                const bidMin = parseFloat(document.getElementById(`bidMin-${id}`).value);
+                const bidMax = parseFloat(document.getElementById(`bidMax-${id}`).value);
+                const askMin = parseFloat(document.getElementById(`askMin-${id}`).value);
+                const askMax = parseFloat(document.getElementById(`askMax-${id}`).value);
+                
+                const bidQtyMin = parseInt(document.getElementById(`bidQtyMin-${id}`).value);
+                const bidQtyMax = parseInt(document.getElementById(`bidQtyMax-${id}`).value);
+                const askQtyMin = parseInt(document.getElementById(`askQtyMin-${id}`).value);
+                const askQtyMax = parseInt(document.getElementById(`askQtyMax-${id}`).value);
+                
+                const spread = parseFloat(document.getElementById(`spread-${id}`).value);
+                const volume = parseInt(document.getElementById(`volume-${id}`).value);
+                
+                const bidWeight = parseInt(document.getElementById(`bidWeight-${id}`).value);
+                const askWeight = parseInt(document.getElementById(`askWeight-${id}`).value);
+                const tradePercent = parseInt(document.getElementById(`tradePercent-${id}`).value);
+                
+                symbols.push({
+                    symbol: symbol,
+                    allocation: allocation,
+                    bidPriceRange: { min: bidMin, max: bidMax },
+                    askPriceRange: { min: askMin, max: askMax },
+                    bidQuantityRange: { min: bidQtyMin, max: bidQtyMax },
+                    askQuantityRange: { min: askQtyMin, max: askQtyMax },
+                    spreadPercent: spread,
+                    volumeM: volume,
+                    bidWeightPercent: bidWeight,
+                    askWeightPercent: askWeight,
+                    tradePercent: tradePercent
+                });
+            });
+            
+            return {
+                metadata: {
+                    fileName: fileName.replace('.json', ''),
+                    generatedAt: new Date().toISOString(),
+                    generator: "Beacon HFT Dataset Generator v1.0",
+                    totalMessages: parseInt(numMessages),
+                    exchange: exchange.toUpperCase(),
+                    saveAsName: saveAs
+                },
+                globalSettings: {
+                    messageCount: parseInt(numMessages),
+                    exchange: exchange,
+                    timestampStart: Date.now(),
+                    randomSeed: Math.floor(Math.random() * 1000000)
+                },
+                symbols: symbols,
+                validation: {
+                    totalAllocation: symbols.reduce((sum, s) => sum + s.allocation, 0),
+                    symbolCount: symbols.length
+                }
+            };
+        },
+
+        // Load config from Flask backend
+        loadConfig: async function(configName) {
+            try {
+                const flaskUrl = this.isDemo ? 
+                    'https://your-production-flask-server.com' : 
+                    'http://localhost:8080';  // ✅ Fixed port
+                
+                const response = await fetch(`${flaskUrl}/api/configs/${configName}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const config = await response.json();
+                this.populateFromConfig(config);
+                
+                this.currentConfig = configName;
+                this.configModified = false;
+                this.updateConfigState();
+                
+                console.log(`✅ Loaded config: ${configName}`);
+                this.showNotification(`Loaded: ${configName}`, 'success');
+                
+            } catch (error) {
+                console.error('❌ Failed to load config:', error);
+                alert(`Failed to load config: ${error.message}`);
+            }
+        },
+
+        // Populate UI from config object - FIXED: Handle different config structures
+        populateFromConfig: function(config) {
+            console.log('🔧 Populating from config:', config);
+            
+            // Clear existing symbols
             const container = document.getElementById('productsContainer');
-            const productCard = document.createElement('div');
-            productCard.className = 'datacard';
-            productCard.id = `product-${this.productCounter}`;
+            container.innerHTML = '';
+            this.productCounter = 0;
             
-            // Prevent datacard clicks from bubbling up to panel
-            productCard.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
+            // Handle different config structures from Flask
+            let globalSettings, metadata;
             
-            const midPrice = (priceRange.min + priceRange.max) / 2;
-            const bidMin = Math.round((priceRange.min + midPrice * 0.98) / 2 * 100) / 100;
-            const bidMax = Math.round((midPrice + priceRange.max * 0.98) / 2 * 100) / 100;
-            const askMin = Math.round((priceRange.min * 1.02 + midPrice) / 2 * 100) / 100;
-            const askMax = Math.round((midPrice * 1.02 + priceRange.max) / 2 * 100) / 100;
+            if (config.globalSettings) {
+                // New structure
+                globalSettings = config.globalSettings;
+                metadata = config.metadata || {};
+            } else {
+                // Handle legacy or different structure
+                globalSettings = {
+                    messageCount: config.messageCount || config.totalMessages || 1000,
+                    exchange: config.exchange || 'nasdaq'
+                };
+                metadata = config.metadata || config;
+            }
             
-            // Calculate temporary percentage for new card (will be rebalanced)
-            const totalSymbols = document.querySelectorAll('.datacard').length + 1;
-            const defaultPercentage = Math.round(100 / totalSymbols);
-            const currentId = this.productCounter;
+            console.log('📊 Using globalSettings:', globalSettings);
+            console.log('📋 Using metadata:', metadata);
             
-            productCard.innerHTML = this.generateCardHTML(symbol, currentId, defaultPercentage, {
-                priceRange, quantityRange, spreadPercent, volumeM,
-                bidMin, bidMax, askMin, askMax
-            });
+            // Set global settings with fallbacks
+            const numMessagesInput = document.getElementById('numMessagesInput');
+            const exchangeSelect = document.getElementById('exchangeSelect');
+            const saveAsInput = document.getElementById('saveAsInput');
             
-            container.appendChild(productCard);
+            if (numMessagesInput) {
+                numMessagesInput.value = globalSettings.messageCount || 1000;
+            }
             
-            // Initialize sliders and rebalance percentages after DOM insertion
-            setTimeout(() => {
-                this.initializeSliders(currentId);
-                // Auto-rebalance all percentages to maintain 100% total
-                this.rebalancePercentages();
-            }, 50);
+            if (exchangeSelect) {
+                exchangeSelect.value = (globalSettings.exchange || 'nasdaq').toLowerCase();
+            }
             
-            // Add entrance animation
-            this.animateCardEntrance(productCard);
+            // Set save-as field from metadata if available
+            if (saveAsInput) {
+                const saveAsValue = metadata.saveAsName || metadata.fileName || '';
+                saveAsInput.value = saveAsValue;
+            }
             
-            // Validate form state
+            // Add symbols if they exist
+            if (config.symbols && Array.isArray(config.symbols)) {
+                config.symbols.forEach(symbolConfig => {
+                    this.addSymbolFromConfig(symbolConfig);
+                });
+            } else {
+                console.log('⚠️ No symbols found in config');
+            }
+            
+            // Update form state
+            this.validateNumMessages();
             this.validateForm();
-            
-            // DON'T auto-expand collapsed panels when adding symbols
-            console.log(`✅ Added ${symbol} without changing panel collapse state`);
+            this.updateAllocationDisplay();
         },
 
-        // Generate card HTML template - NEW 3-column layout with probability weights
+        // Add symbol from config object - FIXED: Better error handling
+        addSymbolFromConfig: function(symbolConfig) {
+            try {
+                this.productCounter++;
+                const currentId = this.productCounter;
+                
+                const container = document.getElementById('productsContainer');
+                const productCard = document.createElement('div');
+                productCard.className = 'datacard';
+                productCard.id = `product-${currentId}`;
+                
+                productCard.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Use config values with fallbacks
+                const params = {
+                    priceRange: { 
+                        min: Math.min(
+                            symbolConfig.bidPriceRange?.min || 100, 
+                            symbolConfig.askPriceRange?.min || 100
+                        ),
+                        max: Math.max(
+                            symbolConfig.bidPriceRange?.max || 200, 
+                            symbolConfig.askPriceRange?.max || 200
+                        )
+                    },
+                    quantityRange: {
+                        min: Math.min(
+                            symbolConfig.bidQuantityRange?.min || 100, 
+                            symbolConfig.askQuantityRange?.min || 100
+                        ),
+                        max: Math.max(
+                            symbolConfig.bidQuantityRange?.max || 1000, 
+                            symbolConfig.askQuantityRange?.max || 1000
+                        )
+                    },
+                    spreadPercent: symbolConfig.spreadPercent || 0.5,
+                    volumeM: symbolConfig.volumeM || 25,
+                    bidMin: symbolConfig.bidPriceRange?.min || 100,
+                    bidMax: symbolConfig.bidPriceRange?.max || 150,
+                    askMin: symbolConfig.askPriceRange?.min || 105,
+                    askMax: symbolConfig.askPriceRange?.max || 155
+                };
+                
+                productCard.innerHTML = this.generateCardHTML(
+                    symbolConfig.symbol, 
+                    currentId, 
+                    symbolConfig.allocation || 50, 
+                    params
+                );
+                
+                container.appendChild(productCard);
+                
+                // Set all the values from config with error handling
+                setTimeout(() => {
+                    try {
+                        // Set range values with fallbacks
+                        this.setInputValue(`bidMin-${currentId}`, symbolConfig.bidPriceRange?.min || params.bidMin);
+                        this.setInputValue(`bidMax-${currentId}`, symbolConfig.bidPriceRange?.max || params.bidMax);
+                        this.setInputValue(`askMin-${currentId}`, symbolConfig.askPriceRange?.min || params.askMin);
+                        this.setInputValue(`askMax-${currentId}`, symbolConfig.askPriceRange?.max || params.askMax);
+                        
+                        this.setInputValue(`bidQtyMin-${currentId}`, symbolConfig.bidQuantityRange?.min || 100);
+                        this.setInputValue(`bidQtyMax-${currentId}`, symbolConfig.bidQuantityRange?.max || 500);
+                        this.setInputValue(`askQtyMin-${currentId}`, symbolConfig.askQuantityRange?.min || 120);
+                        this.setInputValue(`askQtyMax-${currentId}`, symbolConfig.askQuantityRange?.max || 600);
+                        
+                        this.setInputValue(`spread-${currentId}`, symbolConfig.spreadPercent || 0.5);
+                        this.setInputValue(`volume-${currentId}`, symbolConfig.volumeM || 25);
+                        
+                        // Set probability weights with fallbacks
+                        this.setInputValue(`bidWeight-${currentId}`, symbolConfig.bidWeightPercent || 50);
+                        this.setInputValue(`askWeight-${currentId}`, symbolConfig.askWeightPercent || 50);
+                        this.setInputValue(`tradePercent-${currentId}`, symbolConfig.tradePercent || 30);
+                        
+                        // Initialize sliders to reflect loaded values
+                        this.initializeSliders(currentId);
+                    } catch (error) {
+                        console.error(`❌ Error setting slider values for ${symbolConfig.symbol}:`, error);
+                    }
+                }, 50);
+                
+                this.animateCardEntrance(productCard);
+                
+            } catch (error) {
+                console.error(`❌ Error adding symbol from config:`, error);
+            }
+        },
+
+        // Helper function to safely set input values
+        setInputValue: function(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element && value !== undefined && value !== null) {
+                element.value = value;
+            }
+        },
+
+        // Save config to Flask backend
+        saveConfigToFlask: async function(configName, config) {
+            const flaskUrl = this.isDemo ? 
+                'https://your-production-flask-server.com' : 
+                'http://localhost:8080';  // ✅ Fixed port
+            
+            const response = await fetch(`${flaskUrl}/api/configs/${configName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            return await response.json();
+        },
+
+        // Update config state visual indicators
+        updateConfigState: function() {
+            const select = document.getElementById('configSelect');
+            
+            select.classList.remove('loaded', 'modified');
+            
+            if (this.currentConfig) {
+                if (this.configModified) {
+                    select.classList.add('modified');
+                } else {
+                    select.classList.add('loaded');
+                }
+            }
+        },
+
+        // Mark config as modified when changes are made
+        markConfigModified: function() {
+            if (this.currentConfig && !this.configModified) {
+                this.configModified = true;
+                this.updateConfigState();
+                console.log('📝 Config marked as modified');
+            }
+        },
+
+        // Show notification message
+        showNotification: function(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 10001;
+                padding: 12px 20px; border-radius: 6px; color: white;
+                font-weight: 600; font-size: 0.9rem; 
+                background: ${type === 'success' ? '#00ff64' : type === 'error' ? '#dc3545' : '#00aaff'};
+                color: ${type === 'success' ? '#000' : '#fff'};
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        },
+
+        // Generate card HTML template - FIXED: Individual allocation display in header
         generateCardHTML: function(symbol, id, percentage, params) {
             return `
                 <div class="datacard-header">
@@ -220,6 +556,7 @@
                                onchange="DatasetGenerator.updatePercentage(${id})" 
                                oninput="DatasetGenerator.updatePercentage(${id})">
                         <span class="percentage-label">%</span>
+                        <span class="allocation-percentage" id="cardAllocation-${id}">${percentage}%</span>
                         <button class="remove-btn" onclick="DatasetGenerator.removeProduct('product-${id}')" title="Remove Product">×</button>
                     </div>
                 </div>
@@ -406,6 +743,8 @@
             
             track.style.left = left + '%';
             track.style.width = (right - left) + '%';
+            
+            this.markConfigModified(); // Mark as modified when changing ranges
         },
         
         // Update single range sliders
@@ -431,6 +770,8 @@
             const percentage = ((value - min) / (max - min)) * 100;
             track.style.left = '0%';
             track.style.width = percentage + '%';
+            
+            this.markConfigModified(); // Mark as modified when changing single ranges
         },
         
         // Update percentage spinner
@@ -448,6 +789,7 @@
             }
             
             this.updateAllocationDisplay();
+            this.markConfigModified(); // Mark as modified when changing percentages
         },
         
         // Rebalance all percentages to always equal 100%
@@ -482,24 +824,45 @@
             console.log(`🔄 Auto-rebalanced ${totalSymbols} symbols to 100% allocation`);
         },
         
-        // Update allocation display
+        // Update allocation display - FIXED: Update both global and individual card displays
         updateAllocationDisplay: function() {
             const allocationDisplay = document.getElementById('allocationPercentage');
-            if (!allocationDisplay) return;
-            
             const total = this.validateTotalPercentage();
             
-            allocationDisplay.textContent = `${total}% Allocated`;
-            
-            // Remove existing classes
-            allocationDisplay.classList.remove('perfect', 'error');
-            
-            // Add appropriate class based on total
-            if (total === 100 && total > 0) {  // Only perfect if we actually have symbols
-                allocationDisplay.classList.add('perfect');
-            } else {
-                allocationDisplay.classList.add('error');
+            // Update global allocation display
+            if (allocationDisplay) {
+                allocationDisplay.textContent = `${total}% Allocated`;
+                allocationDisplay.classList.remove('perfect', 'error');
+                
+                if (total === 100 && total > 0) {
+                    allocationDisplay.classList.add('perfect');
+                } else {
+                    allocationDisplay.classList.add('error');
+                }
             }
+            
+            // Update individual card allocation displays
+            const symbolCards = document.querySelectorAll('.datacard');
+            symbolCards.forEach(card => {
+                const id = card.id.replace('product-', '');
+                const cardAllocationDisplay = document.getElementById(`cardAllocation-${id}`);
+                const spinner = document.getElementById(`percentage-${id}`);
+                
+                if (cardAllocationDisplay && spinner) {
+                    const cardPercentage = parseInt(spinner.value);
+                    cardAllocationDisplay.textContent = `${cardPercentage}%`;
+                    
+                    // Remove existing classes
+                    cardAllocationDisplay.classList.remove('perfect', 'error');
+                    
+                    // Add color based on total allocation state
+                    if (total === 100 && total > 0) {
+                        cardAllocationDisplay.classList.add('perfect');
+                    } else {
+                        cardAllocationDisplay.classList.add('error');
+                    }
+                }
+            });
         },
 
         // Validate total percentage
@@ -530,10 +893,11 @@
                     productCard.remove();
                     this.rebalancePercentages();
                     this.validateForm();
+                    this.markConfigModified(); // Mark as modified when removing symbols
                 }, 300);
             }
         },
-        
+
         // Animate card entrance
         animateCardEntrance: function(card) {
             card.style.opacity = '0';
@@ -544,145 +908,372 @@
                 card.style.transform = 'translateY(0)';
             }, 10);
         },
-        
-        // Form validation
-        validateForm: function() {
-            const numMessages = document.getElementById('numMessagesInput').value.trim();
-            const fileName = document.getElementById('saveAsInput').value.trim();
-            const symbolCount = document.querySelectorAll('.datacard-title').length;
-            const generateBtn = document.getElementById('generateBtn');
-            const saveAsInput = document.getElementById('saveAsInput');
-            
-            const hasMessages = numMessages && parseInt(numMessages) > 0;
-            const hasSymbols = symbolCount > 0;
-            const hasFileName = fileName.length > 0;
-            
-            if (hasFileName) {
-                saveAsInput.className = 'form-input save-as-filled';
-            } else {
-                saveAsInput.className = 'form-input save-as-empty';
-            }
-            
-            if (hasMessages && hasSymbols && hasFileName) {
-                generateBtn.disabled = false;
-                generateBtn.style.opacity = '1';
-                generateBtn.style.cursor = 'pointer';
-            } else {
-                generateBtn.disabled = true;
-                generateBtn.style.opacity = '0.5';
-                generateBtn.style.cursor = 'not-allowed';
-            }
-        },
-        
-        // Validate number of messages
-        validateNumMessages: function() {
-            const input = document.getElementById('numMessagesInput');
-            const value = input.value.trim();
-            
-            if (value === '' || parseInt(value) <= 0) {
-                input.className = 'form-input required-empty';
-            } else {
-                input.className = 'form-input required-filled';
-            }
-            
-            this.validateForm();
-        },
-        
-        // Toggle panel collapse/expand - enhanced logging
-        togglePanel: function(panelType) {
-            console.log(`🔄 togglePanel called for: ${panelType}`);
-            
-            const panel = document.querySelector(`[data-panel="${panelType}"]`);
-            const mainPanels = document.querySelector('.main-panels');
-            
-            if (!panel) {
-                console.error(`❌ Panel not found: ${panelType}`);
-                return;
-            }
-            
-            const isCurrentlyCollapsed = panel.classList.contains('collapsed');
-            console.log(`📋 Panel ${panelType} current state: ${isCurrentlyCollapsed ? 'collapsed' : 'expanded'}`);
-            
-            // Toggle collapsed state
-            if (isCurrentlyCollapsed) {
-                panel.classList.remove('collapsed');
-                this.collapsedPanels.delete(panelType);
-                console.log(`📖 Expanded ${panelType} panel`);
-            } else {
-                panel.classList.add('collapsed');
-                this.collapsedPanels.add(panelType);
-                console.log(`📕 Collapsed ${panelType} panel - keeping headers visible`);
-            }
-            
-            // Update collapse indicator
-            const indicator = panel.querySelector('.panel-collapse-indicator');
-            if (indicator) {
-                if (panel.classList.contains('collapsed')) {
-                    indicator.textContent = '＋';
-                    console.log(`🔄 Changed indicator to: ＋`);
-                } else {
-                    indicator.textContent = '−';
-                    console.log(`🔄 Changed indicator to: −`);
-                }
-            } else {
-                console.warn('⚠️ Collapse indicator not found');
-            }
-            
-            // Update main panels layout if both are collapsed
-            if (this.collapsedPanels.has('dataset-config') && this.collapsedPanels.has('product-config')) {
-                mainPanels.classList.add('both-collapsed');
-                console.log('🔄 Both panels collapsed - switching to single column layout');
-            } else {
-                mainPanels.classList.remove('both-collapsed');
-                console.log('🔄 At least one panel expanded - using two column layout');
-            }
-            
-            // Force layout recalculation
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-                console.log('🔄 Layout recalculation triggered');
-            }, 300);
-        },
 
-        // Generate dataset
-        generateDataset: function() {
+        // Generate current configuration object
+        generateCurrentConfig: function(fileName) {
             const numMessages = document.getElementById('numMessagesInput').value;
             const exchange = document.getElementById('exchangeSelect').value;
-            const fileName = document.getElementById('saveAsInput').value.trim();
             
             if (!numMessages || parseInt(numMessages) <= 0) {
                 alert('Please enter a valid number of messages');
-                return;
-            }
-            
-            if (!fileName) {
-                alert('Please enter a file name');
-                return;
+                return null;
             }
             
             const symbolCount = document.querySelectorAll('.datacard-title').length;
             if (symbolCount === 0) {
                 alert('Please add at least one symbol');
+                return null;
+            }
+            
+            // Collect all symbol data with sophisticated probability parameters
+            const symbols = [];
+            const symbolCards = document.querySelectorAll('.datacard');
+            
+            symbolCards.forEach((card) => {
+                const id = card.id.replace('product-', '');
+                const symbol = card.querySelector('.datacard-title').textContent.trim();
+                const allocation = parseInt(card.querySelector(`#percentage-${id}`).value);
+                
+                // Extract all the sophisticated parameters
+                const bidMin = parseFloat(document.getElementById(`bidMin-${id}`).value);
+                const bidMax = parseFloat(document.getElementById(`bidMax-${id}`).value);
+                const askMin = parseFloat(document.getElementById(`askMin-${id}`).value);
+                const askMax = parseFloat(document.getElementById(`askMax-${id}`).value);
+                
+                const bidQtyMin = parseInt(document.getElementById(`bidQtyMin-${id}`).value);
+                const bidQtyMax = parseInt(document.getElementById(`bidQtyMax-${id}`).value);
+                const askQtyMin = parseInt(document.getElementById(`askQtyMin-${id}`).value);
+                const askQtyMax = parseInt(document.getElementById(`askQtyMax-${id}`).value);
+                
+                const spread = parseFloat(document.getElementById(`spread-${id}`).value);
+                const volume = parseInt(document.getElementById(`volume-${id}`).value);
+                
+                // The sophisticated probability weights that quants want
+                const bidWeight = parseInt(document.getElementById(`bidWeight-${id}`).value);
+                const askWeight = parseInt(document.getElementById(`askWeight-${id}`).value);
+                const tradePercent = parseInt(document.getElementById(`tradePercent-${id}`).value);
+                
+                symbols.push({
+                    symbol: symbol,
+                    allocation: allocation,
+                    bidPriceRange: { min: bidMin, max: bidMax },
+                    askPriceRange: { min: askMin, max: askMax },
+                    bidQuantityRange: { min: bidQtyMin, max: bidQtyMax },
+                    askQuantityRange: { min: askQtyMin, max: askQtyMax },
+                    spreadPercent: spread,
+                    volumeM: volume,
+                    // Probability distribution controls for sophisticated market simulation
+                    bidWeightPercent: bidWeight,     // Distribution bias for bid prices
+                    askWeightPercent: askWeight,     // Distribution bias for ask prices  
+                    tradePercent: tradePercent       // Percentage of messages that are trades vs quotes
+                });
+            });
+            
+            // Generate the complete dataset configuration JSON
+            const datasetConfig = {
+                metadata: {
+                    fileName: fileName.replace('.json', ''),
+                    generatedAt: new Date().toISOString(),
+                    generator: "Beacon HFT Dataset Generator v1.0",
+                    totalMessages: parseInt(numMessages),
+                    exchange: exchange.toUpperCase()
+                },
+                globalSettings: {
+                    messageCount: parseInt(numMessages),
+                    exchange: exchange,
+                    timestampStart: Date.now(),
+                    randomSeed: Math.floor(Math.random() * 1000000) // For reproducible datasets
+                },
+                symbols: symbols,
+                validation: {
+                    totalAllocation: symbols.reduce((sum, s) => sum + s.allocation, 0),
+                    symbolCount: symbols.length
+                }
+            };
+            
+            return datasetConfig;
+        },
+
+        // Check if symbol already exists
+        symbolExists: function(symbol) {
+            const existingTitles = document.querySelectorAll('.datacard-title');
+            return Array.from(existingTitles).some(title => 
+                title.textContent.trim().toUpperCase() === symbol.toUpperCase()
+            );
+        },
+        
+        // Validate symbol input as user types
+        validateSymbolInput: function(event) {
+            const input = event.target;
+            const symbol = input.value.trim().toUpperCase();
+            const errorMsg = document.getElementById('symbolError');
+            
+            if (!symbol) {
+                input.classList.remove('duplicate');
+                errorMsg.classList.remove('show');
+                return;
+            }
+
+            if (this.symbolExists(symbol)) {
+                input.classList.add('duplicate');
+                errorMsg.textContent = 'Symbol already exists';
+                errorMsg.style.color = '#dc3545';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            // Allow any symbol - remove market data validation
+            input.classList.remove('duplicate');
+            errorMsg.classList.remove('show');
+        },
+        
+        // Handle symbol input (Enter key) - ENHANCED for button-less design
+        handleSymbolInput: function(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const symbol = input.value.trim().toUpperCase();
+                
+                if (!symbol || this.symbolExists(symbol)) return;
+
+                // Add the symbol
+                this.addProductWithSymbol(symbol);
+                
+                // Clear input and remove any error styling
+                input.value = '';
+                input.classList.remove('duplicate');
+                input.style.fontStyle = 'italic'; // Restore italic placeholder style
+                document.getElementById('symbolError').classList.remove('show');
+                
+                console.log(`✅ Added symbol ${symbol} via Enter key`);
+            }
+        },
+        
+        // Add product with symbol data
+        addProductWithSymbol: function(symbol) {
+            let marketData;
+            
+            console.log(`🔍 Looking up market data for ${symbol}...`);
+            console.log(`🔍 MarketDataUtils exists:`, typeof MarketDataUtils !== 'undefined');
+            console.log(`🔍 window.MARKET_DATA exists:`, typeof window.MARKET_DATA !== 'undefined');
+            
+            // Direct check of window.MARKET_DATA first
+            if (window.MARKET_DATA && window.MARKET_DATA[symbol.toUpperCase()]) {
+                const bundled = window.MARKET_DATA[symbol.toUpperCase()];
+                console.log(`✅ Found market data for ${symbol} directly:`, bundled);
+                marketData = {
+                    symbol,
+                    priceRange: bundled.priceRange,
+                    quantityRange: bundled.quantityRange,
+                    spreadPercent: bundled.spreadPercent,
+                    volume: bundled.simulationProfile ? 
+                           Math.round(bundled.simulationProfile.avgDailyVolume / 1000000) : 25
+                };
+            } else {
+                console.log(`⚠️ No direct market data found for ${symbol} in window.MARKET_DATA`);
+                console.log(`🔍 Available symbols in MARKET_DATA:`, window.MARKET_DATA ? Object.keys(window.MARKET_DATA) : 'MARKET_DATA not available');
+            }
+            
+            // Use generic defaults for any symbol not found in market data
+            if (!marketData) {
+                console.log(`📦 Using generic defaults for ${symbol}`);
+                marketData = {
+                    symbol,
+                    priceRange: { min: 100, max: 200 },
+                    quantityRange: { min: 100, max: 1000 },
+                    spreadPercent: 0.5,
+                    volume: 25
+                };
+            }
+            
+            this.addProductWithMarketData(symbol, marketData);
+        },
+
+        // Missing function: Toggle panel collapse/expand
+        togglePanel: function(panelType) {
+            const panel = document.querySelector(`[data-panel="${panelType}"]`);
+            const indicator = panel.querySelector('.panel-collapse-indicator');
+            
+            if (this.collapsedPanels.has(panelType)) {
+                // Expand panel
+                panel.classList.remove('collapsed');
+                indicator.textContent = '−';
+                this.collapsedPanels.delete(panelType);
+                console.log(`📖 Expanded ${panelType} panel`);
+            } else {
+                // Collapse panel
+                panel.classList.add('collapsed');
+                indicator.textContent = '+';
+                this.collapsedPanels.add(panelType);
+                console.log(`📕 Collapsed ${panelType} panel`);
+            }
+        },
+
+        // Missing function: Validate number of messages
+        validateNumMessages: function() {
+            const input = document.getElementById('numMessagesInput');
+            const value = parseInt(input.value);
+            
+            if (!value || value <= 0) {
+                input.classList.remove('required-filled');
+                input.classList.add('required-empty');
+            } else {
+                input.classList.remove('required-empty');
+                input.classList.add('required-filled');
+            }
+            
+            this.validateForm();
+            this.markConfigModified();
+        },
+
+        // Missing function: Overall form validation
+        validateForm: function() {
+            const numMessages = document.getElementById('numMessagesInput').value;
+            const saveAs = document.getElementById('saveAsInput').value;
+            const generateBtn = document.getElementById('generateBtn');
+            const symbolCount = document.querySelectorAll('.datacard').length;
+            
+            // Save As validation
+            const saveAsInput = document.getElementById('saveAsInput');
+            if (!saveAs.trim()) {
+                saveAsInput.classList.remove('save-as-filled');
+                saveAsInput.classList.add('save-as-empty');
+            } else {
+                saveAsInput.classList.remove('save-as-empty');
+                saveAsInput.classList.add('save-as-filled');
+            }
+            
+            // Enable generate button if all conditions met
+            const isValid = numMessages && parseInt(numMessages) > 0 && 
+                          saveAs.trim() && symbolCount > 0;
+            
+            generateBtn.disabled = !isValid;
+            
+            if (isValid) {
+                generateBtn.style.opacity = '1';
+                generateBtn.style.cursor = 'pointer';
+            } else {
+                generateBtn.style.opacity = '0.5';
+                generateBtn.style.cursor = 'not-allowed';
+            }
+        },
+
+        // Missing function: Generate dataset (final step)
+        generateDataset: async function() {
+            const saveAs = document.getElementById('saveAsInput').value.trim();
+            
+            if (!saveAs) {
+                alert('Please enter a "Save As" name for the dataset');
                 return;
             }
             
-            const symbols = Array.from(document.querySelectorAll('.datacard-title')).map(el => 
-                el.textContent.trim()
+            // Generate the complete configuration
+            const config = this.generateCurrentConfig(saveAs);
+            if (!config) return;
+            
+            try {
+                // Send to Flask for C++ generation
+                const flaskUrl = this.isDemo ? 
+                    'https://your-production-flask-server.com' : 
+                    'http://localhost:8080';
+                
+                const response = await fetch(`${flaskUrl}/api/generate-config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        fileName: saveAs,
+                        config: config
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                console.log('🚀 Dataset generation initiated:', result);
+                this.showNotification(`Dataset "${saveAs}" ready for generation!`, 'success');
+                
+                // In demo mode, just show success - FIXED: Missing opening parenthesis
+                if (this.isDemo) {
+                    alert(`Demo: Dataset "${saveAs}" would be generated with ${config.symbols.length} symbols and ${config.globalSettings.messageCount} messages.`);
+                } else {
+                    alert(`Configuration created: ${result.filePath}\n\nNext: Run your C++ generator with this config file.`);
+                }
+                
+            } catch (error) {
+                console.error('❌ Dataset generation failed:', error);
+                alert(`Failed to generate dataset: ${error.message}`);
+            }
+        },
+
+        // Missing function: Add product with market data (completion of the flow)
+        addProductWithMarketData: function(symbol, marketData) {
+            this.productCounter++;
+            const currentId = this.productCounter;
+            
+            // Calculate balanced percentage for new symbol
+            const existingSymbols = document.querySelectorAll('.datacard').length;
+            const balancedPercentage = Math.floor(100 / (existingSymbols + 1));
+            
+            const container = document.getElementById('productsContainer');
+            const productCard = document.createElement('div');
+            productCard.className = 'datacard';
+            productCard.id = `product-${currentId}`;
+            
+            // Generate the 3-column card with all sliders
+            productCard.innerHTML = this.generateCardHTML(
+                symbol, 
+                currentId, 
+                balancedPercentage, 
+                marketData
             );
             
-            const datasetConfig = {
-                fileName: fileName,
-                numMessages: parseInt(numMessages),
-                exchange: exchange,
-                symbols: symbols,
-                timestamp: new Date().toISOString()
-            };
+            container.appendChild(productCard);
             
-            console.log('🚀 Generating dataset:', datasetConfig);
+            // Initialize all sliders for the new card
+            setTimeout(() => {
+                this.initializeSliders(currentId);
+                this.rebalancePercentages(); // Auto-balance all symbols
+                this.validateForm(); // Check if generate button should be enabled
+                this.markConfigModified(); // Mark as modified
+            }, 50);
             
-            // Here you would integrate with your C++ backend
-            alert(`Dataset generation started!\nFile: ${fileName}\nMessages: ${numMessages}\nExchange: ${exchange}\nSymbols: ${symbols.join(', ')}`);
-        }
+            this.animateCardEntrance(productCard);
+            
+            console.log(`✅ Added ${symbol} with ${balancedPercentage}% allocation`);
+        },
+
+        // Missing function: Add symbol from input field (+ button click)
+        addSymbolFromInput: function() {
+            const input = document.getElementById('symbolInput');
+            const symbol = input.value.trim().toUpperCase();
+            
+            if (!symbol) {
+                alert('Please enter a symbol');
+                input.focus();
+                return;
+            }
+            
+            if (this.symbolExists(symbol)) {
+                alert('Symbol already exists');
+                input.focus();
+                return;
+            }
+            
+            // Add the symbol
+            this.addProductWithSymbol(symbol);
+            
+            // Clear input and remove any error styling
+            input.value = '';
+            input.classList.remove('duplicate');
+            document.getElementById('symbolError').classList.remove('show');
+            
+            console.log(`✅ Added symbol ${symbol} via + button`);
+        },
+
     };
     
     // Initialize when DOM is ready
