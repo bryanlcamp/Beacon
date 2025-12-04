@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Guide - Professional HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Page-specific overrides - clean and minimal */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        .installation-steps {
+            margin: 32px 0;
+        }
+
+        .step-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid rgba(0, 170, 255, 0.4);
+            border-radius: 50%;
+            color: #00aaff;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-right: 16px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 16px;
+            margin: 12px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: #ffffff;
+        }
+
+        .platform-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .platform-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .platform-tab.active {
+            color: #00aaff;
+            border-bottom-color: #00aaff;
+        }
+
+        .platform-content {
+            display: none;
+        }
+
+        .platform-content.active {
+            display: block;
+        }
+
+        .warning-note {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .warning-note h4 {
+            color: #ffc107;
+            margin: 0 0 8px 0;
+        }
+
+        .success-note {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .success-note h4 {
+            color: #28a745;
+            margin: 0 0 8px 0;
+        }
+    </style>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">INSTALLATION GUIDE IS RUNNING IN DEMO MODE</div>
+    
+    <!-- Professional Fixed Header -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Installation Guide</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+                <div class="beacon-search">
+                    <input type="text" class="beacon-search-field" placeholder="Search" onkeyup="performSearch(this.value)" onfocus="showSearchIfResults()" onblur="hideSearchDelayed()">
+                    <div class="beacon-search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="beacon-page-content">
+        <!-- Hero Section -->
+        <section class="doc-hero">
+            <h1>Installation Guide</h1>
+            <p>Get Beacon running on your system in minutes with production-grade performance.</p>
+        </section>
+
+        <!-- Installation Content -->
+        <section class="doc-content">
+            <div class="performance-note">
+                <h3>Prerequisites</h3>
+                <p>Before installing, ensure your system meets the <a href="system-requirements.html" style="color: #00aaff;">System Requirements</a> for optimal 4.5μs tick-to-trade performance.</p>
+            </div>
+
+            <div class="installation-steps">
+                <div class="step-item">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Clone the Repository</h3>
+                    </div>
+                    <p>Download the Beacon source code from the official repository:</p>
+                    <div class="code-block">
+                        <code>git clone https://github.com/bryanlcamp/beacon.git
+cd beacon</code>
+                    </div>
+                    <p>This will create a local copy of the Beacon platform with all source code, documentation, and build scripts.</p>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Install Dependencies</h3>
+                    </div>
+                    
+                    <div class="platform-tabs">
+                        <button class="platform-tab active" onclick="showPlatform('macos')">macOS</button>
+                        <button class="platform-tab" onclick="showPlatform('ubuntu')">Ubuntu/Debian</button>
+                        <button class="platform-tab" onclick="showPlatform('centos')">CentOS/RHEL</button>
+                    </div>
+
+                    <div id="macos" class="platform-content active">
+                        <p>Install build tools using Homebrew:</p>
+                        <div class="code-block">
+                            <code># Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install required dependencies
+brew install cmake gcc git python3</code>
+                        </div>
+                    </div>
+
+                    <div id="ubuntu" class="platform-content">
+                        <p>Install build tools using apt:</p>
+                        <div class="code-block">
+                            <code># Update package manager
+sudo apt update
+
+# Install required dependencies
+sudo apt install -y build-essential cmake git python3 python3-pip</code>
+                        </div>
+                    </div>
+
+                    <div id="centos" class="platform-content">
+                        <p>Install build tools using yum/dnf:</p>
+                        <div class="code-block">
+                            <code># For CentOS 8+ / RHEL 8+
+sudo dnf groupinstall -y "Development Tools"
+sudo dnf install -y cmake git python3
+
+# For CentOS 7 / RHEL 7
+sudo yum groupinstall -y "Development Tools"
+sudo yum install -y cmake3 git python3</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Build Beacon</h3>
+                    </div>
+                    <p>Compile Beacon with optimizations for maximum performance:</p>
+                    <div class="code-block">
+                        <code># Create build directory
+mkdir build && cd build
+
+# Configure with release optimizations
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_OPTIMIZATIONS=ON
+
+# Build (use all available cores)
+make -j$(nproc)</code>
+                    </div>
+                    <div class="success-note">
+                        <h4>Performance Tip</h4>
+                        <p>The Release build includes profile-guided optimization (PGO) and CPU-specific optimizations for maximum performance.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Verify Installation</h3>
+                    </div>
+                    <p>Run the test suite to ensure everything is working correctly:</p>
+                    <div class="code-block">
+                        <code># Run unit tests
+make test
+
+# Run performance benchmarks
+./bin/beacon_benchmark
+
+# Start the web interface
+./bin/beacon_server --port 8080</code>
+                    </div>
+                    <p>If all tests pass, navigate to <code>http://localhost:8080</code> to access the Beacon web interface.</p>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h3 class="step-title">Configure for Production</h3>
+                    </div>
+                    <p>For production deployments, optimize system settings:</p>
+                    <div class="code-block">
+                        <code># Set CPU governor to performance
+echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+# Disable CPU power management
+sudo systemctl mask sleep.target suspend.target
+
+# Configure network optimizations
+sudo sysctl -w net.core.rmem_max=134217728
+sudo sysctl -w net.core.wmem_max=134217728</code>
+                    </div>
+                    <div class="warning-note">
+                        <h4>Production Note</h4>
+                        <p>These optimizations require root access and will affect system-wide performance. Review your organization's policies before applying.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Quick Start</h2>
+            <p>Once installed, you can immediately start testing algorithms:</p>
+
+            <div class="code-block">
+                <code># Generate sample market data
+./bin/dataset_generator --symbol AAPL --duration 60m --output sample_data.bin
+
+# Start market data playback
+./bin/market_data_playback --input sample_data.bin --protocol nasdaq
+
+# Connect your algorithm (in another terminal)
+./bin/your_algorithm --connect localhost:5555</code>
+            </div>
+
+            <h2>Troubleshooting</h2>
+            <ul style="margin: 16px 0; padding-left: 0; list-style: none;">
+                <li style="margin-bottom: 12px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Build Errors:</strong> Ensure GCC 9.0+ or Clang 10.0+ is installed
+                </li>
+                <li style="margin-bottom: 12px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Permission Issues:</strong> Run with appropriate sudo privileges for system optimizations
+                </li>
+                <li style="margin-bottom: 12px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Performance Issues:</strong> Verify system meets minimum requirements
+                </li>
+                <li style="margin-bottom: 12px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Network Issues:</strong> Check firewall settings for UDP/TCP ports
+                </li>
+            </ul>
+
+            <h2>Next Steps</h2>
+            <p>Ready to start building? Learn about <a href="what-is-beacon.html" style="color: #00aaff;">What is Beacon?</a> or jump straight into the <a href="../index.html" style="color: #00aaff;">Command Center</a> to explore all available modules.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Single source of truth demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled - GitHub Pages detected');
+        } else {
+            console.log('🏠 Local mode - Full functionality available');
+        }
+        
+        // Platform tab functionality
+        function showPlatform(platform) {
+            // Hide all platform contents
+            document.querySelectorAll('.platform-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected platform content
+            document.getElementById(platform).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Standard search functionality for all pages
+        function showSearchIfResults() {
+            const query = document.querySelector('.beacon-search-field').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 300);
+        }
+
+        function performSearch(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                results.style.display = 'none';
+                return;
+            }
+
+            // Standard search results for all pages
+            const mockResults = [
+                {
+                    title: "What is Beacon?",
+                    section: "Getting Started",
+                    snippet: "Professional HFT simulation platform built for speed, precision...",
+                    url: "what-is-beacon.html"
+                },
+                {
+                    title: "System Requirements",
+                    section: "Getting Started",
+                    snippet: "Hardware and software specifications for optimal performance...",
+                    url: "system-requirements.html"
+                },
+                {
+                    title: "Installation Guide",
+                    section: "Getting Started",
+                    snippet: "Get Beacon running on your system in minutes...",
+                    url: "installation.html"
+                },
+                {
+                    title: "Dataset Generator",
+                    section: "Applications",
+                    snippet: "Generate realistic market data in native exchange protocols...",
+                    url: "../../apps/dataset-generator/"
+                },
+                {
+                    title: "Git Clone",
+                    section: "Installation",
+                    snippet: "Clone the Beacon repository and install dependencies...",
+                    url: "installation.html"
+                }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (mockResults.length > 0) {
+                results.innerHTML = mockResults.map(result => `
+                    <div class="search-result" onclick="window.location.href='${result.url}'" style="cursor: pointer;">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-section">${result.section}</div>
+                        <div class="result-snippet">${result.snippet}</div>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

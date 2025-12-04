@@ -3,69 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon Dataset Generator - Professional HFT Platform</title>
+    <title>Dataset Generator - Beacon HFT Platform</title>
     
-    <!-- Import golden design system -->
+    <!-- Import shared design system -->
     <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
     
     <style>
-        /* Generator-specific layout using beautiful panels */
-        .generator-layout {
-            max-width: 1200px;
+        .app-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: var(--spacing-xl) var(--spacing-lg);
-            position: relative;
-            z-index: 2;
+            padding-left: 24px;
+            padding-right: 24px;
         }
-        
-        .generator-grid {
+
+        .main-panels {
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: var(--spacing-lg);
-            align-items: start;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 32px;
+            margin-top: 32px;
         }
-        
-        /* Your beautiful data cards using the panel system */
-        .symbol-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
+
+        .dataset-config-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            height: fit-content;
+        }
+
+        .product-config-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .panel-title {
+            color: #00aaff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .add-product-btn {
+            background: rgba(0, 170, 255, 0.2);
+            border: 1px solid rgba(0, 170, 255, 0.4);
+            border-radius: 8px;
+            color: #00aaff;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
         }
-        
-        .symbol-card:hover {
+
+        .add-product-btn:hover {
+            background: rgba(0, 170, 255, 0.3);
             transform: translateY(-2px);
-            border-color: var(--beacon-primary);
+            box-shadow: 0 4px 16px rgba(0, 170, 255, 0.3);
         }
-        
-        /* Demo banner styling */
-        .demo-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #00aaff;
-            color: #ffffff;
-            text-align: center;
-            padding: 8px 0;
-            font-weight: 700;
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.9rem;
-            z-index: 1000;
-            letter-spacing: 1px;
-            display: none;
-        }
-        
-        body.demo-mode .demo-banner {
+            font-weight: 500;
+            margin-bottom: 8px;
             display: block;
         }
-        
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #00aaff;
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .form-select option {
+            background: #0a0a15;
+            color: #ffffff;
+        }
+
+        #productsContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .datacard {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .datacard:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+        }
+
+        .datacard-header {
+            background: rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            margin: 0;
+        }
+
+        .datacard-title {
+            color: #00ff64;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
+        }
+
+        .datacard-content {
+            padding: 16px;
+        }
+
+        .remove-btn {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 50%;
+            color: #dc3545;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .remove-btn:hover {
+            background: rgba(220, 53, 69, 0.4);
+            transform: scale(1.1);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00aaff;
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* Dual Range Slider Styles */
+        .range-slider-container {
+            position: relative;
+            margin: 8px 0;
+        }
+
+        .range-slider {
+            position: relative;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 15px 0;
+        }
+
+        .range-slider input[type="range"] {
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            pointer-events: all;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            background: #ffffff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+        }
+
+        .range-slider input[type="range"]::-moz-range-thumb {
+            pointer-events: all;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            background: #ffffff;
+            cursor: pointer;
+            -moz-appearance: none;
+            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+        }
+
+        .range-track {
+            position: absolute;
+            height: 6px;
+            background: linear-gradient(90deg, #00aaff, #6bb6ff);
+            border-radius: 3px;
+            top: 15px;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
+        }
+
         @media (max-width: 1024px) {
-            .generator-grid {
+            .main-panels {
                 grid-template-columns: 1fr;
-                gap: var(--spacing-md);
+                gap: 24px;
             }
+        }
+
+        @media (max-width: 768px) {
+            #productsContainer {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body.demo-mode .app-container {
+            padding-top: 128px;
         }
     </style>
     
@@ -75,189 +282,251 @@
 </head>
 <body>
     <!-- Demo Mode Banner -->
-    <div class="demo-banner">DEMO MODE - Download Beacon for full functionality</div>
+    <div class="demo-banner">DATASET GENERATOR IS RUNNING IN DEMO MODE</div>
     
-    <!-- Consistent Page Header with corrected text -->
+    <!-- Professional Fixed Header -->
     <header class="beacon-page-header">
         <nav class="beacon-page-nav">
             <div class="beacon-brand-header">
-                <a href="../../index.html" class="beacon-brand-main">Beacon.</a>
+                <a href="../../../index.html" class="beacon-brand-main">Beacon.</a>
                 <span class="beacon-brand-separator">|</span>
-                <h1 class="beacon-page-title">Generate Market Datasets.</h1>
+                <h1 class="beacon-page-title">Dataset Generator</h1>
             </div>
             <div class="beacon-nav-actions">
-                <a href="../../command-center/" class="beacon-nav-btn">Command Center</a>
+                <a href="../../command-center/" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
             </div>
         </nav>
     </header>
-    
-    <main class="beacon-page-content generator-layout">
-        <div class="generator-grid">
-            <!-- Configuration Panel using your beautiful straightforward design -->
-            <div class="beacon-panel">
-                <div class="beacon-panel-icon">⚙️</div>
-                <h2 class="beacon-panel-title">Dataset Configuration</h2>
-                <p class="beacon-panel-description">Configure your market data generation parameters with professional precision.</p>
+
+    <!-- Main App Content -->
+    <main class="app-container">
+        <!-- Hero Section -->
+        <section class="doc-hero">
+            <h1>Dataset Generator</h1>
+            <p>Generate custom market data with intelligent OHLCV defaults and exchange-specific protocols.</p>
+        </section>
+
+        <!-- Main Panels Layout -->
+        <section class="main-panels">
+            <!-- Dataset Configuration Panel (narrower) -->
+            <div class="dataset-config-panel">
+                <h2 class="panel-title">Dataset</h2>
                 
                 <div class="form-group">
-                    <label class="field-label">Total Messages</label>
-                    <input type="number" class="form-input" id="totalMessages" value="10000" min="1000" step="1000">
-                </div>
-                
-                <div class="form-group">
-                    <label class="field-label">Output Format</label>
-                    <select class="form-input" id="outputFormat">
-                        <option value="nsdq">NASDAQ (ITCH v5.0)</option>
-                        <option value="nyse">NYSE (Pillar v3.2)</option>
-                        <option value="cme">CME (MBO v3.0)</option>
-                        <option value="csv">CSV File</option>
+                    <label class="form-label">Exchange</label>
+                    <select class="form-select" id="exchangeSelect">
+                        <option value="nasdaq">NASDAQ (ITCH/OUCH)</option>
+                        <option value="nyse">NYSE (Pillar)</option>
+                        <option value="cme">CME (TotalView)</option>
                     </select>
                 </div>
-                
-                <button class="beacon-cta-button" id="generateButton" style="margin-top: var(--spacing-md);">
-                    <span class="beacon-cta-text">Generate Dataset</span>
-                    <span class="beacon-cta-arrow">→</span>
-                </button>
             </div>
-            
-            <!-- Symbols Panel using your beautiful straightforward design -->
-            <div class="beacon-panel">
-                <div class="beacon-panel-icon">📊</div>
-                <h2 class="beacon-panel-title">Symbol Portfolio</h2>
-                <p class="beacon-panel-description">Add and configure trading symbols with professional market parameters.</p>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                    <span id="percentageStatus" style="color: var(--text-muted);">100.0% remaining</span>
-                    <button class="beacon-cta-button" onclick="toggleAddSymbol()">
-                        <span class="beacon-cta-text">Add Symbol</span>
-                        <span class="beacon-cta-arrow">+</span>
-                    </button>
-                </div>
-                
-                <!-- Your beautiful symbol cards -->
-                <div id="symbolsContainer">
-                    <!-- Dynamically generated symbol cards -->
-                </div>
-                
-                <!-- Add symbol input -->
-                <input type="text" id="symbolInput" placeholder="Enter symbol (e.g. AAPL)" 
-                       style="display: none; margin-top: var(--spacing-md); padding: var(--spacing-sm); 
-                              border: 1px solid var(--border-primary); border-radius: var(--radius-sm); 
-                              background: var(--bg-card); color: var(--text-primary);">
-            </div>
-        </div>
-    </main>
 
-    <script type="module">
-        // Single source of truth demo mode detection
+            <!-- Product Configuration Panel (wider) -->
+            <div class="product-config-panel">
+                <h2 class="panel-title">Products</h2>
+                
+                <button class="add-product-btn" onclick="addProduct()">
+                    <span>+</span>
+                    <span>Add Product</span>
+                </button>
+
+                <div id="productsContainer">
+                    <!-- Product cards will be added here -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // Global product counter
+        let productCounter = 0;
+
+        // Demo mode detection
         const isDemo = window.location.hostname.includes('github.io') || 
                       window.location.hostname.includes('githubusercontent.com');
         
         if (isDemo) {
             document.body.classList.add('demo-mode');
-            console.log('🎭 Demo mode enabled - GitHub Pages detected');
         }
-        
-        // Clean, straightforward JavaScript matching your panel design philosophy
-        let symbols = new Map();
-        let inputActive = false;
-        
-        function toggleAddSymbol() {
-            const input = document.getElementById('symbolInput');
-            const button = event.target.closest('.beacon-cta-button');
-            
-            if (!inputActive) {
-                input.style.display = 'block';
-                input.focus();
-                button.querySelector('.beacon-cta-text').textContent = 'Cancel';
-                inputActive = true;
-            } else {
-                input.style.display = 'none';
-                input.value = '';
-                button.querySelector('.beacon-cta-text').textContent = 'Add Symbol';
-                inputActive = false;
-            }
-        }
-        
-        // Handle Enter key for symbol input
-        document.getElementById('symbolInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const symbolName = e.target.value.trim().toUpperCase();
-                if (symbolName && addSymbol(symbolName)) {
-                    toggleAddSymbol();
-                }
-            }
+
+        // Add initial products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addProduct(); // Add first AAPL card
+            addProduct(); // Add second card to show horizontal layout
         });
-        
-        function addSymbol(symbolName) {
-            if (symbols.has(symbolName)) {
-                alert('Symbol already exists!');
-                return false;
-            }
+
+        // Function to add a new product datacard
+        function addProduct() {
+            productCounter++;
             
-            symbols.set(symbolName, {
-                name: symbolName,
-                percentage: 10
-            });
+            const container = document.getElementById('productsContainer');
+            const productCard = document.createElement('div');
+            productCard.className = 'datacard';
+            productCard.id = `product-${productCounter}`;
             
-            createSymbolCard(symbolName);
-            updatePercentageStatus();
-            return true;
-        }
-        
-        function createSymbolCard(symbolName) {
-            const container = document.getElementById('symbolsContainer');
-            const card = document.createElement('div');
-            card.className = 'symbol-card';
-            card.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: var(--font-weight-bold); color: var(--text-primary);">${symbolName}</span>
-                    <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
-                        <input type="number" value="10" min="0.1" max="100" step="0.1" 
-                               style="width: 60px; padding: 4px; background: var(--bg-card); 
-                                      border: 1px solid var(--border-primary); border-radius: var(--radius-sm); 
-                                      color: var(--text-primary); text-align: center;">
-                        <span style="color: var(--beacon-success);">%</span>
-                        <button onclick="removeSymbol('${symbolName}')" 
-                                style="background: none; border: none; color: var(--text-muted); 
-                                       cursor: pointer; padding: 4px;">×</button>
+            productCard.innerHTML = `
+                <div class="datacard-header">
+                    <h4 class="datacard-title">${productCounter === 1 ? 'AAPL' : `Product ${productCounter}`}</h4>
+                    <button class="remove-btn" onclick="removeProduct('product-${productCounter}')" title="Remove Product">×</button>
+                </div>
+                
+                <div class="datacard-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Bid Price</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider">
+                                    <div class="range-track" id="bidTrack-${productCounter}"></div>
+                                    <input type="range" id="bidMin-${productCounter}" min="100" max="200" value="148" oninput="updateRange('bid', ${productCounter})">
+                                    <input type="range" id="bidMax-${productCounter}" min="100" max="200" value="152" oninput="updateRange('bid', ${productCounter})">
+                                </div>
+                                <div class="range-values">
+                                    <span id="bidMinVal-${productCounter}">148.00</span>
+                                    <span id="bidMaxVal-${productCounter}">152.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Bid Qty</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider">
+                                    <div class="range-track" id="bidQtyTrack-${productCounter}"></div>
+                                    <input type="range" id="bidQtyMin-${productCounter}" min="100" max="10000" value="500" oninput="updateRange('bidQty', ${productCounter})">
+                                    <input type="range" id="bidQtyMax-${productCounter}" min="100" max="10000" value="2000" oninput="updateRange('bidQty', ${productCounter})">
+                                </div>
+                                <div class="range-values">
+                                    <span id="bidQtyMinVal-${productCounter}">500</span>
+                                    <span id="bidQtyMaxVal-${productCounter}">2,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Ask Price</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider">
+                                    <div class="range-track" id="askTrack-${productCounter}"></div>
+                                    <input type="range" id="askMin-${productCounter}" min="100" max="200" value="149" oninput="updateRange('ask', ${productCounter})">
+                                    <input type="range" id="askMax-${productCounter}" min="100" max="200" value="153" oninput="updateRange('ask', ${productCounter})">
+                                </div>
+                                <div class="range-values">
+                                    <span id="askMinVal-${productCounter}">149.00</span>
+                                    <span id="askMaxVal-${productCounter}">153.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ask Qty</label>
+                            <div class="range-slider-container">
+                                <div class="range-slider">
+                                    <div class="range-track" id="askQtyTrack-${productCounter}"></div>
+                                    <input type="range" id="askQtyMin-${productCounter}" min="100" max="10000" value="600" oninput="updateRange('askQty', ${productCounter})">
+                                    <input type="range" id="askQtyMax-${productCounter}" min="100" max="10000" value="2500" oninput="updateRange('askQty', ${productCounter})">
+                                </div>
+                                <div class="range-values">
+                                    <span id="askQtyMinVal-${productCounter}">600</span>
+                                    <span id="askQtyMaxVal-${productCounter}">2,500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Volume Profile</label>
+                        <select class="form-select">
+                            <option value="normal">Normal</option>
+                            <option value="heavy_open">Heavy Open</option>
+                            <option value="heavy_close">Heavy Close</option>
+                            <option value="uniform">Uniform</option>
+                        </select>
                     </div>
                 </div>
             `;
-            container.appendChild(card);
+            
+            container.appendChild(productCard);
+            
+            // Initialize range sliders
+            setTimeout(() => {
+                updateRange('bid', productCounter);
+                updateRange('ask', productCounter);
+                updateRange('bidQty', productCounter);
+                updateRange('askQty', productCounter);
+            }, 10);
+            
+            // Add animation effect
+            productCard.style.opacity = '0';
+            productCard.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                productCard.style.transition = 'all 0.3s ease';
+                productCard.style.opacity = '1';
+                productCard.style.transform = 'translateY(0)';
+            }, 10);
         }
-        
-        function removeSymbol(symbolName) {
-            symbols.delete(symbolName);
-            const cards = document.querySelectorAll('.symbol-card');
-            cards.forEach(card => {
-                if (card.textContent.includes(symbolName)) {
-                    card.remove();
+
+        // Function to update range slider display
+        function updateRange(type, productId) {
+            const minSlider = document.getElementById(`${type}Min-${productId}`);
+            const maxSlider = document.getElementById(`${type}Max-${productId}`);
+            const minVal = document.getElementById(`${type}MinVal-${productId}`);
+            const maxVal = document.getElementById(`${type}MaxVal-${productId}`);
+            const track = document.getElementById(`${type}Track-${productId}`);
+            
+            if (!minSlider || !maxSlider || !minVal || !maxVal || !track) return;
+            
+            let minValue = parseInt(minSlider.value);
+            let maxValue = parseInt(maxSlider.value);
+            
+            // Ensure min is always less than max
+            if (minValue > maxValue) {
+                if (event.target === minSlider) {
+                    maxValue = minValue;
+                    maxSlider.value = maxValue;
+                } else {
+                    minValue = maxValue;
+                    minSlider.value = minValue;
                 }
-            });
-            updatePercentageStatus();
-        }
-        
-        function updatePercentageStatus() {
-            const status = document.getElementById('percentageStatus');
-            const total = Array.from(symbols.values()).reduce((sum, s) => sum + (s.percentage || 10), 0);
-            const remaining = 100 - total;
-            status.textContent = `${remaining.toFixed(1)}% remaining`;
-            status.style.color = remaining < 0 ? 'var(--beacon-error)' : 
-                               Math.abs(remaining) < 0.1 ? 'var(--beacon-success)' : 'var(--text-muted)';
-        }
-        
-        // Demo mode handling for generate button
-        window.generateDataset = async () => {
-            if (isDemo) {
-                window.showStatus('Demo Mode: Download Beacon for real dataset generation', true);
-                return;
             }
             
-            // ...existing generate functionality for localhost...
-        };
-        
-        console.log('✅ Dataset Generator initialized with beautiful panels');
+            // Update display values (no $ signs)
+            if (type.includes('Price') || type === 'bid' || type === 'ask') {
+                minVal.textContent = minValue.toFixed(2);
+                maxVal.textContent = maxValue.toFixed(2);
+            } else {
+                minVal.textContent = minValue.toLocaleString();
+                maxVal.textContent = maxValue.toLocaleString();
+            }
+            
+            // Update track position
+            const min = parseInt(minSlider.min);
+            const max = parseInt(minSlider.max);
+            const left = ((minValue - min) / (max - min)) * 100;
+            const right = ((maxValue - min) / (max - min)) * 100;
+            
+            track.style.left = left + '%';
+            track.style.width = (right - left) + '%';
+        }
+
+        // Function to remove a product datacard
+        function removeProduct(productId) {
+            const productCard = document.getElementById(productId);
+            if (productCard) {
+                productCard.style.transition = 'all 0.3s ease';
+                productCard.style.opacity = '0';
+                productCard.style.transform = 'translateY(-20px)';
+                
+                setTimeout(() => {
+                    productCard.remove();
+                }, 300);
+            }
+        }
     </script>
 </body>
 </html>

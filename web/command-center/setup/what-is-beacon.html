@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Beacon? - Professional HFT Platform</title>
+    
+    <!-- Import golden design system -->
+    <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Simple background fix - no major surgery */
+        html, body {
+            background: #0a0a15 !important;
+        }
+        
+        .beacon-page-content, .doc-content, .doc-hero {
+            background: transparent !important;
+        }
+
+        /* Override body to ensure proper background */
+        body {
+            background: #0a0a15 !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Copy the exact working CSS from command-center page */
+        .beacon-page-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 21, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            padding: 12px 0;
+        }
+
+        .beacon-page-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .beacon-brand-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .beacon-brand-main {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .beacon-brand-separator {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            font-size: 1.5rem;
+            margin: 0 4px;
+        }
+
+        .beacon-page-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #00aaff;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .beacon-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .beacon-search {
+            position: relative;
+        }
+
+        .beacon-search-field {
+            width: 180px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .beacon-search-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .beacon-search-field:focus {
+            outline: none;
+            border-color: #00aaff;
+            color: #ffffff;
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .beacon-search-results {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            width: 320px;
+            max-height: 300px;
+            background: rgba(10, 10, 21, 0.95);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            display: none;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .search-result {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-result:hover {
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .search-result:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .result-section {
+            color: #00aaff;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+        }
+
+        .result-snippet {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .beacon-nav-back {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .beacon-nav-back:hover {
+            color: #00aaff;
+            transform: translateX(-2px);
+        }
+
+        .beacon-nav-back .nav-arrow {
+            color: #00aaff;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .beacon-nav-back:hover .nav-arrow {
+            color: #ffffff;
+        }
+
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        .doc-hero {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .doc-hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #00aaff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .doc-hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .doc-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .doc-content h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 40px 0 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .doc-content h3 {
+            color: #00aaff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 32px 0 12px 0;
+        }
+
+        .doc-content p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .doc-content ul {
+            margin: 16px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .doc-content li {
+            margin-bottom: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .doc-content li::before {
+            content: "→";
+            color: #00aaff;
+            font-weight: 600;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .doc-content li strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .highlight-box h3 {
+            color: #00aaff;
+            margin-top: 0;
+        }
+
+        .highlight-box p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
+        }
+
+        /* Ensure proper styling for links */
+        .doc-content a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+
+        .doc-content a:hover {
+            color: #ffffff;
+        }
+
+        /* Demo banner */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #00aaff;
+            color: #ffffff;
+            text-align: center;
+            padding: 2px 0;
+            font-weight: 700;
+            font-size: 0.8rem;
+            z-index: 1000;
+            letter-spacing: 1px;
+            display: none;
+        }
+        
+        body.demo-mode .demo-banner {
+            display: block;
+        }
+        
+        body.demo-mode .beacon-page-header {
+            top: 28px;
+        }
+        
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">WHAT IS BEACON? IS RUNNING IN DEMO MODE</div>
+    
+    <!-- Professional Fixed Header -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">What is Beacon?</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+                <div class="beacon-search">
+                    <input type="text" class="beacon-search-field" placeholder="Search" onkeyup="performSearch(this.value)" onfocus="showSearchIfResults()" onblur="hideSearchDelayed()">
+                    <div class="beacon-search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="beacon-page-content">
+        <!-- Hero Section -->
+        <section class="doc-hero">
+            <h1>What is Beacon?</h1>
+            <p>Professional HFT simulation platform built for speed, precision, and ultimate flexibility.</p>
+        </section>
+
+        <!-- Documentation Content -->
+        <section class="doc-content">
+            <div class="highlight-box">
+                <h3>Intelligent Defaults. Complete Control.</h3>
+                <p>Beacon starts by allowing you to create custom datasets for your Live HFT Simulation. You choose the products. Beacon provides intelligent defaults using OHLCV data. Customize product-specific parameters, such as price and quantity ranges and bid-ask spread percentages. At the click of a button, Beacon will generate a trading day's worth of data. All in the exchange protocol of your choice. Reuse existing datasets, or create new ones to satisfy your backtesting needs.</p>
+            </div>
+
+            <h2>Professional HFT Simulation Platform</h2>
+            <p>Beacon is a <strong>web-based platform</strong> that provides live HFT simulation with production-grade performance. Unlike traditional backtesting, Beacon simulates the complete trading infrastructure in real-time.</p>
+
+            <h2>How It Works</h2>
+            
+            <h3>1. Configure Symbols and Market Scenarios</h3>
+            <p><strong>Select your instruments and trading scenarios</strong> - Choose from popular symbols with intelligent defaults based on actual OHLCV data, or add custom symbols with your own price ranges, volatility, and volume patterns.</p>
+
+            <h3>2. Select Exchange Protocol</h3>
+            <p><strong>Choose CME, NASDAQ, or NYSE</strong> - Beacon generates your market data in the native binary format for your selected exchange.</p>
+
+            <h3>3. Deploy Your Dataset</h3>
+            <p><strong>Start the simulation</strong> - Beacon begins streaming your generated market data over UDP to localhost, ready for your algorithm to consume.</p>
+
+            <h3>4. Connect Your Algorithm</h3>
+            <p><strong>Plug-and-play integration</strong> - Your algorithm receives the UDP stream of your generated dataset and sends TCP orders exactly as it would in production. No infrastructure setup required.</p>
+
+            <div class="highlight-box">
+                <h3>Why This Matters for HFT</h3>
+                <p>Traditional simulation requires months of infrastructure work and manual symbol configuration. Beacon provides production-grade testing (4.5μs tick-to-trade) with intelligent defaults for popular instruments - no calibration work required.</p>
+            </div>
+
+            <h2>Ready to See the Benefits?</h2>
+            <p>Now that you understand how Beacon works, discover <a href="why-beacon-stands-out.html" style="color: #00aaff;">Why Beacon Stands Out</a> and what makes it different from other HFT simulation platforms.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Single source of truth demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled - GitHub Pages detected');
+        } else {
+            console.log('🏠 Local mode - Full functionality available');
+        }
+        
+        // Standard search functionality for all pages
+        function showSearchIfResults() {
+            const query = document.querySelector('.beacon-search-field').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 200);
+        }
+
+        function performSearch(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                results.style.display = 'none';
+                return;
+            }
+
+            // Standard search results for all pages
+            const mockResults = [
+                {
+                    title: "What is Beacon?",
+                    section: "Getting Started",
+                    snippet: "Professional HFT simulation platform built for speed, precision..."
+                },
+                {
+                    title: "Dataset Generator",
+                    section: "Applications",
+                    snippet: "Generate realistic market data in native exchange protocols..."
+                },
+                {
+                    title: "Market Data Generation",
+                    section: "Infrastructure",
+                    snippet: "Generate datasets with 4.5μs latency using C++ optimizations..."
+                },
+                {
+                    title: "CME Protocol Support",
+                    section: "Protocols", 
+                    snippet: "Native binary CME, Nasdaq, NYSE protocols with no JSON overhead..."
+                },
+                {
+                    title: "Algorithm Plug-in",
+                    section: "Applications",
+                    snippet: "Plug-in your algorithm and start testing immediately..."
+                }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (mockResults.length > 0) {
+                results.innerHTML = mockResults.map(result => `
+                    <div class="search-result">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-section">${result.section}</div>
+                        <div class="result-snippet">${result.snippet}</div>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

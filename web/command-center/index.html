@@ -5,232 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beacon Command Center - Professional HFT Platform</title>
     
-    <!-- Import golden design system -->
+    <!-- Import shared design system -->
     <link rel="stylesheet" href="../shared/css/beacon-design-system.css">
     
     <style>
-        /* Professional Navigation Header - Fixed */
-        .beacon-page-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 21, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
-            padding: 16px 0;
-        }
-
-        .beacon-page-nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .beacon-brand-header {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-
-        .beacon-brand-main {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .beacon-brand-separator {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 300;
-            font-size: 1.5rem;
-            margin: 0 4px;
-        }
-
-        .beacon-page-title {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #00aaff;
-            line-height: 1.1;
-            margin: 0;
-        }
-
-        .beacon-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .beacon-nav-btn {
-            padding: 8px 16px;
-            background: rgba(0, 170, 255, 0.1);
-            border: 1px solid rgba(0, 170, 255, 0.3);
-            border-radius: 6px;
-            color: #00aaff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .beacon-nav-btn:hover {
-            background: rgba(0, 170, 255, 0.2);
-            transform: translateY(-1px);
-        }
-
-        /* Page Content with Header Spacing - MOVED WAY UP */
+        /* Command center specific overrides - clean and minimal */
         .beacon-page-content {
-            padding-top: 54px;
+            padding-top: 80px;
         }
 
-        /* Command center container - ACTUALLY MOVED UP */
-        .command-center-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Hero Section - ACTUALLY MOVED UP */
-        .doc-hero {
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .doc-hero h1 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, #ffffff 0%, #00aaff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .doc-hero p {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Your beautiful straightforward panels - ACTUALLY MOVED UP */
-        .doc-sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 12px;
-            margin-bottom: 0;
-        }
-
-        /* Force placeholder panels to be on same row */
-        .doc-section:nth-child(5),
-        .doc-section:nth-child(6) {
-            grid-column: span 1;
-        }
-
-        /* On larger screens, ensure placeholders share the row */
-        @media (min-width: 1200px) {
-            .doc-sections {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .doc-section:nth-child(5) {
-                grid-column: 2 / 3;
-            }
-            
-            .doc-section:nth-child(6) {
-                grid-column: 3 / 4;
-            }
-        }
-
-        .doc-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .doc-section:hover {
-            transform: translateY(-4px);
-            border-color: #6bb6ff;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #ffffff;
-        }
-
-        .section-description {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 12px;
-            line-height: 1.5;
-            font-size: 0.9rem;
-        }
-
-        .section-links {
-            list-style: none;
-        }
-
-        .section-links li {
-            margin-bottom: 6px;
-        }
-
-        .section-links a {
-            color: #6bb6ff;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .section-links a:hover {
-            color: #ffffff;
-        }
-
-        .section-links a::before {
-            content: "→";
-            margin-right: 8px;
-            font-weight: 600;
-        }
-        
-        /* Demo banner for GitHub Pages */
-        .demo-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #00aaff;
-            color: #ffffff;
-            text-align: center;
-            padding: 2px 0;
-            font-weight: 700;
-            font-size: 0.9rem;
-            z-index: 1000;
-            letter-spacing: 1px;
-            display: none;
-        }
-        
-        body.demo-mode .demo-banner {
-            display: block;
-        }
-        
-        body.demo-mode .beacon-page-header {
-            top: 20px;
-        }
-        
         body.demo-mode .beacon-page-content {
-            padding-top: 74px;
+            padding-top: 108px;
         }
     </style>
     
@@ -251,7 +36,14 @@
                 <h1 class="beacon-page-title">Command Center.</h1>
             </div>
             <div class="beacon-nav-actions">
-                <a href="../../index.html" class="beacon-nav-btn">Home</a>
+                <a href="../../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Home</span>
+                </a>
+                <div class="beacon-search">
+                    <input type="text" class="beacon-search-field" placeholder="Search" onkeyup="performSearch(this.value)" onfocus="showSearchIfResults()" onblur="hideSearchDelayed()">
+                    <div class="beacon-search-results" id="searchResults"></div>
+                </div>
             </div>
         </nav>
     </header>
@@ -262,36 +54,25 @@
             <!-- Hero Section -->
             <section class="doc-hero">
                 <h1>Command Center.</h1>
-                <p>Mission control for your institutional-grade HFT platform with professional oversight and navigation.</p>
+                <p>HFT Live Simulator. 4.5μs tick-to-trade. Plug-in your algorithm. Deploy today.</p>
             </section>
 
-            <!-- Your beautiful straightforward panels -->
+            <!-- Panel Grid -->
             <section class="doc-sections">
                 <article class="doc-section">
                     <h2 class="section-title">Getting Started</h2>
-                    <p class="section-description">Setup and Configure Beacon.</p>
+                    <p class="section-description">Live HFT Simulation. Speed. Precision.</p>
                     <ul class="section-links">
                         <li><a href="setup/what-is-beacon.html">What is Beacon?</a></li>
-                        <li><a href="setup/why-is-beacon-useful.html">Why is Beacon Useful?</a></li>
+                        <li><a href="setup/why-beacon-stands-out.html">Why Beacon Stands Out.</a></li>
                         <li><a href="setup/system-requirements.html">System Requirements</a></li>
                         <li><a href="setup/installation.html">Installation Guide</a></li>
                     </ul>
                 </article>
 
                 <article class="doc-section">
-                    <h2 class="section-title">Applications</h2>
-                    <p class="section-description">Modular Components. Web Interfaces.</p>
-                    <ul class="section-links">
-                        <li><a href="../apps/dataset-generator/">Dataset Generator</a></li>
-                        <li><a href="../apps/market-data-playback/">Market Data Playback</a></li>
-                        <li><a href="../apps/algorithm-plugin/">Algorithm Plug-in</a></li>
-                        <li><a href="../apps/matching-engine/">Matching Engine</a></li>
-                    </ul>
-                </article>
-
-                <article class="doc-section">
                     <h2 class="section-title">Workflows</h2>
-                    <p class="section-description">Customize End-to-end.</p>
+                    <p class="section-description">Plug-in your algorithm. Test immediately.</p>
                     <ul class="section-links">
                         <li><a href="workflows/creating-a-pipeline.html">Creating a Pipeline</a></li>
                         <li><a href="workflows/stand-alone-applications.html">Using Stand-Alone Applications</a></li>
@@ -301,8 +82,19 @@
                 </article>
 
                 <article class="doc-section">
+                    <h2 class="section-title">Applications</h2>
+                    <p class="section-description">4 C++ modules. Run together or separately. Ultimate flexibility.</p>
+                    <ul class="section-links">
+                        <li><a href="../apps/dataset-generator/">Dataset Generator</a></li>
+                        <li><a href="../apps/market-data-playback/">Market Data Playback</a></li>
+                        <li><a href="../apps/algorithm-plugin/">Algorithm Plug-in</a></li>
+                        <li><a href="../apps/matching-engine/">Matching Engine</a></li>
+                    </ul>
+                </article>
+
+                <article class="doc-section">
                     <h2 class="section-title">Infrastructure</h2>
-                    <p class="section-description">Single Digit Microsecond Latency.</p>
+                    <p class="section-description">4.5μs median tick-to-trade. 12μs p99.</p>
                     <ul class="section-links">
                         <li><a href="cpp/market-data-generation.html">Market Data Generation</a></li>
                         <li><a href="cpp/network-delivery.html">Network Delivery</a></li>
@@ -313,7 +105,7 @@
 
                 <article class="doc-section">
                     <h2 class="section-title">Protocols</h2>
-                    <p class="section-description">Native Protocols Throughout.</p>
+                    <p class="section-description">Native binary protocols. CME, Nasdaq, NYSE. No JSON overhead.</p>
                     <ul class="section-links">
                         <li><a href="protocols/support-cme-nasdaq-nyse.html">Support for CME, Nasdaq, and NYSE</a></li>
                         <li><a href="protocols/choosing-a-protocol.html">Choosing a Protocol</a></li>
@@ -322,10 +114,9 @@
                     </ul>
                 </article>
 
-                <!-- Operations panel -->
                 <article class="doc-section">
                     <h2 class="section-title">Operations</h2>
-                    <p class="section-description">Control the Beacon Platform.</p>
+                    <p class="section-description">Cross-platform. Minimal dependencies. Enterprise deployment ready.</p>
                     <ul class="section-links">
                         <li><a href="operations/build-system.html">Build System</a></li>
                         <li><a href="operations/testing-framework.html">Testing Framework</a></li>
@@ -347,6 +138,67 @@
             console.log('🎭 Demo mode enabled - GitHub Pages detected');
         } else {
             console.log('🏠 Local mode - Full functionality available');
+        }
+        
+        // Search functionality
+        function showSearchIfResults() {
+            const query = document.querySelector('.beacon-search-field').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 300); // Increased delay to allow clicks
+        }
+
+        function performSearch(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                results.style.display = 'none';
+                return;
+            }
+
+            // Demo search results
+            const mockResults = [
+                {
+                    title: "Market Data Generation",
+                    section: "Infrastructure",
+                    snippet: "Generate datasets with 4.5μs latency using C++ optimizations...",
+                    url: "cpp/market-data-generation.html"
+                },
+                {
+                    title: "CME Protocol Support",
+                    section: "Protocols", 
+                    snippet: "Native binary CME, Nasdaq, NYSE protocols with no JSON overhead...",
+                    url: "protocols/support-cme-nasdaq-nyse.html"
+                },
+                {
+                    title: "Algorithm Plug-in",
+                    section: "Applications",
+                    snippet: "Plug-in your algorithm and start testing immediately...",
+                    url: "../apps/algorithm-plugin/"
+                }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (mockResults.length > 0) {
+                results.innerHTML = mockResults.map(result => `
+                    <div class="search-result" onclick="window.location.href='${result.url}'" style="cursor: pointer;">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-section">${result.section}</div>
+                        <div class="result-snippet">${result.snippet}</div>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.style.display = 'none';
+            }
         }
     </script>
 </body>

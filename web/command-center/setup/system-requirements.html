@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Requirements - Professional HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Page-specific overrides - clean and minimal */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .requirement-category {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-category:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .requirement-category h3 {
+            color: #00aaff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+        }
+
+        .requirement-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .requirement-list li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .requirement-list li::before {
+            content: "→";
+            color: #00aaff;
+            font-weight: 600;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .performance-note {
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .performance-note h3 {
+            color: #00aaff;
+            margin: 0 0 12px 0;
+        }
+
+        @media (max-width: 768px) {
+            .requirements-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">SYSTEM REQUIREMENTS IS RUNNING IN DEMO MODE</div>
+    
+    <!-- Professional Fixed Header -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">System Requirements</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+                <div class="beacon-search">
+                    <input type="text" class="beacon-search-field" placeholder="Search" onkeyup="performSearch(this.value)" onfocus="showSearchIfResults()" onblur="hideSearchDelayed()">
+                    <div class="beacon-search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="beacon-page-content">
+        <!-- Hero Section -->
+        <section class="doc-hero">
+            <h1>System Requirements</h1>
+            <p>Hardware and software specifications for optimal Beacon performance.</p>
+        </section>
+
+        <!-- Requirements Content -->
+        <section class="doc-content">
+            <div class="performance-note">
+                <h3>Performance Target: 4.5μs Tick-to-Trade</h3>
+                <p>These requirements ensure Beacon delivers production-grade latency with median 4.5μs tick-to-trade and 12μs p99 performance.</p>
+            </div>
+
+            <h2>Minimum Requirements</h2>
+            
+            <div class="requirements-grid">
+                <div class="requirement-category">
+                    <h3>Operating System</h3>
+                    <ul class="requirement-list">
+                        <li>macOS 10.15 (Catalina) or later</li>
+                        <li>Ubuntu 20.04 LTS or later</li>
+                        <li>CentOS 8 or later</li>
+                        <li>Red Hat Enterprise Linux 8+</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-category">
+                    <h3>Hardware</h3>
+                    <ul class="requirement-list">
+                        <li>4-core CPU (Intel/AMD x64)</li>
+                        <li>8 GB RAM minimum</li>
+                        <li>10 GB available disk space</li>
+                        <li>Network interface (1 Gbps+)</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-category">
+                    <h3>Development Tools</h3>
+                    <ul class="requirement-list">
+                        <li>C++17 compatible compiler</li>
+                        <li>GCC 9.0+ or Clang 10.0+</li>
+                        <li>CMake 3.16 or later</li>
+                        <li>Git version control</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-category">
+                    <h3>Dependencies</h3>
+                    <ul class="requirement-list">
+                        <li>Google Test (included)</li>
+                        <li>nlohmann JSON (included)</li>
+                        <li>Python 3.8+ (optional)</li>
+                        <li>Docker (optional)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Recommended for Production</h2>
+            
+            <div class="requirements-grid">
+                <div class="requirement-category">
+                    <h3>High-Performance Hardware</h3>
+                    <ul class="requirement-list">
+                        <li>8+ core CPU with high clock speed</li>
+                        <li>32 GB RAM or more</li>
+                        <li>NVMe SSD storage</li>
+                        <li>10 Gbps+ network interface</li>
+                        <li>NUMA-aware configuration</li>
+                    </ul>
+                </div>
+
+                <div class="requirement-category">
+                    <h3>Optimization Settings</h3>
+                    <ul class="requirement-list">
+                        <li>CPU core isolation</li>
+                        <li>Real-time kernel (RT_PREEMPT)</li>
+                        <li>Disabled power management</li>
+                        <li>Optimized network stack</li>
+                        <li>Lock-free memory allocation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="performance-note">
+                <h3>Platform Support</h3>
+                <p><strong>Current:</strong> macOS and Linux with full feature support and optimizations.<br>
+                <strong>Upcoming:</strong> Windows implementation in active development.</p>
+            </div>
+
+            <h2>Performance Considerations</h2>
+            <p>Beacon is designed for maximum performance with minimal system requirements. The platform automatically detects available hardware and optimizes accordingly:</p>
+
+            <ul style="margin: 16px 0; padding-left: 0; list-style: none;">
+                <li style="margin-bottom: 8px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="content: '→'; color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>CPU Affinity:</strong> Automatic core pinning for critical threads
+                </li>
+                <li style="margin-bottom: 8px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="content: '→'; color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Memory Management:</strong> Lock-free, wait-free data structures
+                </li>
+                <li style="margin-bottom: 8px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="content: '→'; color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Network Optimization:</strong> UDP zero-copy where available
+                </li>
+                <li style="margin-bottom: 8px; padding-left: 20px; position: relative; color: rgba(255, 255, 255, 0.9);">
+                    <span style="content: '→'; color: #00aaff; font-weight: 600; position: absolute; left: 0; top: 0;">→</span>
+                    <strong>Compiler Optimizations:</strong> Profile-guided optimization (PGO)
+                </li>
+            </ul>
+
+            <h2>Ready to Install?</h2>
+            <p>Verified your system meets the requirements? Proceed to the <a href="installation.html" style="color: #00aaff;">Installation Guide</a> to get Beacon running on your platform.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Single source of truth demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled - GitHub Pages detected');
+        } else {
+            console.log('🏠 Local mode - Full functionality available');
+        }
+        
+        // Standard search functionality for all pages
+        function showSearchIfResults() {
+            const query = document.querySelector('.beacon-search-field').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 300);
+        }
+
+        function performSearch(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                results.style.display = 'none';
+                return;
+            }
+
+            // Standard search results for all pages
+            const mockResults = [
+                {
+                    title: "What is Beacon?",
+                    section: "Getting Started",
+                    snippet: "Professional HFT simulation platform built for speed, precision...",
+                    url: "what-is-beacon.html"
+                },
+                {
+                    title: "System Requirements",
+                    section: "Getting Started",
+                    snippet: "Hardware and software specifications for optimal performance...",
+                    url: "system-requirements.html"
+                },
+                {
+                    title: "Installation Guide",
+                    section: "Getting Started",
+                    snippet: "Step-by-step installation instructions for all platforms...",
+                    url: "installation.html"
+                },
+                {
+                    title: "Dataset Generator",
+                    section: "Applications",
+                    snippet: "Generate realistic market data in native exchange protocols...",
+                    url: "../../apps/dataset-generator/"
+                },
+                {
+                    title: "CME Protocol Support",
+                    section: "Protocols", 
+                    snippet: "Native binary CME, Nasdaq, NYSE protocols with no JSON overhead...",
+                    url: "../protocols/support-cme-nasdaq-nyse.html"
+                }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (mockResults.length > 0) {
+                results.innerHTML = mockResults.map(result => `
+                    <div class="search-result" onclick="window.location.href='${result.url}'" style="cursor: pointer;">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-section">${result.section}</div>
+                        <div class="result-snippet">${result.snippet}</div>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

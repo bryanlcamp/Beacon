@@ -166,7 +166,9 @@ namespace beacon::hft::ringbuffer
       std::atomic<size_t> _dropped;
       std::atomic<size_t> _highWaterMark;
 
-      size_t increment(size_t idx) const noexcept { return (idx + 1) % Capacity; }
+      size_t increment(size_t idx) const noexcept { 
+        return (idx + 1 == Capacity) ? 0 : idx + 1; 
+      }
 
       /**
        * @brief Maintains the most full that the fing buffer has ever been.
