@@ -42,8 +42,16 @@
 
         .panel-title {
             color: #00aaff;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .product-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
@@ -52,15 +60,14 @@
             border: 1px solid rgba(0, 170, 255, 0.4);
             border-radius: 8px;
             color: #00aaff;
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
         }
 
         .add-product-btn:hover {
@@ -81,14 +88,55 @@
             display: block;
         }
 
-        .form-select {
+        .form-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 16px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+            border-radius: 4px;
             color: #ffffff;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00aaff;
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        .form-input.required-empty {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+        }
+
+        .form-input.required-filled {
+            border-color: #00aaff;
+            box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            font-style: italic;
+        }
+
+        .form-input.save-as-empty {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+        }
+
+        .form-input.save-as-filled {
+            border-color: #00aaff;
+            box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 1rem;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -171,27 +219,25 @@
             transform: scale(1.1);
         }
 
-        .form-input {
-            width: 100%;
-            padding: 6px 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            color: #ffffff;
-            font-size: 0.8rem;
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #00aaff;
-            background: rgba(0, 170, 255, 0.1);
-        }
-
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 2fr 2fr 1px 1fr;
             gap: 8px;
+            align-items: center;
+        }
+
+        .vertical-separator {
+            width: 1px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 4px;
+        }
+
+        .dataset-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: end;
         }
 
         /* Dual Range Slider Styles */
@@ -227,7 +273,7 @@
             background: #ffffff;
             cursor: pointer;
             -webkit-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
         }
 
         .range-slider input[type="range"]::-moz-range-thumb {
@@ -239,7 +285,7 @@
             background: #ffffff;
             cursor: pointer;
             -moz-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
         }
 
         .range-track {
@@ -253,6 +299,67 @@
         .range-values {
             display: flex;
             justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
+        }
+
+        /* Single Range Slider Styles for Spread */
+        .single-range-container {
+            position: relative;
+            margin: 8px 0;
+        }
+
+        .single-range {
+            position: relative;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 15px 0;
+        }
+
+        .single-range input[type="range"] {
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            background: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+        }
+
+        .single-range input[type="range"]::-webkit-slider-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            background: #ffffff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+        }
+
+        .single-range input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            background: #ffffff;
+            cursor: pointer;
+            -moz-appearance: none;
+            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+        }
+
+        .single-range-track {
+            position: absolute;
+            height: 6px;
+            background: linear-gradient(90deg, #00aaff, #6bb6ff);
+            border-radius: 3px;
+            top: 15px;
+        }
+
+        .single-range-value {
+            text-align: center;
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.7);
             margin-top: 4px;
@@ -273,6 +380,101 @@
 
         body.demo-mode .app-container {
             padding-top: 128px;
+        }
+
+        .add-symbol-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-style: italic;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .add-symbol-input:focus {
+            outline: none;
+            border-color: #00aaff;
+            background: rgba(0, 170, 255, 0.1);
+            font-style: normal;
+        }
+
+        .add-symbol-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .add-symbol-input.duplicate {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+        }
+
+        .symbol-input-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .symbol-error-msg {
+            color: #dc3545;
+            font-size: 0.8rem;
+            font-style: italic;
+            margin-top: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .symbol-input-container {
+                width: 100%;
+                align-items: stretch;
+            }
+
+            .add-symbol-input {
+                width: 100%;
+            }
+
+            .symbol-error-msg {
+                position: static;
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: rgba(0, 255, 100, 0.2);
+            border: 1px solid rgba(0, 255, 100, 0.4);
+            border-radius: 8px;
+            color: #00ff64;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
+        }
+
+        .generate-btn:hover {
+            background: rgba(0, 255, 100, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 255, 100, 0.3);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
     </style>
     
@@ -313,26 +515,35 @@
         <section class="main-panels">
             <!-- Dataset Configuration Panel (narrower) -->
             <div class="dataset-config-panel">
-                <h2 class="panel-title">Dataset</h2>
+                <div class="dataset-row">
+                    <div class="form-group">
+                        <input type="number" class="form-input required-empty" id="numMessagesInput" placeholder="# Msgs" min="1" oninput="validateNumMessages()" onblur="validateNumMessages()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select class="form-select" id="exchangeSelect">
+                            <option value="nasdaq">NASDAQ</option>
+                            <option value="nyse">NYSE</option>
+                            <option value="cme">CME</option>
+                        </select>
+                    </div>
+                </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Exchange</label>
-                    <select class="form-select" id="exchangeSelect">
-                        <option value="nasdaq">NASDAQ (ITCH/OUCH)</option>
-                        <option value="nyse">NYSE (Pillar)</option>
-                        <option value="cme">CME (TotalView)</option>
-                    </select>
+                    <input type="text" class="form-input save-as-empty" id="saveAsInput" placeholder="Save As:" maxlength="50" oninput="validateForm()">
                 </div>
+                
+                <button class="generate-btn" id="generateBtn" onclick="generateDataset()" disabled>Generate</button>
             </div>
 
             <!-- Product Configuration Panel (wider) -->
             <div class="product-config-panel">
-                <h2 class="panel-title">Products</h2>
-                
-                <button class="add-product-btn" onclick="addProduct()">
-                    <span>+</span>
-                    <span>Add Product</span>
-                </button>
+                <div class="product-panel-header">
+                    <div class="symbol-input-container">
+                        <input type="text" class="add-symbol-input" id="symbolInput" placeholder="Enter a Symbol" oninput="validateSymbolInput(event)" onkeydown="handleSymbolInput(event)" maxlength="10">
+                        <div class="symbol-error-msg" id="symbolError">Symbol already exists</div>
+                    </div>
+                </div>
 
                 <div id="productsContainer">
                     <!-- Product cards will be added here -->
@@ -355,12 +566,104 @@
 
         // Add initial products on page load
         document.addEventListener('DOMContentLoaded', function() {
-            addProduct(); // Add first AAPL card
-            addProduct(); // Add second card to show horizontal layout
+            addProductWithSymbol('AAPL'); // Add first AAPL card
+            addProductWithSymbol('MSFT'); // Add second card to show horizontal layout
         });
 
         // Function to add a new product datacard
         function addProduct() {
+            addProductWithSymbol(`Product ${productCounter + 1}`);
+        }
+
+        // Function to check if symbol already exists
+        function symbolExists(symbol) {
+            const existingTitles = document.querySelectorAll('.datacard-title');
+            return Array.from(existingTitles).some(title => 
+                title.textContent.trim().toUpperCase() === symbol.toUpperCase()
+            );
+        }
+
+        // Function to validate symbol input as user types
+        function validateSymbolInput(event) {
+            const input = event.target;
+            const symbol = input.value.trim().toUpperCase();
+            const errorMsg = document.getElementById('symbolError');
+            
+            if (symbol && symbolExists(symbol)) {
+                input.classList.add('duplicate');
+                errorMsg.classList.add('show');
+            } else {
+                input.classList.remove('duplicate');
+                errorMsg.classList.remove('show');
+            }
+        }
+
+        // Function to handle symbol input
+        function handleSymbolInput(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const symbol = input.value.trim().toUpperCase();
+                
+                // Only allow submission if symbol is valid and not duplicate
+                if (symbol && symbol.length > 0 && !symbolExists(symbol)) {
+                    addProductWithSymbol(symbol);
+                    input.value = '';
+                    input.classList.remove('duplicate');
+                    document.getElementById('symbolError').classList.remove('show');
+                }
+                // If duplicate, just ignore the Enter key (no action)
+            }
+        }
+
+        // Function to validate the entire form and enable/disable Generate button
+        function validateForm() {
+            const numMessages = document.getElementById('numMessagesInput').value.trim();
+            const fileName = document.getElementById('saveAsInput').value.trim();
+            const symbolCount = document.querySelectorAll('.datacard-title').length;
+            const generateBtn = document.getElementById('generateBtn');
+            const saveAsInput = document.getElementById('saveAsInput');
+            
+            // Check all validation conditions
+            const hasMessages = numMessages && parseInt(numMessages) > 0;
+            const hasSymbols = symbolCount > 0;
+            const hasFileName = fileName.length > 0;
+            
+            // Update Save As field styling
+            if (hasFileName) {
+                saveAsInput.className = 'form-input save-as-filled';
+            } else {
+                saveAsInput.className = 'form-input save-as-empty';
+            }
+            
+            // Enable button only if all conditions are met
+            if (hasMessages && hasSymbols && hasFileName) {
+                generateBtn.disabled = false;
+                generateBtn.style.opacity = '1';
+                generateBtn.style.cursor = 'pointer';
+            } else {
+                generateBtn.disabled = true;
+                generateBtn.style.opacity = '0.5';
+                generateBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        // Function to validate number of messages input
+        function validateNumMessages() {
+            const input = document.getElementById('numMessagesInput');
+            const value = input.value.trim();
+            
+            if (value === '' || parseInt(value) <= 0) {
+                input.className = 'form-input required-empty';
+            } else {
+                input.className = 'form-input required-filled';
+            }
+            
+            // Trigger form validation
+            validateForm();
+        }
+
+        // Updated function to add a product with specific symbol
+        function addProductWithSymbol(symbol) {
             productCounter++;
             
             const container = document.getElementById('productsContainer');
@@ -370,7 +673,7 @@
             
             productCard.innerHTML = `
                 <div class="datacard-header">
-                    <h4 class="datacard-title">${productCounter === 1 ? 'AAPL' : `Product ${productCounter}`}</h4>
+                    <h4 class="datacard-title">${symbol}</h4>
                     <button class="remove-btn" onclick="removeProduct('product-${productCounter}')" title="Remove Product">×</button>
                 </div>
                 
@@ -405,6 +708,19 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="vertical-separator"></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Spread</label>
+                            <div class="single-range-container">
+                                <div class="single-range">
+                                    <div class="single-range-track" id="spreadTrack-${productCounter}"></div>
+                                    <input type="range" id="spread-${productCounter}" min="0.1" max="5.0" step="0.1" value="0.5" oninput="updateSingleRange('spread', ${productCounter})">
+                                </div>
+                                <div class="single-range-value" id="spreadVal-${productCounter}">0.5%</div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-row">
@@ -437,16 +753,19 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Volume Profile</label>
-                        <select class="form-select">
-                            <option value="normal">Normal</option>
-                            <option value="heavy_open">Heavy Open</option>
-                            <option value="heavy_close">Heavy Close</option>
-                            <option value="uniform">Uniform</option>
-                        </select>
+
+                        <div class="vertical-separator"></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Volume</label>
+                            <div class="single-range-container">
+                                <div class="single-range">
+                                    <div class="single-range-track" id="volumeTrack-${productCounter}"></div>
+                                    <input type="range" id="volume-${productCounter}" min="1" max="100" step="1" value="25" oninput="updateSingleRange('volume', ${productCounter})">
+                                </div>
+                                <div class="single-range-value" id="volumeVal-${productCounter}">25M</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -458,7 +777,8 @@
                 updateRange('bid', productCounter);
                 updateRange('ask', productCounter);
                 updateRange('bidQty', productCounter);
-                updateRange('askQty', productCounter);
+                updateSingleRange('spread', productCounter);
+                updateSingleRange('volume', productCounter);
             }, 10);
             
             // Add animation effect
@@ -469,6 +789,9 @@
                 productCard.style.opacity = '1';
                 productCard.style.transform = 'translateY(0)';
             }, 10);
+            
+            // Trigger form validation after adding product
+            validateForm();
         }
 
         // Function to update range slider display
@@ -514,6 +837,31 @@
             track.style.width = (right - left) + '%';
         }
 
+        // Function to update single range slider display
+        function updateSingleRange(type, productId) {
+            const slider = document.getElementById(`${type}-${productId}`);
+            const valueDisplay = document.getElementById(`${type}Val-${productId}`);
+            const track = document.getElementById(`${type}Track-${productId}`);
+            
+            if (!slider || !valueDisplay || !track) return;
+            
+            const value = parseFloat(slider.value);
+            const min = parseFloat(slider.min);
+            const max = parseFloat(slider.max);
+            
+            // Update display value
+            if (type === 'volume') {
+                valueDisplay.textContent = Math.round(value) + 'M';
+            } else {
+                valueDisplay.textContent = value.toFixed(1) + '%';
+            }
+            
+            // Update track position (from left to current position)
+            const percentage = ((value - min) / (max - min)) * 100;
+            track.style.left = '0%';
+            track.style.width = percentage + '%';
+        }
+
         // Function to remove a product datacard
         function removeProduct(productId) {
             const productCard = document.getElementById(productId);
@@ -524,8 +872,43 @@
                 
                 setTimeout(() => {
                     productCard.remove();
+                    // Trigger form validation after removing product
+                    validateForm();
                 }, 300);
             }
+        }
+
+        // Function to generate dataset
+        function generateDataset() {
+            const numMessages = document.getElementById('numMessagesInput').value;
+            const exchange = document.getElementById('exchangeSelect').value;
+            const fileName = document.getElementById('saveAsInput').value.trim();
+            
+            if (!numMessages || parseInt(numMessages) <= 0) {
+                alert('Please enter a valid number of messages');
+                return;
+            }
+            
+            if (!fileName) {
+                alert('Please enter a file name');
+                return;
+            }
+            
+            const symbolCount = document.querySelectorAll('.datacard-title').length;
+            if (symbolCount === 0) {
+                alert('Please add at least one symbol');
+                return;
+            }
+            
+            // TODO: Implement dataset generation logic
+            console.log('Generating dataset:', {
+                fileName: fileName,
+                numMessages: parseInt(numMessages),
+                exchange: exchange,
+                products: Array.from(document.querySelectorAll('.datacard-title')).map(el => el.textContent)
+            });
+            
+            alert(`Dataset generation started!\nFile: ${fileName}\nMessages: ${numMessages}\nExchange: ${exchange}`);
         }
     </script>
 </body>
