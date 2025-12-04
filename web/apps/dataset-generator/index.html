@@ -3,480 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dataset Generator - Beacon HFT Platform</title>
+    <title>Dataset Generator. - Beacon HFT Platform</title>
     
     <!-- Import shared design system -->
     <link rel="stylesheet" href="../../shared/css/beacon-design-system.css">
-    
-    <style>
-        .app-container {
-            padding-top: 100px;
-            padding-bottom: 60px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding-left: 24px;
-            padding-right: 24px;
-        }
-
-        .main-panels {
-            display: grid;
-            grid-template-columns: 1fr 2.5fr;
-            gap: 32px;
-            margin-top: 32px;
-        }
-
-        .dataset-config-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            height: fit-content;
-        }
-
-        .product-config-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-        }
-
-        .panel-title {
-            color: #00aaff;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .product-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .add-product-btn {
-            background: rgba(0, 170, 255, 0.2);
-            border: 1px solid rgba(0, 170, 255, 0.4);
-            border-radius: 8px;
-            color: #00aaff;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .add-product-btn:hover {
-            background: rgba(0, 170, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 170, 255, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #00aaff;
-            background: rgba(0, 170, 255, 0.1);
-        }
-
-        .form-input.required-empty {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
-        }
-
-        .form-input.required-filled {
-            border-color: #00aaff;
-            box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
-        }
-
-        .form-input::placeholder {
-            font-style: italic;
-        }
-
-        .form-input.save-as-empty {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
-        }
-
-        .form-input.save-as-filled {
-            border-color: #00aaff;
-            box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .form-select:focus {
-            outline: none;
-            border-color: #00aaff;
-            background: rgba(0, 170, 255, 0.1);
-        }
-
-        .form-select option {
-            background: #0a0a15;
-            color: #ffffff;
-        }
-
-        #productsContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .datacard {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .datacard:hover {
-            border-color: rgba(0, 170, 255, 0.3);
-            background: rgba(0, 170, 255, 0.05);
-        }
-
-        .datacard-header {
-            background: rgba(255, 255, 255, 0.08);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            margin: 0;
-        }
-
-        .datacard-title {
-            color: #00ff64;
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
-        }
-
-        .datacard-content {
-            padding: 16px;
-        }
-
-        .remove-btn {
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid rgba(220, 53, 69, 0.3);
-            border-radius: 50%;
-            color: #dc3545;
-            width: 18px;
-            height: 18px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-
-        .remove-btn:hover {
-            background: rgba(220, 53, 69, 0.4);
-            transform: scale(1.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 2fr 2fr 1px 1fr;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .vertical-separator {
-            width: 1px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 0 4px;
-        }
-
-        .dataset-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            align-items: end;
-        }
-
-        /* Dual Range Slider Styles */
-        .range-slider-container {
-            position: relative;
-            margin: 8px 0;
-        }
-
-        .range-slider {
-            position: relative;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 15px 0;
-        }
-
-        .range-slider input[type="range"] {
-            position: absolute;
-            width: 100%;
-            height: 6px;
-            background: none;
-            pointer-events: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-
-        .range-slider input[type="range"]::-webkit-slider-thumb {
-            pointer-events: all;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #00aaff;
-            background: #ffffff;
-            cursor: pointer;
-            -webkit-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
-        }
-
-        .range-slider input[type="range"]::-moz-range-thumb {
-            pointer-events: all;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #00aaff;
-            background: #ffffff;
-            cursor: pointer;
-            -moz-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
-        }
-
-        .range-track {
-            position: absolute;
-            height: 6px;
-            background: linear-gradient(90deg, #00aaff, #6bb6ff);
-            border-radius: 3px;
-            top: 15px;
-        }
-
-        .range-values {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 4px;
-        }
-
-        /* Single Range Slider Styles for Spread */
-        .single-range-container {
-            position: relative;
-            margin: 8px 0;
-        }
-
-        .single-range {
-            position: relative;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 15px 0;
-        }
-
-        .single-range input[type="range"] {
-            position: absolute;
-            width: 100%;
-            height: 6px;
-            background: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            cursor: pointer;
-        }
-
-        .single-range input[type="range"]::-webkit-slider-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #00aaff;
-            background: #ffffff;
-            cursor: pointer;
-            -webkit-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-        }
-
-        .single-range input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #00aaff;
-            background: #ffffff;
-            cursor: pointer;
-            -moz-appearance: none;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-        }
-
-        .single-range-track {
-            position: absolute;
-            height: 6px;
-            background: linear-gradient(90deg, #00aaff, #6bb6ff);
-            border-radius: 3px;
-            top: 15px;
-        }
-
-        .single-range-value {
-            text-align: center;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 4px;
-        }
-
-        @media (max-width: 1024px) {
-            .main-panels {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            #productsContainer {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        body.demo-mode .app-container {
-            padding-top: 128px;
-        }
-
-        .add-symbol-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: #ffffff;
-            padding: 12px 16px;
-            font-size: 1rem;
-            font-family: inherit;
-            font-style: italic;
-            transition: all 0.3s ease;
-            min-width: 150px;
-        }
-
-        .add-symbol-input:focus {
-            outline: none;
-            border-color: #00aaff;
-            background: rgba(0, 170, 255, 0.1);
-            font-style: normal;
-        }
-
-        .add-symbol-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-style: italic;
-        }
-
-        .add-symbol-input.duplicate {
-            border-color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
-        }
-
-        .symbol-input-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .symbol-error-msg {
-            color: #dc3545;
-            font-size: 0.8rem;
-            font-style: italic;
-            margin-top: 4px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .symbol-input-container {
-                width: 100%;
-                align-items: stretch;
-            }
-
-            .add-symbol-input {
-                width: 100%;
-            }
-
-            .symbol-error-msg {
-                position: static;
-                width: 100%;
-                text-align: right;
-            }
-        }
-
-        .generate-btn {
-            width: 100%;
-            background: rgba(0, 255, 100, 0.2);
-            border: 1px solid rgba(0, 255, 100, 0.4);
-            border-radius: 8px;
-            color: #00ff64;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
-        }
-
-        .generate-btn:hover {
-            background: rgba(0, 255, 100, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 255, 100, 0.3);
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/dataset-generator.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -492,7 +23,7 @@
             <div class="beacon-brand-header">
                 <a href="../../../index.html" class="beacon-brand-main">Beacon.</a>
                 <span class="beacon-brand-separator">|</span>
-                <h1 class="beacon-page-title">Dataset Generator</h1>
+                <h1 class="beacon-page-title">Dataset Generator.</h1>
             </div>
             <div class="beacon-nav-actions">
                 <a href="../../command-center/" class="beacon-nav-back">
@@ -507,409 +38,184 @@
     <main class="app-container">
         <!-- Hero Section -->
         <section class="doc-hero">
-            <h1>Dataset Generator</h1>
-            <p>Generate custom market data with intelligent OHLCV defaults and exchange-specific protocols.</p>
+            <h1>Dataset Generator.</h1>
+            <p>Generate Custom Datasets. Maximum Flexibility. Smart Defaults. Native Exchange Format.</p>
         </section>
 
         <!-- Main Panels Layout -->
         <section class="main-panels">
-            <!-- Dataset Configuration Panel (narrower) -->
-            <div class="dataset-config-panel">
-                <div class="dataset-row">
-                    <div class="form-group">
-                        <input type="number" class="form-input required-empty" id="numMessagesInput" placeholder="# Msgs" min="1" oninput="validateNumMessages()" onblur="validateNumMessages()">
+            <!-- Dataset Configuration Panel -->
+            <div class="dataset-config-panel" data-panel="dataset-config">
+                <div class="panel-header" onclick="DatasetGenerator.togglePanel('dataset-config')">
+                    <h3 class="panel-title">Configuration</h3>
+                    <div class="panel-collapse-indicator">−</div>
+                </div>
+                <div class="panel-content">
+                    <div class="dataset-row">
+                        <div class="form-group">
+                            <input type="number" class="form-input required-empty" id="numMessagesInput" 
+                                   placeholder="# Msgs" min="1" 
+                                   oninput="DatasetGenerator.validateNumMessages()" 
+                                   onblur="DatasetGenerator.validateNumMessages()">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-select" id="exchangeSelect">
+                                <option value="nasdaq">NASDAQ</option>
+                                <option value="nyse">NYSE</option>
+                                <option value="cme">CME</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <select class="form-select" id="exchangeSelect">
-                            <option value="nasdaq">NASDAQ</option>
-                            <option value="nyse">NYSE</option>
-                            <option value="cme">CME</option>
-                        </select>
+                        <input type="text" class="form-input save-as-empty" id="saveAsInput" 
+                               placeholder="Save As:" maxlength="50" 
+                               oninput="DatasetGenerator.validateForm()">
                     </div>
+                    
+                    <button class="generate-btn" id="generateBtn" 
+                            onclick="DatasetGenerator.generateDataset()" disabled>
+                        Generate
+                    </button>
                 </div>
-                
-                <div class="form-group">
-                    <input type="text" class="form-input save-as-empty" id="saveAsInput" placeholder="Save As:" maxlength="50" oninput="validateForm()">
-                </div>
-                
-                <button class="generate-btn" id="generateBtn" onclick="generateDataset()" disabled>Generate</button>
             </div>
 
-            <!-- Product Configuration Panel (wider) -->
-            <div class="product-config-panel">
-                <div class="product-panel-header">
-                    <div class="symbol-input-container">
-                        <input type="text" class="add-symbol-input" id="symbolInput" placeholder="Enter a Symbol" oninput="validateSymbolInput(event)" onkeydown="handleSymbolInput(event)" maxlength="10">
-                        <div class="symbol-error-msg" id="symbolError">Symbol already exists</div>
-                    </div>
+            <!-- Product Configuration Panel -->
+            <div class="product-config-panel" data-panel="product-config">
+                <div class="panel-header" onclick="DatasetGenerator.togglePanel('product-config')">
+                    <h3 class="panel-title">Symbols</h3>
+                    <div class="panel-collapse-indicator">−</div>
                 </div>
+                <div class="panel-content">
+                    <div class="product-panel-header">
+                        <div class="symbol-input-container">
+                            <input type="text" class="add-symbol-input" id="symbolInput" 
+                                   placeholder="Enter a Symbol" maxlength="10"
+                                   oninput="DatasetGenerator.validateSymbolInput(event)" 
+                                   onkeydown="DatasetGenerator.handleSymbolInput(event)">
+                            <div class="symbol-error-msg" id="symbolError">Symbol already exists</div>
+                        </div>
+                        
+                        <div class="allocation-display">
+                            <span class="allocation-percentage" id="allocationPercentage">100%</span>
+                        </div>
+                    </div>
 
-                <div id="productsContainer">
-                    <!-- Product cards will be added here -->
+                    <div id="productsContainer">
+                        <!-- Product cards will be dynamically added here -->
+                    </div>
                 </div>
             </div>
         </section>
     </main>
     
+    <!-- Scripts -->
+    <script src="../../../data/market_data.js"></script>
     <script>
-        // Global product counter
-        let productCounter = 0;
-
-        // Demo mode detection
-        const isDemo = window.location.hostname.includes('github.io') || 
-                      window.location.hostname.includes('githubusercontent.com');
+        // Force override with working market data structure
+        console.log('🔧 Setting up guaranteed working market data...');
         
-        if (isDemo) {
-            document.body.classList.add('demo-mode');
-        }
-
-        // Add initial products on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            addProductWithSymbol('AAPL'); // Add first AAPL card
-            addProductWithSymbol('MSFT'); // Add second card to show horizontal layout
-        });
-
-        // Function to add a new product datacard
-        function addProduct() {
-            addProductWithSymbol(`Product ${productCounter + 1}`);
-        }
-
-        // Function to check if symbol already exists
-        function symbolExists(symbol) {
-            const existingTitles = document.querySelectorAll('.datacard-title');
-            return Array.from(existingTitles).some(title => 
-                title.textContent.trim().toUpperCase() === symbol.toUpperCase()
-            );
-        }
-
-        // Function to validate symbol input as user types
-        function validateSymbolInput(event) {
-            const input = event.target;
-            const symbol = input.value.trim().toUpperCase();
-            const errorMsg = document.getElementById('symbolError');
-            
-            if (symbol && symbolExists(symbol)) {
-                input.classList.add('duplicate');
-                errorMsg.classList.add('show');
-            } else {
-                input.classList.remove('duplicate');
-                errorMsg.classList.remove('show');
+        window.MARKET_DATA = {
+            'AAPL': {
+                name: 'Apple Inc.',
+                sector: 'Technology',
+                simulationProfile: { basePrice: 190.00, volatilityFactor: 0.02, avgDailyVolume: 50000000 },
+                priceRange: { min: 185.00, max: 200.00 },
+                quantityRange: { min: 100, max: 2000 },
+                spreadPercent: 0.02,
+                category: "mega-cap-tech"
+            },
+            'MSFT': {
+                name: 'Microsoft Corporation',
+                sector: 'Technology',
+                simulationProfile: { basePrice: 420.00, volatilityFactor: 0.02, avgDailyVolume: 20000000 },
+                priceRange: { min: 405.00, max: 435.00 },
+                quantityRange: { min: 100, max: 1500 },
+                spreadPercent: 0.02,
+                category: "mega-cap-tech"
+            },
+            'NVDA': {
+                name: 'NVIDIA Corporation',
+                sector: 'Technology',
+                simulationProfile: { basePrice: 890.00, volatilityFactor: 0.04, avgDailyVolume: 45000000 },
+                priceRange: { min: 860.00, max: 920.00 },
+                quantityRange: { min: 25, max: 500 },
+                spreadPercent: 0.04,
+                category: "mega-cap-tech"
+            },
+            'SPY': {
+                name: 'SPDR S&P 500 ETF',
+                sector: 'ETF',
+                simulationProfile: { basePrice: 460.00, volatilityFactor: 0.01, avgDailyVolume: 60000000 },
+                priceRange: { min: 450.00, max: 470.00 },
+                quantityRange: { min: 100, max: 3000 },
+                spreadPercent: 0.01,
+                category: "major-etf"
+            },
+            'TSLA': {
+                name: 'Tesla Inc.',
+                sector: 'Consumer Discretionary',
+                simulationProfile: { basePrice: 250.00, volatilityFactor: 0.06, avgDailyVolume: 75000000 },
+                priceRange: { min: 230.00, max: 270.00 },
+                quantityRange: { min: 50, max: 1000 },
+                spreadPercent: 0.06,
+                category: "high-volatility"
+            },
+            'QQQ': {
+                name: 'Invesco QQQ Trust',
+                sector: 'ETF',
+                simulationProfile: { basePrice: 386.00, volatilityFactor: 0.01, avgDailyVolume: 40000000 },
+                priceRange: { min: 375.00, max: 395.00 },
+                quantityRange: { min: 100, max: 2500 },
+                spreadPercent: 0.01,
+                category: "major-etf"
+            },
+            // Add common symbols that users might try
+            'AMZN': {
+                name: 'Amazon.com Inc.',
+                sector: 'Consumer Discretionary',
+                simulationProfile: { basePrice: 155.00, volatilityFactor: 0.03, avgDailyVolume: 35000000 },
+                priceRange: { min: 150.00, max: 165.00 },
+                quantityRange: { min: 50, max: 800 },
+                spreadPercent: 0.03,
+                category: "mega-cap-tech"
+            },
+            'GOOG': {
+                name: 'Alphabet Inc.',
+                sector: 'Technology',
+                simulationProfile: { basePrice: 175.00, volatilityFactor: 0.025, avgDailyVolume: 25000000 },
+                priceRange: { min: 170.00, max: 185.00 },
+                quantityRange: { min: 100, max: 1000 },
+                spreadPercent: 0.025,
+                category: "mega-cap-tech"
             }
-        }
-
-        // Function to handle symbol input
-        function handleSymbolInput(event) {
-            if (event.key === 'Enter') {
-                const input = event.target;
-                const symbol = input.value.trim().toUpperCase();
-                
-                // Only allow submission if symbol is valid and not duplicate
-                if (symbol && symbol.length > 0 && !symbolExists(symbol)) {
-                    addProductWithSymbol(symbol);
-                    input.value = '';
-                    input.classList.remove('duplicate');
-                    document.getElementById('symbolError').classList.remove('show');
-                }
-                // If duplicate, just ignore the Enter key (no action)
-            }
-        }
-
-        // Function to validate the entire form and enable/disable Generate button
-        function validateForm() {
-            const numMessages = document.getElementById('numMessagesInput').value.trim();
-            const fileName = document.getElementById('saveAsInput').value.trim();
-            const symbolCount = document.querySelectorAll('.datacard-title').length;
-            const generateBtn = document.getElementById('generateBtn');
-            const saveAsInput = document.getElementById('saveAsInput');
-            
-            // Check all validation conditions
-            const hasMessages = numMessages && parseInt(numMessages) > 0;
-            const hasSymbols = symbolCount > 0;
-            const hasFileName = fileName.length > 0;
-            
-            // Update Save As field styling
-            if (hasFileName) {
-                saveAsInput.className = 'form-input save-as-filled';
-            } else {
-                saveAsInput.className = 'form-input save-as-empty';
-            }
-            
-            // Enable button only if all conditions are met
-            if (hasMessages && hasSymbols && hasFileName) {
-                generateBtn.disabled = false;
-                generateBtn.style.opacity = '1';
-                generateBtn.style.cursor = 'pointer';
-            } else {
-                generateBtn.disabled = true;
-                generateBtn.style.opacity = '0.5';
-                generateBtn.style.cursor = 'not-allowed';
-            }
-        }
-
-        // Function to validate number of messages input
-        function validateNumMessages() {
-            const input = document.getElementById('numMessagesInput');
-            const value = input.value.trim();
-            
-            if (value === '' || parseInt(value) <= 0) {
-                input.className = 'form-input required-empty';
-            } else {
-                input.className = 'form-input required-filled';
-            }
-            
-            // Trigger form validation
-            validateForm();
-        }
-
-        // Updated function to add a product with specific symbol
-        function addProductWithSymbol(symbol) {
-            productCounter++;
-            
-            const container = document.getElementById('productsContainer');
-            const productCard = document.createElement('div');
-            productCard.className = 'datacard';
-            productCard.id = `product-${productCounter}`;
-            
-            productCard.innerHTML = `
-                <div class="datacard-header">
-                    <h4 class="datacard-title">${symbol}</h4>
-                    <button class="remove-btn" onclick="removeProduct('product-${productCounter}')" title="Remove Product">×</button>
-                </div>
-                
-                <div class="datacard-content">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Bid Price</label>
-                            <div class="range-slider-container">
-                                <div class="range-slider">
-                                    <div class="range-track" id="bidTrack-${productCounter}"></div>
-                                    <input type="range" id="bidMin-${productCounter}" min="100" max="200" value="148" oninput="updateRange('bid', ${productCounter})">
-                                    <input type="range" id="bidMax-${productCounter}" min="100" max="200" value="152" oninput="updateRange('bid', ${productCounter})">
-                                </div>
-                                <div class="range-values">
-                                    <span id="bidMinVal-${productCounter}">148.00</span>
-                                    <span id="bidMaxVal-${productCounter}">152.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Bid Qty</label>
-                            <div class="range-slider-container">
-                                <div class="range-slider">
-                                    <div class="range-track" id="bidQtyTrack-${productCounter}"></div>
-                                    <input type="range" id="bidQtyMin-${productCounter}" min="100" max="10000" value="500" oninput="updateRange('bidQty', ${productCounter})">
-                                    <input type="range" id="bidQtyMax-${productCounter}" min="100" max="10000" value="2000" oninput="updateRange('bidQty', ${productCounter})">
-                                </div>
-                                <div class="range-values">
-                                    <span id="bidQtyMinVal-${productCounter}">500</span>
-                                    <span id="bidQtyMaxVal-${productCounter}">2,000</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="vertical-separator"></div>
-
-                        <div class="form-group">
-                            <label class="form-label">Spread</label>
-                            <div class="single-range-container">
-                                <div class="single-range">
-                                    <div class="single-range-track" id="spreadTrack-${productCounter}"></div>
-                                    <input type="range" id="spread-${productCounter}" min="0.1" max="5.0" step="0.1" value="0.5" oninput="updateSingleRange('spread', ${productCounter})">
-                                </div>
-                                <div class="single-range-value" id="spreadVal-${productCounter}">0.5%</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Ask Price</label>
-                            <div class="range-slider-container">
-                                <div class="range-slider">
-                                    <div class="range-track" id="askTrack-${productCounter}"></div>
-                                    <input type="range" id="askMin-${productCounter}" min="100" max="200" value="149" oninput="updateRange('ask', ${productCounter})">
-                                    <input type="range" id="askMax-${productCounter}" min="100" max="200" value="153" oninput="updateRange('ask', ${productCounter})">
-                                </div>
-                                <div class="range-values">
-                                    <span id="askMinVal-${productCounter}">149.00</span>
-                                    <span id="askMaxVal-${productCounter}">153.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Ask Qty</label>
-                            <div class="range-slider-container">
-                                <div class="range-slider">
-                                    <div class="range-track" id="askQtyTrack-${productCounter}"></div>
-                                    <input type="range" id="askQtyMin-${productCounter}" min="100" max="10000" value="600" oninput="updateRange('askQty', ${productCounter})">
-                                    <input type="range" id="askQtyMax-${productCounter}" min="100" max="10000" value="2500" oninput="updateRange('askQty', ${productCounter})">
-                                </div>
-                                <div class="range-values">
-                                    <span id="askQtyMinVal-${productCounter}">600</span>
-                                    <span id="askQtyMaxVal-${productCounter}">2,500</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="vertical-separator"></div>
-
-                        <div class="form-group">
-                            <label class="form-label">Volume</label>
-                            <div class="single-range-container">
-                                <div class="single-range">
-                                    <div class="single-range-track" id="volumeTrack-${productCounter}"></div>
-                                    <input type="range" id="volume-${productCounter}" min="1" max="100" step="1" value="25" oninput="updateSingleRange('volume', ${productCounter})">
-                                </div>
-                                <div class="single-range-value" id="volumeVal-${productCounter}">25M</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(productCard);
-            
-            // Initialize range sliders
-            setTimeout(() => {
-                updateRange('bid', productCounter);
-                updateRange('ask', productCounter);
-                updateRange('bidQty', productCounter);
-                updateSingleRange('spread', productCounter);
-                updateSingleRange('volume', productCounter);
-            }, 10);
-            
-            // Add animation effect
-            productCard.style.opacity = '0';
-            productCard.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                productCard.style.transition = 'all 0.3s ease';
-                productCard.style.opacity = '1';
-                productCard.style.transform = 'translateY(0)';
-            }, 10);
-            
-            // Trigger form validation after adding product
-            validateForm();
-        }
-
-        // Function to update range slider display
-        function updateRange(type, productId) {
-            const minSlider = document.getElementById(`${type}Min-${productId}`);
-            const maxSlider = document.getElementById(`${type}Max-${productId}`);
-            const minVal = document.getElementById(`${type}MinVal-${productId}`);
-            const maxVal = document.getElementById(`${type}MaxVal-${productId}`);
-            const track = document.getElementById(`${type}Track-${productId}`);
-            
-            if (!minSlider || !maxSlider || !minVal || !maxVal || !track) return;
-            
-            let minValue = parseInt(minSlider.value);
-            let maxValue = parseInt(maxSlider.value);
-            
-            // Ensure min is always less than max
-            if (minValue > maxValue) {
-                if (event.target === minSlider) {
-                    maxValue = minValue;
-                    maxSlider.value = maxValue;
+        };
+        
+        // Force override MarketDataUtils
+        window.MarketDataUtils = {
+            getSymbol: function(ticker) {
+                const symbol = ticker.toUpperCase();
+                console.log(`🔍 MarketDataUtils.getSymbol called for ${symbol}`);
+                const result = window.MARKET_DATA[symbol];
+                if (result) {
+                    console.log(`✅ Found data for ${symbol}:`, result);
+                    return result;
                 } else {
-                    minValue = maxValue;
-                    minSlider.value = minValue;
+                    console.log(`❌ No data found for ${symbol}. Available symbols:`, Object.keys(window.MARKET_DATA));
+                    return null;
                 }
+            },
+            getAllSymbols: function() {
+                return Object.keys(window.MARKET_DATA);
             }
-            
-            // Update display values (no $ signs)
-            if (type.includes('Price') || type === 'bid' || type === 'ask') {
-                minVal.textContent = minValue.toFixed(2);
-                maxVal.textContent = maxValue.toFixed(2);
-            } else {
-                minVal.textContent = minValue.toLocaleString();
-                maxVal.textContent = maxValue.toLocaleString();
-            }
-            
-            // Update track position
-            const min = parseInt(minSlider.min);
-            const max = parseInt(minSlider.max);
-            const left = ((minValue - min) / (max - min)) * 100;
-            const right = ((maxValue - min) / (max - min)) * 100;
-            
-            track.style.left = left + '%';
-            track.style.width = (right - left) + '%';
-        }
-
-        // Function to update single range slider display
-        function updateSingleRange(type, productId) {
-            const slider = document.getElementById(`${type}-${productId}`);
-            const valueDisplay = document.getElementById(`${type}Val-${productId}`);
-            const track = document.getElementById(`${type}Track-${productId}`);
-            
-            if (!slider || !valueDisplay || !track) return;
-            
-            const value = parseFloat(slider.value);
-            const min = parseFloat(slider.min);
-            const max = parseFloat(slider.max);
-            
-            // Update display value
-            if (type === 'volume') {
-                valueDisplay.textContent = Math.round(value) + 'M';
-            } else {
-                valueDisplay.textContent = value.toFixed(1) + '%';
-            }
-            
-            // Update track position (from left to current position)
-            const percentage = ((value - min) / (max - min)) * 100;
-            track.style.left = '0%';
-            track.style.width = percentage + '%';
-        }
-
-        // Function to remove a product datacard
-        function removeProduct(productId) {
-            const productCard = document.getElementById(productId);
-            if (productCard) {
-                productCard.style.transition = 'all 0.3s ease';
-                productCard.style.opacity = '0';
-                productCard.style.transform = 'translateY(-20px)';
-                
-                setTimeout(() => {
-                    productCard.remove();
-                    // Trigger form validation after removing product
-                    validateForm();
-                }, 300);
-            }
-        }
-
-        // Function to generate dataset
-        function generateDataset() {
-            const numMessages = document.getElementById('numMessagesInput').value;
-            const exchange = document.getElementById('exchangeSelect').value;
-            const fileName = document.getElementById('saveAsInput').value.trim();
-            
-            if (!numMessages || parseInt(numMessages) <= 0) {
-                alert('Please enter a valid number of messages');
-                return;
-            }
-            
-            if (!fileName) {
-                alert('Please enter a file name');
-                return;
-            }
-            
-            const symbolCount = document.querySelectorAll('.datacard-title').length;
-            if (symbolCount === 0) {
-                alert('Please add at least one symbol');
-                return;
-            }
-            
-            // TODO: Implement dataset generation logic
-            console.log('Generating dataset:', {
-                fileName: fileName,
-                numMessages: parseInt(numMessages),
-                exchange: exchange,
-                products: Array.from(document.querySelectorAll('.datacard-title')).map(el => el.textContent)
-            });
-            
-            alert(`Dataset generation started!\nFile: ${fileName}\nMessages: ${numMessages}\nExchange: ${exchange}`);
-        }
+        };
+        
+        console.log('🎯 Market data setup complete. Available symbols:', Object.keys(window.MARKET_DATA));
+        
+        // Test the lookup immediately
+        console.log('🧪 Testing AAPL lookup:', window.MarketDataUtils.getSymbol('AAPL'));
+        console.log('🧪 Testing AMZN lookup:', window.MarketDataUtils.getSymbol('AMZN'));
     </script>
+    <script src="./scripts/dataset-generator.js"></script>
 </body>
 </html>

@@ -1,0 +1,658 @@
+/* ========================================
+   BEACON DATASET GENERATOR STYLES
+   Professional HFT Trading Application UI
+   ======================================== */
+
+/* Layout & Structure */
+.app-container {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.doc-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.doc-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+
+.doc-hero p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 8px;
+}
+
+/* Main Panel Layout */
+.main-panels {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+/* Configuration Panels - Enhanced for Collapsible */
+.dataset-config-panel,
+.product-config-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.dataset-config-panel:hover,
+.product-config-panel:hover {
+    border-color: rgba(0, 170, 255, 0.3);
+    background: rgba(0, 170, 255, 0.02);
+}
+
+.dataset-config-panel {
+    height: fit-content;
+}
+
+/* Panel Header - Only header should be clickable */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px 12px 0 0;
+    transition: all 0.3s ease;
+    cursor: pointer !important;  /* Force cursor */
+    pointer-events: auto !important;  /* Ensure clickable */
+}
+
+.panel-header:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.panel-title {
+    color: #00aaff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.panel-collapse-indicator {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+/* Panel Content - Default expanded state */
+.panel-content {
+    padding: 24px;
+    max-height: 2000px;
+    opacity: 1;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: default;
+}
+
+/* Collapsed State - Hide panel content but keep datacard headers visible */
+.dataset-config-panel.collapsed .panel-content,
+.product-config-panel.collapsed .panel-content {
+    padding: 0 24px 24px 24px;
+    max-height: 1000px;
+    opacity: 1;
+}
+
+/* Hide the main form content when collapsed */
+.dataset-config-panel.collapsed .panel-content > :not(#productsContainer),
+.product-config-panel.collapsed .panel-content > :not(#productsContainer) {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Hide datacard content but keep headers visible when collapsed */
+.product-config-panel.collapsed .datacard-content {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Keep datacard headers visible when collapsed */
+.product-config-panel.collapsed .datacard-header {
+    display: flex;
+    opacity: 1;
+}
+
+/* Adjust panel header border radius when collapsed */
+.dataset-config-panel.collapsed .panel-header,
+.product-config-panel.collapsed .panel-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px 12px 0 0;
+}
+
+/* Rotate collapse indicator */
+.dataset-config-panel.collapsed .panel-collapse-indicator,
+.product-config-panel.collapsed .panel-collapse-indicator {
+    transform: rotate(90deg);
+}
+
+/* When both panels are collapsed, make grid single column to maximize symbol space */
+.main-panels.both-collapsed {
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.main-panels.both-collapsed .dataset-config-panel.collapsed,
+.main-panels.both-collapsed .product-config-panel.collapsed {
+    grid-column: 1;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 12px;  /* Reduced from 20px */
+}
+
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;  /* Smaller labels */
+    font-weight: 500;
+    margin-bottom: 4px;  /* Minimal margin */
+    display: block;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #00aaff;
+    background: rgba(0, 170, 255, 0.1);
+}
+
+.form-input::placeholder {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Form Input States */
+.form-input.required-empty {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+.form-input.required-filled {
+    border-color: #00aaff;
+    box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
+}
+
+.form-input.save-as-empty {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+.form-input.save-as-filled {
+    border-color: #00aaff;
+    box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.1);
+}
+
+.form-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #00aaff;
+    background: rgba(0, 170, 255, 0.1);
+}
+
+.form-select option {
+    background: #0a0a15;
+    color: #ffffff;
+}
+
+/* Dataset Configuration */
+.dataset-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+}
+
+/* Symbol Input */
+.product-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.symbol-input-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.add-symbol-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-style: italic;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    pointer-events: auto;
+    cursor: text;
+}
+
+.add-symbol-input:focus {
+    outline: none;
+    border-color: #00aaff;
+    background: rgba(0, 170, 255, 0.1);
+    font-style: normal;
+}
+
+.add-symbol-input.duplicate {
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+.symbol-error-msg {
+    color: #dc3545;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    white-space: nowrap;
+}
+
+.symbol-error-msg.show {
+    opacity: 1;
+}
+
+/* Allocation Display */
+.allocation-display {
+    display: flex;
+    align-items: center;
+    min-width: 120px;
+    justify-content: flex-end;
+}
+
+.allocation-percentage {
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.allocation-percentage.perfect {
+    color: #00ff64;
+    text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
+}
+
+.allocation-percentage.error {
+    color: #dc3545;
+    text-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Product Cards Container */
+#productsContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Product Cards */
+.datacard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    pointer-events: auto;
+}
+
+.datacard:hover {
+    border-color: rgba(0, 170, 255, 0.3);
+    background: rgba(0, 170, 255, 0.05);
+}
+
+.datacard-header {
+    background: rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin: 0;
+}
+
+.datacard-title {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.datacard-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.percentage-spinner {
+    width: 60px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0 4px;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.percentage-spinner:focus {
+    outline: none;
+    border-color: #00aaff;
+    background: rgba(0, 170, 255, 0.1);
+}
+
+.percentage-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.remove-btn {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 50%;
+    color: #dc3545;
+    width: 18px;
+    height: 18px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    pointer-events: auto;
+}
+
+.remove-btn:hover {
+    background: rgba(220, 53, 69, 0.4);
+    transform: scale(1.1);
+}
+
+/* Card Content Layout - REVERTED to original compact size */
+.datacard-content {
+    padding: 8px 12px;  /* Much more compact */
+}
+
+.form-row {
+    display: none;  /* Disable old layout */
+}
+
+.form-row-triple {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Range Sliders - COMPACT */
+.range-slider-container {
+    position: relative;
+    margin: 4px 0;  /* Minimal margins */
+}
+
+.range-slider {
+    position: relative;
+    height: 4px;  /* Thinner sliders */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 8px 0;  /* Minimal margins */
+}
+
+.range-slider input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    pointer-events: none;
+    outline: none;
+}
+
+.range-slider input[type="range"]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #00aaff;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.range-slider input[type="range"]::-moz-range-thumb {
+    pointer-events: all;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #00aaff;
+    background: #ffffff;
+    cursor: pointer;
+    -moz-appearance: none;
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.range-slider input[type="range"]:nth-child(2) {
+    z-index: 1;
+}
+
+.range-slider input[type="range"]:nth-child(3) {
+    z-index: 2;
+}
+
+.range-track {
+    position: absolute;
+    height: 4px;  /* Match slider height */
+    background: linear-gradient(90deg, #00aaff, #6bb6ff);
+    border-radius: 2px;
+    top: 8px;  /* Adjust for new margin */
+}
+
+.range-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;  /* Smaller text */
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 2px;  /* Minimal spacing */
+}
+
+/* Single Range Sliders - COMPACT */
+.single-range-container {
+    position: relative;
+    margin: 4px 0;
+}
+
+.single-range {
+    position: relative;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 8px 0;
+}
+
+.single-range input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.single-range input[type="range"]::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #00aaff;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.single-range input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #00aaff;
+    background: #ffffff;
+    cursor: pointer;
+    -moz-appearance: none;
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+
+.single-range-track {
+    position: absolute;
+    height: 4px;
+    background: linear-gradient(90deg, #00aaff, #6bb6ff);
+    border-radius: 2px;
+    top: 8px;
+}
+
+.single-range-value {
+    text-align: center;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 2px;
+}
+
+/* Generate Button */
+.generate-btn {
+    width: 100%;
+    background: rgba(0, 255, 100, 0.2);
+    border: 1px solid rgba(0, 255, 100, 0.4);
+    border-radius: 8px;
+    color: #00ff64;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    text-shadow: 0 0 8px rgba(0, 255, 100, 0.3);
+}
+
+.generate-btn:hover:not(:disabled) {
+    background: rgba(0, 255, 100, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 255, 100, 0.3);
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-panels {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    #productsContainer {
+        grid-template-columns: 1fr;
+    }
+    
+    .symbol-input-container {
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .add-symbol-input {
+        width: 100%;
+    }
+    
+    .symbol-error-msg {
+        position: static;
+        width: 100%;
+        text-align: right;
+    }
+}
+
+/* Demo Mode Adjustments */
+body.demo-mode .app-container {
+    padding-top: 128px;
+}
