@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "fileName": "claude",
+    "generatedAt": "2025-12-05T00:49:35.034Z",
+    "generator": "Beacon HFT Dataset Generator v1.0",
+    "totalMessages": 1000,
+    "exchange": "nasdaq",
+    "saveAsName": "dataset"
+  },
+  "globalSettings": {
+    "messageCount": 1000,
+    "exchange": "nasdaq",
+    "timestampStart": 1764895775034,
+    "randomSeed": 923981
+  },
+  "symbols": [
+    {
+      "symbol": "CLAUDE",
+      "allocation": 100,
+      "bidPriceRange": {
+        "min": 110,
+        "max": 140
+      },
+      "askPriceRange": {
+        "min": 160,
+        "max": 190
+      },
+      "bidQuantityRange": {
+        "min": 120,
+        "max": 700
+      },
+      "askQuantityRange": {
+        "min": 130,
+        "max": 800
+      },
+      "spreadPercent": 0.5,
+      "volumeM": 25,
+      "bidWeightPercent": 50,
+      "askWeightPercent": 50,
+      "tradePercent": 30
+    }
+  ],
+  "validation": {
+    "totalAllocation": 100,
+    "symbolCount": 1
+  }
+}

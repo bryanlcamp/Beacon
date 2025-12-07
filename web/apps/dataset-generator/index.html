@@ -24,6 +24,75 @@
             padding-top: 128px;
         }
 
+        /* Header styles */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-center {
+            flex: 2;
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-right {
+            flex: 1;
+            text-align: right;
+        }
+
+        .header-label {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .header-input,
+        .header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all var(--transition-normal);
+            box-sizing: border-box;
+        }
+
+        .header-input:focus,
+        .header-select:focus {
+            outline: none;
+            border-color: var(--beacon-primary);
+            background: rgba(0, 170, 255, 0.1);
+        }
+
+        /* Dataset Generator specific layout */
+        .app-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .app-container {
+            padding-top: 128px;
+        }
+
         /* Main panels layout */
         .main-panels {
             display: grid;
@@ -53,12 +122,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
+            padding: 16px 20px; /* This is the natural padding that should match both panels */
             border-bottom: 1px solid var(--border-primary);
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px 12px 0 0;
             cursor: pointer;
             transition: all var(--transition-normal);
+            min-height: auto; /* REMOVED any height restrictions */
         }
 
         .panel-header:hover {
@@ -72,205 +142,72 @@
             margin: 0;
         }
 
-        /* Panel header controls - for buttons and collapse indicator */
+        /* FIXED: Header controls alignment - match the actual config row proportions */
         .panel-header-controls {
             display: flex;
+            gap: 8px; /* Match config row gap */
+            width: 100%;
             align-items: center;
-            gap: 12px;
-        }
-
-        .panel-collapse-indicator {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.5rem;
-            font-weight: 300;
-            transition: all var(--transition-normal);
-        }
-
-        /* Panel content */
-        .panel-content {
-            padding: 24px;
-        }
-
-        /* Product cards grid */
-        #productsContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .datacard {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
             padding: 0;
-            transition: all var(--transition-normal);
-        }
-
-        .datacard:hover {
-            border-color: var(--border-accent);
-            background: rgba(0, 170, 255, 0.05);
-        }
-
-        .datacard-header {
-            background: rgba(255, 255, 255, 0.08);
-            border-bottom: 1px solid var(--border-primary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-        }
-
-        .datacard-title {
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-weight: var(--font-weight-bold);
             margin: 0;
         }
-
-        .datacard-content {
-            padding: 8px 12px;
-        }
-
-        /* Form layouts */
-        .dataset-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            align-items: end;
-        }
-
-        .form-row-triple {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
-        .form-column {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        /* Config management row */
-        .config-management-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .config-combo-container {
+        
+        /* Message count takes same space as config dropdown */
+        .panel-header-group:nth-child(1) {
             flex: 1;
-            position: relative;
         }
-
-        /* Compact add symbol button for header */
-        .add-symbol-btn {
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 255, 100, 0.2);
-            border: 1px solid rgba(0, 255, 100, 0.4);
+        
+        /* Exchange takes remaining space before empty column */
+        .panel-header-group:nth-child(2) {
+            flex: 1;
+        }
+        
+        /* Empty third column to balance layout */
+        .panel-header-group:nth-child(3) {
+            flex: 0 0 36px; /* Match button width exactly */
+        }
+        
+        .panel-header-input,
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
             border-radius: 4px;
-            color: #00ff64;
-            font-size: 1.2rem;
-            font-weight: var(--font-weight-bold);
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-family: inherit;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
         }
 
-        .add-symbol-btn:hover:not(:disabled) {
-            background: rgba(0, 255, 100, 0.3);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0, 255, 100, 0.3);
-        }
-
-        .add-symbol-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Product panel header layout */
-        .product-panel-header {
+        /* FIXED: Product panel header - restore proper height */
+        .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            gap: 16px;
-        }
-
-        .symbol-input-container {
-            flex: 1;
-            position: relative;
-        }
-
-        .add-symbol-input {
-            width: 100%;
-            padding: 6px 12px;
+            padding: 16px 20px; /* RESTORED original padding */
+            border-bottom: 1px solid var(--border-primary);
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            font-family: inherit;
+            border-radius: 12px 12px 0 0;
+            cursor: pointer;
             transition: all var(--transition-normal);
-            box-sizing: border-box;
-            height: 32px;
+            min-height: auto; /* REMOVED any height restrictions */
         }
 
-        .add-symbol-input:focus {
-            outline: none;
-            border-color: var(--beacon-primary);
-            background: rgba(0, 170, 255, 0.1);
-        }
-
-        .add-symbol-input.duplicate {
-            border-color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-        }
-
-        .symbol-error-msg {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            color: #dc3545;
-            font-size: 0.75rem;
-            margin-top: 2px;
-            opacity: 0;
-            transform: translateY(-5px);
-            transition: all var(--transition-normal);
-            pointer-events: none;
-        }
-
-        .symbol-error-msg.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .allocation-display {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        /* Panel header with symbol controls - SIMPLIFIED */
+        /* FIXED: Right panel symbol controls - restore natural sizing */
         .panel-header-symbol-controls {
             display: flex;
             align-items: center;
             gap: 16px;
             flex: 1;
+            padding: 0;
+            margin: 0;
         }
 
         .panel-header-symbol-controls .symbol-input-container {
-            flex: 0.5; /* HALF SIZE - was flex: 1 */
+            flex: 1; /* RESTORED to full width */
             position: relative;
         }
 
@@ -285,39 +222,448 @@
             font-family: inherit;
             transition: all var(--transition-normal);
             box-sizing: border-box;
-            height: 36px;
+            height: 36px; /* MATCH left panel height */
+            line-height: normal;
+            vertical-align: baseline;
+            margin: 0;
         }
 
-        .panel-header-symbol-controls .add-symbol-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-            font-style: italic;
-        }
-
-        .panel-header-symbol-controls .add-symbol-input:focus {
-            outline: none;
-            border-color: var(--beacon-primary);
-            background: rgba(0, 170, 255, 0.1);
-            font-style: normal;
-        }
-
-        .panel-header-symbol-controls .add-symbol-input.duplicate {
-            border-color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-            font-style: normal;
+        /* Panel header controls styling - COMPLETELY REMOVE HEIGHT RESTRICTIONS */
+        .panel-header-controls {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr; /* Wider first 2 columns to match config+button width */
+            gap: 8px; /* Match config row gap */
+            width: 100%;
+            align-items: center;
+            padding: 0;
+            margin: 0;
         }
         
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-panels {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
+        .panel-header-group {
+            display: flex;
+            align-items: center;
+            justify-content: stretch;
+        }
+        
+        .panel-header-input,
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
         }
 
-        @media (max-width: 768px) {
-            #productsContainer {
-                grid-template-columns: 1fr;
-            }
+        /* DON'T TOUCH: Config management row - it's PERFECT */
+        .config-management-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-primary);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .config-combo-container {
+            flex: 1;
+            position: relative;
+            min-width: 0;
+        }
+
+        /* FIXED: Header controls - 2 equal columns for msg cnt and exchange */
+        .panel-header-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Just 2 equal columns */
+            gap: 8px;
+            width: 100%;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .panel-header-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .panel-header-input,
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        /* FIXED: Config row - wide select + narrow button */
+        .config-management-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto; /* Wide select, then narrow buttons */
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-primary);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .config-combo-container {
+            width: 100%; /* Full width of its grid cell */
+            position: relative;
+        }
+
+        /* FIXED: Config buttons - keep narrow */
+        .config-new-btn,
+        .config-save-btn,
+        .config-cancel-btn {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            background: rgba(0, 255, 100, 0.2);
+            border: 1px solid rgba(0, 255, 100, 0.4);
+            border-radius: 4px;
+            color: #00ff64;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* FIXED: Panel content padding to create proper boundaries */
+        .panel-content {
+            padding: 20px; /* Consistent padding on all sides */
+            box-sizing: border-box;
+        }
+
+        /* Individual card collapse styles - UPDATED for blue arrows */
+        .datacard-content.collapsed {
+            display: none;
+        }
+        
+        .datacard-content.expanded {
+            display: block;
+        }
+        
+        .datacard-content {
+            padding: 8px 12px;
+        }
+
+        /* FIXED: Center the datacard content properly */
+        .datacard-content {
+            padding: 16px 20px; /* Increased padding for better spacing */
+        }
+
+        /* CLEAN FIX: Make both rows use identical flex layout */
+        .panel-header-controls,
+        .config-management-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        /* Header controls - each group takes equal space except we need to account for button width */
+        .panel-header-controls .panel-header-group:nth-child(1) {
+            flex: 1;
+        }
+        
+        .panel-header-controls .panel-header-group:nth-child(2) {
+            flex: 1;
+            margin-right: 44px; /* Account for button + gap width (36px + 8px) */
+        }
+
+        /* Config row - flex dropdown + fixed buttons */
+        .config-management-row .config-combo-container {
+            flex: 1;
+        }
+
+        .config-new-btn,
+        .config-save-btn,
+        .config-cancel-btn {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            background: rgba(0, 255, 100, 0.2);
+            border: 1px solid rgba(0, 255, 100, 0.4);
+            border-radius: 4px;
+            color: #00ff64;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* Both input types use same base styling */
+        .panel-header-input,
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        /* Select-specific styling */
+        .panel-header-select {
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 32px;
+        }
+
+        /* FIXED: Style native spinner arrows to match dropdown color */
+        .panel-header-input[type="number"] {
+            /* Keep normal padding - spinner arrows appear on the right naturally */
+            padding-right: 12px;
+        }
+
+        /* Style the webkit spinner arrows to match dropdown color */
+        .panel-header-input[type="number"]::-webkit-outer-spin-button,
+        .panel-header-input[type="number"]::-webkit-inner-spin-button {
+            opacity: 1; /* Make sure they're visible */
+            height: 18px; /* Set height */
+            width: 16px; /* Set width */
+            cursor: pointer;
+            /* Use CSS filter to change color to match dropdown #999 */
+            filter: invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(100%);
+        }
+
+        /* For Firefox - enable the spinner */
+        .panel-header-input[type="number"] {
+            -moz-appearance: number-input; /* Keep Firefox spinner visible */
+        }
+
+        /* REVERTED: Exchange dropdown back to original font styling */
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500; /* BACK to 500, not bold */
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 32px;
+        }
+
+        /* FIXED: Exchange dropdown - ALL OPTIONS BOLD with Beacon font */
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 800; /* BOLD like Beacon */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; /* Match Beacon font */
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 32px;
+        }
+
+        /* SIMPLE FIX: Make dropdown options use normal readable font */
+        .panel-header-select option {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            font-weight: 500; /* Normal weight, not ancient looking */
+            font-size: 0.9rem;
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        /* FIXED: Spinner arrows same color as exchange dropdown arrows */
+        .panel-header-input[type="number"]::-webkit-outer-spin-button,
+        .panel-header-input[type="number"]::-webkit-inner-spin-button {
+            opacity: 1;
+            height: 18px;
+            width: 16px;
+            cursor: pointer;
+            /* Color filter to make spinner arrows same #999 as dropdown arrow */
+            filter: invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(100%);
+        }
+
+        .panel-header-input[type="number"] {
+            -moz-appearance: number-input; /* Keep Firefox spinner visible */
+        }
+
+        /* Demo mode banner */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 0;
+            background: rgba(255, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        /* Professional header styles */
+        .beacon-page-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-primary);
+            z-index: 1001;
+        }
+
+        .beacon-page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+        }
+
+        .beacon-brand-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .beacon-brand-main {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--beacon-primary);
+            text-decoration: none;
+        }
+
+        .beacon-brand-separator {
+            margin: 0 8px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .beacon-page-title {
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-medium);
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .beacon-nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .beacon-nav-back {
+            display: flex;
+            align-items: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--transition-normal);
+        }
+
+        .beacon-nav-back:hover {
+            color: var(--beacon-primary);
+        }
+
+        .nav-arrow {
+            margin-right: 4px;
+            font-size: 1.2rem;
+        }
+
+        /* FIXED: Exchange dropdown font styling - all options bold and consistent */
+        .panel-header-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500; /* BACK to 500, not bold */
+            height: 36px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 32px;
+        }
+
+        /* FIXED: Style the dropdown options to be bold and consistent */
+        .panel-header-select option {
+            background: #2a2a2a;
+            color: #fff;
+            font-weight: bold; /* Make all options bold */
+            font-family: inherit; /* Use same font family */
+            font-size: 0.9rem; /* Match parent font size */
+            padding: 8px 12px;
+        }
+
+        /* Ensure focus state maintains bold styling */
+        .panel-header-select:focus {
+            outline: none;
+            border-color: #00ff64;
+            box-shadow: 0 0 0 2px rgba(0, 255, 100, 0.1);
+            background: rgba(0, 255, 100, 0.05);
+            font-weight: bold; /* Keep bold on focus */
         }
     </style>
     
@@ -359,8 +705,27 @@
             <!-- Dataset Configuration Panel -->
             <div class="dataset-config-panel" data-panel="dataset-config">
                 <div class="panel-header" onclick="DatasetGenerator.togglePanel('dataset-config')">
-                    <h3 class="panel-title">Configuration</h3>
-                    <div class="panel-collapse-indicator">−</div>
+                    <div class="panel-header-controls" onclick="event.stopPropagation()">
+                        <div class="panel-header-group">
+                            <input type="number" 
+                                   id="numMessagesInput" 
+                                   class="panel-header-input" 
+                                   placeholder="Msg Cnt" 
+                                   min="1" 
+                                   max="10000000"
+                                   oninput="DatasetGenerator.handleNumMessagesInput(event)"
+                                   onchange="DatasetGenerator.validateNumMessages()"
+                                   onkeydown="DatasetGenerator.uiController.handleNumericKeydown(event)">
+                        </div>
+                        <div class="panel-header-group">
+                            <!-- FIXED: Put the SELECT back, not input! -->
+                            <select id="exchangeSelect" class="panel-header-select" onchange="DatasetGenerator.handleAnyInput(event)">
+                                <option value="NASDAQ">NASDAQ</option>
+                                <option value="NYSE">NYSE</option>
+                                <option value="CME">CME</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-content">
                     <!-- Config Load/Save Row - FIRST LINE - FIXED -->
@@ -389,31 +754,19 @@
                     </div>
 
                     <div class="dataset-row">
+                        <!-- REMOVED: Market Sentiment control -->
+                        
                         <div class="form-group">
-                            <input type="number" class="form-input required-empty" id="numMessagesInput" 
-                                   placeholder="# Msgs" min="1" 
-                                   oninput="DatasetGenerator.validateNumMessages()" 
-                                   onblur="DatasetGenerator.validateNumMessages()">
+                            <input type="text" class="form-input save-as-empty" id="saveAsInput" 
+                                   placeholder="Save As:" maxlength="50" 
+                                   oninput="DatasetGenerator.validateSaveAs(event)">
                         </div>
-                        <div class="form-group">
-                            <select class="form-select" id="exchangeSelect">
-                                <option value="nasdaq">NASDAQ</option>
-                                <option value="nyse">NYSE</option>
-                                <option value="cme">CME</option>
-                            </select>
-                        </div>
+                        
+                        <button class="generate-btn" id="generateBtn" 
+                                onclick="DatasetGenerator.generateDataset()" disabled>
+                            Generate
+                        </button>
                     </div>
-                    
-                    <div class="form-group">
-                        <input type="text" class="form-input save-as-empty" id="saveAsInput" 
-                               placeholder="Save As:" maxlength="50" 
-                               oninput="DatasetGenerator.validateForm()">
-                    </div>
-                    
-                    <button class="generate-btn" id="generateBtn" 
-                            onclick="DatasetGenerator.generateDataset()" disabled>
-                        Generate
-                    </button>
                 </div>
             </div>
 
@@ -442,40 +795,25 @@
                 </div>
             </div>
         </section>
-    </main>        <!-- Scripts -->
-    <script src="../../../data/market_data.js"></script>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../../shared/js/market-data-utils.js"></script>
+    <script type="module" src="scripts/dataset-generator.js"></script>
+    
+    <!-- FORCE red adorner on page load for symbol input -->
     <script>
-        // Let the external market_data.js file handle all symbol definitions
-        console.log('🔧 Market data loaded from external file');
-        
-        // Verify the data loaded properly
-        if (typeof window.MARKET_DATA !== 'undefined') {
-            console.log('✅ Market data available:', Object.keys(window.MARKET_DATA));
-        } else {
-            console.warn('⚠️ Market data not loaded - using fallback');
-            // Minimal fallback if external file fails
-            window.MARKET_DATA = {
-                'AAPL': {
-                    priceRange: { min: 185.00, max: 200.00 },
-                    quantityRange: { min: 100, max: 2000 },
-                    spreadPercent: 0.02
+        // Immediately force red adorner when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const symbolInput = document.getElementById('symbolInput');
+                if (symbolInput) {
+                    symbolInput.classList.remove('symbols-added');
+                    symbolInput.classList.add('no-symbols-warning');
+                    console.log('🔴 DOM READY: Forced red adorner for symbol input');
                 }
-            };
-        }
-        
-        // Ensure MarketDataUtils exists
-        if (typeof window.MarketDataUtils === 'undefined') {
-            window.MarketDataUtils = {
-                getSymbol: function(ticker) {
-                    const symbol = ticker.toUpperCase();
-                    return window.MARKET_DATA[symbol] || null;
-                },
-                getAllSymbols: function() {
-                    return Object.keys(window.MARKET_DATA || {});
-                }
-            };
-        }
+            }, 50);
+        });
     </script>
-    <script src="./scripts/dataset-generator.js"></script>
 </body>
 </html>

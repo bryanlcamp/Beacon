@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "fileName": "100",
+    "generatedAt": "2025-12-05T00:51:58.395Z",
+    "generator": "Beacon HFT Dataset Generator v1.0",
+    "totalMessages": 1000,
+    "exchange": "nasdaq"
+  },
+  "globalSettings": {
+    "messageCount": 1000,
+    "exchange": "nasdaq",
+    "timestampStart": 1764895918395,
+    "randomSeed": 433672
+  },
+  "symbols": [
+    {
+      "symbol": "SAMPLE",
+      "allocation": 100,
+      "bidPriceRange": {
+        "min": 110,
+        "max": 140
+      },
+      "askPriceRange": {
+        "min": 160,
+        "max": 190
+      },
+      "bidQuantityRange": {
+        "min": 120,
+        "max": 700
+      },
+      "askQuantityRange": {
+        "min": 130,
+        "max": 800
+      },
+      "spreadPercent": 0.5,
+      "volumeM": 25,
+      "bidWeightPercent": 50,
+      "askWeightPercent": 50,
+      "tradePercent": 30
+    }
+  ],
+  "validation": {
+    "totalAllocation": 100,
+    "symbolCount": 1
+  }
+}

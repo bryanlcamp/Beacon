@@ -716,63 +716,7 @@ body.demo-mode .beacon-page-content {
     background: rgba(0, 170, 255, 0.1);
 }
 
-/* Small Controls */
-.percentage-spinner {
-    width: 60px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    color: var(--text-primary);
-    font-size: 0.8rem;
-    text-align: center;
-    padding: 0 4px;
-    transition: all var(--transition-fast);
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.percentage-spinner:focus {
-    outline: none;
-    border-color: var(--beacon-primary);
-    background: rgba(0, 170, 255, 0.1);
-}
-
-.remove-btn {
-    background: rgba(220, 53, 69, 0.2);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    border-radius: 50%;
-    color: #dc3545;
-    width: 18px;
-    height: 18px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-family: inherit;
-}
-
-.remove-btn:hover {
-    background: rgba(220, 53, 69, 0.4);
-    transform: scale(1.1);
-}
-
-/* Config State Indicators */
-.config-combo.loaded {
-    border-color: #00ff64;
-    background: rgba(0, 255, 100, 0.05);
-}
-
-.config-combo.modified {
-    border-color: #ffa500;
-    background: rgba(255, 165, 0, 0.05);
-}
-
-/* Allocation Percentage Display - Global and Individual Cards */
+/* ALLOCATION PERCENTAGE DISPLAY - REQUIRED FOR ENTER KEY FUNCTIONALITY */
 .allocation-percentage {
     font-size: 0.85rem;
     font-weight: var(--font-weight-bold);
@@ -800,15 +744,274 @@ body.demo-mode .beacon-page-content {
     text-shadow: 0 0 6px rgba(220, 53, 69, 0.4);
 }
 
-/* Datacard Controls Layout */
+/* DATACARD CONTROLS - REQUIRED FOR CARD GENERATION */
 .datacard-controls {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
+.percentage-spinner {
+    width: 60px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
 .percentage-label {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.8rem;
     font-weight: var(--font-weight-medium);
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: all var(--transition-normal);
+}
+
+.remove-btn:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #ff6b6b;
+}
+
+/* RANGE SLIDER COMPONENTS - CRITICAL FOR CARD CONTENT */
+.range-slider-container {
+    margin-bottom: 12px;
+}
+
+.range-slider {
+    position: relative;
+    height: 20px;
+    margin: 8px 0;
+}
+
+.range-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(0, 170, 255, 0.3);
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+.range-slider input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.range-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #00aaff;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.range-slider input[type="range"]::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #00aaff;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.range-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
+}
+
+/* SINGLE RANGE SLIDERS */
+.single-range-container {
+    margin-bottom: 12px;
+}
+
+.single-range {
+    position: relative;
+    height: 20px;
+    margin: 8px 0;
+}
+
+.single-range-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    background: rgba(0, 170, 255, 0.3);
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+.single-range input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.single-range input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #00aaff;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+}
+
+.single-range-value {
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
+}
+
+/* FORM LABELS */
+.form-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-medium);
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* FORM VALIDATION STYLING */
+.form-input.required-empty,
+.form-select.required-empty,
+.config-combo.required-empty {
+    border-color: #dc3545 !important;
+    font-style: italic;
+    background: rgba(220, 53, 69, 0.05) !important;
+}
+
+.form-input.required-filled,
+.form-select.required-filled,
+.config-combo.required-filled {
+    border-color: rgba(0, 170, 255, 0.3);
+    font-style: normal;
+}
+
+.form-input::placeholder,
+.config-combo option:first-child {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* SYMBOL INPUT STYLING */
+.add-symbol-input {
+    font-style: italic; /* Default italic for placeholder */
+}
+
+.add-symbol-input:focus,
+.add-symbol-input:not(:placeholder-shown) {
+    font-style: normal; /* Normal when typing */
+}
+
+/* Remove any duplicate allocation percentage displays */
+.datacard-controls .allocation-percentage {
+    display: none; /* Hide individual card allocation - only show global */
+}
+
+/* CARD EXPAND/COLLAPSE FUNCTIONALITY */
+.card-expand-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: all var(--transition-normal);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-expand-btn:hover {
+    background: rgba(0, 170, 255, 0.1);
+    color: #00aaff;
+    transform: scale(1.1);
+}
+
+.expand-indicator {
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all var(--transition-normal);
+}
+
+/* DATACARD CONTENT COLLAPSE STATES */
+.datacard-content.collapsed {
+    display: none;
+}
+
+.datacard-content.expanded {
+    display: block;
+    animation: expandIn 0.2s ease-out;
+}
+
+@keyframes expandIn {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+/* COMPACT CARD VIEW - When collapsed, cards are much smaller */
+.datacard {
+    transition: all var(--transition-normal);
+}
+
+.datacard:has(.datacard-content.collapsed) {
+    min-height: 60px; /* Much smaller when collapsed */
+}
+
+.datacard:has(.datacard-content.expanded) {
+    min-height: auto; /* Full height when expanded */
+}
+
+/* IMPROVED DATACARD CONTROLS LAYOUT */
+.datacard-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Tighter spacing to fit expand button */
 }

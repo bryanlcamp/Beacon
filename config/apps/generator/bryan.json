@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "fileName": "bryan",
+    "generatedAt": "2025-12-05T00:16:29.863Z",
+    "generator": "Beacon HFT Dataset Generator v1.0",
+    "totalMessages": 1000,
+    "exchange": "NASDAQ",
+    "saveAsName": "dataset"
+  },
+  "globalSettings": {
+    "messageCount": 1000,
+    "exchange": "nasdaq",
+    "timestampStart": 1764893789863,
+    "randomSeed": 265948
+  },
+  "symbols": [],
+  "validation": {
+    "totalAllocation": 0,
+    "symbolCount": 0
+  }
+}

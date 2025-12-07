@@ -1,0 +1,32 @@
+{
+  "beacon_config": {
+    "version": "1.0.0",
+    "description": "Directory paths for Beacon apps - Cloud migration ready in 6 months",
+    "storage": {
+      "type": "local",
+      "cloud_ready": true
+    },
+    "apps": {
+      "data_generator": {
+        "config_directory": "usr/config/generator",
+        "dataset_directory": "usr/datasets",
+        "output_directory": "usr/output/generator"
+      },
+      "playback_engine": {
+        "config_directory": "usr/config/playback",
+        "dataset_directory": "usr/datasets",
+        "output_directory": "usr/output/playback"
+      },
+      "client_algorithm": {
+        "config_directory": "usr/config/algorithm",
+        "dataset_directory": "usr/datasets",
+        "output_directory": "usr/output/algorithm"
+      }
+    },
+    "global": {
+      "beacon_root": "auto-detect",
+      "shared_datasets": "usr/datasets",
+      "logs_directory": "usr/logs"
+    }
+  }
+}

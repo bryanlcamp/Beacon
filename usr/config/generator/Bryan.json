@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "fileName": "Bryan",
+    "generatedAt": "2025-12-05T23:08:26.086Z",
+    "generator": "Beacon HFT Dataset Generator v1.0",
+    "totalMessages": 2,
+    "exchange": "nasdaq",
+    "saveAsName": "dataset"
+  },
+  "globalSettings": {
+    "messageCount": 2,
+    "exchange": "nasdaq",
+    "timestampStart": 1764976106086,
+    "randomSeed": 401589
+  },
+  "symbols": [],
+  "validation": {
+    "totalAllocation": 0,
+    "symbolCount": 0
+  },
+  "savedAt": "2025-12-05T23:08:26.087Z",
+  "beacon_config_version": "usr_directories_v1",
+  "filesystem_structure": "usr_based_cloud_ready",
+  "config_type": "generator_workflow_config",
+  "_server_session": {
+    "session_id": "1764969133",
+    "saved_at": 1764976106.114348,
+    "server_uptime": 6973
+  }
+}
