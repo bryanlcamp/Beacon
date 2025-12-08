@@ -11,6 +11,7 @@ the ***product's trading*** frequency, and much, much more.
 - You pick the exchange, and your dataset will be generated into ***native binary protocol***, per each exchange's specifications.
 - Create as many datasets as you'd like, specify whatever parameters you'd like.
 
+![Customized Datasets](image.png)
 ### Market Data Exchange
 Beacon comes with a world-class component called "Market Data Playback". This acts as a true market data exchange. It broadcasts the dataset ***you created*** to your algorithm via UDP (loopback). Just as an exchange would. No market data **ever** leaves your trading machine. **No networking** is involved. But your algorithm receives all the benefits of interacting with a true exchange, sending your data in exchange-specific binary protocol.
 - Play your data back in configurable burst and wave intervals.
