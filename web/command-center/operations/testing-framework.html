@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Framework - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Testing Framework</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Testing Framework</h1>
+            <p>Comprehensive testing suite ensuring reliability and performance validation for HFT applications.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Testing Levels</h2>
+            <ul>
+                <li><strong>Unit Tests:</strong> Component-level testing with Google Test framework</li>
+                <li><strong>Integration Tests:</strong> Module interaction validation</li>
+                <li><strong>Performance Tests:</strong> Latency and throughput benchmarking</li>
+                <li><strong>System Tests:</strong> End-to-end pipeline validation</li>
+                <li><strong>Regression Tests:</strong> Automated validation against known baselines</li>
+            </ul>
+
+            <h2>Performance Validation</h2>
+            <ul>
+                <li><strong>Latency Testing:</strong> Sub-microsecond timing validation</li>
+                <li><strong>Throughput Testing:</strong> Message processing rate verification</li>
+                <li><strong>Memory Usage:</strong> Allocation pattern and leak detection</li>
+                <li><strong>CPU Efficiency:</strong> Resource utilization measurement</li>
+                <li><strong>Stress Testing:</strong> System behavior under extreme load</li>
+            </ul>
+
+            <h2>Test Data Management</h2>
+            <ul>
+                <li><strong>Market Data Fixtures:</strong> Realistic test datasets for all exchanges</li>
+                <li><strong>Synthetic Scenarios:</strong> Edge case and corner case generation</li>
+                <li><strong>Historical Replay:</strong> Real market condition reproduction</li>
+                <li><strong>Deterministic Testing:</strong> Repeatable test execution</li>
+            </ul>
+
+            <h2>Continuous Integration</h2>
+            <ul>
+                <li><strong>Automated Testing:</strong> Tests run on every commit</li>
+                <li><strong>Performance Regression:</strong> Automatic performance comparison</li>
+                <li><strong>Code Coverage:</strong> Comprehensive coverage reporting</li>
+                <li><strong>Quality Gates:</strong> Automated pass/fail criteria</li>
+            </ul>
+
+            <h2>Debugging and Profiling</h2>
+            <ul>
+                <li><strong>Debug Builds:</strong> Symbol-rich builds for troubleshooting</li>
+                <li><strong>Sanitizers:</strong> Address, thread, and undefined behavior detection</li>
+                <li><strong>Profiling Tools:</strong> CPU and memory profiling integration</li>
+                <li><strong>Tracing:</strong> Execution flow analysis and bottleneck identification</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Testing integrates with <a href="build-system.html" style="color: #00aaff;">Build System</a> and <a href="release-management.html" style="color: #00aaff;">Release Management</a> for automated quality assurance.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

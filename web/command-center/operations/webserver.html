@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Server - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Web Server</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Web Server</h1>
+            <p>Integrated Flask web server providing configuration interfaces and system monitoring capabilities.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Server Features</h2>
+            <ul>
+                <li><strong>Configuration Interface:</strong> Web-based parameter configuration for all modules</li>
+                <li><strong>Real-time Monitoring:</strong> Live system metrics and performance dashboards</li>
+                <li><strong>API Endpoints:</strong> RESTful API for external system integration</li>
+                <li><strong>File Management:</strong> Dataset and configuration file upload/download</li>
+                <li><strong>Session Management:</strong> Persistent user sessions and preferences</li>
+            </ul>
+
+            <h2>Security and Access</h2>
+            <ul>
+                <li><strong>Local Only:</strong> Server binds to localhost for security</li>
+                <li><strong>No External Dependencies:</strong> Runs completely offline</li>
+                <li><strong>File System Isolation:</strong> Restricted access to designated directories</li>
+                <li><strong>Input Validation:</strong> All user inputs validated and sanitized</li>
+                <li><strong>Session Security:</strong> Secure session token management</li>
+            </ul>
+
+            <h2>Performance Characteristics</h2>
+            <ul>
+                <li><strong>Low Overhead:</strong> Minimal CPU and memory impact</li>
+                <li><strong>Fast Response:</strong> Sub-millisecond API response times</li>
+                <li><strong>Concurrent Users:</strong> Multiple browser sessions supported</li>
+                <li><strong>Hot Reload:</strong> Configuration changes applied without restart</li>
+            </ul>
+
+            <h2>Configuration Management</h2>
+            <ul>
+                <li><strong>JSON Storage:</strong> Human-readable configuration format</li>
+                <li><strong>Version Control:</strong> Configuration history and rollback support</li>
+                <li><strong>Template System:</strong> Predefined configuration templates</li>
+                <li><strong>Export/Import:</strong> Configuration sharing and backup</li>
+            </ul>
+
+            <h2>Integration Capabilities</h2>
+            <ul>
+                <li><strong>C++ Backend:</strong> Direct integration with core Beacon modules</li>
+                <li><strong>IPC Communication:</strong> Inter-process communication for real-time data</li>
+                <li><strong>File System Events:</strong> Automatic detection of external changes</li>
+                <li><strong>Plugin Architecture:</strong> Extensible interface for custom modules</li>
+            </ul>
+
+            <h2>Usage</h2>
+            <p>The web server automatically starts with Beacon applications and provides access through standard web browsers. Learn more about <a href="build-system.html" style="color: #00aaff;">Build System</a> integration.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

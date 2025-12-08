@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CME, Nasdaq, NYSE Protocol Support - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        /* Protocol comparison table - specific to this page */
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .protocol-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .protocol-card:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .protocol-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .protocol-cme .protocol-logo { color: #ff6b35; }
+        .protocol-nasdaq .protocol-logo { color: #00ff64; }
+        .protocol-nyse .protocol-logo { color: #00aaff; }
+
+        .protocol-card h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .protocol-card .version {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .protocol-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .protocol-features li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            padding: 4px 0 4px 16px;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .protocol-features li::before {
+            content: "•";
+            color: #00aaff;
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .protocol-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Exchange Protocol Support</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>CME, Nasdaq, NYSE Protocol Support</h1>
+            <p>Native binary protocol implementation for all major US exchanges with zero JSON overhead.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Supported Exchange Protocols</h2>
+            
+            <div class="protocol-grid">
+                <div class="protocol-card protocol-cme">
+                    <div class="protocol-logo">CME</div>
+                    <h3>Chicago Mercantile Exchange</h3>
+                    <div class="version">MDP 3.0 / SBE</div>
+                    <ul class="protocol-features">
+                        <li>Market Data Platform 3.0</li>
+                        <li>Simple Binary Encoding</li>
+                        <li>Futures and Options</li>
+                        <li>Real-time and historical</li>
+                        <li>Order book reconstruction</li>
+                    </ul>
+                </div>
+                
+                <div class="protocol-card protocol-nasdaq">
+                    <div class="protocol-logo">NASDAQ</div>
+                    <h3>Nasdaq Stock Market</h3>
+                    <div class="version">ITCH 5.0</div>
+                    <ul class="protocol-features">
+                        <li>TotalView-ITCH 5.0</li>
+                        <li>Binary message format</li>
+                        <li>Order-by-order data</li>
+                        <li>Market by order</li>
+                        <li>Cross and halt messages</li>
+                    </ul>
+                </div>
+                
+                <div class="protocol-card protocol-nyse">
+                    <div class="protocol-logo">NYSE</div>
+                    <h3>New York Stock Exchange</h3>
+                    <div class="version">Pillar Gateway</div>
+                    <ul class="protocol-features">
+                        <li>Pillar Trading Platform</li>
+                        <li>Binary market data</li>
+                        <li>Integrated feed</li>
+                        <li>Opening/closing auctions</li>
+                        <li>Imbalance messages</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Performance Advantages</h2>
+            <p>Native protocol implementation delivers maximum performance:</p>
+
+            <ul>
+                <li><strong>Zero Parsing Overhead:</strong> Direct binary message processing without conversion</li>
+                <li><strong>Native Data Types:</strong> No JSON or XML translation layers</li>
+                <li><strong>Optimized Memory Layout:</strong> Cache-friendly data structures</li>
+                <li><strong>Vectorized Operations:</strong> SIMD processing for bulk operations</li>
+                <li><strong>Lock-Free Processing:</strong> Wait-free message handling</li>
+            </ul>
+
+            <h2>Message Type Coverage</h2>
+            <p>Complete protocol coverage for production use:</p>
+
+            <ul>
+                <li><strong>Market Data:</strong> Level 1, Level 2, and order book updates</li>
+                <li><strong>Trade Messages:</strong> Execution reports and trade corrections</li>
+                <li><strong>Reference Data:</strong> Security definitions and corporate actions</li>
+                <li><strong>Market State:</strong> Trading halts, circuit breakers, and session changes</li>
+                <li><strong>Administrative:</strong> Heartbeats, sequence resets, and gap fills</li>
+            </ul>
+
+            <h2>Data Quality and Validation</h2>
+            <ul>
+                <li><strong>Message Validation:</strong> Automatic field validation and range checking</li>
+                <li><strong>Sequence Integrity:</strong> Gap detection and recovery mechanisms</li>
+                <li><strong>Timestamp Precision:</strong> Nanosecond resolution timing</li>
+                <li><strong>Checksums:</strong> Built-in data integrity verification</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Protocol support integrates seamlessly with Beacon's <a href="../infrastructure/data-encoding.html" style="color: #00aaff;">Data Encoding</a> and <a href="choosing-a-protocol.html" style="color: #00aaff;">Protocol Selection</a> systems for optimal performance.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

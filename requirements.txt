@@ -1,4 +1,0 @@
-yfinance>=0.2.18
-requests>=2.25.0
-pandas>=1.5.0
-flask>=2.0.0

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Encoding - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Data Encoding</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Data Encoding</h1>
+            <p>High-performance binary encoding and decoding optimized for financial message formats.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Encoding Performance</h2>
+            <ul>
+                <li><strong>Zero-Copy Serialization:</strong> Direct memory mapping without intermediate buffers</li>
+                <li><strong>Template Specialization:</strong> Compile-time optimization for known message types</li>
+                <li><strong>Vectorized Operations:</strong> SIMD instructions for bulk data processing</li>
+                <li><strong>Cache-Friendly Layout:</strong> Memory access patterns optimized for CPU cache</li>
+                <li><strong>Alignment Optimization:</strong> Proper data alignment for maximum throughput</li>
+            </ul>
+
+            <h2>Supported Formats</h2>
+            <ul>
+                <li><strong>CME MDP 3.0:</strong> Chicago Mercantile Exchange market data protocol</li>
+                <li><strong>NASDAQ ITCH:</strong> Real-time market data feed protocol</li>
+                <li><strong>NYSE Pillar:</strong> New York Stock Exchange native format</li>
+                <li><strong>FIX Protocol:</strong> Financial Information eXchange messaging</li>
+                <li><strong>Custom Binary:</strong> Proprietary format support</li>
+            </ul>
+
+            <h2>Optimization Techniques</h2>
+            <ul>
+                <li><strong>Branch Prediction:</strong> Optimized control flow for common paths</li>
+                <li><strong>Lookup Tables:</strong> Pre-computed values for fast field conversion</li>
+                <li><strong>Bit Manipulation:</strong> Efficient packing and unpacking operations</li>
+                <li><strong>Memory Prefetching:</strong> Proactive cache loading for predictable access patterns</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Data encoding works seamlessly with <a href="network-delivery.html" style="color: #00aaff;">Network Delivery</a> and <a href="matching-execution.html" style="color: #00aaff;">Matching Engine</a> components for end-to-end performance.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

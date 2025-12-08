@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Data Generation - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        /* Technical specs grid - specific to infrastructure pages */
+        .tech-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .spec-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .spec-item:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+        }
+
+        .spec-item h4 {
+            color: #00aaff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .spec-item .metric {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .spec-item .description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 768px) {
+            .tech-specs {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Market Data Generation</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Market Data Generation</h1>
+            <p>High-performance data generation engine delivering realistic market patterns with institutional-grade precision.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Performance Specifications</h2>
+            
+            <div class="tech-specs">
+                <div class="spec-item">
+                    <h4>Latency</h4>
+                    <div class="metric">4.5μs</div>
+                    <div class="description">Median tick-to-trade performance</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Throughput</h4>
+                    <div class="metric">2M+ ticks/sec</div>
+                    <div class="description">Sustainable message rate</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Memory Usage</h4>
+                    <div class="metric">&lt; 100MB</div>
+                    <div class="description">Efficient memory allocation</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Protocols</h4>
+                    <div class="metric">CME/NYSE/NASDAQ</div>
+                    <div class="description">Native binary formats</div>
+                </div>
+            </div>
+
+            <h2>Architecture</h2>
+            <p>The market data generation engine is built with C++ for maximum performance:</p>
+
+            <ul>
+                <li><strong>Lock-free Queues:</strong> Zero-copy message passing between components</li>
+                <li><strong>Memory Pools:</strong> Pre-allocated buffers eliminate dynamic allocation</li>
+                <li><strong>SIMD Optimization:</strong> Vectorized calculations for price movements</li>
+                <li><strong>CPU Affinity:</strong> Dedicated cores for critical data paths</li>
+                <li><strong>Binary Protocols:</strong> Direct native format generation, no conversion overhead</li>
+            </ul>
+
+            <h2>Data Quality</h2>
+            <p>Generated market data maintains realistic characteristics:</p>
+
+            <ul>
+                <li><strong>OHLCV Patterns:</strong> Based on historical market behavior analysis</li>
+                <li><strong>Volume Profiles:</strong> Realistic intraday volume distribution</li>
+                <li><strong>Spread Dynamics:</strong> Market-appropriate bid-ask spreads</li>
+                <li><strong>Order Book Depth:</strong> Multi-level market depth simulation</li>
+                <li><strong>Corporate Events:</strong> Dividend, split, and earnings impact modeling</li>
+            </ul>
+
+            <h2>Implementation Details</h2>
+            <p>Built for production environments with enterprise requirements:</p>
+
+            <ul>
+                <li><strong>Zero Garbage Collection:</strong> No runtime pauses or delays</li>
+                <li><strong>Deterministic Timing:</strong> Consistent performance under load</li>
+                <li><strong>Error Recovery:</strong> Graceful handling of edge cases</li>
+                <li><strong>Monitoring Integration:</strong> Built-in performance metrics collection</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Connect with other Beacon components or external systems through standardized interfaces. Learn more about <a href="network-delivery.html" style="color: #00aaff;">Network Delivery</a> and <a href="data-encoding.html" style="color: #00aaff;">Data Encoding</a>.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

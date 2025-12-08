@@ -4,7 +4,7 @@ import subprocess
 import time
 from datetime import datetime
 from pathlib import Path
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -175,6 +175,32 @@ def status():
         "config_dir": str(CONFIG_DIR),
         "output_dir": str(OUTPUT_DIR)
     })
+
+# Static file serving routes
+@app.route('/')
+def root():
+    """Redirect to main web interface"""
+    return send_from_directory('web', 'index.html')
+
+@app.route('/apps/dataset-generator/')
+def dataset_generator():
+    """Serve dataset generator application"""
+    return send_from_directory('apps/dataset-generator', 'index.html')
+
+@app.route('/apps/dataset-generator/<path:filename>')
+def dataset_generator_assets(filename):
+    """Serve dataset generator assets (CSS, JS, images)"""
+    return send_from_directory('apps/dataset-generator', filename)
+
+@app.route('/web/<path:filename>')
+def web_assets(filename):
+    """Serve general web assets"""
+    return send_from_directory('web', filename)
+
+@app.route('/apps/<path:filename>')
+def apps_assets(filename):
+    """Serve application assets"""
+    return send_from_directory('apps', filename)
 
 if __name__ == '__main__':
     print("🔥 Starting Beacon Dataset Generator Flask Server")

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating a Pipeline - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        /* Pipeline-specific flow diagram */
+        .pipeline-flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        .flow-step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+        }
+
+        .flow-step::after {
+            content: "→";
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00aaff;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .flow-step:last-child::after {
+            display: none;
+        }
+
+        .flow-step h4 {
+            color: #00aaff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .flow-step p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 768px) {
+            .pipeline-flow {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .flow-step::after {
+                content: "↓";
+                right: auto;
+                top: auto;
+                bottom: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .flow-step:last-child::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Creating a Pipeline</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Creating a Pipeline</h1>
+            <p>End-to-end workflow: Generate → Stream → Execute → Monitor</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Complete Trading Pipeline</h2>
+            <p>Beacon's modular architecture allows you to create complete trading pipelines that simulate real market conditions with institutional-grade performance.</p>
+
+            <div class="pipeline-flow">
+                <div class="flow-step">
+                    <h4>Generate Data</h4>
+                    <p>Create realistic market data with proper OHLCV patterns</p>
+                </div>
+                <div class="flow-step">
+                    <h4>Stream Feed</h4>
+                    <p>Playback data with precise timing and native protocols</p>
+                </div>
+                <div class="flow-step">
+                    <h4>Execute Algorithms</h4>
+                    <p>Connect your trading algorithms with minimal latency</p>
+                </div>
+                <div class="flow-step">
+                    <h4>Monitor Performance</h4>
+                    <p>Track execution metrics and optimize strategies</p>
+                </div>
+            </div>
+
+            <h2>Quick Setup</h2>
+            <p>Creating a complete pipeline takes just a few steps:</p>
+
+            <ul>
+                <li><strong>Configure Symbols:</strong> Select your trading instruments and parameters</li>
+                <li><strong>Generate Dataset:</strong> Create market data with realistic patterns</li>
+                <li><strong>Start Playback:</strong> Stream data using native exchange protocols</li>
+                <li><strong>Connect Algorithm:</strong> Plug in your trading logic with low-latency interface</li>
+                <li><strong>Monitor Results:</strong> Track performance metrics in real-time</li>
+            </ul>
+
+            <h2>Performance Benefits</h2>
+            <p>The complete pipeline delivers:</p>
+
+            <ul>
+                <li><strong>4.5μs median latency:</strong> From market data to order execution</li>
+                <li><strong>Realistic simulation:</strong> True exchange behavior and timing</li>
+                <li><strong>Scalable testing:</strong> From single instruments to full portfolios</li>
+                <li><strong>Algorithm isolation:</strong> Test strategies without market risk</li>
+            </ul>
+
+            <h2>Next Steps</h2>
+            <p>Ready to build your pipeline? Start with the <a href="../../apps/dataset-generator/" style="color: #00aaff;">Dataset Generator</a> to create your market data, or learn about <a href="stand-alone-applications.html" style="color: #00aaff;">Stand-Alone Applications</a> for individual component testing.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

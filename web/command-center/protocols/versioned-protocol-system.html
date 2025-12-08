@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versioned Protocol System - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Versioned Protocol System</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Versioned Protocol System</h1>
+            <p>Automatic protocol version management and backward compatibility for evolving exchange specifications.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Version Management</h2>
+            <p>Beacon automatically handles protocol versioning to ensure compatibility across exchange updates:</p>
+
+            <ul>
+                <li><strong>Automatic Detection:</strong> Protocol version identification from message headers</li>
+                <li><strong>Backward Compatibility:</strong> Support for legacy protocol versions</li>
+                <li><strong>Forward Compatibility:</strong> Graceful handling of newer protocol features</li>
+                <li><strong>Version Negotiation:</strong> Optimal version selection for maximum feature support</li>
+            </ul>
+
+            <h2>Supported Versions</h2>
+
+            <h3>CME Group</h3>
+            <ul>
+                <li><strong>MDP 3.0:</strong> Current production version with full SBE support</li>
+                <li><strong>MDP 2.5:</strong> Legacy support for older implementations</li>
+                <li><strong>Future Versions:</strong> Ready for upcoming CME protocol updates</li>
+            </ul>
+
+            <h3>Nasdaq</h3>
+            <ul>
+                <li><strong>ITCH 5.0:</strong> Current TotalView protocol version</li>
+                <li><strong>ITCH 4.x:</strong> Legacy version compatibility</li>
+                <li><strong>Enhanced Features:</strong> Support for new message types as released</li>
+            </ul>
+
+            <h3>NYSE</h3>
+            <ul>
+                <li><strong>Pillar:</strong> Current NYSE trading platform protocol</li>
+                <li><strong>Legacy Systems:</strong> Support for transitional periods</li>
+                <li><strong>Market Extensions:</strong> Coverage for NYSE American, Arca variants</li>
+            </ul>
+
+            <h2>Implementation Strategy</h2>
+            <ul>
+                <li><strong>Schema Evolution:</strong> Extensible message definitions for new fields</li>
+                <li><strong>Feature Flags:</strong> Runtime enablement of version-specific features</li>
+                <li><strong>Testing Matrix:</strong> Validation against all supported versions</li>
+                <li><strong>Performance Optimization:</strong> Version-specific code paths for maximum speed</li>
+            </ul>
+
+            <h2>Benefits</h2>
+            <ul>
+                <li><strong>Production Stability:</strong> No disruption from exchange protocol updates</li>
+                <li><strong>Development Continuity:</strong> Consistent API across protocol versions</li>
+                <li><strong>Migration Support:</strong> Smooth transitions during exchange upgrades</li>
+                <li><strong>Future Proofing:</strong> Ready for upcoming protocol enhancements</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Version management works transparently with <a href="robust-encoding-decoding.html" style="color: #00aaff;">Encoding/Decoding</a> and <a href="choosing-a-protocol.html" style="color: #00aaff;">Protocol Selection</a> systems.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

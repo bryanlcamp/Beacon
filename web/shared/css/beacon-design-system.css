@@ -401,7 +401,7 @@ body.demo-mode .beacon-page-header {
 }
 
 body.demo-mode .beacon-page-content {
-    padding-top: 108px;
+    padding-top: 128px;
 }
 
 /* Documentation content */
@@ -1014,4 +1014,70 @@ body.demo-mode .beacon-page-content {
     display: flex;
     align-items: center;
     gap: 4px; /* Tighter spacing to fit expand button */
+}
+
+/* ==========================================================================
+   DEMO MODE FUNCTIONALITY - Single Source of Truth
+   ========================================================================== */
+
+/* Demo mode banner - hidden by default, shown when body has demo-mode class */
+.demo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #00aaff;
+    color: #ffffff;
+    text-align: center;
+    padding: 2px 0;
+    font-weight: 700;
+    font-size: 0.8rem;
+    z-index: 1000;
+    letter-spacing: 1px;
+    display: none; /* Hidden by default */
+}
+
+/* Show demo banner when in demo mode */
+body.demo-mode .demo-banner {
+    display: block;
+}
+
+/* Adjust header positioning when demo banner is visible */
+body.demo-mode .beacon-page-header {
+    top: 28px;
+}
+
+/* Adjust page content padding when demo banner is visible */
+body.demo-mode .beacon-page-content {
+    padding-top: 128px;
+}
+
+/* Demo mode button lockdown - disable all interactive elements */
+body.demo-mode button:not(.demo-allowed),
+body.demo-mode .generate-btn,
+body.demo-mode input[type="submit"],
+body.demo-mode input[type="file"],
+body.demo-mode .config-save-btn,
+body.demo-mode .add-symbol-btn {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    transform: none !important; /* Disable hover animations */
+}
+
+/* Demo mode form field lockdown - make inputs read-only appearance */
+body.demo-mode input:not([type="search"]):not(.demo-allowed),
+body.demo-mode select:not(.demo-allowed),
+body.demo-mode textarea:not(.demo-allowed) {
+    opacity: 0.7;
+    cursor: default;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Allow search and navigation to work in demo mode */
+body.demo-mode .beacon-search-field,
+body.demo-mode .beacon-nav-back {
+    opacity: 1 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }

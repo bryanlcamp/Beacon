@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robust Encoding and Decoding - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Encoding and Decoding</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Robust Encoding and Decoding</h1>
+            <p>High-performance, error-resilient protocol processing with automatic recovery and validation.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Encoding Performance</h2>
+            <p>Optimized encoding delivers maximum throughput with minimal CPU usage:</p>
+
+            <ul>
+                <li><strong>Zero-Copy Operations:</strong> Direct memory mapping without intermediate buffers</li>
+                <li><strong>Vectorized Processing:</strong> SIMD instructions for bulk field encoding</li>
+                <li><strong>Template Specialization:</strong> Compile-time optimization for known message types</li>
+                <li><strong>Branch Prediction:</strong> Optimized control flow for common encoding paths</li>
+                <li><strong>Cache Optimization:</strong> Memory layout designed for CPU cache efficiency</li>
+            </ul>
+
+            <h2>Decoding Robustness</h2>
+            <p>Built-in resilience handles real-world market data challenges:</p>
+
+            <ul>
+                <li><strong>Malformed Message Recovery:</strong> Graceful handling of corrupted or incomplete data</li>
+                <li><strong>Sequence Gap Detection:</strong> Automatic identification of missing messages</li>
+                <li><strong>Field Validation:</strong> Range checking and format validation for all fields</li>
+                <li><strong>Checksum Verification:</strong> Data integrity validation at message level</li>
+                <li><strong>Error Reporting:</strong> Detailed diagnostics for troubleshooting</li>
+            </ul>
+
+            <h2>Error Recovery Strategies</h2>
+            <ul>
+                <li><strong>Skip and Continue:</strong> Bypass corrupted messages without stopping processing</li>
+                <li><strong>State Reconstruction:</strong> Rebuild order book state from subsequent messages</li>
+                <li><strong>Fallback Modes:</strong> Graceful degradation to simplified processing</li>
+                <li><strong>Recovery Logging:</strong> Detailed audit trail for post-incident analysis</li>
+            </ul>
+
+            <h2>Performance Characteristics</h2>
+            <ul>
+                <li><strong>Processing Rate:</strong> 2M+ messages per second sustained throughput</li>
+                <li><strong>Memory Usage:</strong> Minimal allocation with efficient memory pools</li>
+                <li><strong>CPU Efficiency:</strong> Optimized algorithms minimize processing overhead</li>
+                <li><strong>Latency:</strong> Sub-microsecond processing for critical path messages</li>
+            </ul>
+
+            <h2>Validation Framework</h2>
+            <ul>
+                <li><strong>Schema Compliance:</strong> Automatic validation against protocol specifications</li>
+                <li><strong>Business Rules:</strong> Configurable validation for trading-specific constraints</li>
+                <li><strong>Range Checking:</strong> Numeric field validation with configurable limits</li>
+                <li><strong>Reference Integrity:</strong> Cross-message consistency validation</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Encoding and decoding integrates with <a href="../infrastructure/data-encoding.html" style="color: #00aaff;">Data Encoding Infrastructure</a> and <a href="versioned-protocol-system.html" style="color: #00aaff;">Version Management</a> for complete protocol handling.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

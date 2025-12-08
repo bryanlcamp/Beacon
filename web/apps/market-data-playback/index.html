@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Data Playback - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Market Data Playback</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../command-center/index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Market Data Playback</h1>
+            <p>Stream generated or imported market data with precise timing control and native protocol support.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Playback Features</h2>
+            <ul>
+                <li><strong>Precise Timing Control:</strong> Configurable playback speed from real-time to accelerated</li>
+                <li><strong>Multiple Data Sources:</strong> Support for generated datasets and imported market data</li>
+                <li><strong>Protocol Streaming:</strong> Native CME, NYSE, NASDAQ format output</li>
+                <li><strong>Network Distribution:</strong> UDP multicast and TCP streaming options</li>
+                <li><strong>Session Management:</strong> Market session simulation with proper timing</li>
+            </ul>
+
+            <h2>Performance Characteristics</h2>
+            <ul>
+                <li><strong>Low Latency Streaming:</strong> Sub-microsecond message dispatch</li>
+                <li><strong>High Throughput:</strong> 2M+ messages per second sustained rate</li>
+                <li><strong>Memory Efficient:</strong> Streaming architecture with minimal memory footprint</li>
+                <li><strong>Deterministic Timing:</strong> Consistent message timing under all conditions</li>
+            </ul>
+
+            <h2>Configuration Options</h2>
+            <ul>
+                <li><strong>Data Source Selection:</strong> Choose from available datasets or import external data</li>
+                <li><strong>Playback Speed:</strong> Real-time, accelerated, or custom timing control</li>
+                <li><strong>Network Settings:</strong> Configure output protocols and network interfaces</li>
+                <li><strong>Session Control:</strong> Start/stop/pause streaming with precise control</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Market Data Playback works with <a href="../dataset-generator/" style="color: #00aaff;">Dataset Generator</a> output files and streams to <a href="../algorithm-plugin/" style="color: #00aaff;">Algorithm Plugin</a> modules for complete testing workflows.</p>
+
+            <h2>Coming Soon</h2>
+            <p>This application is currently under development. The interface and functionality will be available in the next release.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

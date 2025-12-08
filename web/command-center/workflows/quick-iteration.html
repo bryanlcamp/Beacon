@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Iteration - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Quick Iteration</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Quick Iteration</h1>
+            <p>Rapid algorithm development and testing with instant feedback loops.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Fast Development Cycle</h2>
+            <p>Beacon is optimized for rapid iteration, allowing you to test algorithm changes quickly without lengthy setup or compilation cycles.</p>
+
+            <h2>Iteration Workflow</h2>
+            <ul>
+                <li><strong>Modify Algorithm:</strong> Update your strategy logic or parameters</li>
+                <li><strong>Hot Reload:</strong> Apply changes without restarting the entire system</li>
+                <li><strong>Test Immediately:</strong> Run against existing datasets with consistent market conditions</li>
+                <li><strong>Compare Results:</strong> Side-by-side performance analysis with previous versions</li>
+                <li><strong>Optimize:</strong> Fine-tune based on detailed performance metrics</li>
+            </ul>
+
+            <h2>Development Features</h2>
+            <ul>
+                <li><strong>Configuration Persistence:</strong> Save and reload testing scenarios</li>
+                <li><strong>Parameter Sweeps:</strong> Test multiple configurations automatically</li>
+                <li><strong>Performance Baselines:</strong> Compare against previous algorithm versions</li>
+                <li><strong>Debug Integration:</strong> Step-by-step execution analysis</li>
+                <li><strong>Real-time Monitoring:</strong> Live performance metrics during testing</li>
+            </ul>
+
+            <h2>Speed Advantages</h2>
+            <ul>
+                <li><strong>No Market Delays:</strong> Test at any speed, from real-time to accelerated</li>
+                <li><strong>Deterministic Results:</strong> Consistent market conditions for reliable testing</li>
+                <li><strong>Instant Restart:</strong> Begin new tests immediately after changes</li>
+                <li><strong>Parallel Testing:</strong> Run multiple algorithm versions simultaneously</li>
+            </ul>
+
+            <h2>Ready to Iterate?</h2>
+            <p>Start developing with the <a href="../../apps/dataset-generator/" style="color: #00aaff;">Dataset Generator</a> to create consistent testing data, or explore <a href="easy-algo-plugin.html" style="color: #00aaff;">Algorithm Integration</a> options.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching and Execution - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Matching and Execution</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Matching and Execution</h1>
+            <p>Exchange-realistic order matching engine with institutional-grade execution logic.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Matching Engine Features</h2>
+            <ul>
+                <li><strong>Price-Time Priority:</strong> Standard FIFO matching algorithm</li>
+                <li><strong>Pro-Rata Allocation:</strong> Volume-based order allocation for large fills</li>
+                <li><strong>Hidden Order Support:</strong> Iceberg and reserve order handling</li>
+                <li><strong>Order Types:</strong> Market, limit, stop, and conditional orders</li>
+                <li><strong>Cross Trading:</strong> Internal order crossing before external routing</li>
+            </ul>
+
+            <h2>Execution Logic</h2>
+            <ul>
+                <li><strong>Realistic Fill Behavior:</strong> Market impact and slippage modeling</li>
+                <li><strong>Partial Fills:</strong> Progressive execution for large orders</li>
+                <li><strong>Reject Handling:</strong> Exchange-realistic order rejection scenarios</li>
+                <li><strong>Timing Simulation:</strong> Accurate execution latency modeling</li>
+                <li><strong>Risk Controls:</strong> Position limits and exposure management</li>
+            </ul>
+
+            <h2>Performance Characteristics</h2>
+            <ul>
+                <li><strong>Sub-Microsecond Matching:</strong> High-speed order processing</li>
+                <li><strong>Lock-Free Architecture:</strong> Concurrent order book updates</li>
+                <li><strong>Memory Efficiency:</strong> Optimized data structures for order storage</li>
+                <li><strong>Deterministic Execution:</strong> Consistent timing under all conditions</li>
+            </ul>
+
+            <h2>Market Simulation</h2>
+            <ul>
+                <li><strong>Liquidity Modeling:</strong> Realistic market depth simulation</li>
+                <li><strong>Volatility Impact:</strong> Price movement effects on order execution</li>
+                <li><strong>Session Handling:</strong> Market open/close and trading halt logic</li>
+                <li><strong>Corporate Actions:</strong> Dividend and split processing</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>The matching engine integrates with <a href="market-data-generation.html" style="color: #00aaff;">Market Data Generation</a> and <a href="data-encoding.html" style="color: #00aaff;">Data Encoding</a> for complete trade lifecycle simulation.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

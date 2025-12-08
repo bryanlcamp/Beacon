@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Engine - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        /* Technical specs grid - reused from infrastructure baseline */
+        .tech-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .spec-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .spec-item:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+        }
+
+        .spec-item h4 {
+            color: #00aaff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .spec-item .metric {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .spec-item .description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 768px) {
+            .tech-specs {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <!-- FIXED: Correct path to main landing page -->
+                <a href="../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Matching Engine</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <!-- FIXED: Correct path to command center -->
+                <a href="../command-center/index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Matching Engine</h1>
+            <p>Exchange-realistic order matching engine with institutional-grade execution logic and sub-microsecond performance.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Performance Specifications</h2>
+            
+            <div class="tech-specs">
+                <div class="spec-item">
+                    <h4>Matching Latency</h4>
+                    <div class="metric">&lt; 1μs</div>
+                    <div class="description">Sub-microsecond order matching</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Order Throughput</h4>
+                    <div class="metric">1M+ orders/sec</div>
+                    <div class="description">High-frequency order processing</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Memory Usage</h4>
+                    <div class="metric">&lt; 75MB</div>
+                    <div class="description">Optimized order book storage</div>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Order Types</h4>
+                    <div class="metric">Market/Limit/Stop</div>
+                    <div class="description">Full order type support</div>
+                </div>
+            </div>
+
+            <h2>Matching Engine Features</h2>
+            <p>Exchange-realistic order matching with institutional-grade logic:</p>
+
+            <ul>
+                <li><strong>Price-Time Priority:</strong> Standard FIFO matching algorithm with microsecond precision</li>
+                <li><strong>Pro-Rata Allocation:</strong> Volume-based order allocation for large fills</li>
+                <li><strong>Hidden Order Support:</strong> Iceberg and reserve order handling</li>
+                <li><strong>Order Types:</strong> Market, limit, stop, and conditional orders</li>
+                <li><strong>Cross Trading:</strong> Internal order crossing before external routing</li>
+            </ul>
+
+            <h2>Execution Logic</h2>
+            <p>Realistic execution behavior that mirrors real exchange conditions:</p>
+
+            <ul>
+                <li><strong>Realistic Fill Behavior:</strong> Market impact and slippage modeling</li>
+                <li><strong>Partial Fills:</strong> Progressive execution for large orders</li>
+                <li><strong>Reject Handling:</strong> Exchange-realistic order rejection scenarios</li>
+                <li><strong>Timing Simulation:</strong> Accurate execution latency modeling</li>
+                <li><strong>Risk Controls:</strong> Position limits and exposure management</li>
+            </ul>
+
+            <h2>Market Simulation</h2>
+            <p>Comprehensive market behavior simulation:</p>
+
+            <ul>
+                <li><strong>Liquidity Modeling:</strong> Realistic market depth simulation</li>
+                <li><strong>Volatility Impact:</strong> Price movement effects on order execution</li>
+                <li><strong>Session Handling:</strong> Market open/close and trading halt logic</li>
+                <li><strong>Corporate Actions:</strong> Dividend and split processing</li>
+                <li><strong>Circuit Breakers:</strong> Exchange halt and resume mechanisms</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <!-- FIXED: Navigation links to other components -->
+            <p>The matching engine integrates seamlessly with <a href="../dataset-generator/" style="color: #00aaff;">Dataset Generator</a> for market data input and <a href="../algorithm-plugin/" style="color: #00aaff;">Algorithm Plugin</a> modules for complete trading simulation workflows.</p>
+
+            <h2>Web Interface</h2>
+            <p>Monitor order flow, execution metrics, and market state through the real-time web interface with detailed analytics and performance tracking.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

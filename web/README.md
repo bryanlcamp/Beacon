@@ -46,4 +46,4 @@ Beacon/
 - All data stays on trader's machine
 - Zero IT infrastructure required
 
-Perfect for independent traders and startups! 🚀
+Perfect for independent traders and startups!

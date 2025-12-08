@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Plugin - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Algorithm Plugin</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../command-center/index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Algorithm Plugin</h1>
+            <p>Connect your trading algorithms with minimal latency interface for high-frequency strategy testing.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Algorithm Integration</h2>
+            <ul>
+                <li><strong>Low-Latency Interface:</strong> 4.5μs market data feed with minimal processing overhead</li>
+                <li><strong>Order Management:</strong> Submit, modify, and cancel orders with exchange-realistic timing</li>
+                <li><strong>Position Tracking:</strong> Real-time position and P&L monitoring with accurate accounting</li>
+                <li><strong>Risk Controls:</strong> Built-in position limits and risk management framework</li>
+                <li><strong>Performance Analytics:</strong> Detailed execution metrics and latency measurement</li>
+            </ul>
+
+            <h2>Supported Interfaces</h2>
+            <ul>
+                <li><strong>C++ Native API:</strong> Direct library integration for maximum performance</li>
+                <li><strong>Python Bindings:</strong> High-level interface for rapid algorithm development</li>
+                <li><strong>FIX Protocol:</strong> Industry-standard messaging for existing systems</li>
+                <li><strong>REST API:</strong> HTTP interface for web-based algorithm frameworks</li>
+                <li><strong>WebSocket Streaming:</strong> Real-time data streaming for web applications</li>
+            </ul>
+
+            <h2>Algorithm Lifecycle</h2>
+            <ul>
+                <li><strong>Initialization:</strong> Algorithm setup and parameter configuration</li>
+                <li><strong>Market Data Feed:</strong> Real-time or simulated market data streaming</li>
+                <li><strong>Strategy Execution:</strong> Algorithm decision making and order generation</li>
+                <li><strong>Order Processing:</strong> Order routing and execution confirmation</li>
+                <li><strong>Performance Monitoring:</strong> Real-time analytics and risk monitoring</li>
+            </ul>
+
+            <h2>Integration</h2>
+            <p>Algorithm Plugin receives market data from <a href="../market-data-playback/" style="color: #00aaff;">Market Data Playback</a> and sends orders to <a href="../matching-engine/" style="color: #00aaff;">Matching Engine</a> for complete strategy testing.</p>
+
+            <h2>Coming Soon</h2>
+            <p>This application is currently under development. The plugin interface and SDK will be available in the next release.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('Demo mode enabled');
+        }
+    </script>
+</body>
+</html>

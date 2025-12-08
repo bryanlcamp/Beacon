@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stand-Alone Applications - Beacon HFT Platform</title>
+    
+    <!-- Import shared design system -->
+    <link rel="stylesheet" href="../../../shared/css/beacon-design-system.css">
+    
+    <style>
+        /* Minimal page-specific overrides */
+        .beacon-page-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        body.demo-mode .beacon-page-content {
+            padding-top: 128px;
+        }
+
+        /* Application cards specific to this page */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .app-card:hover {
+            border-color: rgba(0, 170, 255, 0.3);
+            background: rgba(0, 170, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .app-card h3 {
+            color: #00aaff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-card .app-icon {
+            font-size: 1.5rem;
+        }
+
+        .app-card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0 0 16px 0;
+        }
+
+        .app-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .app-card li {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            padding: 4px 0 4px 16px;
+            position: relative;
+        }
+
+        .app-card li::before {
+            content: "•";
+            color: #00aaff;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Mode Banner -->
+    <div class="demo-banner">DEMO MODE</div>
+    
+    <!-- Navigation -->
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="../../../../index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Stand-Alone Applications</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="../index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Stand-Alone Applications</h1>
+            <p>Use individual Beacon components independently for targeted testing and development.</p>
+        </section>
+
+        <section class="doc-content">
+            <h2>Individual Components</h2>
+            <p>Each Beacon module can run independently, allowing you to test specific aspects of your trading infrastructure without setting up a complete pipeline.</p>
+
+            <div class="app-grid">
+                <div class="app-card">
+                    <h3><span class="app-icon">🎯</span>Dataset Generator</h3>
+                    <p>Create realistic market data based on historical OHLCV patterns.</p>
+                    <ul>
+                        <li>Configure symbols and parameters</li>
+                        <li>Generate native protocol formats</li>
+                        <li>Export to binary or text formats</li>
+                        <li>Validate data quality metrics</li>
+                    </ul>
+                </div>
+
+                <div class="app-card">
+                    <h3><span class="app-icon">📡</span>Market Data Playback</h3>
+                    <p>Stream generated or imported market data with precise timing control.</p>
+                    <ul>
+                        <li>Load datasets from multiple sources</li>
+                        <li>Control playback speed and timing</li>
+                        <li>Multiple protocol output formats</li>
+                        <li>Real-time or accelerated streaming</li>
+                    </ul>
+                </div>
+
+                <div class="app-card">
+                    <h3><span class="app-icon">⚡</span>Algorithm Plugin</h3>
+                    <p>Test your trading algorithms with minimal latency interface.</p>
+                    <ul>
+                        <li>Low-latency market data feed</li>
+                        <li>Order entry and management</li>
+                        <li>Position tracking and risk</li>
+                        <li>Performance metrics collection</li>
+                    </ul>
+                </div>
+
+                <div class="app-card">
+                    <h3><span class="app-icon">🏛️</span>Matching Engine</h3>
+                    <p>Simulate realistic exchange order matching and execution.</p>
+                    <ul>
+                        <li>Price-time priority matching</li>
+                        <li>Realistic fill behavior</li>
+                        <li>Market impact simulation</li>
+                        <li>Exchange response timing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>When to Use Stand-Alone Mode</h2>
+            <p>Stand-alone applications are ideal for:</p>
+
+            <ul>
+                <li><strong>Data Preparation:</strong> Generate datasets for backtesting or external tools</li>
+                <li><strong>Algorithm Development:</strong> Focus on strategy logic without infrastructure</li>
+                <li><strong>Performance Testing:</strong> Isolate and optimize individual components</li>
+                <li><strong>Integration Testing:</strong> Validate interfaces with existing systems</li>
+                <li><strong>Educational Use:</strong> Learn market microstructure concepts</li>
+            </ul>
+
+            <h2>Performance Benefits</h2>
+            <p>Running components independently provides:</p>
+
+            <ul>
+                <li><strong>Resource Isolation:</strong> Dedicated CPU and memory per component</li>
+                <li><strong>Simplified Debugging:</strong> Focus on single component behavior</li>
+                <li><strong>Flexible Deployment:</strong> Mix Beacon components with existing infrastructure</li>
+                <li><strong>Scalable Testing:</strong> Run multiple instances simultaneously</li>
+            </ul>
+
+            <h2>Getting Started</h2>
+            <p>Ready to use individual components? Start with the <a href="../../apps/dataset-generator/" style="color: #00aaff;">Dataset Generator</a> to create your first dataset, or learn about <a href="creating-a-pipeline.html" style="color: #00aaff;">Creating a Pipeline</a> for end-to-end workflows.</p>
+        </section>
+    </main>
+    
+    <script>
+        // Demo mode detection
+        const isDemo = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('githubusercontent.com');
+        
+        if (isDemo) {
+            document.body.classList.add('demo-mode');
+            console.log('🎭 Demo mode enabled');
+        }
+    </script>
+</body>
+</html>
