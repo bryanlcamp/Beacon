@@ -1,10 +1,32 @@
-![Beacon Trading System](docs/assets/beacon-homepage.svg)
+![Beacon Trading System](docs/assets/beacon-home.png)
 
 # Beacon Trading System
-Beacon is a Comprehensive Live Trading Simulator. Allowing your trading strategy to run in a real trading environment. With all components provided. Simply plug in your algorithm, and you can start testing in minutes.
+Wondering how your trading strategy perform in the ***real*** market place? Have an estimate in minutes.Beacon offers true live simulation. Native, binary exchange protocols used throughout.Create tailored datasets. Play them to your algorithm via **UDP**. Take advantage of the 3-tier risk management system. Execute against a matching engine via **TCP** that provides comprehensive feedback. Take into account where your strategy is **co-located**. NASDAQ, NYSE, and CME exchanges are supported. See the full picture!
+
+## Beacon's Core Components
+- <span style="color:cornflowerblue">**Dataset Generator:**</span>
+- <span style="color:cornflowerblue">**Dataset Playback:**</span>
+- <span style="color:cornflowerblue">**Client Algorithm:**</span>
+- <span style="color:cornflowerblue">**Matching Enging:**</span>
+
+
+## Synthetic Market Data
+
+Beacon’s dataset generator is designed for professional quant and HFT users who demand realistic, production-grade simulation. Datasets are created using a hybrid approach:
+
+- **Wave and Burst Simulation:** Configurable cycles, bursts, and volatility spikes per product, not just simple sine waves.
+- **Statistical Modeling:** Random walks, volatility clustering, and jump diffusion for baseline price and volume.
+- **Order Book Microstructure:** Simulated order arrivals, cancellations, and executions for realistic limit order book dynamics.
+- **Event-Driven Scenarios:** Inject macro events, news-driven volatility, and correlated moves across products.
+- **Parameter Diversity:** Each product can be independently configured for spread, volume, trading frequency, and more.
+- **Microstructure Noise:** Out-of-order messages, missing packets, and exchange quirks for robust algorithm stress-testing.
+
+No historical data is required—Beacon uses domain knowledge and best practices from institutional trading to mimic real-world market behavior. This ensures your strategies are tested against a wide range of realistic scenarios, not just idealized or toy models.
 
 ## Creating Customized Datasets.
-- You're in charge of tailoring your own datasets, on a granular level. Enter as many products as you want. Configure each product's ***bid-ask spread***, ***volume***, ***bid/ask prices*** with a weighting system, the percent of messaegs per product in the data set,
+- Configure your own market datasets. Use smart defaults or tailor on a granular level. 
+
+Enter as many products as you want. Configure each product's ***bid-ask spread***, ***volume***, ***bid/ask prices*** with a weighting system, the percent of messaegs per product in the data set,
 the ***product's trading*** frequency, and much, much more.
 - You pick the exchange, and your dataset will be generated into ***native binary protocol***, per each exchange's specifications.
 - Create as many datasets as you'd like, specify whatever parameters you'd like.
@@ -55,4 +77,4 @@ class YourStrategy : public AlgorithmBase {
 
 **Bryan Camp**  
 Email: [bryancamp@gmail.com]  
-LinkedIn: [linkedin.com/in/bryanlcamp]  
+LinkedIn: [linkedin.com/in/bryanlcamp]
