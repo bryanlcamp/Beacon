@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beacon Product Row - Two Symbols Per Row</title>
+    <link rel="stylesheet" href="shared/css/beacon-design-system.css">
+    <style>
+        .symbol-row {
+            display: flex;
+            gap: 32px;
+            margin: 32px auto;
+            max-width: 1200px;
+        }
+        .symbol-panel {
+            flex: 1;
+            background: #23234a;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0003;
+            padding: 0;
+            position: relative;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .symbol-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+            padding: 18px 28px 0 28px;
+        }
+        .symbol-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            margin-right: 0;
+            display: flex;
+            align-items: center;
+        }
+        .percentage-spinner {
+            width: 60px;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            height: 32px;
+            margin-left: 12px;
+            margin-bottom: 0;
+            /* Ensure vertical alignment for all symbols */
+            display: flex;
+            align-items: center;
+        }
+        .collapse-arrow-btn {
+            background: none;
+            border: none;
+            color: #00aaff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: color 0.2s;
+        }
+        .collapse-arrow-btn:hover {
+            color: #6bb6ff;
+        }
+        .basics-panel {
+            padding: 18px 28px 0 28px;
+            display: block;
+        }
+        .basics-panel.collapsed {
+            display: none;
+        }
+        .expand-arrow-btn-bottom {
+            background: none;
+            border: none;
+            color: #00aaff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin: 18px auto 0 auto;
+            transition: color 0.2s;
+            display: block;
+        }
+        .expand-arrow-btn-bottom:hover {
+            color: #6bb6ff;
+        }
+        .symbol-details {
+            display: none;
+            margin-top: 18px;
+            animation: expandIn 0.2s ease-out;
+            padding: 0 28px 18px 28px;
+        }
+        .symbol-details.expanded {
+            display: block;
+        }
+        @keyframes expandIn {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        /* Example: basic panel content styling */
+        .panel-row {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .panel-label { color: #6bb6ff; font-size: 0.85rem; min-width: 90px; }
+        .panel-slider { flex: 1; }
+        .panel-value { min-width: 50px; text-align: right; color: #aaa; font-size: 0.85rem; }
+        .third-row {
+            display: flex;
+            gap: 18px;
+        }
+        .third-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .third-col.empty { }
+    </style>
+    <script>
+        function toggleCard(symbolId) {
+            const basics = document.getElementById(symbolId + '-basics');
+            const arrow = document.getElementById(symbolId + '-collapse-arrow');
+            basics.classList.toggle('collapsed');
+            arrow.textContent = basics.classList.contains('collapsed') ? '▶' : '▼';
+        }
+        function toggleDetails(symbolId) {
+            const details = document.getElementById(symbolId + '-details');
+            const arrow = document.getElementById(symbolId + '-arrow-bottom');
+            details.classList.toggle('expanded');
+            arrow.textContent = details.classList.contains('expanded') ? '▼' : '▲';
+        }
+        function setupDualRange(rowPrefix, priceMin, priceMax, qtyMin, qtyMax) {
+            // Price dual-range
+            const priceMinSlider = document.getElementById(`${rowPrefix}-price-min`);
+            const priceMaxSlider = document.getElementById(`${rowPrefix}-price-max`);
+            const priceMinVal = document.getElementById(`${rowPrefix}-price-min-val`);
+            const priceMaxVal = document.getElementById(`${rowPrefix}-price-max-val`);
+            function updatePrice() {
+                let min = Math.min(Number(priceMinSlider.value), Number(priceMaxSlider.value));
+                let max = Math.max(Number(priceMinSlider.value), Number(priceMaxSlider.value));
+                priceMinSlider.value = min;
+                priceMaxSlider.value = max;
+                priceMinVal.textContent = `$${min}`;
+                priceMaxVal.textContent = `$${max}`;
+            }
+            priceMinSlider.addEventListener('input', updatePrice);
+            priceMaxSlider.addEventListener('input', updatePrice);
+            updatePrice();
+
+            // Qty dual-range
+            const qtyMinSlider = document.getElementById(`${rowPrefix}-qty-min`);
+            const qtyMaxSlider = document.getElementById(`${rowPrefix}-qty-max`);
+            const qtyMinVal = document.getElementById(`${rowPrefix}-qty-min-val`);
+            const qtyMaxVal = document.getElementById(`${rowPrefix}-qty-max-val`);
+            function updateQty() {
+                let min = Math.min(Number(qtyMinSlider.value), Number(qtyMaxSlider.value));
+                let max = Math.max(Number(qtyMinSlider.value), Number(qtyMaxSlider.value));
+                qtyMinSlider.value = min;
+                qtyMaxSlider.value = max;
+                qtyMinVal.textContent = min.toLocaleString();
+                qtyMaxVal.textContent = max.toLocaleString();
+            }
+            qtyMinSlider.addEventListener('input', updateQty);
+            qtyMaxSlider.addEventListener('input', updateQty);
+            updateQty();
+        }
+        function setupSpreadProb(rowPrefix, spreadInit, probInit) {
+            const spreadSlider = document.getElementById(`${rowPrefix}-spread`);
+            const spreadVal = document.getElementById(`${rowPrefix}-spread-val`);
+            spreadSlider.addEventListener('input', () => {
+                spreadVal.textContent = spreadSlider.value;
+            });
+            spreadVal.textContent = spreadInit;
+
+            const probSlider = document.getElementById(`${rowPrefix}-prob`);
+            const probVal = document.getElementById(`${rowPrefix}-prob-val`);
+            probSlider.addEventListener('input', () => {
+                probVal.textContent = probSlider.value;
+            });
+            probVal.textContent = probInit;
+        }
+        function setupBurstWaveSliders(rowPrefix, burstDefaults, waveDefaults) {
+            // Burst sliders
+            ['intensity', 'frequency', 'duration'].forEach(key => {
+                const slider = document.getElementById(`${rowPrefix}-burst-${key}`);
+                const val = document.getElementById(`${rowPrefix}-burst-${key}-val`);
+                slider.addEventListener('input', () => {
+                    val.textContent = slider.value;
+                });
+                val.textContent = burstDefaults[key];
+            });
+            // Wave sliders
+            ['amplitude', 'frequency', 'duration'].forEach(key => {
+                const slider = document.getElementById(`${rowPrefix}-wave-${key}`);
+                const val = document.getElementById(`${rowPrefix}-wave-${key}-val`);
+                slider.addEventListener('input', () => {
+                    val.textContent = slider.value;
+                });
+                val.textContent = waveDefaults[key];
+            });
+        }
+        function setupSingleRange(rowPrefix, key, min, max, value, step, unit) {
+            const slider = document.getElementById(`${rowPrefix}-${key}`);
+            const val = document.getElementById(`${rowPrefix}-${key}-val`);
+            slider.addEventListener('input', () => {
+                val.textContent = unit ? slider.value + unit : slider.value;
+            });
+            val.textContent = unit ? value + unit : value;
+        }
+        function toggleAdvanced(rowId) {
+            const adv = document.getElementById(`${rowId}-advanced`);
+            const arrow = document.getElementById(`${rowId}-advanced-arrow`);
+            adv.classList.toggle('expanded');
+            arrow.textContent = adv.classList.contains('expanded') ? '▼' : '▲';
+        }
+        window.onload = function() {
+            setupDualRange('tsla');
+            setupDualRange('nvda');
+            setupDualRange('aapl');
+            setupSpreadProb('tsla', '0.05', '0.80');
+            setupSpreadProb('nvda', '0.08', '0.70');
+            setupSpreadProb('aapl', '0.03', '0.90');
+            setupBurstWaveSliders('tsla', {intensity:'2.0',frequency:'10',duration:'5'}, {amplitude:'1.5',frequency:'0.8',duration:'12'});
+            setupBurstWaveSliders('nvda', {intensity:'1.5',frequency:'8',duration:'4'}, {amplitude:'1.2',frequency:'0.7',duration:'10'});
+            setupBurstWaveSliders('aapl', {intensity:'1.0',frequency:'6',duration:'3'}, {amplitude:'1.0',frequency:'0.5',duration:'8'});
+
+            // Setup single sliders for bid/ask price/qty, spread, trade percent
+            ['bid-price','bid-qty','ask-price','ask-qty'].forEach(key => {
+                let min = key.includes('price') ? 100 : 1000;
+                let max = key.includes('price') ? 200 : 12000;
+                let value = key.includes('price') ? (key.startsWith('bid') ? 120 : 180) : (key.startsWith('bid') ? 5000 : 9000);
+                let step = key.includes('price') ? 1 : 100;
+                let unit = key.includes('price') ? '$' : '';
+                setupSingleRange('tsla', key, min, max, value, step, unit);
+                setupSingleRange('nvda', key, min, max, value, step, unit);
+                setupSingleRange('aapl', key, min, max, value, step, unit);
+            });
+            setupSingleRange('tsla', 'spread', 0.01, 0.10, 0.05, 0.01, '');
+            setupSingleRange('nvda', 'spread', 0.01, 0.10, 0.08, 0.01, '');
+            setupSingleRange('aapl', 'spread', 0.01, 0.10, 0.03, 0.01, '');
+            setupSingleRange('tsla', 'trade-percent', 0, 100, 80, 1, '%');
+            setupSingleRange('nvda', 'trade-percent', 0, 100, 70, 1, '%');
+            setupSingleRange('aapl', 'trade-percent', 0, 100, 90, 1, '%');
+        }
+    </script>
+</head>
+<body>
+    <div class="symbol-row">
+        <!-- Symbol 1 Panel -->
+        <div class="symbol-panel">
+            <div class="symbol-header">
+                <span class="symbol-title">
+                    TSLA
+                    <input type="number" class="percentage-spinner" value="20" min="0" max="100">
+                </span>
+                <button class="collapse-arrow-btn" id="TSLA-collapse-arrow" onclick="toggleCard('TSLA')">▼</button>
+            </div>
+            <div class="basics-panel" id="TSLA-basics">
+                <!-- Panel content for TSLA basics -->
+                <div class="panel-row">
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Bid Price</span>
+                        <input type="range" min="100" max="200" value="120" step="1" class="panel-slider" id="tsla-bid-price">
+                        <span class="panel-value" id="tsla-bid-price-val">$120</span>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Bid Qty</span>
+                        <input type="range" min="1000" max="12000" value="5000" step="100" class="panel-slider" id="tsla-bid-qty">
+                        <span class="panel-value" id="tsla-bid-qty-val">5000</span>
+                    </div>
+                </div>
+                <div class="panel-row">
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Ask Price</span>
+                        <input type="range" min="100" max="200" value="180" step="1" class="panel-slider" id="tsla-ask-price">
+                        <span class="panel-value" id="tsla-ask-price-val">$180</span>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Ask Qty</span>
+                        <input type="range" min="1000" max="12000" value="9000" step="100" class="panel-slider" id="tsla-ask-qty">
+                        <span class="panel-value" id="tsla-ask-qty-val">9000</span>
+                    </div>
+                </div>
+                <div class="third-row">
+                    <div class="third-col">
+                        <span class="panel-label">Bid/Ask Spread</span>
+                        <input type="range" min="0.01" max="0.10" step="0.01" value="0.05" class="spread-slider" id="tsla-spread">
+                        <span class="panel-value" id="tsla-spread-val">0.05</span>
+                    </div>
+                    <div class="third-col">
+                        <span class="panel-label">Trade %</span>
+                        <input type="range" min="0" max="100" step="1" value="80" class="prob-slider" id="tsla-trade-percent">
+                        <span class="panel-value" id="tsla-trade-percent-val">80%</span>
+                    </div>
+                    <div class="third-col empty"></div>
+                </div>
+                <button class="expand-arrow-btn-bottom" id="TSLA-arrow-bottom" onclick="toggleDetails('TSLA')">▲</button>
+                <div class="symbol-details" id="TSLA-details">
+                    <div class="third-row">
+                        <div class="third-col">
+                            <span class="panel-label">Burst Intensity</span>
+                            <input type="range" min="0" max="5" step="0.1" value="2.0" class="spread-slider" id="tsla-burst-intensity">
+                            <span class="panel-value" id="tsla-burst-intensity-val">2.0</span>
+                            <span class="panel-label">Burst Frequency</span>
+                            <input type="range" min="1" max="20" step="1" value="10" class="spread-slider" id="tsla-burst-frequency">
+                            <span class="panel-value" id="tsla-burst-frequency-val">10</span>
+                            <span class="panel-label">Burst Duration</span>
+                            <input type="range" min="1" max="20" step="1" value="5" class="spread-slider" id="tsla-burst-duration">
+                            <span class="panel-value" id="tsla-burst-duration-val">5</span>
+                        </div>
+                        <div class="third-col">
+                            <span class="panel-label">Wave Amplitude</span>
+                            <input type="range" min="0" max="5" step="0.1" value="1.5" class="spread-slider" id="tsla-wave-amplitude">
+                            <span class="panel-value" id="tsla-wave-amplitude-val">1.5</span>
+                            <span class="panel-label">Wave Frequency</span>
+                            <input type="range" min="0" max="2" step="0.01" value="0.8" class="spread-slider" id="tsla-wave-frequency">
+                            <span class="panel-value" id="tsla-wave-frequency-val">0.8</span>
+                            <span class="panel-label">Wave Duration</span>
+                            <input type="range" min="1" max="30" step="1" value="12" class="spread-slider" id="tsla-wave-duration">
+                            <span class="panel-value" id="tsla-wave-duration-val">12</span>
+                        </div>
+                        <div class="third-col empty"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Symbol 2 Panel -->
+        <div class="symbol-panel">
+            <div class="symbol-header">
+                <span class="symbol-title">
+                    NVDA
+                    <input type="number" class="percentage-spinner" value="35" min="0" max="100">
+                </span>
+                <button class="collapse-arrow-btn" id="NVDA-collapse-arrow" onclick="toggleCard('NVDA')">▼</button>
+            </div>
+            <div class="basics-panel" id="NVDA-basics">
+                <!-- Panel content for NVDA basics -->
+                <div class="panel-row">
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Bid Price</span>
+                        <input type="range" min="400" max="500" value="420" step="1" class="panel-slider" id="nvda-bid-price">
+                        <span class="panel-value" id="nvda-bid-price-val">$420</span>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Bid Qty</span>
+                        <input type="range" min="8000" max="20000" value="12000" step="100" class="panel-slider" id="nvda-bid-qty">
+                        <span class="panel-value" id="nvda-bid-qty-val">12000</span>
+                    </div>
+                </div>
+                <div class="panel-row">
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Ask Price</span>
+                        <input type="range" min="400" max="500" value="480" step="1" class="panel-slider" id="nvda-ask-price">
+                        <span class="panel-value" id="nvda-ask-price-val">$480</span>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="panel-label" style="display:block;">Ask Qty</span>
+                        <input type="range" min="8000" max="20000" value="18000" step="100" class="panel-slider" id="nvda-ask-qty">
+                        <span class="panel-value" id="nvda-ask-qty-val">18000</span>
+                    </div>
+                </div>
+                <div class="third-row">
+                    <div class="third-col">
+                        <span class="panel-label">Bid/Ask Spread</span>
+                        <input type="range" min="0.01" max="0.10" step="0.01" value="0.08" class="spread-slider" id="nvda-spread">
+                        <span class="panel-value" id="nvda-spread-val">0.08</span>
+                    </div>
+                    <div class="third-col">
+                        <span class="panel-label">Trade %</span>
+                        <input type="range" min="0" max="100" step="1" value="70" class="prob-slider" id="nvda-trade-percent">
+                        <span class="panel-value" id="nvda-trade-percent-val">70%</span>
+                    </div>
+                    <div class="third-col empty"></div>
+                </div>
+                <button class="expand-arrow-btn-bottom" id="NVDA-arrow-bottom" onclick="toggleDetails('NVDA')">▲</button>
+                <div class="symbol-details" id="NVDA-details">
+                    <div class="third-row">
+                        <div class="third-col">
+                            <span class="panel-label">Burst Intensity</span>
+                            <input type="range" min="0" max="5" step="0.1" value="1.5" class="spread-slider" id="nvda-burst-intensity">
+                            <span class="panel-value" id="nvda-burst-intensity-val">1.5</span>
+                            <span class="panel-label">Burst Frequency</span>
+                            <input type="range" min="1" max="20" step="1" value="8" class="spread-slider" id="nvda-burst-frequency">
+                            <span class="panel-value" id="nvda-burst-frequency-val">8</span>
+                            <span class="panel-label">Burst Duration</span>
+                            <input type="range" min="1" max="20" step="1" value="4" class="spread-slider" id="nvda-burst-duration">
+                            <span class="panel-value" id="nvda-burst-duration-val">4</span>
+                        </div>
+                        <div class="third-col">
+                            <span class="panel-label">Wave Amplitude</span>
+                            <input type="range" min="0" max="5" step="0.1" value="1.2" class="spread-slider" id="nvda-wave-amplitude">
+                            <span class="panel-value" id="nvda-wave-amplitude-val">1.2</span>
+                            <span class="panel-label">Wave Frequency</span>
+                            <input type="range" min="0" max="2" step="0.01" value="0.7" class="spread-slider" id="nvda-wave-frequency">
+                            <span class="panel-value" id="nvda-wave-frequency-val">0.7</span>
+                            <span class="panel-label">Wave Duration</span>
+                            <input type="range" min="1" max="30" step="1" value="10" class="spread-slider" id="nvda-wave-duration">
+                            <span class="panel-value" id="nvda-wave-duration-val">10</span>
+                        </div>
+                        <div class="third-col empty"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add more .symbol-row blocks for additional pairs of symbols -->
+</body>
+</html>

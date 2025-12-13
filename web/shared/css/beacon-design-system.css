@@ -1081,3 +1081,20 @@ body.demo-mode .beacon-nav-back {
     cursor: pointer !important;
     pointer-events: auto !important;
 }
+
+/* Add vertical separator ONLY in advanced/details section */
+.symbol-details .third-row .third-col + .third-col {
+    position: relative;
+}
+
+.symbol-details .third-row .third-col + .third-col::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(180, 180, 200, 0.18);
+    border-radius: 1px;
+    z-index: 1;
+}

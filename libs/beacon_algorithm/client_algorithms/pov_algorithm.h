@@ -2,38 +2,71 @@
  * =============================================================================
  * Project:      Beacon
  * Library:      algorithms
- * Purpose:      POV (Percentage of Volume) algorithm implementation
+ * Purpose:      Exapmle usage of implementation
  * Author:       Bryan Camp
  * =============================================================================
  */
 
 #pragma once
 
-#include "../include/beacon_algorithm_setup/base_algorithm.h"
+#include <beacon_algorithm.h>
 
 namespace beacon::algorithms {
 
-class PovAlgorithm : public AlgorithmBase {
+class PovAlgorithm : public BeaconAlgorithmBase {
 private:
-    double targetPercentage_;
-    std::string targetSymbol_;
-    double totalMarketVolume_{0.0};
-    double executedVolume_{0.0};
+    std::string _targetSymbol;
     
 public:
     explicit PovAlgorithm(const nlohmann::json& config) : BaseAlgorithm(config) {
-        targetSymbol_ = config.value("symbol", "AAPL");
-        targetPercentage_ = config.value("target_percentage", 10.0);
+        // read algo params from config
+        _targetSymbol = config.value("symbol", "AAPL");
     }
     
-    void onMarketData(const DecodedMarketMessage& msg) override {
-        // ...existing POV logic...
+    void onMarketDataReceived(const MarketDataMessage& marketData) override {
+        // logic...
     }
     
+    void submitOrder() override {
+        // ...logic...
+    }
+
+    void updateOrder() override {
+        // ...logic...
+    }
+
+    void cancelOrder() override {
+        // ...logic...
+    }
+
+    void onOrderAccepted(const Order& order) override {
+        // ...logic...
+    }
+
+    // Indicates Full or Partial Fill.
+    void onOrderFilled(const ExecutionReprt& executionReport) override {
+        // ...logic...
+    }    
+
+    // We don't have an order it yet.
+    void onOrderSubmitRejected(const OrderSubmitRequest& request, const std::string& reason) override {
+        // ...logic...
+    }
+
+    // We have an order. We have a reason.
+    void onOrderUpdateRejected(const OrderUpdateRequest& request) override {
+        // ...logic...
+    }
+
+    // We have an order. We have a reason. Possibly unsolicited.
+    void onOrderCanceled(const CancelReport& cancelReport) override {
+        // logic...
+    }
+
+    // Required for the base framework.
     std::string getName() const override { return "POV"; }
 };
 
-// Auto-register the algorithm
 REGISTER_ALGORITHM(PovAlgorithm, "pov");
 
 } // namespace beacon::algorithms

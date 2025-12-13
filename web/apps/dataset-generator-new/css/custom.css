@@ -1,0 +1,8 @@
+/* Custom styles for dataset-generator-new app */
+/* Import shared styles via <link> in HTML, only put overrides or new styles here */
+
+/* Example: */
+#app-root {
+    /* Layout or padding tweaks for this app */
+    padding: 32px 0;
+}
