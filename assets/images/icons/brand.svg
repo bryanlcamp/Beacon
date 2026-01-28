@@ -1,0 +1,19 @@
+<svg width="400" height="400" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="36" cy="36" r="33" fill="#1976d2"/>
+  <circle cx="36" cy="36" r="27" fill="#6bb6ff"/>
+  <circle cx="36" cy="36" r="21" fill="#1976d2"/>
+  <g>
+    <circle cx="36" cy="36" r="8" fill="#fff"/>
+    <g stroke="#fff" stroke-width="3">
+      <line x1="36" y1="16" x2="36" y2="26"/>
+      <line x1="36" y1="46" x2="36" y2="56"/>
+      <line x1="16" y1="36" x2="26" y2="36"/>
+      <line x1="46" y1="36" x2="56" y2="36"/>
+      <line x1="25.7" y1="25.7" x2="32.3" y2="32.3"/>
+      <line x1="46.3" y1="46.3" x2="39.7" y2="39.7"/>
+      <line x1="25.7" y1="46.3" x2="32.3" y2="39.7"/>
+      <line x1="46.3" y1="25.7" x2="39.7" y2="32.3"/>
+    </g>
+    <text x="36" y="37" text-anchor="middle" font-size="19" font-family="Inter,Segoe UI,Arial,sans-serif" fill="#111" font-weight="900" dominant-baseline="middle">b</text>
+  </g>
+</svg>

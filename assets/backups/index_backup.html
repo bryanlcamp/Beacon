@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Command Center - Professional HFT Platform</title>
+    <link rel="stylesheet" href="/assets/css/modules/variables.css">
+    <link rel="stylesheet" href="/assets/css/modules/reset.css">
+    <link rel="stylesheet" href="/assets/css/modules/header-nav.css">
+    <link rel="stylesheet" href="/assets/css/modules/panels.css">
+
+    <style>
+        :root {
+            --beacon-blue: #6bb6ff;
+            --beacon-blue-muted: #3a6fa1;
+            --panel-bg: transparent;
+            --panel-hover-bg: #0a1a2f;
+            --panel-radius: 18px;
+            --panel-border: 2px solid var(--beacon-blue-muted);
+            --panel-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+            --panel-padding: 1.2em 1.2em 1.2em 1.2em;
+            --panel-title-color: var(--beacon-blue);
+            --panel-arrow-color: var(--beacon-blue-muted);
+            --panel-text-color: #c3c8d1;
+            --dot-color: #6bb6ff80;
+        }
+        .beacon-small-text-panel, .beacon-long-expander-panel {
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            box-shadow: var(--panel-shadow);
+            padding: var(--panel-padding);
+            color: var(--panel-text-color);
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            position: relative;
+        }
+        .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover {
+            background: var(--panel-hover-bg);
+        }
+        .panel-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .section-title {
+            color: var(--panel-title-color);
+            font-weight: 700;
+            margin-bottom: 0.3em;
+            text-align: left;
+        }
+        .custom-blue-line {
+            height: 2px;
+            background: var(--panel-arrow-color);
+            border-radius: 1px;
+            margin-left: 1em;
+            margin-bottom: 1em;
+            width: calc(100% - 1.2em);
+        }
+        .arrow-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .arrow {
+            color: var(--panel-arrow-color);
+            font-weight: 500;
+            margin-right: 0.7em;
+            font-size: 1.1em;
+        }
+        .arrow-list li {
+            color: var(--panel-text-color);
+            font-size: 1em;
+            margin-bottom: 0.6em;
+            display: flex;
+            align-items: center;
+        }
+        .beacon-long-expander-panel .section-title,
+        .beacon-long-expander-panel .custom-blue-line {
+            margin-top: 0;
+            /* Ensures alignment with small panels */
+        }
+        .expander {
+            margin-bottom: 1em;
+        }
+        .expander summary {
+            cursor: pointer;
+            color: var(--panel-title-color);
+            font-weight: 600;
+            font-size: 1.08em;
+            outline: none;
+            margin-bottom: 0.3em;
+        }
+        .expander[open] summary {
+            color: var(--beacon-blue-muted);
+        }
+        .dot-list {
+            list-style: none;
+            padding: 0 0 0 1.5em;
+            margin: 0;
+        }
+        .dot {
+            color: var(--dot-color);
+            margin-right: 0.7em;
+            font-size: 1.1em;
+        }
+        .dot-list li {
+            color: var(--panel-text-color);
+            font-size: 1em;
+            margin-bottom: 0.5em;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <script>window.BEACON_PAGE_TITLE = "Command Center.";</script>
+    <header class="beacon-page-header"></header>
+    <script src="/assets/js/beacon-header.js"></script>
+    <script src="/assets/js/beacon-info-dropdown.js"></script>
+
+    <main class="beacon-page-content">
+        <div class="command-center-container">
+            <!-- Hero Section -->
+            <section class="doc-hero">
+                <h1>Command Center.</h1>
+                <p>Create your own HFT marketplace. Make the rules.<br>Build winning strategies. Beacon is here to guide you.</p>
+            </section>
+            <!-- Panel Grid -->
+            <section class="doc-sections command-center-puzzle-grid">
+                <div class="beacon-small-text-panel" onclick="window.location.href='/command-center/apps/dataset-generator/index.html'">
+                    <h3 class="section-title">Enter, Beacon.</h3>
+                    <div class="custom-blue-line"></div>
+                    <ul class="arrow-list">
+                        <li><span class="arrow">→</span> Define the marketplace.</li>
+                        <li><span class="arrow">→</span> Learn about datasets.</li>
+                        <li><span class="arrow">→</span> How datasets drive Beacon.</li>
+                        <li><span class="arrow">→</span> Create, tailor your own.</li>
+                    </ul>
+                </div>
+                <div class="beacon-small-text-panel left-align" onclick="window.location.href='/command-center/overview/strategy-api.html'">
+                    <h3 class="section-title">Strategy API.</h3>
+                    <div class="custom-blue-line"></div>
+                    <ul class="arrow-list">
+                        <li><span class="arrow">→</span> Create your strategy.</li>
+                        <li><span class="arrow">→</span> Use Beacon's simple API.</li>
+                        <li><span class="arrow">→</span> Highly extensible, flexible.</li>
+                        <li><span class="arrow">→</span> HFT-optimized throughout.</li>
+                    </ul>
+                </div>
+                <div class="beacon-long-expander-panel puzzle-flex-col">
+                    <div>
+                        <h3 class="section-title left-align">Start with an idea.</h3>
+                        <hr class="panel-divider">
+                        <!-- BEGIN: Expandable Mission Points -->
+                        <div class="mission-accordion">
+                            <div class="mission-item" onclick="toggleMissionDetail(0)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Use Beacon's Simple API.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Examples provided.</li>
+                                    <li>Implement your strategy.</li>
+                                    <li>Nothing else required.</li>
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(1)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Create a basic dataset.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Web-based UI guides you.</li>
+                                    <li>Flexibility and fine-tuning.</li>
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(2)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Wire it up to Beacon.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Single Start button.</li>
+                                    <li>Dependency auto check.</li>
+                                    <li>Detailed report at the end.</li>
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(3)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Detailed reporting.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Latency bottlenecks.</li>
+                                    <li>Pnl high/low/drawdowns.</li>
+                                    <li>Fill ratios.</li>
+                                    <li>Strategy Messaging.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="flex:1 1 auto;"></div>
+                    <div>
+                        <h3 class="section-title left-align">Deploy with Confidence.</h3>
+                        <hr class="panel-divider" style="margin: 0.7em auto 0.7em auto;">
+                        <div class="mission-accordion" style="margin-top:-0.3em;">
+                            <div class="mission-item" onclick="toggleMissionDetail(4)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Streaming options.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Playback speeds.</li>
+                                    <li>Spike & bursts.</li>
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(5)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Simulate disasters.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>Missing or malformed data.</li>
+                                    <li>Your strategy can't keep up.</li>
+                                    <li>Exchange delays.</li>
+                                    <li>Strategy crashes.</li>                                                                                                            
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(6)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Risk Management.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul>
+                                    <li>3-tier system.</li>
+                                    <li>Pnl, drawdowns.</li>
+                                    <li>Product positions.</li> 
+                                    <li>Messaging thresholds.</li>
+                                    <li>Plug in your own.</li>                                                                                                                                                
+                                </ul>
+                            </div>
+                            <div class="mission-item" onclick="toggleMissionDetail(7)">
+                                <span class="mission-play">&#9654;</span>
+                                <span class="mission-label">Testability.</span>
+                            </div>
+                            <div class="mission-detail hidden">
+                                <ul> 
+                                    <li>GTest, CMake, and MOQs.</li>
+                                    <li>Easily add your own.</li>                                  
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="beacon-small-text-panel" onclick="window.location.href='/command-center/apps/dataset-playback/index.html'">
+                    <h3 class="section-title">Stream.</h3>
+                    <div class="custom-blue-line"></div>
+                    <ul class="arrow-list puzzle-align-arrows" style="margin-bottom:0;">
+                        <li><span class="arrow">→</span> Stream your dataset.</li>
+                        <li><span class="arrow">→</span> Your liquidity is available.</li>
+                        <li><span class="arrow">→</span> Strategy gets your quotes.</li>
+                        <li><span class="arrow">→</span> React as desired.</li>
+                    </ul>
+                </div>
+                <div class="beacon-small-text-panel" onclick="window.location.href='/command-center/apps/matching-engine/index.html'">
+                    <h3 class="section-title">Match.</h3>
+                    <div class="custom-blue-line"></div>
+                    <ul class="arrow-list puzzle-align-arrows">
+                        <li><span class="arrow">→</span> Receive orders, ack client.</li>
+                        <li><span class="arrow">→</span> Your dataset is liquidity.</li>                            
+                        <li><span class="arrow">→</span> Match or queue orders. FIFO.</li>
+                        <li><span class="arrow">→</span> Use Automatch to compete.</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/assets/js/info-dropdown.js"></script>
+    <script>
+        // Demo mode logic removed for non-app pages
+
+        // Search functionality
+        function showSearchIfResults() {
+            if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
+        }
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 300);
+        }
+        function performSearch(query = document.querySelector('.beacon-search-field').value) {
+            const results = document.getElementById('searchResults');
+            if (!query.trim()) return results.style.display = 'none';
+            const mockResults = [
+                { title: "Market Data Generation", section: "Infrastructure", snippet: "Generate datasets with 4.5μs latency...", url: "cpp/market-data-generation.html" },
+                { title: "CME Protocol Support", section: "Protocols", snippet: "Native binary CME, Nasdaq, NYSE protocols...", url: "protocols/support-cme-nasdaq-nyse.html" },
+                { title: "Algorithm Plug-in", section: "Applications", snippet: "Plug-in your algorithm and start testing immediately...", url: "../apps/algorithm-plugin/" }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+            if (mockResults.length) {
+                results.innerHTML = mockResults.map(item => `
+                    <div class="search-result" onclick="window.location.href='${item.url}'">
+                        <div class="result-title">${item.title}</div>
+                        <div class="result-section">${item.section}</div>
+                        <div class="result-snippet">${item.snippet}</div>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.style.display = 'none';
+            }
+        }
+        // Mission Accordion JS
+        function toggleMissionDetail(idx) {
+            const items = document.querySelectorAll('.mission-item');
+            const details = document.querySelectorAll('.mission-detail');
+            if (!items[idx] || !details[idx]) return;
+            const isActive = items[idx].classList.contains('active');
+            // Collapse all
+            items.forEach(i => i.classList.remove('active'));
+            details.forEach(d => d.classList.add('hidden'));
+            // Expand if not already active
+            if (!isActive) {
+                items[idx].classList.add('active');
+                details[idx].classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+

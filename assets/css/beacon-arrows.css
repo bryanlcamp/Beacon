@@ -1,0 +1,31 @@
+/*
+  Beacon Arrows Modular CSS
+  Styles for all beacon arrow types
+  January 2026
+*/
+
+.beacon-arrow {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--panel-arrow-color, #3a6fa1);
+    font-weight: 500;
+    font-size: 1.1em;
+    margin-right: 0.7em;
+    margin-left: 0;
+    line-height: 1;
+    font-family: inherit;
+}
+
+.beacon-arrow--right::before {
+    content: '\2192'; /* Standard arrow: → */
+    font-family: inherit;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.beacon-arrow--down::before {
+    content: '\2193'; /* Standard down arrow: ↓ */
+    font-family: inherit;
+    font-weight: 500;
+    display: inline-block;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Playback - Professional HFT Platform</title>
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+        body {
+            overflow-y: auto !important;
+            min-height: 100vh;
+        }
+        main.beacon-page-content {
+            padding-top: 100px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="/command-center/overview/index.html" class="beacon-brand-main">Beacon.</a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">Dataset Playback.</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="/command-center/index.html" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    <span>Command Center</span>
+                </a>
+                <div class="beacon-search">
+                    <input type="text" class="beacon-search-field" placeholder="Search" 
+                        onkeyup="performSearch(this.value)" 
+                        onfocus="showSearchIfResults()" 
+                        onblur="hideSearchDelayed()">
+                    <div class="beacon-search-results" id="searchResults"></div>
+                </div>
+                <div class="info-dropdown-container" style="position:relative;display:inline-block;margin-left:18px;vertical-align:middle;">
+                    <button class="info-icon" id="infoIconBtn" aria-label="Info" tabindex="0" style="width:24px;height:24px;border-radius:50%;border:1.5px solid #fff;background:transparent;color:#ececec;display:flex;align-items:center;justify-content:center;font-size:0.95em;font-weight:900;cursor:pointer;transition:border 0.2s,background 0.2s;outline:none;padding:0;box-sizing:border-box;">
+                        <span class="info-i" style="font-family:inherit;font-size:0.95em;font-weight:900;color:#ececec;user-select:none;line-height:1;letter-spacing:0.01em;text-shadow:0 0 2px #000,0 0 1px #ececec;">i</span>
+                    </button>
+                    <div class="info-dropdown" id="infoDropdown" style="display:none;position:absolute;right:0;top:110%;min-width:120px;background:#181828;border:1.5px solid #fff;border-radius:8px;box-shadow:0 4px 16px 0 rgba(0,0,0,0.13);z-index:100;padding:0.5em 0;text-align:left;">
+                        <a href="mailto:contact@beaconhft.com" style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Contact</a>
+                        <a href="/command-center/about.html" style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">About</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        <section class="doc-hero">
+            <h1>Dataset Playback.</h1>
+            <p>Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing.</p>
+        </section>
+        <section class="doc-content">
+            <h2 style="margin-bottom: 0.5em;">How it Works:</h2>
+            <div class="beacon-code-panel" style="margin-top:1.2em;">
+                <ul style="color:#eaeaea;font-size:1.08em;line-height:1.7;margin:0 0 0 1.2em;padding:0;list-style:square inside;">
+                    <li>Select a dataset you’ve created or uploaded.</li>
+                    <li>Configure playback speed, burst, and spike controls.</li>
+                    <li>Stream the dataset to your strategy container.</li>
+                    <li>Monitor results and iterate quickly.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <script>
+    // Search functionality (copied from Command Center)
+    function showSearchIfResults() {
+        if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
+    }
+    function hideSearchDelayed() {
+        setTimeout(() => {
+            document.querySelector('.beacon-search-results').style.display = 'none';
+        }, 300);
+    }
+    function performSearch(query = document.querySelector('.beacon-search-field').value) {
+        const results = document.getElementById('searchResults');
+        if (!query.trim()) return results.style.display = 'none';
+        const mockResults = [
+            { title: "Market Data Generation", section: "Infrastructure", snippet: "Generate datasets with 4.5μs latency...", url: "cpp/market-data-generation.html" },
+            { title: "CME Protocol Support", section: "Protocols", snippet: "Native binary CME, Nasdaq, NYSE protocols...", url: "protocols/support-cme-nasdaq-nyse.html" },
+            { title: "Strategy Container", section: "Applications", snippet: "Plug in your strategy and start testing immediately...", url: "../apps/algorithm-plugin/" }
+        ].filter(item => 
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.snippet.toLowerCase().includes(query.toLowerCase())
+        );
+        if (mockResults.length) {
+            results.innerHTML = mockResults.map(item => `
+                <div class="search-result" onclick="window.location.href='${item.url}'">
+                    <div class="result-title">${item.title}</div>
+                    <div class="result-section">${item.section}</div>
+                    <div class="result-snippet">${item.snippet}</div>
+                </div>
+            `).join('');
+            results.style.display = 'block';
+        } else {
+            results.style.display = 'none';
+        }
+    }
+    // Info icon dropdown logic (copied from Command Center)
+    (function() {
+        var infoBtn = document.getElementById('infoIconBtn');
+        var dropdown = document.getElementById('infoDropdown');
+        if (!infoBtn || !dropdown) return;
+        infoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+        });
+        document.addEventListener('click', function(e) {
+            if (!infoBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        infoBtn.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') dropdown.style.display = 'none';
+        });
+    })();
+    </script>
+</body>
+</html>

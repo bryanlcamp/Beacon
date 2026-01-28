@@ -1,0 +1,23 @@
+/* Base Reset & Typography */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    font-family: var(--font-family);
+    font-size: 16px;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+}
+body {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -1,0 +1,88 @@
+/* Header & Navigation */
+.beacon-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-width: 320px;
+    height: 64px;
+    background: linear-gradient(90deg, rgba(10,10,21,0.95) 60%, rgba(0,170,255,0.08) 100%);
+    border-bottom: 1px solid var(--border-primary);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+.beacon-page-nav {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.beacon-brand-main {
+    font-size: 2.2rem;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -1px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+}
+.beacon-brand-separator {
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    font-size: 1.5rem;
+    margin: 0 8px;
+    display: flex;
+    align-items: center;
+}
+.beacon-page-title {
+    font-size: 2.2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--beacon-primary);
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+}
+.beacon-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+.beacon-nav-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    text-decoration: none !important;
+    box-shadow: none;
+    border-bottom: none;
+    transition: all var(--transition-fast);
+}
+.beacon-nav-back .nav-arrow {
+    color: var(--beacon-primary);
+    font-size: 1.2rem;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    will-change: color, transform;
+    text-decoration: none !important;
+    box-shadow: none;
+    border-bottom: none;
+}
+.beacon-nav-back:hover {
+    color: var(--text-primary);
+}
+.beacon-nav-back:hover .nav-arrow {
+    color: var(--text-primary);
+    transform: translateX(-2px);
+}

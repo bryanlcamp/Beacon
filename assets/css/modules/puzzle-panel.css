@@ -1,0 +1,165 @@
+/* Puzzle Panel Grid and Panel Styles - Modular and Reusable */
+:root {
+  --beacon-blue: #6bb6ff;
+  --beacon-blue-muted: #3a6fa1;
+  --panel-bg: yellow;
+  --panel-hover-bg: #0a1a2f;
+  --panel-radius: 18px;
+  --panel-border: 2px solid var(--beacon-blue-muted);
+  --panel-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+  --panel-padding: 1.2em 1.2em 1.2em 1.2em;
+  --panel-title-color: var(--beacon-blue);
+  --panel-arrow-color: var(--beacon-blue-muted);
+  --panel-text-color: #c3c8d1;
+  --dot-color: #6bb6ff80;
+}
+.command-center-puzzle-grid {
+  display: grid;
+  grid-template-columns: 260px 340px 260px;
+  grid-template-rows: auto auto;
+  gap: 24px;
+  margin: 0 0 2em 0;
+  max-width: 1100px;
+  min-height: 520px;
+  align-items: stretch;
+  margin-left: auto;
+  margin-right: auto;
+}
+ .command-center-puzzle-grid > .beacon-small-text-panel:nth-child(1),
+ .command-center-puzzle-grid > .beacon-small-text-panel:nth-child(2),
+ .command-center-puzzle-grid > .beacon-small-text-panel:nth-child(3),
+ .command-center-puzzle-grid > .beacon-small-text-panel:nth-child(4) {
+  min-height: 80px;
+  max-width: 260px;
+  align-self: start;
+}
+.command-center-puzzle-grid > .beacon-long-expander-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+  max-width: 340px;
+  min-height: 320px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
+  background: var(--panel-bg);
+  border: var(--panel-border);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--panel-padding);
+  color: var(--panel-text-color);
+  transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+}
+.beacon-long-expander-panel {
+  width: 32em !important;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.beacon-small-text-panel:hover, .beacon-long-expander-panel:hover {
+  background: var(--panel-hover-bg);
+}
+.panel-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.section-title {
+  color: var(--panel-title-color);
+  font-weight: 700;
+  margin-bottom: 0.3em;
+  text-align: left;
+}
+.custom-blue-line {
+  height: 2px;
+  background: var(--panel-arrow-color);
+  border-radius: 1px;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  width: calc(100% - 1em);
+}
+.beacon-long-expander-panel .custom-blue-line {
+  width: calc(100% - 1em);
+  margin-left: 1em;
+  margin-right: 0;
+}
+.arrow-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.arrow {
+  color: var(--panel-arrow-color);
+  font-weight: 500;
+  margin-right: 0.7em;
+  font-size: 1.1em;
+}
+.arrow-list li {
+  color: var(--panel-text-color);
+  font-size: 1em;
+  margin-bottom: 0.25em;
+  display: flex;
+  align-items: center;
+}
+.beacon-long-expander-panel .section-title,
+.beacon-long-expander-panel .custom-blue-line {
+  margin-top: 0;
+}
+.expander-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+}
+.expander {
+  margin-bottom: 0;
+}
+.expander summary {
+  cursor: pointer;
+  color: var(--panel-title-color);
+  font-weight: 600;
+  font-size: 1em;
+  outline: none;
+  margin-bottom: 0.3em;
+  display: flex;
+  align-items: center;
+}
+.expander-arrow {
+  font-size: 0.9em;
+  margin-right: 0.5em;
+  color: var(--panel-arrow-color);
+  font-weight: 500;
+  display: inline-block;
+}
+.expander-label {
+  font-size: 1em;
+  color: var(--panel-text-color);
+  font-weight: 400;
+  margin-left: 0;
+}
+.expander[open] summary {
+  color: var(--beacon-blue-muted);
+}
+.dot-list {
+  list-style: none;
+  padding: 0 0 0 1.5em;
+  margin: 0;
+}
+.dot {
+  color: var(--dot-color);
+  margin-right: 0.7em;
+  font-size: 1.1em;
+}
+.dot-list li {
+  color: var(--panel-text-color);
+  font-size: 1em;
+  margin-bottom: 0.18em;
+  display: flex;
+  align-items: center;
+}

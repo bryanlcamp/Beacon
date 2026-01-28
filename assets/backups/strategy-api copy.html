@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+      .beacon-nav-back {
+        color: var(--beacon-primary-light, #6bb6ff) !important;
+        transition: color 0.18s;
+      }
+      .beacon-nav-back .beacon-nav-back-arrow {
+        color: var(--beacon-primary-light, #6bb6ff);
+        transition: color 0.18s;
+      }
+      .beacon-nav-back:hover {
+        color: #fff !important;
+      }
+      .beacon-nav-back:hover .beacon-nav-back-arrow {
+        color: #fff;
+      }
+    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beacon Financial Technologies. Strategy Example.</title>
+  <!-- Shared design system -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/modules/header-nav.css">
+  <link rel="stylesheet" href="/assets/css/info-icon.css">
+</head>
+<body>
+    <script>window.BEACON_PAGE_TITLE = "Strategy API.";</script>
+    <header class="beacon-page-header">
+    <nav class="beacon-page-nav" style="align-items: center; display: flex; height: 56px;">
+        <div style="display: flex; align-items: flex-end;">
+            <span style="font-size: 2.1rem; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1;">Beacon.</span>
+            <span class="beacon-brand-separator" style="color: rgba(255,255,255,0.6); font-size: 1.5rem; margin: 0 4px 0 10px; line-height: 1.1;">|</span>
+            <span class="beacon-page-title" style="font-size: 1.25rem; font-weight: 700; color: var(--beacon-blue, #6bb6ff); letter-spacing: -0.5px; align-self: flex-end; line-height: 1.1;">Strategy API.</span>
+        </div>
+        <div style="flex: 1 1 0%;"></div>
+        <div class="beacon-nav-actions" style="align-items: center; display: flex; height: 56px;">
+            <input type="text" class="beacon-nav-search" placeholder="Search..." style="padding:8px 14px;border-radius:7px;border:none;outline:none;min-width:170px;background:transparent;color:#fff;font-size:1.08em;height:38px;box-sizing:border-box;align-self:flex-end;">
+            <a href="/" class="beacon-nav-back">
+                <span class="beacon-nav-back-arrow arrow" style="font-size: 1.35em; font-weight: 900; margin-right: 6px; display: flex; align-items: center; height: 2.1rem; line-height: 2.1rem; vertical-align: middle; transform: rotate(180deg); transition: color 0.18s;">→</span>
+                Home
+            </a>
+            <div class="info-dropdown-container" style="display: flex; align-items: center; height: 56px;">
+              <button id="infoIconBtn" class="info-icon" aria-label="Info">
+                <span class="info-i" style="margin-top: -30px; display: inline-block;">i</span>
+              </button>
+              <div id="infoDropdown" class="info-dropdown">
+                <div class="info-dropdown-content">
+                  <div class="info-dropdown-title">About Beacon</div>
+                  <div class="info-dropdown-desc">Professional HFT platform. <a href="#" onclick="showAboutModal()">Learn more</a></div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </nav>
+    </header>
+    <script src="/assets/js/info-dropdown.js"></script>
+  <main class="beacon-page-content">
+    <section class="doc-hero">
+      <h1>Strategy API. C++ 20.</h1>
+      <p>One simple interface. Plug in your strategy. Test new ideas.<br>Beacon framework quickly gives you risk-free insight.</p>
+    </section>
+    <section class="doc-content">
+      <h2 class="mb05">Example C++ API Usage:</h2>
+      <div class="beacon-code-panel">
+        <div id="code-grid" class="code-grid-demo"></div>
+      </div>
+      <script>
+        // --- Configurable method expanders ---
+        const expandableMethods = [
+          {
+            name: 'onMarketDataReceived',
+            signature: 'void onMarketDataReceived(const bo::MarketMessage& msg) override {}',
+            expandedSignature: 'void onMarketDataReceived(const bo::MarketMessage& msg) override {',
+            todo: [
+              '// Reused for cache locality.',
+              '// It must be repopulated. Intentionally omitted.',
+              '_reusedOrder->reset();',
+              '',
+              '// This is your method.',
+              'process(msg);'
+            ]
+          },
+          {
+            name: 'onOrderFilled',
+            signature: 'void onOrderFilled(const bo::OrderFill& fill) override {}',
+            expandedSignature: 'void onOrderFilled(const bo::OrderFill& fill) override {',
+            todo: [
+              '// Callback from OrderManager.'
+            ]
+          },
+          {
+            name: 'onOrderConfirmed',
+            signature: 'void onOrderConfirmed(const bo::Order& order) override {}',
+            expandedSignature: 'void onOrderConfirmed(const bo::Order& order) override {',
+            todo: [
+              '// Callback from OrderManager.'
+            ]
+          },
+          {
+            name: 'onOrderRejected',
+            signature: 'void onOrderRejected(const bo::OrderRequest& req) override {}',
+            expandedSignature: 'void onOrderRejected(const bo::OrderRequest& req) override {',
+            todo: [
+              '// Callback from OrderManager.'
+            ]
+          },
+          {
+            name: 'onExchangeMessageReceived',
+            signature: 'void onExchangeMessageReceived(const bo::ExchangeMessage& msg) override {}',
+            expandedSignature: 'void onExchangeMessageReceived(const bo::ExchangeMessage& msg) override {',
+            todo: [
+              '// Callback from OrderManager.',
+              '// Simulate exchange halts, violations, etc.',
+              '_orderManager->CancelAll();'
+            ]
+          },
+          {
+            name: 'onOrderConfirmed',
+            signature: 'void onOrderConfirmed(const bo::Order& order) override {}',
+            expandedSignature: 'void onOrderConfirmed(const bo::Order& order) override {',
+            todo: [
+              '// Callback from OrderManager.'
+            ]
+          }
+        ];
+        // --- End config ---
+        // (removed duplicate assignment)
+        const code = `#pragma once\n\n#include <beacon_strategy>\n#include <beacon_order>\n\n// - Namespace abbreviations for readability.\nnamespace bs = beacon_strategy;\nnamespace bo = beacon_order;\n\n// - overrides are for template/concepts.\n// - Some pointer intialization omitted for clarity.\n\nclass ExampleStrategy : public bs::StrategyBase {\npublic:\n    // - Opportunity to read your own .json.\n    explicit ExampleStrategy(const nlohmann::json& config) : bs::StrategyBase(config) {}\n\n    void onMarketDataReceived(const bo::MarketMessage& msg) override {}\n    void onOrderConfirmed(const bo::Order& order) override {}\n    void onOrderFilled(const bo::OrderFill& fill) override {}\n    void onOrderRejected(const bo::OrderRequest& req) override {}\n    void onExchangeMessageReceived(const bo::ExchangeMessage& msg) override {}\n\nprivate:\n    // - All messaging between the strategy and matching engine.\n    // - Ownership is implementation-specific.\n    std::unique_ptr<bo::OrderManager> _orderManager;\n\n    // - Reused for cache locality purposes.\n    bo::Order _reusedOrder;\n};\n\n// - For static template polymorphism.\nREGISTER_ALGORITHM(ExampleStrategy);`;
+        let expandedState = {};
+        expandableMethods.forEach(m => expandedState[m.name] = false);
+        function htmlEscape(str) {
+          return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        }
+        function getIndent(line) {
+          const match = line.match(/^(\s*)/);
+          return match ? match[1] : '';
+        }
+        function renderGrid() {
+          const lines = code.split('\n');
+          let html = '';
+          for (let i = 0; i < lines.length; ++i) {
+            let rawLine = lines[i];
+            let line = htmlEscape(rawLine);
+            let matchedMethod = expandableMethods.find(m => rawLine.trim() === m.signature);
+            if (matchedMethod) {
+              const triangle = expandedState[matchedMethod.name] ? '▼' : '▶';
+              const indent = getIndent(rawLine).replace(/ /g, '&nbsp;');
+              if (!expandedState[matchedMethod.name]) {
+                html += `<div class=\"code-row\"><span class=\"expander\" data-expander=\"${matchedMethod.name}\">${triangle}</span><span>${indent}<span style=\"color:#6bb6ff;\">${matchedMethod.signature.replace('void ', 'void ')}</span></span></div>`;
+              } else {
+                html += `<div class=\"code-row\"><span class=\"expander\" data-expander=\"${matchedMethod.name}\">${triangle}</span><span>${indent}<span style=\"color:#6bb6ff;\">${matchedMethod.expandedSignature.replace('void ', 'void ')}</span></span></div>`;
+                const bodyIndent = indent + '    ';
+                matchedMethod.todo.forEach(lineText => {
+                  html += `<div class=\"code-row\"><span class=\"expander invisible\"></span><span>${bodyIndent.replace(/ /g, '&nbsp;')}${htmlEscape(lineText)}</span></div>`;
+                });
+                html += `<div class=\"code-row\"><span class=\"expander invisible\"></span><span>${indent.replace(/ /g, '&nbsp;')}}</span></div>`;
+                if (lines[i+1] && lines[i+1].trim() === '}') {
+                  i++;
+                }
+              }
+            } else {
+              const indent = getIndent(rawLine).replace(/ /g, '&nbsp;');
+              html += `<div class=\"code-row\"><span class=\"expander invisible\"></span><span>${indent}${line.trim()}</span></div>`;
+            }
+          }
+          return html;
+        }
+        function updateGrid() {
+          document.getElementById('code-grid').innerHTML = renderGrid();
+        }
+        document.getElementById('code-grid').onclick = function(e) {
+          const expander = e.target.closest('.expander');
+          if (expander && expander.dataset.expander) {
+            const method = expander.dataset.expander;
+            expandedState[method] = !expandedState[method];
+            updateGrid();
+          }
+        };
+        updateGrid();
+      </script>
+    </section>
+  </main>
+  <script>
+    // Info icon dropdown logic (copied from Command Center)
+    (function() {
+      var infoBtn = document.getElementById('infoIconBtn');
+      var dropdown = document.getElementById('infoDropdown');
+      if (!infoBtn || !dropdown) return;
+      infoBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+      });
+      document.addEventListener('click', function(e) {
+        if (!infoBtn.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+      infoBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') dropdown.style.display = 'none';
+      });
+    })();
+  </script>
+</body>
+</html>
+

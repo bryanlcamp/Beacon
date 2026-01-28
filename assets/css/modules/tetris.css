@@ -1,0 +1,23 @@
+/* Tetris grid and piece styles */
+
+.tetris-demo {
+  display: grid;
+  grid-template-rows: repeat(2, 32px);
+  grid-template-columns: repeat(10, 32px);
+  gap: 0;
+  width: 320px;
+  height: 64px;
+  margin-top: 2em;
+}
+.tetris-piece {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #23234a;
+  border-radius: 6px;
+}
+.tetris-piece.blue {
+  background: #6bb6ff;
+}
+.tetris-piece.orange {
+  background: #ff914d;
+}

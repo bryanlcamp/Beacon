@@ -1,0 +1,60 @@
+/*
+  Beacon Colors Utility CSS
+  Centralized color palette for Beacon UI
+  January 2026
+*/
+
+:root {
+    --beacon-info: #3a7afe;
+    --beacon-warning: #ffb300;
+    --beacon-error: #e53935;
+    --beacon-panel-title: #6bb6ff;
+    --beacon-blue: #6bb6ff;
+    --beacon-blue-muted: #3a6fa1;
+    --panel-arrow-color: var(--beacon-blue-muted);
+    --panel-text-color: #c3c8d1;
+}
+
+html, body {
+    background: #0a0a15;
+    color: #c3c8d1;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.06) 60%, transparent 100%),
+                linear-gradient(140deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.03) 50%, transparent 75%);
+    z-index: 1;
+    pointer-events: none;
+    animation: lightShift 12s ease-in-out infinite;
+}
+@keyframes lightShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.beacon-info {
+    color: var(--beacon-info) !important;
+}
+
+.beacon-bg-info {
+    background-color: var(--beacon-info) !important;
+}
+
+.beacon-warning {
+    color: var(--beacon-warning) !important;
+}
+
+.beacon-bg-warning {
+    background-color: var(--beacon-warning) !important;
+}
+
+.beacon-error {
+    color: var(--beacon-error) !important;
+}
+
+.beacon-bg-error {
+    background-color: var(--beacon-error) !important;
+}

@@ -1,0 +1,11 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#6bb6ff" stroke-width="2.5"/>
+  <!-- Rook chess piece -->
+  <path d="M22 34 L22 20 L34 20 L34 34 Z" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="20" y="34" width="16" height="4" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="22" y="18" width="12" height="2" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="22" y="16" width="2" height="2" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="26" y="16" width="2" height="2" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="30" y="16" width="2" height="2" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+  <rect x="34" y="16" width="2" height="2" stroke="#6bb6ff" stroke-width="2" fill="none"/>
+</svg>

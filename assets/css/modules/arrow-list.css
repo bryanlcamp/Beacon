@@ -1,0 +1,25 @@
+/* Arrow List */
+.arrow-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.2em 0 0.2em 0;
+}
+.arrow-list > li {
+    position: relative;
+    padding-left: 1.5em;
+    margin-bottom: 0.3em;
+    color: #c3c8d1;
+    font-weight: 400;
+    font-size: 1em;
+    list-style-type: none;
+}
+.arrow-list > li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    color: var(--beacon-primary);
+    font-weight: 700;
+    font-size: 1.1em;
+    border: none;
+}

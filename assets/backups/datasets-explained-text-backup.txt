@@ -1,0 +1,26 @@
+--- BEGIN DATASETS-EXPLAINED.HTML TEXT BACKUP ---
+
+Datasets Explained.
+Datasets are the HFT Marketplace. All Quotes. Curated by You.
+
+Beacon's Market Data Generator is the exclusive application for creating datasets.
+Datasets contain quotes from a single exchange. NASDAQ, NYSE, or CME.
+
+Dataset Properties.
+- Synthetic quotes based on your criteria.
+- Binary files, adhering to exchange specs.
+- Streamed using Beacon's Playback.
+- Intended to be saved and reused.
+
+Datasets are not.
+- Aware of, or contain any trades.
+- Knowledgeable of how they're being sent.
+- Modified after being created.
+- Anything more than raw data.
+
+Creation. Usage. Flow.
+Create: Dataset Generator, Set Options, Generate.
+Stream: Dataset Playback, Open Dataset, Playback Options, Play (UDP Loopback).
+Consume: Algorithm Container, Decode Quote, Algorithm Code...
+
+--- END DATASETS-EXPLAINED.HTML TEXT BACKUP ---

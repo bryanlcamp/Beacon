@@ -1,0 +1,907 @@
+/* Sidebar Styles */
+
+
+.vertical-step-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--beacon-panel-bg, rgba(255,255,255,0.05));
+    border-radius: 18px;
+    padding: 2.2em 0.7em 2.2em 0.7em;
+    margin-right: 2.2em;
+    box-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+    border: 2px solid var(--beacon-panel-border, #6bb6ff);
+    min-width: 70px;
+    z-index: 2;
+    padding-bottom: 0.2em !important;
+    gap: 0.08em;
+    margin-left: 1em;
+    margin-bottom: 0.2em;
+    align-items: flex-start;
+
+.expander {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    display: block;
+}
+.expander summary {
+    list-style: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0.1em 0;
+}
+.expander[open] summary {
+    font-weight: 700;
+}
+.dot-list {
+    margin-left: 0.2em !important;
+}
+/* Command Center Panel Grid Layout */
+.command-center-puzzle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 32px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: stretch;
+    /* min-height, height, and max-height removed to allow grid to shrink to fit content */
+    /* Let the grid fill more vertical space */
+}
+.command-center-container {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.beacon-page-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+    padding-top: 80px; /* header height + buffer */
+    padding-bottom: 60px;
+    padding-left: 24px;
+    padding-right: 24px;
+    position: relative;
+    z-index: 2;
+}
+/* Beacon Panel Styles (restored) */
+.beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
+    background: var(--beacon-panel-bg, rgba(255,255,255,0.05));
+    border: 2px solid var(--beacon-panel-border, #6bb6ff);
+    border-radius: var(--beacon-panel-radius, 18px);
+    box-shadow: var(--beacon-panel-shadow, 0 2px 12px 0 rgba(0,170,255,0.07));
+    padding: var(--beacon-panel-padding, 1.2em 1.2em 0.6em 1.2em);
+    color: var(--beacon-panel-color, #c3c8d1);
+    transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+}
+
+/* Visually merge the two center panels */
+.beacon-long-expander-panel {
+    background: var(--beacon-panel-bg, rgba(255,255,255,0.05));
+    border: 2px solid var(--beacon-panel-border, #6bb6ff);
+    border-radius: var(--beacon-panel-radius, 18px);
+    box-shadow: var(--beacon-panel-shadow, 0 2px 12px 0 rgba(0,170,255,0.07));
+    padding: var(--beacon-panel-padding, 1.2em 1.2em 0.6em 1.2em);
+    color: var(--beacon-panel-color, #c3c8d1);
+    transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+}
+.beacon-long-expander-panel.center-top-panel {
+    border-bottom: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.beacon-long-expander-panel.center-bottom-panel {
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+.beacon-long-expander-panel.center-bottom-panel::before {
+    content: "";
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(107,182,255,0.13) 0%, rgba(107,182,255,0.22) 50%, rgba(107,182,255,0.13) 100%);
+    margin-top: -2px;
+    margin-bottom: 0.5em;
+    border-radius: 1px;
+}
+.beacon-small-text-panel:hover, .beacon-long-expander-panel:hover, .beacon-panel:hover, .beacon-code-panel:hover {
+    background: var(--beacon-panel-hover-bg, #0a1a2f);
+    transform: translateY(-7px) scale(1.045);
+    box-shadow: var(--beacon-panel-hover-shadow, 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04));
+}
+.section-title {
+    color: var(--beacon-blue, #6bb6ff);
+    font-weight: 700;
+    margin-bottom: 0.3em;
+    text-align: left;
+    font-size: 1.08em;
+}
+.arrow {
+    color: var(--beacon-blue-muted, #3a6fa1);
+    font-weight: 500;
+    margin-right: 0.7em;
+    font-size: 1.1em;
+}
+.arrow-list li {
+    color: var(--beacon-panel-color, #c3c8d1);
+    font-size: 1em;
+    margin-bottom: 0.12em;
+    display: flex;
+    align-items: center;
+}
+.custom-blue-line {
+    height: 2px;
+    background: var(--beacon-blue-muted, #3a6fa1);
+    border-radius: 1px;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    width: calc(100% - 1em);
+}
+.beacon-long-expander-panel .custom-blue-line {
+    width: calc(100% - 1em);
+    margin-left: 1em;
+    margin-right: 0;
+}
+/* Vertically center info icon next to Home link in header */
+.info-dropdown-container {
+    display: flex !important;
+    align-items: flex-end !important;
+    align-self: flex-end !important;
+    height: 38px !important;
+    margin-left: 16px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.info-icon {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    height: 24px !important;
+    width: 24px !important;
+    align-self: flex-end !important;
+    margin: 0 !important;
+    margin-top: -30px !important;
+}
+
+/* main.css reset: ready for new styles */
+/* Panel grid utility classes for Command Center */
+.panel-col1-row1 {
+    grid-column: 1;
+    grid-row: 1;
+    cursor: pointer;
+    min-height: 180px;
+}
+.panel-col1-row2 {
+    grid-column: 1;
+    grid-row: 2;
+    cursor: pointer;
+    min-height: 180px;
+}
+.panel-col2-row1span2 {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.panel-col3-row1 {
+    grid-column: 3;
+    grid-row: 1;
+    cursor: pointer;
+    text-align: left;
+    min-height: 180px;
+}
+.panel-col3-row2 {
+    grid-column: 3;
+    grid-row: 2;
+    cursor: pointer;
+    min-height: 180px;
+}
+.mb045 {
+    margin-bottom: 0.45em !important;
+}
+/* .deploy-highlight block removed: incomplete and commented-out. */
+/* -------------------------------
+   System Requirements (Globalized Styles)
+--------------------------------*/
+.requirements-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 32px 0;
+}
+.requirement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.requirement-list li {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    position: relative;
+}
+.requirement-list li::before {
+    content: "→";
+    color: #00aaff;
+        left: -0.6em;
+    position: absolute;
+    left: 0;
+}
+.beacon-code-panel {
+    border-radius: 8px;
+    padding: 0;
+    font-family: "Fira Code", monospace;
+    font-size: 0.75rem;
+    color: #ffffff;
+    overflow-x: auto;
+    line-height: 1.35;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 420px;
+    overflow: hidden;
+}
+.beacon-code-panel:hover {
+    border-color: rgba(0, 170, 255, 0.3);
+    background: rgba(0, 170, 255, 0.05);
+}
+.code-row {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    align-items: start;
+}
+.expander {
+    color: #6bb6ff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85em;
+    padding: 0;
+    margin: 0;
+    height: 1.35em;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expand-content {
+    color: #fff;
+    font-style: italic;
+}
+/* -------------------------------
+   Matching Engine Panels (Globalized Styles)
+--------------------------------*/
+.centered-panel-grid {
+    display: grid;
+    grid-template-columns: 420px 420px;
+    grid-template-rows: 1fr 1fr;
+    gap: 32px;
+    margin: 0;
+}
+.vertical-panel {
+    width: 420px;
+    height: 180px;
+    background: rgba(0,170,255,0.07);
+    border: 1px solid rgba(0,170,255,0.3);
+    border-radius: 8px;
+    color: var(--beacon-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 1.08em;
+    font-weight: 400;
+    box-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+    padding: 0.4em 0.4em 0.3em 0.4em;
+    text-align: left;
+    transition: box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.vertical-panel-title {
+    color: var(--beacon-primary);
+    font-size: 2.1em;
+    font-weight: 700;
+    font-family: var(--font-family);
+    margin: 0 0.2em 0 0;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    display: inline-block;
+    vertical-align: middle;
+}
+.vertical-panel:hover {
+    box-shadow: 0 2px 8px 0 rgba(0,170,255,0.025);
+    border-color: rgba(0,170,255,0.12);
+    background: rgba(0,170,255,0.005);
+}
+.beacon-panel .panel-title {
+    font-family: var(--font-family);
+    font-size: 1.13em;
+    color: #00aaff;
+    margin-bottom: 0.18em;
+    font-weight: bold;
+}
+.beacon-panel .panel-divider-hr {
+    border: none;
+    border-top: 2px solid #00aaff;
+    width: 90%;
+    margin: 0.3em auto 0.7em auto;
+    opacity: 0.45;
+}
+.beacon-panel .panel-content {
+    color: #fff;
+    font-size: 0.93em;
+    line-height: 1.55;
+}
+/* -------------------------------
+   About Page (Globalized Styles)
+--------------------------------*/
+.about-main-text {
+    font-size: 0.95em;
+    line-height: 1.7;
+    color: var(--text-primary, #eaeaea);
+    text-align: center;
+}
+.about-hr {
+    border: none;
+    border-top: 1.5px solid #444;
+    width: 60px;
+    margin: 2.2em auto 1.5em auto;
+    opacity: 0.5;
+}
+.about-social-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5em;
+    margin-top: 2.2em;
+}
+.about-social-link {
+    display: inline-flex;
+    align-items: center;
+}
+.about-social-link svg {
+    color: #ececec;
+    opacity: 0.85;
+    transition: color 0.2s, opacity 0.2s;
+}
+.about-social-link svg:hover {
+    color: #6bb6ff;
+    opacity: 1;
+}
+/* -------------------------------
+   Info Icon Dropdown (Global)
+--------------------------------*/
+.info-dropdown-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 18px;
+    vertical-align: middle;
+}
+.info-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    background: transparent;
+    color: #ececec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95em;
+    font-weight: 900;
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+    outline: none;
+    padding: 0;
+    box-sizing: border-box;
+}
+.info-icon:focus, .info-icon:hover {
+    background: rgba(255,255,255,0.10);
+    border-color: #6bb6ff;
+}
+.info-i {
+    font-family: inherit;
+    font-size: 0.95em;
+    font-weight: 900;
+    color: #ececec;
+    user-select: none;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-shadow: 0 0 2px #000, 0 0 1px #ececec;
+}
+.info-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    min-width: 120px;
+    background: #181828;
+    border: 1.5px solid #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.13);
+    z-index: 100;
+    padding: 0.5em 0;
+}
+    .beacon-panel .beacon-panel-header {
+        padding: 0.2em 0.7em 0.1em 0.7em;
+    }
+    
+/* Force top alignment for all .beacon-panel content, even if inline style tries to center */
+.beacon-panel {
+    justify-content: flex-start !important;
+}
+
+/* Force no top buffer for mission-detail inside panels */
+.beacon-panel .mission-detail {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    align-self: flex-start !important;
+}
+/* Mission detail expander fix */
+.mission-detail {
+    margin-top: 0.1em !important;
+        /* Remove margin-bottom from all small panels in grid */
+        margin-bottom: 0 !important;
+    margin-bottom: 0.3em;
+    margin-left: 2em;
+    color: var(--text-secondary);
+    font-size: 0.98em;
+}
+
+/* Style mission-detail drop-downs as bullet lists */
+.mission-detail ul {
+    list-style: disc inside;
+    margin: 0.2em 0 0.2em 0.5em;
+    padding: 0;
+}
+.mission-detail ul > li {
+    color: var(--text-secondary);
+    font-size: 0.98em;
+    margin-bottom: 0.2em;
+    padding-left: 0.2em;
+    position: relative;
+    list-style-type: disc;
+} 
+/* Expander/Accordion global fixes */
+details, summary, .expander-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+summary {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0.1em;
+}
+.expander-content {
+    margin-top: 0.2em;
+    padding-top: 0 !important;
+}
+/* === Styles moved from web/index.html for global use === */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0a0a15;
+    color: #ffffff;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    /* Gradient background is handled by ::before and ::after */
+}
+.nav {
+    position: absolute;
+    top: 30px;
+    right: 60px;
+    z-index: 10;
+}
+.nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.nav a:hover { color: #ffffff; }
+.content {
+    position: absolute;
+    bottom: 80px;
+    left: 60px;
+    z-index: 5;
+}
+.title {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    content: '';
+    position: absolute;
+    left: 0;
+    color: var(--beacon-primary);
+    font-weight: var(--font-weight-bold);
+}
+@keyframes beaconGlow {
+    0% { text-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1); }
+    100% { text-shadow: 0 0 30px rgba(107, 182, 255, 0.5), 0 0 60px rgba(107, 182, 255, 0.2); }
+}
+.subtitle {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 300;
+    color: #ffffff;
+    opacity: 0.8;
+    text-align: right;
+    margin-bottom: 32px;
+    animation: subtitlePulse 6s ease-in-out infinite;
+}
+@keyframes subtitlePulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.95; }
+}
+.cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.cta:hover {
+    color: #ffffff;
+}
+.cta:hover .arrow {
+    transform: translateX(3px);
+    text-shadow: 0 0 15px rgba(107, 182, 255, 0.8);
+}
+.arrow {
+    color: #6bb6ff;
+    font-size: 1.5em;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+body::before {
+@keyframes lightShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+body::after {
+@keyframes particleDrift {
+    0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    100% { background-position: 100% 100%, -100% 100%, 100% -100%, -100% -100%; }
+}
+@media (max-width: 768px) {
+    .content {
+        bottom: 60px;
+        left: 30px;
+        right: 30px;
+    }
+    .nav {
+        top: 20px;
+        right: 30px;
+    }
+}
+/* -------------------------------
+/* --- Beacon Panel Unified Styling --- */
+.beacon-panel {
+    background: none;
+    border: 1px solid #6bb6ff;
+    border-radius: 18px !important;
+    color: #c3c8d1 !important;
+    box-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+    font-size: 0.97em;
+    font-weight: 400;
+    padding: 0.2em 0.7em 0.5em 0.7em;
+    text-align: left;
+    transition: box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 0;
+    width: 260px;
+    min-height: 120px;
+    max-width: 260px;
+}
+.beacon-panel > h3.section-title,
+.beacon-panel h3.section-title {
+    color: #6bb6ff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 8px rgba(0,170,255,0.08) !important;
+    -webkit-text-stroke: 0.5px #6bb6ff;
+    border-bottom: none;
+    background: none;
+    border: none;
+    text-align: left !important;
+    margin-top: 0 !important;
+    margin-bottom: 0.1em !important;
+    padding-left: 0 !important;
+    padding-top: 0.5em !important;
+}
+.beacon-panel p,
+.beacon-panel .section-description {
+    color: #c3c8d1;
+}
+.beacon-panel:hover {
+    box-shadow: 0 6px 24px 0 rgba(0,170,255,0.18), 0 2px 8px 0 rgba(0,0,0,0.08);
+    border-color: #4a90e2;
+    background: var(--beacon-panel-hover-bg, rgba(5, 18, 38, 0.97));
+    cursor: pointer;
+}
+
+.beacon-panel:active {
+    box-shadow: 0 2px 8px 0 rgba(0,170,255,0.10), 0 1px 4px 0 rgba(0,0,0,0.10);
+    border-color: #6bb6ff;
+    background: var(--beacon-panel-active-bg, rgba(0, 4, 10, 1.0));
+}
+@import url('/assets/css/info-icon.css');
+/* Panel divider for consistent spacing below section titles */
+.panel-divider {
+    border: none;
+    border-top: 2px solid #00aaff;
+    width: 80%;
+    margin: 0.7em auto 0.7em auto;
+    opacity: 0.55;
+    border-radius: 2px;
+}
+
+/* Arrow list for panels */
+.arrow-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.2em 0 0.2em 0;
+}
+.arrow-list > li {
+    position: relative;
+    padding-left: 1.5em;
+    margin-bottom: 0.3em;
+    color: #c3c8d1;
+    font-weight: 400;
+    font-size: 1em;
+    list-style-type: none;
+}
+.arrow-list > li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    color: var(--beacon-primary) !important;
+    font-weight: 700;
+    font-size: 1.1em;
+    border: none !important;
+}
+/* Remove underline from nav-back links and nav-arrow spans, even if inside a <a> */
+.beacon-nav-back,
+.beacon-nav-back:visited,
+.beacon-nav-back:hover,
+.beacon-nav-back:focus,
+.beacon-nav-back .nav-arrow {
+    text-decoration: none !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+}
+/**
+ * Beacon Design System - Command Center Standard
+ * Single source of truth for all Beacon pages
+ */
+
+/* -------------------------------
+   Design Tokens
+--------------------------------*/
+
+/* -------------------------------
+   Base Reset
+--------------------------------*/
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------------------
+/* -------------------------------
+    Highlight Boxes / CTA
+--------------------------------*/
+
+/* Light rays and particles (all pages) */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.06) 60%, transparent 100%),
+        linear-gradient(140deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.03) 50%, transparent 75%),
+        linear-gradient(130deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.02) 50%, transparent 75%);
+    z-index: 0;
+    pointer-events: none;
+    animation: lightRayShift 12s ease-in-out infinite;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(107,182,255,0.3), transparent),
+        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 90% 40%, rgba(107,182,255,0.2), transparent),
+        radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.1), transparent);
+    background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
+    z-index: 1;
+    pointer-events: none;
+    animation: particleDrift 20s linear infinite;
+}
+
+@keyframes lightRayShift {
+    0%,100% { opacity:1; }
+    50% { opacity:0.8; }
+}
+
+@keyframes particleDrift {
+    0% { background-position:0% 0%,0% 0%,0% 0%,0% 0%; }
+    100% { background-position:100% 100%,-100% 100%,100% -100%,-100% -100%; }
+}
+
+.beacon-search {
+    position: relative;
+}
+
+.beacon-search-field {
+    width: 180px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    font-family: inherit;
+    font-weight: var(--font-weight-medium);
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--beacon-primary);
+    line-height: 1.1;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.beacon-search-field:focus {
+    outline: none;
+    border-color: var(--beacon-primary);
+    color: var(--text-primary);
+    background: rgba(0,170,255,0.1);
+}
+
+.beacon-search-results {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 6px);
+    min-width: 260px;
+    max-width: 360px;
+    width: max-content;
+    max-height: 320px;
+    border-radius: 10px;
+    border: 1px solid #e0e6ef;
+    background: #fff;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+    display: none;
+    overflow-y: auto;
+    z-index: 2000;
+    padding: 6px 0;
+    margin-top: 2px;
+    font-size: 1em;
+    box-sizing: border-box;
+    outline: none;
+    color: #222;
+}
+
+.search-result {
+    padding: 10px 18px;
+    border-bottom: 1px solid #e0e6ef;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+    color: #222;
+    background: none;
+    font-size: 1em;
+    white-space: normal;
+}
+
+.search-result:last-child {
+    border-bottom: none;
+}
+
+.search-result:hover {
+    background: #f0f6ff;
+    color: #0074d9;
+    text-decoration: none;
+}
+
+.result-title {
+    color: #222;
+    font-weight: 600;
+    font-size: 0.98rem;
+    margin-bottom: 2px;
+}
+
+.result-section {
+    color: var(--beacon-primary);
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
+
+.result-snippet {
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    margin-top: 2px;
+}
+
+
+
+.beacon-page-content {
+    padding-top: 80px; /* header height + buffer */
+    padding-bottom: 60px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+.doc-hero {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.doc-hero h1 {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--beacon-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* -------------------------------
+    Highlight Boxes / CTA
+--------------------------------*/
+.highlight-box {
+    background: rgba(0,170,255,0.1);
+    border: 1px solid rgba(0,170,255,0.3);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 32px 0;
+    text-align: center;
+}
+
+.highlight-box h3 {
+    color: var(--beacon-primary);
+    margin: 0 0 12px;
+    font-size: 1.3rem;
+}

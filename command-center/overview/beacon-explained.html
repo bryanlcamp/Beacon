@@ -1,0 +1,648 @@
+
+    <style>
+    /* Hide scrollbars for all browsers (quick hack) */
+    html, body {
+        overflow: hidden !important;
+    }
+    /* For Webkit browsers */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon, Explained.</title>
+    <link rel="stylesheet" href="/assets/css/modules/variables.css">
+    <link rel="stylesheet" href="/assets/css/modules/reset.css">
+    <link rel="stylesheet" href="/assets/css/modules/header-nav.css">
+    <style>
+        :root {
+            --beacon-blue: #6bb6ff;
+            --beacon-blue-muted: #3a6fa1;
+            --panel-bg: transparent;
+            --panel-hover-bg: #0a1a2f;
+            --panel-radius: 18px;
+            --panel-border: 2px solid var(--beacon-blue-muted);
+            --panel-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+            --panel-padding: 1.2em 1.2em 1.2em 1.2em;
+            --panel-title-color: var(--beacon-blue);
+            --panel-arrow-color: var(--beacon-blue-muted);
+            --panel-text-color: #c3c8d1;
+            --dot-color: #6bb6ff80;
+        }
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        .beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            box-shadow: var(--panel-shadow);
+            padding: var(--panel-padding);
+            color: var(--panel-text-color);
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            position: relative;
+        }
+        .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover {
+            background: var(--panel-hover-bg);
+        }
+        .beacon-panel:hover, .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover, .beacon-code-panel:hover {
+            background: var(--panel-hover-bg, #0a1a2f);
+            transform: translateY(-7px) scale(1.045);
+            box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
+            border-color: var(--beacon-blue);
+        }
+        .section-title {
+            color: var(--panel-title-color);
+            font-weight: 700;
+            margin-bottom: 0.3em;
+            text-align: left;
+            font-size: 1.08em;
+        }
+        .arrow {
+            color: var(--panel-arrow-color);
+            font-weight: 500;
+            margin-right: 0.7em;
+            font-size: 1.1em;
+        }
+        .arrow-list li {
+            color: var(--panel-text-color);
+            font-size: 1em;
+            margin-bottom: 0.12em;
+            display: flex;
+            align-items: center;
+        }
+        .beacon-panel .arrow,
+        .beacon-panel .arrow-list li,
+        .beacon-panel .arrow-list li span,
+        .beacon-panel .section-title,
+        .beacon-panel,
+        .beacon-panel * {
+            text-decoration: none !important;
+            -webkit-text-decoration: none !important;
+        }
+        .beacon-small-text-panel .arrow,
+        .beacon-small-text-panel .arrow-list li,
+        .beacon-small-text-panel .arrow-list li span,
+        .beacon-small-text-panel .section-title,
+        .beacon-small-text-panel,
+        .beacon-small-text-panel * {
+            text-decoration: none !important;
+            -webkit-text-decoration: none !important;
+        }
+        .beacon-panel.panel-link,
+        .beacon-panel.panel-link:visited,
+        .beacon-panel.panel-link:hover,
+        .beacon-panel.panel-link:active,
+        .beacon-small-text-panel.panel-link,
+        .beacon-small-text-panel.panel-link:visited,
+        .beacon-small-text-panel.panel-link:hover,
+        .beacon-small-text-panel.panel-link:active {
+            text-decoration: none !important;
+        }
+        .section-title {
+            color: var(--panel-title-color);
+            font-weight: 700;
+            margin-bottom: 0.1em;
+            text-align: left;
+            font-size: 1.08em;
+        }
+        .custom-blue-line {
+            height: 2px;
+            background: var(--panel-arrow-color);
+            border-radius: 1px;
+            margin-left: 1em;
+            margin-bottom: 1em;
+            width: calc(100% - 1em);
+        }
+        .beacon-long-expander-panel .custom-blue-line {
+            width: calc(100% - 1em);
+            margin-left: 1em;
+            margin-right: 0;
+        }
+        .arrow {
+            color: var(--panel-arrow-color);
+            font-weight: 500;
+            margin-right: 0.7em;
+            font-size: 1.1em;
+            text-decoration: none !important;
+            text-decoration: none !important;
+        }
+        .arrow-list li {
+            color: var(--panel-text-color);
+            font-size: 1em;
+            margin-bottom: 0.12em;
+            display: flex;
+            align-items: center;
+            text-decoration: none !important;
+        }
+    </style>
+    <style>
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a15;
+            color: #fff;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
+                linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%);
+            z-index: 1;
+            pointer-events: none;
+            animation: lightShift 12s ease-in-out infinite;
+        }
+        @keyframes lightShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20% 30%, rgba(107, 182, 255, 0.3), transparent),
+                radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 90% 40%, rgba(107, 182, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.1), transparent);
+            background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
+            z-index: 1;
+            pointer-events: none;
+            animation: particleDrift 20s linear infinite;
+        }
+        @keyframes particleDrift {
+            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+            100% { background-position: 100% 100%, -100% 100%, 100% -100%, -100% -100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="beacon-page-header" style="background: linear-gradient(180deg, #11121a 80%, rgba(10,10,21,0.98) 100%); margin-bottom: 1.5em; position: relative; z-index: 10;">
+        <nav class="beacon-page-nav" style="align-items: center; display: flex; height: 56px;">
+            <div style="display: flex; align-items: flex-end;">
+                <span style="font-size: 2.1rem; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1;">Beacon.</span>
+                <span class="beacon-brand-separator" style="color: rgba(255,255,255,0.6); font-size: 1.5rem; margin: 0 4px 0 10px; line-height: 1.1;">|</span>
+                <span class="beacon-page-title" style="font-size: 1.25rem; font-weight: 700; color: var(--beacon-blue, #6bb6ff); letter-spacing: -0.5px; align-self: flex-end; line-height: 1.1;">A Complete HFT Ecosystem.</span>
+            </div>
+            <div style="flex: 1 1 0%;"></div>
+            <div class="beacon-nav-actions" style="align-items: flex-end; display: flex;">
+                <input type="text" class="beacon-nav-search" placeholder="Search..." style="padding:8px 14px;border-radius:7px;border:none;outline:none;min-width:170px;background:transparent;color:#fff;font-size:1.08em;height:38px;box-sizing:border-box;align-self:flex-end;">
+                <a href="/command-center/index.html" class="beacon-nav-back" style="display: flex; align-items: center; margin-left: 16px; text-decoration: none; color: var(--beacon-blue, #6bb6ff); font-weight: 600; font-size: 1.08em; background: none; border: none; cursor: pointer; padding: 0; transition: color 0.18s;">
+                    <span class="beacon-nav-back-arrow arrow" style="font-size: 1.35em; font-weight: 900; margin-right: 6px; display: flex; align-items: center; height: 2.7rem; line-height: 2.7rem; vertical-align: middle; transition: color 0.18s;">←</span>
+                    Command Center
+                </a>
+            </div>
+        </nav>
+    </header>
+    <style>
+        html, body {
+            display: block !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .beacon-nav-back {
+            color: var(--beacon-blue, #6bb6ff) !important;
+        }
+        .beacon-nav-back:hover {
+            color: #fff !important;
+        }
+        .beacon-nav-back:hover .beacon-nav-back-arrow {
+            color: #fff;
+        }
+    </style>
+    <div style="padding-top: 3.2em;">
+        <h1 style="text-align: center; color: #fff; font-size: 2.2em; font-weight: 800; margin-top: -1.1em; margin-bottom: 0.1em; letter-spacing: -0.03em;">Beacon, Explained.</h1>
+        <p style="text-align: center; color: #fff; font-size: 1.15em; font-weight: 400; margin-top: 0.1em; margin-bottom: 0.1em;">A complete HFT platform. Built for you to explore and prove ideas. In true market conditions.<br>Flexibility where you want. Scalability how you need.</p>
+        <div style="display: flex; justify-content: center; align-items: flex-start; width: 100%; margin-top: 2.2em;">
+            <main class="beacon-page-content">
+                <div class="command-center-container" style="width: 100%; margin-left: 0; margin-right: 0;">
+                    <!-- Puzzle Panel Grid Structure - Modular and Reusable -->
+                    <div>
+                        <div class="command-center-puzzle-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; grid-template-rows: 0.7fr 0.7fr;">
+                            <a href="#" class="beacon-panel panel-link">
+                                    <h3 class="section-title" style="position:relative;display:block;text-align:right;">
+                                        <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">1</span>
+                                    </h3>
+                                <h3 class="section-title" style="text-align: right;">Create prices. Your way.</h3>
+                                <div class="custom-blue-line"></div>
+                                <ul class="arrow-list" style="text-align: right;">
+                                    <li><span class="arrow">→</span>Decide the total price messages, across all products.</li>
+                                    <li><span class="arrow">→</span>Start adding the products you want in your dataset.</li>
+                                    <li><span class="arrow">→</span>Specify the percentage of each product that your dataset should contain.</li>
+                                    <li><span class="arrow">→</span>Set each product's prices, quantities, bid/ask spread in terms of ranges.</li>
+                                    <li><span class="arrow">→</span>Assign a weighting system to each range.</li>
+                                    <li><span class="arrow">→</span>Every price / qty used throughout Beacon will be within the range of this dataset.</li>
+                                    <li><span class="arrow">→</span>Ultimate granularity. Specity statistical models per product.</li>
+                                    <li><span class="arrow">→</span>Create as many datasets as you'd like using these settings.</li>
+                                    <li><span class="arrow">→</span>Dataset creation intentionally has randomness involvevd.</li>
+                                    <li><span class="arrow">→</span>Save datasets to reproduce your strategy improvements.</li>
+                                    <li><span class="arrow">→</span>Smart defaults, but granularity is available should you need it.</li>                                    
+                                    <li><span class="arrow">→</span>See Beacon's Author product for details.</li>                                       
+                                </ul>
+                            </a>                    
+                            <a href="/command-center/overview/" class="beacon-panel panel-link">
+                                    <h3 class="section-title" style="position:relative;display:block;text-align:right;">
+                                        <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">2</span>
+                                    </h3>
+                                <h3 class="section-title" style="text-align: right;">Real-world price delivery.</h3>
+                                <div class="custom-blue-line"></div>
+                                <ul class="arrow-list" style="text-align: right;">
+                                    <li><span class="arrow">→</span>So, you've created prices. Done. They're stored in a file.</li>
+                                    <li><span class="arrow">→</span>Now, we need to read them into Beacon. And start the simulation.</li>                                    
+                                    <li><span class="arrow">→</span>Beacon's Orchestrator product does exactly this.
+                                    <li><span class="arrow">→</span>It reads your prices into memory.<i><b>&nbsp;Encodes.&nbsp;</b></i>And broadcasts.</li>
+                                    <li><span class="arrow">→</span>Prices don't always arrive how you'd expect: delays, spikes, or missing altogether.</li>
+                                    <li><span class="arrow">→</span>Orchestrator allows you to model these unpredictable behaviors.</li>
+                                    <li><span class="arrow">→</span>Note that your file does not contain trades, i.e. last prices.</li>
+                                    <li><span class="arrow">→</span>Simply put, the prices in your dataset serve as market liquidity.</li>
+                                    <li><span class="arrow">→</span>Trades happen dynamically in Beacon's Matching Engine product.</li>
+                                    <li><span class="arrow">→</span>Note that all trades won't come from your strategy.</li>
+                                    <li><span class="arrow">→</span>The Orchestrator rebroadcasts all trades, regardless of the source.</li>
+                                    <li><span class="arrow">→</span>We will outline these details Orchestrator and Matching Engine soon.</li>
+                                </ul>
+                            </a>
+                            <a href="#" class="beacon-panel panel-link">
+                                    <h3 class="section-title" style="position:relative;display:block;text-align:right;">
+                                        <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">3</span>
+                                    </h3>
+                                <h3 class="section-title" style="text-align: right;">Strategy Development. Quick Iteration</h3>
+                                <div class="custom-blue-line"></div>
+                                <ul class="arrow-list" style="text-align: right;">
+                                    <li><span class="arrow">→</span>Now, you understand how to create prices. And deliver them to Beacon.</li>
+                                    <li><span class="arrow">→</span>Start by looking at Beacon's Strategy API.</li>
+                                    <li><span class="arrow">→</span>Receive prices. React. Execute. All in one place.</li>
+                                    <li><span class="arrow">→</span>Receive feedback from the matching engine re: ACK/REJECT/FILL.</li>
+                                    <li><span class="arrow">→</span>All HFT infrastructure is provided for you.</li>
+                                    <li><span class="arrow">→</span>Tick-to-trade with 4.5μs latency on a laptop.</li>
+                                </ul>
+                            </a>
+                            <a href="#" class="beacon-panel panel-link">
+                                    <h3 class="section-title" style="position:relative;display:block;text-align:right;">
+                                        <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">4</span>
+                                    </h3>
+                                <h3 class="section-title" style="text-align: right;">Usage in Beacon.</h3>
+                                <div class="custom-blue-line"></div>
+                                <ul class="arrow-list" style="text-align: right;">
+                                    <li><span class="arrow">→</span>Choose a dataset in Dataset Playback.</li>
+                                    <li><span class="arrow">→</span>Configure playback options and start.</li>
+                                    <li><span class="arrow">→</span>Quotes go to Strategy & Matching Engine.</li>
+                                    <li><span class="arrow">→</span>Matching Engine has instant liquidity.</li>
+                                    <li><span class="arrow">→</span>Strategy receives and reacts to quotes.</li>                            
+                                </ul>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        function showSearchIfResults() {
+            if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
+        }
+        function hideSearchDelayed() {
+            setTimeout(() => {
+                document.querySelector('.beacon-search-results').style.display = 'none';
+            }, 300);
+        }
+        function performSearch(query = document.querySelector('.beacon-search-field').value) {
+
+        }
+        // Mission Accordion JS
+        function toggleMissionDetail(idx) {
+            const items = document.querySelectorAll('.mission-item');
+            const details = document.querySelectorAll('.mission-detail');
+            if (!items[idx] || !details[idx]) return;
+            const isActive = items[idx].classList.contains('active');
+            // Collapse all
+            items.forEach(i => i.classList.remove('active'));
+            details.forEach(d => d.classList.add('hidden'));
+            // Expand if not already active
+            if (!isActive) {
+                items[idx].classList.add('active');
+                details[idx].classList.remove('hidden');
+            }
+        }
+    </script>
+    <!-- Floating Info Button with Arc Accent -->
+    <div id="floatingInfoMenu" class="beacon-floating-info-menu">
+        <button id="infoFab" class="info-fab" aria-label="Info" style="padding:0;background:none;border:none;">
+            <img src="/assets/images/icons/info.svg" alt="Info" width="56" height="56" style="display:block;" />
+        </button>
+        <div class="info-tooltip-menu" id="infoTooltipMenu">
+            <a href="/cdn-cgi/l/email-protection#50333f3e2431332410323531333f3e3836247e333f3d" class="tooltip-menu-item">Contact</a>
+            <a href="/command-center/about.html" class="tooltip-menu-item">About</a>
+        </div>
+    </div>
+    <style>
+        .beacon-floating-info-menu {
+            position: fixed;
+            bottom: 56px;
+            right: 44px;
+            overflow: visible;
+            max-width: calc(100vw - 48px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .info-fab {
+            border: none;
+            background: none;
+            padding: 0;
+            border-radius: 50%;
+            box-shadow: 0 4px 16px 0 rgba(25,118,210,0.15);
+            cursor: pointer;
+            outline: none;
+            transition: box-shadow 0.2s;
+            pointer-events: auto;
+          }
+          .info-fab:hover, .info-fab:focus-visible {
+             background: rgba(107,182,255,0.08);
+             box-shadow: 0 0 0 6px rgba(107,182,255,0.18), 0 4px 16px 0 rgba(25,118,210,0.15);
+        }
+        .info-tooltip-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            min-width: 140px;
+            max-width: 320px;
+            background: rgba(10,26,47,0.98);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
+            border: 2px solid #6bb6ff;
+            padding: 0.7em 0.5em;
+            display: none;
+            flex-direction: column;
+            gap: 0.2em;
+            pointer-events: auto;
+            animation: fadeInMenu 0.22s cubic-bezier(.22,1.12,.58,1);
+            overflow: visible;
+        }
+        .beacon-floating-info-menu.open .info-tooltip-menu {
+            display: flex;
+        }
+        @keyframes fadeInMenu {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .tooltip-menu-item {
+            color: #fff;
+            background: none;
+            border: none;
+            border-radius: 12px;
+            padding: 0.7em 1.2em;
+            font-size: 1.08em;
+            font-weight: 500;
+            text-align: left;
+            text-decoration: none;
+            transition: background 0.18s, color 0.18s;
+            outline: none;
+            cursor: pointer;
+        }
+        .tooltip-menu-item:hover, .tooltip-menu-item:focus {
+            background: #23234a;
+            color: #6bb6ff;
+        }
+        .info-fab:focus-visible { box-shadow: 0 0 0 3px #6bb6ff55; }
+    </style>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Floating tooltip menu logic
+        // Floating tooltip menu logic
+        (function() {
+            var fabMenu = document.getElementById('floatingInfoMenu');
+            var fabBtn = document.getElementById('infoFab');
+            if (!fabMenu || !fabBtn) return;
+            fabBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                fabMenu.classList.toggle('open');
+            });
+            document.addEventListener('click', function(e) {
+                if (!fabMenu.contains(e.target)) {
+                    fabMenu.classList.remove('open');
+                }
+            });
+        })();
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e5b34c3bd1a84655a159a87c206343e7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+        </style>
+                <style>
+                .badge-fade-in {
+                    opacity: 0;
+                    animation: badgeFadeIn 0.8s ease-out forwards;
+                    animation-delay: 0.2s;
+                }
+                @keyframes badgeFadeIn {
+                    from { opacity: 0; transform: scale(0.7); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+                </style>
+        <style>
+            html, body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                background: #0a0a15;
+                color: #fff;
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                overflow: hidden !important;
+            }
+            body::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: 
+                    linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
+                    linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%);
+                z-index: 1;
+                pointer-events: none;
+                animation: lightShift 12s ease-in-out infinite;
+            }
+            @keyframes lightShift {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.8; }
+            }
+            body::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: 
+                    radial-gradient(1px 1px at 20% 30%, rgba(107, 182, 255, 0.3), transparent),
+                    radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2), transparent),
+                    radial-gradient(1px 1px at 90% 40%, rgba(107, 182, 255, 0.2), transparent),
+                    radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.1), transparent);
+                background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
+                z-index: 1;
+                pointer-events: none;
+                animation: particleDrift 20s linear infinite;
+            }
+            @keyframes particleDrift {
+                0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+                100% { background-position: 100% 100%, -100% 100%, 100% -100%, -100% -100%; }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="beacon-page-header">
+            <nav class="beacon-page-nav" style="align-items: center; display: flex; height: 56px;">
+                <div style="display: flex; align-items: flex-end;">
+                    <span style="font-size: 2.1rem; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1;">Beacon.</span>
+                    <span class="beacon-brand-separator" style="color: rgba(255,255,255,0.6); font-size: 1.5rem; margin: 0 4px 0 10px; line-height: 1.1;">|</span>
+                    <span class="beacon-page-title" style="font-size: 1.25rem; font-weight: 700; color: var(--beacon-blue, #6bb6ff); letter-spacing: -0.5px; align-self: flex-end; line-height: 1.1;">Beacon, Explained.</span>
+                </div>
+                <div style="flex: 1 1 0%;"></div>
+                <div class="beacon-nav-actions" style="align-items: flex-end; display: flex;">
+                    <input type="text" class="beacon-nav-search" placeholder="Search..." style="padding:8px 14px;border-radius:7px;border:none;outline:none;min-width:170px;background:transparent;color:#fff;font-size:1.08em;height:38px;box-sizing:border-box;align-self:flex-end;">
+                    <a href="/command-center/index.html" class="beacon-nav-back" style="display: flex; align-items: center; margin-left: 16px; text-decoration: none; color: var(--beacon-blue, #6bb6ff); font-weight: 600; font-size: 1.08em; background: none; border: none; cursor: pointer; padding: 0; transition: color 0.18s;">
+                        <span class="beacon-nav-back-arrow arrow" style="font-size: 1.35em; font-weight: 900; margin-right: 6px; display: flex; align-items: center; height: 2.7rem; line-height: 2.7rem; vertical-align: middle; transform: rotate(180deg); transition: color 0.18s;">→</span>
+                        Command Center
+                    </a>
+                </div>
+            </nav>
+            <style>
+                .beacon-page-header {
+                    margin-bottom: 1.5em;
+                }
+            </style>
+        </header>
+        <style>
+            html, body {
+                display: block !important;
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .beacon-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.08em;
+                font-weight: 700;
+                color: #fff;
+                background: linear-gradient(135deg, #6bb6ff 60%, #1976d2 100%);
+                border-radius: 50%;
+                width: 2.1em;
+                height: 2.1em;
+                box-shadow: 0 2px 8px 0 rgba(80,120,200,0.13);
+                border: 2.5px solid #6bb6ff;
+                position: absolute;
+                left: 1.1em;
+                top: 1.1em;
+                z-index: 2;
+                opacity: 0;
+                animation: badgeFadeIn 0.7s 0.1s cubic-bezier(.22,1.12,.58,1) forwards;
+                pointer-events: none;
+            }
+                @keyframes badgeFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+        </style>
+
+        <!-- Floating Info Button with Arc Accent (consistent with command-center) -->
+        <div id="floatingInfoMenu" class="beacon-floating-info-menu">
+            <button id="infoFab" class="info-fab" aria-label="Info" style="padding:0;background:none;border:none;">
+                <img src="/assets/images/icons/info.svg" alt="Info" width="56" height="56" style="display:block;" />
+            </button>
+            <div class="info-tooltip-menu" id="infoTooltipMenu">
+                <a href="/cdn-cgi/l/email-protection#1675797862777562567473777579787e70623875797b" class="tooltip-menu-item">Contact</a>
+                <a href="/command-center/about.html" class="tooltip-menu-item">About</a>
+            </div>
+        </div>
+
+        <style>
+            .beacon-floating-info-menu {
+                position: fixed;
+                bottom: 56px;
+                right: 44px;
+                overflow: visible;
+                max-width: calc(100vw - 48px);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .info-fab {
+                border: none;
+                background: none;
+                padding: 0;
+                border-radius: 50%;
+                box-shadow: 0 4px 16px 0 rgba(25,118,210,0.15);
+                cursor: pointer;
+                outline: none;
+                transition: box-shadow 0.2s;
+                pointer-events: auto;
+            }
+            .info-tooltip-menu {
+                position: absolute;
+                bottom: 80px;
+                right: 0;
+                min-width: 140px;
+                max-width: 320px;
+                background: rgba(10,26,47,0.98);
+                border-radius: 18px;
+                box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
+                border: 2px solid #6bb6ff;
+                padding: 0.7em 0.5em;
+                display: none;
+                flex-direction: column;
+                gap: 0.2em;
+                pointer-events: auto;
+                animation: fadeInMenu 0.22s cubic-bezier(.22,1.12,.58,1);
+                overflow: visible;
+            }
+            .beacon-floating-info-menu.open .info-tooltip-menu {
+                display: flex;
+            }
+            @keyframes fadeInMenu {
+                from { opacity: 0; transform: translateY(10px) scale(0.98); }
+                to { opacity: 1; transform: translateY(0) scale(1); }
+            }
+            .tooltip-menu-item {
+                color: #fff;
+                background: none;
+                border: none;
+                border-radius: 12px;
+                padding: 0.7em 1.2em;
+                font-size: 1.08em;
+                font-weight: 500;
+                text-align: left;
+                text-decoration: none;
+                transition: background 0.18s, color 0.18s;
+                outline: none;
+                cursor: pointer;
+            }
+            .tooltip-menu-item:hover, .tooltip-menu-item:focus {
+                background: #23234a;
+                color: #6bb6ff;
+            }
+            .info-fab:focus-visible { box-shadow: 0 0 0 3px #6bb6ff55; }
+        </style>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

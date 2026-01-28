@@ -1,0 +1,20 @@
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer C (shorter tail, main color) -->
+  <!-- Outer C (open circle, main color, trimmed for C shape) -->
+  <!-- Outer C (open to the right, main color) -->
+  <!-- Outer C (open to the left, main color) -->
+  <!-- Outer C (more closed, open to the left) -->
+  <!-- Outer C (almost full circle, open to the left) -->
+  <path d="M30 45
+           A15 15 0 1 1 30 15.01
+           " stroke="#6bb6ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Inner C (smaller, complementary color, shorter tail) -->
+  <!-- Inner C (open circle, complementary color, trimmed for C shape) -->
+  <!-- Inner C (open to the right, complementary color) -->
+  <!-- Inner C (open to the left, complementary color) -->
+  <!-- Inner C (more closed, open to the left) -->
+  <!-- Inner C (almost full circle, open to the left) -->
+  <path d="M30 39
+           A9 9 0 1 1 30 21.01
+           " stroke="#3a6fa1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

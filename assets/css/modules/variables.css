@@ -1,0 +1,30 @@
+/* Design Tokens & Variables */
+:root {
+    --beacon-primary: #00aaff;
+    --beacon-primary-light: #6bb6ff;
+    --beacon-success: #00ff64;
+    --bg-primary: #0a0a15;
+    --bg-panel: rgba(255, 255, 255, 0.05);
+    --bg-overlay: rgba(10, 10, 21, 0.95);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --transition-normal: 0.3s ease;
+    --transition-fast: 0.2s ease;
+    --border-primary: rgba(255, 255, 255, 0.1);
+    --border-accent: rgba(0, 170, 255, 0.3);
+    --beacon-panel-bg: rgba(255,255,255,0.05);
+    --beacon-panel-border: #6bb6ff;
+    --beacon-panel-radius: 18px;
+    --beacon-panel-color: #c3c8d1;
+    --beacon-panel-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
+    --beacon-panel-padding: 0.2em 0.7em 0.2em 0.7em;
+    --beacon-panel-hover-shadow: 0 6px 24px 0 rgba(0,170,255,0.18), 0 2px 8px 0 rgba(0,0,0,0.08);
+    --beacon-panel-hover-border: #4a90e2;
+    --beacon-panel-hover-bg: rgba(5, 18, 38, 0.97);
+}

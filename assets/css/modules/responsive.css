@@ -1,0 +1,35 @@
+/* Responsive Design */
+@media (max-width: 900px) {
+    .command-center-puzzle-grid {
+        max-width: 98vw;
+        gap: 16px;
+    }
+    .beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
+        width: 98vw;
+        max-width: 98vw;
+        min-width: 0;
+    }
+}
+@media (max-width: 600px) {
+    h1 { font-size: 1.4em; }
+    h2 { font-size: 1.15em; }
+    .beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
+        padding: 0.5em 0.5em 0.5em 0.5em;
+    }
+}
+@media (max-width: 768px) {
+    .beacon-page-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .beacon-search-field {
+        width: 100%;
+    }
+    .doc-hero h1 {
+        font-size: 2rem;
+    }
+    .doc-hero p {
+        font-size: 1rem;
+    }
+}
