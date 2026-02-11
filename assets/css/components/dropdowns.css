@@ -1,0 +1,128 @@
+/* Dropdown and Slideout Components */
+
+/* Base dropdown styles */
+.dropdown-base {
+    position: absolute;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgba(80,120,200,0.10), 0 1.5px 8px 0 rgba(80,120,200,0.06);
+    padding: 1em;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+}
+
+/* Dropdown directions */
+.dropdown-right {
+    top: 0;
+    left: 100%;
+    margin-left: 12px;
+    transform: translateX(-10px);
+}
+
+.dropdown-left {
+    top: 0;
+    right: 100%;
+    margin-right: 12px;
+    transform: translateX(10px);
+}
+
+.dropdown-bottom {
+    top: 100%;
+    left: 50%;
+    margin-top: 12px;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.dropdown-top {
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 12px;
+    transform: translateX(-50%) translateY(10px);
+}
+
+/* Show dropdown on parent hover */
+.dropdown-trigger:hover .dropdown-base {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0) translateY(0);
+}
+
+.dropdown-trigger:hover .dropdown-right {
+    transform: translateX(0);
+}
+
+.dropdown-trigger:hover .dropdown-left {
+    transform: translateX(0);
+}
+
+.dropdown-trigger:hover .dropdown-bottom {
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-trigger:hover .dropdown-top {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Large panel slideouts */
+.slideout-panel {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    min-width: 280px;
+    max-width: 380px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 8px 48px 0 rgba(80,120,200,0.15), 0 3px 16px 0 rgba(80,120,200,0.08);
+    padding: 2em;
+    color: #fff;
+    transform: translateY(-50%) translateX(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 9998;
+    margin-left: 24px;
+}
+
+.slideout-trigger:hover .slideout-panel {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Panel content spacing */
+.dropdown-content h3 {
+    margin: 0 0 0.5em 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.dropdown-content p {
+    margin: 0 0 0.8em 0;
+    font-size: 0.9em;
+    color: #c3c8d1;
+    line-height: 1.4;
+}
+
+.dropdown-content .dropdown-link {
+    display: inline-block;
+    background: #23234a;
+    color: #6bb6ff;
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.dropdown-content .dropdown-link:hover {
+    background: #2a2a5a;
+}

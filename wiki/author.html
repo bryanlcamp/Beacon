@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author - Beacon Documentation</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <style>
+        body { overflow-x: hidden; }
+        .wiki-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 2em; 
+            box-sizing: border-box; 
+        }
+        .nav-bar {
+            position: fixed;
+            top: 2em;
+            right: 2em;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+            padding-bottom: 0.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .nav-item {
+            color: #ff914d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 145, 77, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+            filter: brightness(1.2);
+        }
+        .content-panel {
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 22px;
+            padding: 3em;
+            border: 1px solid rgba(107, 182, 255, 0.2);
+            box-shadow: 0 0 30px rgba(107, 182, 255, 0.08);
+            margin-top: 2em;
+        }
+        h1 {
+            color: #ff914d;
+            font-size: 2.5em;
+            margin: 0 0 1em 0;
+            font-weight: 900;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 20px rgba(255, 145, 77, 0.4);
+        }
+        h2 {
+            color: #6bb6ff;
+            font-size: 1.6em;
+            margin: 2em 0 1em 0;
+            font-weight: 700;
+        }
+        h3 {
+            color: #6bb6ff;
+            font-size: 1.2em;
+            margin: 1.5em 0 0.8em 0;
+            font-weight: 600;
+        }
+        p, li {
+            color: #f5f7fa;
+            line-height: 1.7;
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-left: 1.5em;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5em;
+            margin: 2em 0;
+        }
+        .feature-item {
+            background: rgba(107, 182, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5em;
+            border-left: 3px solid #6bb6ff;
+        }
+        .feature-item h4 {
+            color: #6bb6ff;
+            margin: 0 0 0.5em 0;
+            font-weight: 600;
+        }
+        .feature-item p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="/" class="nav-item">Home</a>
+    <a href="/wiki" class="nav-item">← Wiki</a>
+    <a href="/command-center/apps/author/" class="nav-item">Launch App</a>
+</div>
+
+<div class="wiki-container">
+    <div class="content-panel">
+        <h1>Author</h1>
+        <p style="color: #6bb6ff; font-size: 1.2em; font-weight: 600; margin-bottom: 2em;">
+            Dataset Creation & Market Simulation Configuration
+        </p>
+
+        <h2>Overview</h2>
+        <p>
+            Author is Beacon's dataset creation engine, designed to generate realistic market scenarios that break free from historical overfitting. Instead of training strategies on the same March 15th sequence that teaches March 15th quirks rather than market behavior patterns, Author creates infinite variations of market conditions.
+        </p>
+
+        <h2>Core Capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h4>Product Configuration</h4>
+                <p>Define product symbols, tick sizes, lot sizes, and trading sessions with exchange-specific parameters.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Microstructure Design</h4>
+                <p>Configure spread dynamics, volatility regimes, and order flow patterns that mirror real market behavior.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Multi-Format Export</h4>
+                <p>Generate datasets in CME MDP, NASDAQ ITCH, and NYSE formats with nanosecond precision.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Scenario Scaling</h4>
+                <p>Transform one quiet Tuesday into fifty unique quiet Tuesdays, each with realistic variance.</p>
+            </div>
+        </div>
+
+        <h2>How It Works</h2>
+        <h3>1. Pattern Specification</h3>
+        <p>
+            Define the fundamental market patterns you want to simulate—volatility clusters, spread compression events, liquidity gaps, or momentum breaks. Author understands these as structural behaviors, not specific price sequences.
+        </p>
+
+        <h3>2. Parameter Ranges</h3>
+        <p>
+            Set realistic ranges for key microstructure parameters including:
+        </p>
+        <ul>
+            <li>Bid-ask spread dynamics and mean reversion</li>
+            <li>Order arrival rates and size distributions</li>
+            <li>Volatility clustering and regime changes</li>
+            <li>Cross-correlation with related products</li>
+        </ul>
+
+        <h3>3. Realistic Generation</h3>
+        <p>
+            Author generates market data that preserves the statistical properties and structural relationships that matter for strategy development, while introducing the natural variance that prevents overfitting.
+        </p>
+
+        <h2>Integration with Beacon Ecosystem</h2>
+        <p>
+            Datasets created in Author flow seamlessly into the broader Beacon platform:
+        </p>
+        <ul>
+            <li><strong>Pulse</strong> broadcasts the generated data with exchange-accurate timing</li>
+            <li><strong>Core</strong> executes strategies against the realistic market conditions</li>
+            <li><strong>Match</strong> simulates venue-specific latency and execution quirks</li>
+        </ul>
+
+        <h2>Getting Started</h2>
+        <ol>
+            <li>Access the Author interface through the Beacon command center</li>
+            <li>Select your target exchange format (CME, NASDAQ, or NYSE)</li>
+            <li>Configure product specifications and trading sessions</li>
+            <li>Define market microstructure parameters</li>
+            <li>Generate and export your datasets</li>
+        </ol>
+
+        <p style="margin-top: 3em; padding-top: 2em; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #6bb6ff; font-style: italic;">
+            Author addresses the fundamental challenge in quantitative trading: how do you test strategies against market conditions that feel real but haven't happened yet? The answer is generating market behavior that preserves structure while avoiding the trap of memorizing history.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

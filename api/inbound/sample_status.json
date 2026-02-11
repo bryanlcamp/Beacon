@@ -1,0 +1,14 @@
+{
+  "job_id": "sample-001", 
+  "status": "completed",
+  "started": "2026-02-11T18:15:30",
+  "completed": "2026-02-11T18:16:45",
+  "progress": 100,
+  "messages_processed": 10000,
+  "results_ready": true,
+  "performance_stats": {
+    "avg_latency": "2.8μs", 
+    "p99_latency": "3.1μs",
+    "throughput": "125k msg/sec"
+  }
+}

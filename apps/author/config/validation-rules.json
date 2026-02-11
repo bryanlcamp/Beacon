@@ -1,0 +1,42 @@
+{
+  "messageGeneration": 
+  {
+    "minMessages": 1000,
+    "maxMessages": 999999999,
+    "defaultIncrement": 500,
+    "description": "Minimum number of messages required for dataset generation"
+  },
+  "validation": 
+  {
+    "displayRedAdornerBelow": 1000,
+    "enforceMinimum": true
+  },
+  "fileSystem": 
+  {
+    "rootDatasetDirectory": "./datasets",
+    "exchangeDirectories": 
+    {
+      "CME":    "./datasets/cme",
+      "NYSE":   "./datasets/nyse", 
+      "NASDAQ": "./datasets/nsdq"
+    },
+    "fileExtensions": 
+    {
+      "CME":    ".cme",
+      "NYSE":   ".nyse",
+      "NASDAQ": ".nsdq"
+    },
+    "fileNameConstraints": 
+    {
+      "maxLength": 100,
+      "disallowedCharacters": ["/" , "\\", ":", "*", "?", "\"", "<", ">", "|"],
+      "description": "Characters not allowed in Linux filenames"
+    }
+  },
+  "metadata": 
+  {
+    "version": "1.0.0",
+    "lastModified": "2026-01-30",
+    "description": "Dataset generator validation rules and constraints"
+  }
+}

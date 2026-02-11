@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match - Beacon HFT Platform</title>
+    
+    <!-- Main page design system imports -->
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    
+    <!-- Reusable Components -->
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+    
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css"> 
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    
+    <!-- JavaScript for functionality -->
+    <script src="/assets/js/beacon-header.js"></script>
+    <script src="/assets/js/beacon-search.js"></script>
+    <script src="/assets/js/beacon-info-dropdown.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .beacon-page-header {
+            position: fixed;
+            top: 2em;
+            right: 2em;
+            z-index: 10001;
+            background: none;
+            backdrop-filter: none;
+            padding: 0;
+            border-bottom: none;
+        }
+        
+        .beacon-page-nav {
+            display: flex;
+            align-items: center;
+            gap: 2em;
+            padding-bottom: 0.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Clean up old navigation elements since we're using new design */
+        .beacon-page-header,
+        .beacon-page-nav,
+        .beacon-brand-header,
+        .beacon-page-title,
+        .beacon-nav-actions,
+        .utility-icons,
+        .utility-icon {
+            display: none !important;
+        }
+        .search-icon, .info-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-icon {
+            border: 2px solid #6bb6ff;
+            box-shadow: 0 0 12px rgba(107, 182, 255, 0.2);
+        }
+        
+        .search-icon:hover {
+            box-shadow: 0 0 20px rgba(107, 182, 255, 0.4), 0 0 30px rgba(107, 182, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .info-icon {
+            border: 2px solid #ff914d;
+            color: #ff914d;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(255, 145, 77, 0.4);
+            box-shadow: 0 0 12px rgba(255, 145, 77, 0.2);
+        }
+        
+        .info-icon:hover {
+            box-shadow: 0 0 20px rgba(255, 145, 77, 0.4), 0 0 30px rgba(255, 145, 77, 0.2);
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+            transform: scale(1.05);
+        }
+        
+        .dot-separator {
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+        
+        .beacon-brand-link {
+            color: #ff914d;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2), 0 0 30px rgba(255, 145, 77, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .beacon-brand-link:hover {
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.9), 0 0 25px rgba(255, 145, 77, 0.6), 0 0 35px rgba(255, 145, 77, 0.3), 0 0 45px rgba(255, 145, 77, 0.1);
+            filter: brightness(1.2);
+        }
+        
+        /* Back link styling */
+        .beacon-nav-back {
+            color: #6bb6ff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        
+        .beacon-nav-back:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(107, 182, 255, 0.6);
+        }
+        
+        .beacon-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+        }
+        
+        .beacon-nav-back {
+            color: #6bb6ff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            transition: color 0.3s ease;
+        }
+        
+        .beacon-nav-back:hover {
+            color: #ffffff;
+        }
+        
+        .utility-icons {
+            display: flex;
+            gap: 0.75em;
+            align-items: center;
+        }
+        
+        .utility-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 145, 77, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .utility-icon:hover {
+            background: rgba(255, 145, 77, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        /* Dropdown item reset styles */
+        .dropdown-item {
+            background: transparent !important;
+            color: #f5f7fa !important;
+            transform: scale(1) !important;
+            box-shadow: none !important;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(107, 182, 255, 0.1) !important;
+            color: #6bb6ff !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 0 15px rgba(107, 182, 255, 0.2) !important;
+        }
+        
+        /* Info dropdown item hover colors */
+        .info-dropdown .dropdown-item:hover {
+            background: rgba(255, 145, 77, 0.1) !important;
+            color: #ff914d !important;
+            box-shadow: 0 0 15px rgba(255, 145, 77, 0.2) !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar - matching main page design -->
+<div style="position: fixed; top: 2em; right: 2em; z-index: 10001; display: flex; align-items: center; gap: 1em; padding-bottom: 0.8em; border-bottom: 1px solid rgba(255, 255, 255, 0.4);">
+    <!-- Back Link -->
+    <a href="/" class="beacon-nav-back" style="color: #6bb6ff; text-decoration: none; display: flex; align-items: center; gap: 0.5em; transition: all 0.3s ease; font-family: 'Inter', sans-serif; font-weight: 600;" onmouseover="this.style.color='#ffffff'; this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.6)'" onmouseout="this.style.color='#6bb6ff'; this.style.textShadow='none'">
+        <span style="font-size: 1.2em;">←</span>
+    </a>
+    
+    <!-- Apps Grid Icon -->
+    <div class="apps-container" style="position: relative; display: inline-block;">
+        <div class="apps-icon" style="width: 36px; height: 36px; border: 2px solid #6bb6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 12px rgba(107, 182, 255, 0.2); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(107, 182, 255, 0.4), 0 0 30px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1.05)'" onmouseout="this.style.boxShadow='0 0 12px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1)'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="9" y="2" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="2" y="9" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="9" y="9" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+            </svg>
+        </div>
+        
+        <div class="apps-dropdown" style="position: absolute; top: 100%; right: 0; margin-top: 8px; width: 280px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); border-radius: 12px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.15); padding: 1em; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10001; border: 1px solid rgba(107, 182, 255, 0.2); display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em;">
+            <!-- Author -->
+            <a href="/command-center/apps/author/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+                    <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+                    <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Author</span>
+            </a>
+            
+            <!-- Pulse -->
+            <a href="/command-center/apps/pulse/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Pulse</span>
+            </a>
+            
+            <!-- Core -->
+            <a href="/command-center/overview/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <line x1="12" y1="22" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="22,8.5 12,12 2,8.5" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Core</span>
+            </a>
+            
+            <!-- Match -->
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #ff914d; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; border-radius: 8px; text-align: center; gap: 0.5em; background: rgba(255, 145, 77, 0.1); border: 1px solid rgba(255, 145, 77, 0.2);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+                    <line x1="11" y1="11" x2="13" y2="13" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Match</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Apps Grid Icon -->
+    <div class="apps-container" style="position: relative; display: inline-block;">
+        <div class="apps-icon" style="width: 36px; height: 36px; border: 2px solid #6bb6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 12px rgba(107, 182, 255, 0.2); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(107, 182, 255, 0.4), 0 0 30px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1.05)'" onmouseout="this.style.boxShadow='0 0 12px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1)'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="9" y="2" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="2" y="9" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+                <rect x="9" y="9" width="5" height="5" stroke="#6bb6ff" stroke-width="1.5" fill="none"/>
+            </svg>
+        </div>
+        
+        <div class="apps-dropdown" style="position: absolute; top: 100%; right: 0; margin-top: 8px; width: 280px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); border-radius: 12px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.15); padding: 1em; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10001; border: 1px solid rgba(107, 182, 255, 0.2); display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em;">
+            <!-- Author -->
+            <a href="/command-center/apps/author/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+                    <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+                    <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Author</span>
+            </a>
+            
+            <!-- Pulse -->
+            <a href="/command-center/apps/pulse/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Pulse</span>
+            </a>
+            
+            <!-- Core -->
+            <a href="/command-center/overview/" class="dropdown-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; transition: all 0.3s ease; border-radius: 8px; text-align: center; gap: 0.5em; background: transparent; transform: scale(1); box-shadow: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <line x1="12" y1="22" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="22,8.5 12,12 2,8.5" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Core</span>
+            </a>
+            
+            <!-- Match -->
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1em 0.8em; color: #ff914d; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.8em; font-weight: 500; border-radius: 8px; text-align: center; gap: 0.5em; background: rgba(255, 145, 77, 0.1); border: 1px solid rgba(255, 145, 77, 0.2);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+                    <line x1="11" y1="11" x2="13" y2="13" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Match</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                    <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="8.5" cy="15.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15.5" cy="15.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M10 8.5h3.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8.5 10v3.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M10 15.5h3.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M15.5 10v3.5" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                <span>Workflow</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Large Title Overlay -->
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 1000; pointer-events: none;">
+    <h1 style="font-size: 8rem; font-weight: 900; color: rgba(255, 255, 255, 0.05); margin: 0; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.05em; user-select: none;">Match.</h1>
+</div>
+
+<!-- Main Content in glass panels -->
+<div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display: flex; align-items: flex-end; gap: 1.5em; max-width: calc(100vw - 5em); box-sizing: border-box;">
+    <div class="main-content" style="flex: 1;">
+        <div class="main-glass-panel" style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.95) 0%, rgba(24, 31, 46, 0.95) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(107, 182, 255, 0.2); padding: 2.5em; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); margin-top: 0;">
+            <div style="text-align: left;">
+                <h1 style="font-size: 3.2em; font-weight: 900; color: #fff; margin: 0 0 0.3em 0; letter-spacing: -0.03em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; text-align: left;">Match.</h1>
+                <div style="color: #6bb6ff; font-weight: 700; font-size: 1.4em; margin-bottom: 1.5em; text-align: left;">Real-time FIFO matching engine.</div>
+                <div style="text-align: left; font-size: 1.05em; color: #f5f7fa; line-height: 1.7;">
+                    A high-performance matching engine driven by your curated datasets. Experience microsecond-level latency with realistic market scenarios that prepare your strategies for live trading conditions.
+                    <br><br>
+                    Liquidity is sourced from your dataset and broadcast locally via UDP. Both your strategy and the matching engine receive quotes instantly—no network team required.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feature panels grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5em; margin-top: 2em; max-width: 1000px;">
+        <div style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.9) 0%, rgba(24, 31, 46, 0.9) 100%); backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(107, 182, 255, 0.15); padding: 2em; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(107, 182, 255, 0.3)'; this.style.boxShadow='0 8px 32px rgba(107, 182, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(107, 182, 255, 0.15)'; this.style.boxShadow='none'">
+            <h3 style="color: #6bb6ff; font-size: 1.2em; font-weight: 700; margin: 0 0 1em 0; font-family: 'Inter', sans-serif;">Instant Local Liquidity</h3>
+            <div style="color: #f5f7fa; line-height: 1.6; font-size: 0.95em;">
+                Liquidity is sourced from your dataset and broadcast locally via UDP.<br>
+                Both your strategy and the Matching Engine receive quotes instantly.<br>
+                No network team required—everything stays on your machine.
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.9) 0%, rgba(24, 31, 46, 0.9) 100%); backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(107, 182, 255, 0.15); padding: 2em; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(107, 182, 255, 0.3)'; this.style.boxShadow='0 8px 32px rgba(107, 182, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(107, 182, 255, 0.15)'; this.style.boxShadow='none'">
+            <h3 style="color: #6bb6ff; font-size: 1.2em; font-weight: 700; margin: 0 0 1em 0; font-family: 'Inter', sans-serif;">Strategy Interaction</h3>
+            <div style="color: #f5f7fa; line-height: 1.6; font-size: 0.95em;">
+                Your strategy interacts with the matching engine by submit, update and cancel order operations.<br>
+                You receive immediate ack or reject and your strategy can act accordingly.<br>
+                The matching engine notifies you immediately when you're filled, an unsolicited cancel or trading halt.
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.9) 0%, rgba(24, 31, 46, 0.9) 100%); backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(107, 182, 255, 0.15); padding: 2em; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(107, 182, 255, 0.3)'; this.style.boxShadow='0 8px 32px rgba(107, 182, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(107, 182, 255, 0.15)'; this.style.boxShadow='none'">
+            <h3 style="color: #6bb6ff; font-size: 1.2em; font-weight: 700; margin: 0 0 1em 0; font-family: 'Inter', sans-serif;">Automatch</h3>
+            <div style="color: #f5f7fa; line-height: 1.6; font-size: 0.95em;">
+                Sometimes you want your strategy to compete for liquidity. Not always take it all.<br>
+                The Automatcher addresses this by matching orders based on their time spent in the queue.<br>
+                Your strategy is notified of these matches via trade messages in the quote stream.
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.9) 0%, rgba(24, 31, 46, 0.9) 100%); backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(107, 182, 255, 0.15); padding: 2em; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(107, 182, 255, 0.3)'; this.style.boxShadow='0 8px 32px rgba(107, 182, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(107, 182, 255, 0.15)'; this.style.boxShadow='none'">
+            <h3 style="color: #6bb6ff; font-size: 1.2em; font-weight: 700; margin: 0 0 1em 0; font-family: 'Inter', sans-serif;">Scalability</h3>
+            <div style="color: #f5f7fa; line-height: 1.6; font-size: 0.95em;">
+                The Matching Engine has multiple extension points; so you can adapt it as your needs change.<br>
+                Run competing strategies simultaneously. Desired market-making behavior, or order types.<br>
+                Built with flexible architecture, enhancements feel natural, not forced.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Setup dropdown functionality matching main page behavior
+document.addEventListener('DOMContentLoaded', function() {
+    // Dropdown timeout variables for mouseover behavior
+    let infoTimeout, appsTimeout;
+    
+    // Info dropdown functionality
+    const infoContainer = document.querySelector('.info-container');
+    const infoIcon = infoContainer?.querySelector('.info-icon');
+    const infoDropdown = infoContainer?.querySelector('.info-dropdown');
+    
+    // Apps dropdown functionality  
+    const appsContainer = document.querySelector('.apps-container');
+    const appsIcon = appsContainer?.querySelector('.apps-icon');
+    const appsDropdown = appsContainer?.querySelector('.apps-dropdown');
+    
+    function closeAllDropdowns() {
+        [infoDropdown, appsDropdown].forEach(dropdown => {
+            if (dropdown) {
+                dropdown.style.opacity = '0';
+                dropdown.style.visibility = 'hidden';
+                dropdown.style.transform = 'translateY(-10px)';
+            }
+        });
+    }
+    
+    // Info container mouseover/mouseout
+    if (infoContainer && infoDropdown) {
+        infoContainer.addEventListener('mouseenter', function() {
+            clearTimeout(infoTimeout);
+            clearTimeout(appsTimeout);
+            
+            // Close apps dropdown
+            if (appsDropdown) {
+                appsDropdown.style.opacity = '0';
+                appsDropdown.style.visibility = 'hidden';
+                appsDropdown.style.transform = 'translateY(-10px)';
+            }
+            
+            // Show info dropdown
+            infoDropdown.style.opacity = '1';
+            infoDropdown.style.visibility = 'visible';
+            infoDropdown.style.transform = 'translateY(0)';
+        });
+        
+        infoContainer.addEventListener('mouseleave', function() {
+            infoTimeout = setTimeout(() => {
+                infoDropdown.style.opacity = '0';
+                infoDropdown.style.visibility = 'hidden';
+                infoDropdown.style.transform = 'translateY(-10px)';
+            }, 150);
+        });
+    }
+    
+    // Apps container mouseover/mouseout
+    if (appsContainer && appsDropdown) {
+        appsContainer.addEventListener('mouseenter', function() {
+            clearTimeout(appsTimeout);
+            clearTimeout(infoTimeout);
+            
+            // Close info dropdown
+            if (infoDropdown) {
+                infoDropdown.style.opacity = '0';
+                infoDropdown.style.visibility = 'hidden';
+                infoDropdown.style.transform = 'translateY(-10px)';
+            }
+            
+            // Show apps dropdown
+            appsDropdown.style.opacity = '1';
+            appsDropdown.style.visibility = 'visible'; 
+            appsDropdown.style.transform = 'translateY(0)';
+        });
+        
+        appsContainer.addEventListener('mouseleave', function() {
+            appsTimeout = setTimeout(() => {
+                appsDropdown.style.opacity = '0';
+                appsDropdown.style.visibility = 'hidden';
+                appsDropdown.style.transform = 'translateY(-10px)';
+            }, 150);
+        });
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!infoContainer?.contains(e.target) && !appsContainer?.contains(e.target)) {
+            closeAllDropdowns();
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
+        }
+    });
+});
+</script>
+</body>
+</html>

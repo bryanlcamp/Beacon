@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Progress - Data Grid</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #1a1a2e; color: white; margin: 2em; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .progress-header { background: rgba(107, 182, 255, 0.1); padding: 1.5em; border-radius: 8px; margin-bottom: 2em; border-left: 3px solid #6bb6ff; }
+        .progress-bar { width: 100%; height: 12px; background: #333; border-radius: 6px; margin: 1em 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6bb6ff, #00ff88); border-radius: 6px; transition: width 0.5s ease; }
+        
+        .data-grid { background: rgba(0, 0, 0, 0.4); border-radius: 8px; overflow: hidden; margin: 2em 0; }
+        .data-grid table { width: 100%; border-collapse: collapse; }
+        .data-grid th { background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff; }
+        .data-grid td { padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .data-grid tr:hover { background: rgba(107, 182, 255, 0.05); }
+        
+        .metric-value { font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600; }
+        .status-running { color: #6bb6ff; }
+        .status-completed { color: #00ff88; }
+        .status-error { color: #ff6b6b; }
+        
+        .refresh-btn { background: #6bb6ff; color: white; border: none; padding: 0.8em 1.5em; border-radius: 6px; cursor: pointer; margin: 1em 0; }
+        .refresh-btn:hover { background: #5aa3e6; }
+        
+        .start-btn { background: #00ff88; color: #1a1a2e; border: none; padding: 1em 2em; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .start-btn:hover { background: #00e676; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Beacon Simulation Progress</h1>
+        
+        <div class="progress-header">
+            <h2 id="jobTitle">No active simulation</h2>
+            <p id="jobStatus">Click Start Demo to begin</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <p id="progressText">0% complete</p>
+        </div>
+
+        <div class="data-grid">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Current Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="metricsTable">
+                    <tr><td colspan="3" style="text-align: center; color: #666;">No data available</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin: 2em 0;">
+            <button class="start-btn" onclick="startDemo()">Start Demo</button>
+            <button class="refresh-btn" onclick="refreshData()" id="refreshBtn" disabled>Refresh</button>
+        </div>
+        
+        <div id="rawJsonData" style="background: rgba(0,0,0,0.6); padding: 1em; border-radius: 6px; margin-top: 2em; font-family: 'Fira Code', monospace; font-size: 0.85em; white-space: pre-wrap; max-height: 300px; overflow-y: auto; display: none;">
+        </div>
+        
+        <button onclick="toggleRawData()" style="background: #333; color: white; border: 1px solid #555; padding: 0.5em 1em; border-radius: 4px; cursor: pointer; margin-top: 1em;">Toggle Raw JSON</button>
+    </div>
+
+    <script>
+        let currentJobId = null;
+        let progressInterval = null;
+
+        function startDemo() {
+            currentJobId = 'demo-' + Date.now().toString().slice(-6);
+            document.getElementById('jobTitle').textContent = `Simulation: ${currentJobId}`;
+            document.getElementById('jobStatus').textContent = 'Simulation running...';
+            document.getElementById('refreshBtn').disabled = false;
+            
+            // Start simulated progress updates
+            simulateProgress();
+        }
+
+        function simulateProgress() {
+            let bucket = 0;
+            let totalBuckets = 1000;
+            
+            progressInterval = setInterval(() => {
+                bucket += Math.floor(Math.random() * 5) + 1; // Progress 1-5 buckets at a time
+                
+                if (bucket >= totalBuckets) {
+                    bucket = totalBuckets;
+                    clearInterval(progressInterval);
+                    document.getElementById('jobStatus').textContent = 'Simulation completed!';
+                }
+                
+                const progressData = {
+                    job_id: currentJobId,
+                    total_messages: 1000000,
+                    bucket_size: 1000,
+                    total_buckets: totalBuckets,
+                    buckets_completed: bucket,
+                    current_bucket: bucket + 1,
+                    progress_percentage: (bucket / totalBuckets * 100).toFixed(1),
+                    estimated_time_remaining: bucket < totalBuckets ? 
+                        `00:${Math.floor((totalBuckets - bucket) / 50).toString().padStart(2, '0')}:${((totalBuckets - bucket) % 50 * 1.2).toFixed(0).padStart(2, '0')}` : 
+                        '00:00:00',
+                    performance_stats: {
+                        avg_latency: (2.5 + Math.random() * 0.8).toFixed(2) + 'μs',
+                        p99_latency: (3.0 + Math.random() * 0.5).toFixed(2) + 'μs',
+                        throughput: Math.floor(120 + Math.random() * 40) + 'k msg/sec',
+                        memory_usage: Math.floor(200 + Math.random() * 100) + 'MB',
+                        cpu_usage: Math.floor(70 + Math.random() * 25) + '%'
+                    },
+                    last_updated: new Date().toISOString().slice(11, 19)
+                };
+                
+                updateProgressDisplay(progressData);
+            }, 200);
+        }
+
+        function updateProgressDisplay(data) {
+            // Update header
+            document.getElementById('progressFill').style.width = data.progress_percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `${data.progress_percentage}% complete - Bucket ${data.buckets_completed}/${data.total_buckets}`;
+
+            // Update data grid
+            const metricsHtml = `
+                <tr>
+                    <td>Job ID</td>
+                    <td class="metric-value">${data.job_id}</td>
+                    <td>Unique simulation identifier</td>
+                </tr>
+                <tr>
+                    <td>Messages Processed</td>
+                    <td class="metric-value">${(data.buckets_completed * data.bucket_size).toLocaleString()}</td>
+                    <td>Total messages processed so far</td>
+                </tr>
+                <tr>
+                    <td>Current Bucket</td>
+                    <td class="metric-value">${data.current_bucket} / ${data.total_buckets}</td>
+                    <td>Progress in ${data.bucket_size.toLocaleString()}-message buckets</td>
+                </tr>
+                <tr>
+                    <td>Average Latency</td>
+                    <td class="metric-value">${data.performance_stats.avg_latency}</td>
+                    <td>Mean processing latency per message</td>
+                </tr>
+                <tr>
+                    <td>P99 Latency</td>
+                    <td class="metric-value">${data.performance_stats.p99_latency}</td>
+                    <td>99th percentile latency</td>
+                </tr>
+                <tr>
+                    <td>Throughput</td>
+                    <td class="metric-value">${data.performance_stats.throughput}</td>
+                    <td>Messages processed per second</td>
+                </tr>
+                <tr>
+                    <td>Memory Usage</td>
+                    <td class="metric-value">${data.performance_stats.memory_usage}</td>
+                    <td>Current memory consumption</td>
+                </tr>
+                <tr>
+                    <td>CPU Usage</td>
+                    <td class="metric-value">${data.performance_stats.cpu_usage}</td>
+                    <td>Processor utilization</td>
+                </tr>
+                <tr>
+                    <td>Time Remaining</td>
+                    <td class="metric-value">${data.estimated_time_remaining}</td>
+                    <td>Estimated completion time</td>
+                </tr>
+                <tr>
+                    <td>Last Updated</td>
+                    <td class="metric-value">${data.last_updated}</td>
+                    <td>Timestamp of last progress update</td>
+                </tr>
+            `;
+            
+            document.getElementById('metricsTable').innerHTML = metricsHtml;
+            
+            // Update raw JSON display
+            document.getElementById('rawJsonData').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function refreshData() {
+            if (!currentJobId) return;
+            
+            // In real implementation, this would call:
+            // fetch(`/api/simulation/${currentJobId}/progress`)
+            //   .then(response => response.json())
+            //   .then(data => updateProgressDisplay(data));
+            
+            console.log('Refreshing data for job:', currentJobId);
+        }
+
+        function toggleRawData() {
+            const rawData = document.getElementById('rawJsonData');
+            rawData.style.display = rawData.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "job_id": "sample-001",
+  "timestamp": "2026-02-11T18:15:30",
+  "messages": 1000000,
+  "dataset": "cme",
+  "strategy": "example_strategy",
+  "output_path": "/var/www/html/api/inbound/results_sample-001.pdf",
+  "progress_tracking": {
+    "bucket_size": 1000,
+    "update_frequency": "per_bucket",
+    "progress_file": "/var/www/html/api/inbound/progress_sample-001.json"
+  },
+  "simulation_params": {
+    "latency_target": "3.1μs",
+    "market_hours": "9:30-16:00",
+    "products": ["ES", "NQ", "YM"]
+  }
+}

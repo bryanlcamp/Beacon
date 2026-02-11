@@ -1,0 +1,237 @@
+/**
+ * Dataset Generator - Layout Styles
+ * Handles overall page structure and responsive layout
+ */
+
+/* CSS Custom Properties for consistency */
+:root {
+  /* Layout Dimensions */
+  --config-panel-width: 280px;
+  --panel-gap: 24px;
+  --panel-header-height: 80px;
+  
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  
+  /* Adorner Colors */
+  --adorner-red: #ff4757;
+  --adorner-green: #2ed573;
+  --adorner-blue: #3742fa;
+}
+
+/* Page Layout */
+.beacon-page-content {
+  padding-top: 20px;
+  padding-bottom: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+
+body.demo-mode .beacon-page-content {
+  padding-top: 30px;
+}
+
+/* Page Header */
+.page-header {
+  text-align: center;
+  margin-bottom: var(--space-xxl);
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--beacon-primary), var(--beacon-primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Two-Panel Layout */
+.app-layout {
+  display: grid;
+  grid-template-columns: var(--config-panel-width) 1fr;
+  gap: var(--panel-gap);
+  min-height: 600px;
+  align-items: start;
+}
+
+/* Panel Base Styles */
+.config-panel,
+.datacards-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* Config Panel - Fixed Size */
+.config-panel {
+  position: sticky;
+  top: var(--space-lg);
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+}
+
+/* DataCards Panel - Flexible */
+.datacards-panel {
+  min-height: 400px;
+}
+
+/* Panel Headers */
+.panel-header {
+  padding: var(--space-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.config-panel .panel-header {
+  gap: var(--space-sm);
+}
+
+.datacards-panel .panel-header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Panel Bodies */
+.panel-body {
+  padding: var(--space-lg);
+}
+
+.config-panel .panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* DataCards Grid */
+.datacards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-xxl) var(--space-lg);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-state svg {
+  margin-bottom: var(--space-md);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-xs);
+}
+
+.empty-state-subtitle {
+  font-size: 0.9rem !important;
+  opacity: 0.7;
+}
+
+/* Allocation Summary */
+.allocation-summary {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.allocation-display {
+  text-align: center;
+  padding: var(--space-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.allocation-percentage {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--beacon-primary);
+  display: block;
+  line-height: 1;
+}
+
+.allocation-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: var(--space-xs);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .config-panel {
+    position: static;
+    max-height: none;
+  }
+  
+  .datacards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .beacon-page-content {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .panel-header {
+    padding: var(--space-md);
+  }
+  
+  .panel-body {
+    padding: var(--space-md);
+  }
+  
+  .datacards-panel .panel-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

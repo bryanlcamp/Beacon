@@ -1,0 +1,12 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#ff914d" stroke-width="2.5"/>
+  <g>
+    <!-- House/home base -->
+    <path d="M28 18l-8 7v11h5v-6h6v6h5v-11l-8-7z" fill="#ff914d"/>
+    <!-- Command center indicator -->
+    <rect x="26" y="30" width="4" height="2" fill="#101624"/>
+    <!-- Back arrow -->
+    <path d="M22 28l-4-4 4-4" stroke="#ff914d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="18" y1="24" x2="26" y2="24" stroke="#ff914d" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

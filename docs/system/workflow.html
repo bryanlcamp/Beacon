@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow - Beacon HFT Platform</title>
+    
+    <!-- Main page design system imports -->
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    
+    <!-- Reusable Components -->
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+    
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css"> 
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">    
+    
+    <!-- Ensure background gradient is applied -->
+    <style>
+        /* Override any conflicting styles to force the navy gradient */
+        html, body {
+            background: linear-gradient(135deg, #0a0a15 0%, #181f2e 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body style="overflow-x: hidden;">
+
+<!-- Large Title Overlay -->
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 1000; pointer-events: none;">
+    <h1 style="font-size: 8rem; font-weight: 900; color: rgba(255, 255, 255, 0.05); margin: 0; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.05em; user-select: none;">Workflow.</h1>
+</div>
+
+<!-- Navigation Bar -->
+<div style="position: fixed; top: 2em; right: 2em; z-index: 10001; display: flex; align-items: center; gap: 2em; padding-bottom: 0.8em; border-bottom: 1px solid rgba(255, 255, 255, 0.4);">
+    <!-- Back to Command Center -->
+    <a href="/command-center/index.html" style="color: #6bb6ff; text-decoration: none; display: flex; align-items: center; gap: 0.5em; transition: all 0.3s ease; font-family: 'Inter', sans-serif; font-weight: 600;" onmouseover="this.style.color='#ffffff'; this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.6)'" onmouseout="this.style.color='#6bb6ff'; this.style.textShadow='none'">
+        <span style="font-size: 1.2em;">←</span>
+        <span>Command Center</span>
+    </a>
+    
+    <!-- Dot Separator -->
+    <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+    
+    <!-- Search Icon with Dropdown -->
+    <div class="search-container" style="position: relative; display: inline-block;">
+        <div class="search-icon" style="width: 36px; height: 36px; border: 2px solid #6bb6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 12px rgba(107, 182, 255, 0.2); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(107, 182, 255, 0.4), 0 0 30px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1.05)'; this.nextElementSibling.style.opacity='1'; this.nextElementSibling.style.visibility='visible'; this.nextElementSibling.style.transform='translateY(0) scaleX(1)';" onmouseout="this.style.boxShadow='0 0 12px rgba(107, 182, 255, 0.2)'; this.style.transform='scale(1)'; this.nextElementSibling.style.opacity='0'; this.nextElementSibling.style.visibility='hidden'; this.nextElementSibling.style.transform='translateY(-10px) scaleX(0)';"">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="#6bb6ff" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        
+        <div class="search-dropdown" style="position: absolute; top: 100%; left: -80px; margin-top: 8px; width: 200px; height: 2px; background: #6bb6ff; border-radius: 2px; box-shadow: 0 0 8px rgba(107, 182, 255, 0.4); opacity: 0; visibility: hidden; transform: translateY(-10px) scaleX(0); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10001; transform-origin: center;"></div>
+    </div>
+    
+    <!-- Dot Separator -->
+    <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+    
+    <!-- Info Icon with Dropdown -->
+    <div class="info-container" style="position: relative; display: inline-block;">
+        <div class="info-icon" style="width: 36px; height: 36px; border: 2px solid #ff914d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ff914d; font-family: 'Inter', sans-serif; font-size: 1.1em; font-weight: 700; cursor: pointer; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); box-shadow: 0 0 12px rgba(255, 145, 77, 0.2); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 145, 77, 0.4), 0 0 30px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 15px rgba(255, 145, 77, 0.8)'; this.style.transform='scale(1.05)'; document.querySelector('.info-dropdown').style.opacity='1'; document.querySelector('.info-dropdown').style.visibility='visible'; document.querySelector('.info-dropdown').style.transform='translateY(0)'" onmouseout="this.style.boxShadow='0 0 12px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 8px rgba(255, 145, 77, 0.4)'; this.style.transform='scale(1)'">i</div>
+        
+        <div class="info-dropdown" style="position: absolute; top: 100%; left: 0; margin-top: 8px; width: 140px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); border-radius: 12px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.15); padding: 0.8em 0; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10001; border: 1px solid rgba(255, 145, 77, 0.2);">
+            <a href="mailto:info@beaconhft.com?subject=Beacon%20HFT%20-%20General%20Inquiry" style="display: block; padding: 0.6em 1em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.85em; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(255, 145, 77, 0.1)'; this.style.color='#ff914d'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#f5f7fa'">Contact</a>
+            <a href="/wiki" style="display: block; padding: 0.6em 1em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.85em; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(255, 145, 77, 0.1)'; this.style.color='#ff914d'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#f5f7fa'">Wiki</a>
+            <a href="/workflow.html" style="display: block; padding: 0.6em 1em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.85em; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(255, 145, 77, 0.1)'; this.style.color='#ff914d'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#f5f7fa'">Workflow</a>
+            <a href="/command-center/about.html" style="display: block; padding: 0.6em 1em; color: #f5f7fa; text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.85em; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(255, 145, 77, 0.1)'; this.style.color='#ff914d'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#f5f7fa'">About</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Layout -->
+<div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display: flex; align-items: flex-end; gap: 1.5em; max-width: calc(100vw - 5em); box-sizing: border-box;">
+    <div style="flex: 1;">
+        <div style="text-align: left; margin-bottom: 1em;">
+            <h1 style="font-size: 3.2em; font-weight: 900; color: #fff; margin: 0 0 0.3em 0; letter-spacing: -0.03em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">Workflow.</h1>
+            <div style="color: #6bb6ff; font-weight: 700; font-size: 1.4em; margin: 0;">Live Trading Behavior.</div>
+        </div>
+        
+        <div style="background: linear-gradient(180deg, rgba(16, 22, 36, 0.95) 0%, rgba(24, 31, 46, 0.95) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(107, 182, 255, 0.2); padding: 2.5em; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); margin-top: 0;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="max-width: 50%; text-align: center;">
+                    <img src="/assets/images/LiveTrading.png" alt="Live Trading Screenshot" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); border: 1px solid rgba(107, 182, 255, 0.3);" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for functionality -->
+<script src="/assets/js/beacon-header.js"></script>
+<script src="/assets/js/beacon-search.js"></script>
+<script src="/assets/js/beacon-info-dropdown.js"></script>
+
+<script>
+// Setup dropdown functionality matching main page
+document.addEventListener('DOMContentLoaded', function() {
+    // Search dropdown functionality
+    const searchContainer = document.querySelector('.search-container');
+    const searchIcon = searchContainer?.querySelector('.search-icon');
+    const searchDropdown = searchContainer?.querySelector('.search-dropdown');
+    
+    if (searchIcon && searchDropdown) {
+        searchIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isVisible = searchDropdown.style.opacity === '1';
+            
+            // Close info dropdown if open
+            closeAllDropdowns();
+            
+            if (!isVisible) {
+                searchDropdown.style.opacity = '1';
+                searchDropdown.style.visibility = 'visible';
+                searchDropdown.style.transform = 'translateY(0)';
+                
+                // Focus on search input
+                const searchInput = searchDropdown.querySelector('.search-input');
+                if (searchInput) {
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        });
+    }
+    
+    // Info dropdown functionality
+    const infoContainer = document.querySelector('.info-container');
+    const infoIcon = infoContainer?.querySelector('.info-icon');
+    const infoDropdown = infoContainer?.querySelector('.info-dropdown');
+    
+    if (infoIcon && infoDropdown) {
+        infoIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isVisible = infoDropdown.style.opacity === '1';
+            
+            // Close search dropdown if open
+            closeAllDropdowns();
+            
+            if (!isVisible) {
+                infoDropdown.style.opacity = '1';
+                infoDropdown.style.visibility = 'visible';
+                infoDropdown.style.transform = 'translateY(0)';
+            }
+        });
+    }
+    
+    // Close all dropdowns function
+    function closeAllDropdowns() {
+        if (searchDropdown) {
+            searchDropdown.style.opacity = '0';
+            searchDropdown.style.visibility = 'hidden';
+            searchDropdown.style.transform = 'translateY(-10px)';
+        }
+        if (infoDropdown) {
+            infoDropdown.style.opacity = '0';
+            infoDropdown.style.visibility = 'hidden';
+            infoDropdown.style.transform = 'translateY(-10px)';
+        }
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container') && !e.target.closest('.info-container')) {
+            closeAllDropdowns();
+        }
+    });
+    
+    // Close dropdowns on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
+        }
+    });
+});
+</script>
+
+</body>
+</html>

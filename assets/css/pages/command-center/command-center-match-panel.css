@@ -1,0 +1,94 @@
+/* Match Panel Styles */
+.match-panel {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-left: 24px;
+    transform: translateY(-50%) translateX(-20px);
+    width: 400px !important;
+    height: 300px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+    padding: 1.5em;
+    color: #fff;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    z-index: 9998;
+    opacity: 0;
+    filter: blur(0px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.sidebar-icon:not(:hover) .match-panel {
+    opacity: 0;
+    transform: translateX(100px);
+    filter: blur(10px);
+    transition: all 0.7s ease-in;
+}
+
+.match-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+.match-panel::after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    border-radius: 4px;
+    filter: blur(1px);
+    z-index: 1;
+}
+
+.sidebar-icon:hover .match-panel, .match-panel:hover {
+    transform: translateY(-50%) translateX(0);
+    opacity: 0.85;
+    pointer-events: auto;
+    transition-delay: 0.3s;
+}
+
+/* Invisible bridge for easier mouse navigation */
+.sidebar-icon:hover .match-panel:before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: -20px;
+    bottom: -20px;
+    width: 44px;
+    background: transparent;
+    z-index: 9997;
+    pointer-events: auto;
+}
+
+.sidebar-icon:not(:hover) .match-panel {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-20px);
+    filter: blur(10px);
+    transition: all 0.8s ease-in;
+    transition-delay: 0.2s;
+    pointer-events: none;
+}
+
+.sidebar-icon:not(:hover) .match-panel:not(:hover) {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-20px);
+    filter: blur(10px);
+    transition: all 0.3s ease-in;
+    transition-delay: 0.1s;
+}

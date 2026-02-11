@@ -1,800 +1,444 @@
-
 <!DOCTYPE html>
 <html lang="en">
-   <style>
-        .vertical-step-sidebar {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            background: var(--panel-bg, rgba(255,255,255,0.05));
-            border-radius: 18px;
-            padding: 0;
-            margin-right: 2.2em;
-            box-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
-            border: 2px solid var(--beacon-panel-border, #6bb6ff);
-            min-width: 80px;
-            align-self: stretch;
-            height: auto;
-            z-index: 2;
-            flex: 0 0 auto;
-            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
-        }
-        .vertical-step-sidebar:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-7px) scale(1.045);
-            box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-            border-color: #6bb6ff;
-        }
-        .sidebar-step {
-            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
-        }
-        .sidebar-step:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-3px) scale(1.08);
-            box-shadow: 0 4px 16px 0 rgba(80,120,200,0.13), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-            border-radius: 12px;
-        }
-        .sidebar-steps {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 48px;
-            height: 100%;
-            justify-content: space-between;
-            flex: 1 1 auto;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-        }
-        .sidebar-step {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            margin: 0;
-            z-index: 2;
-            box-shadow: none !important;
-            flex-shrink: 0;
-            padding: 0;
-            min-width: 0;
-            min-height: 0;
-        }
-        .sidebar-icon {
-            width: 60px;
-            height: 60px;
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
-            background: none !important;
-            border-radius: 0 !important;
-        }
-        .sidebar-step svg {
-            background: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-        }
-        .sidebar-line {
-            width: 3px;
-            flex: 1 1 auto;
-            background: #6bb6ff;
-            margin: 0 auto;
-            border-radius: 2px;
-            z-index: 1;
-            min-height: 32px;
-            max-height: 100px;
-        }
-        @media (max-width: 900px) {
-            .vertical-step-sidebar {
-                display: none;
-            }
-        }
-    </style>
-    <head>
-
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Command Center.</title>
-        <link rel="stylesheet" href="/assets/css/modules/variables.css">
-        <link rel="stylesheet" href="/assets/css/modules/reset.css">
-        <link rel="stylesheet" href="/assets/css/modules/header-nav.css">
-        <style>
-            .beacon-long-expander-panel.center-top-panel {
-                border-bottom: none !important;
-                border-bottom-left-radius: 0 !important;
-                border-bottom-right-radius: 0 !important;
-            }
-    .beacon-long-expander-panel.center-bottom-panel {
-        border-top: none !important;
-        border-top-left-radius: 0 !important;
-        border-top-right-radius: 0 !important;
-    }
-    .beacon-long-expander-panel.center-bottom-panel::before {
-        content: "";
-        display: block;
-        height: 2px;
-        background: linear-gradient(90deg, rgba(107,182,255,0.13) 0%, rgba(107,182,255,0.22) 50%, rgba(107,182,255,0.13) 100%);
-        margin-top: -2px;
-        margin-bottom: 0.5em;
-        border-radius: 1px;
-    }
-    .expander-arrow, .expander-label {
-        vertical-align: middle;
-    }
-    .expander-arrow {
-        margin-top: 2px;
-    }
-    :root {
-        --beacon-blue: #6bb6ff;
-        --beacon-blue-muted: #3a6fa1;
-        --panel-bg: transparent;
-        --panel-hover-bg: #0a1a2f;
-        --panel-radius: 18px;
-        --panel-border: 2px solid var(--beacon-blue-muted);
-        --panel-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
-        --panel-padding: 1.2em 1.2em 1.2em 1.2em;
-        --panel-title-color: var(--beacon-blue);
-        --panel-arrow-color: var(--beacon-blue-muted);
-        --panel-text-color: #c3c8d1;
-        --dot-color: #6bb6ff80;
-    } 
-    html {
-        box-sizing: border-box;
-    }
-    *, *:before, *:after {
-        box-sizing: inherit;
-    }
-    .beacon-panel, .beacon-long-expander-panel, .beacon-code-panel {
-        background: var(--panel-bg);
-        border: var(--panel-border);
-        border-radius: var(--panel-radius);
-        box-shadow: var(--panel-shadow);
-        padding: var(--panel-padding);
-        color: var(--panel-text-color);
-        transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        position: relative;
-    }
-    .beacon-small-text-panel {
-        background: var(--panel-bg);
-        border: var(--panel-border);
-        border-radius: var(--panel-radius);
-        box-shadow: var(--panel-shadow);
-        padding: 0.6em 0.6em 0 0.6em;
-        color: var(--panel-text-color);
-        transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        position: relative;
-        justify-content: flex-start;
-    }
-        .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover {
-            background: var(--panel-hover-bg);
-        }
-        .beacon-panel:hover, .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover, .beacon-code-panel:hover {
-            background: var(--panel-hover-bg, #0a1a2f);
-            transform: translateY(-7px) scale(1.045);
-            box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-        } 
-        .section-title {
-            color: var(--panel-title-color);
-            font-weight: 700;
-            margin-bottom: 0.3em;
-            text-align: left;
-            font-size: 1.08em;
-        }
-        .arrow {
-            color: var(--panel-arrow-color);
-            font-weight: 500;
-            margin-right: 0.7em;
-            font-size: 1.1em;
-        }
-        .arrow-list li {
-            color: var(--panel-text-color);
-            font-size: 1em;
-            margin-bottom: 0.12em;
-            display: flex;
-            align-items: center;
-        }
-        .beacon-panel .arrow,
-        .beacon-panel .arrow-list li,
-        .beacon-panel .arrow-list li span,
-        .beacon-panel .section-title,
-        .beacon-panel,
-        .beacon-panel * {
-            text-decoration: none !important;
-            -webkit-text-decoration: none !important;
-        }
-        .beacon-small-text-panel .arrow,
-        .beacon-small-text-panel .arrow-list li,
-        .beacon-small-text-panel .arrow-list li span,
-        .beacon-small-text-panel .section-title,
-        .beacon-small-text-panel,
-        .beacon-small-text-panel * {
-            text-decoration: none !important;
-            -webkit-text-decoration: none !important;
-        }
-        .beacon-panel.panel-link,
-        .beacon-panel.panel-link:visited,
-        .beacon-panel.panel-link:hover,
-        .beacon-panel.panel-link:active,
-        .beacon-small-text-panel.panel-link,
-        .beacon-small-text-panel.panel-link:visited,
-        .beacon-small-text-panel.panel-link:hover,
-        .beacon-small-text-panel.panel-link:active {
-            text-decoration: none !important;
-        }
-        .section-title {
-            color: var(--panel-title-color);
-            font-weight: 700;
-            margin-bottom: 0.1em;
-            text-align: left;
-            font-size: 1.08em;
-        }
-        .custom-blue-line {
-            height: 2px;
-            background: var(--panel-arrow-color);
-            border-radius: 1px;
-            margin-left: 1em;
-            margin-bottom: 1em;
-            width: calc(100% - 1em);
-        }
-        .beacon-long-expander-panel .custom-blue-line {
-            width: calc(100% - 1em);
-            margin-left: 1em;
-            margin-right: 0;
-        }
-        .arrow {
-            color: var(--panel-arrow-color);
-            font-weight: 500;
-            margin-right: 0.7em;
-            font-size: 1.1em;
-            text-decoration: none !important;
-            text-decoration: none !important;
-        }
-        .arrow-list li {
-            color: var(--panel-text-color);
-            font-size: 1em;
-            margin-bottom: 0.12em;
-            display: flex;
-            align-items: center;
-            text-decoration: none !important;
-        }           
-        </style>
-                <style>
-                details.expander > summary {
-                    list-style: none;
-                }
-                details.expander > summary::-webkit-details-marker {
-                    display: none;
-                }
-                </style>
-        <style>
-        html, body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #0a0a15;
-            color: #fff;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            position: relative;
-            overflow: hidden !important;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
-                linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%);
-            z-index: 1;
-            pointer-events: none;
-            animation: lightShift 12s ease-in-out infinite;
-        }
-        @keyframes lightShift {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        body::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: 
-            radial-gradient(1px 1px at 20% 30%, rgba(107, 182, 255, 0.3), transparent),
-            radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2), transparent),
-            radial-gradient(1px 1px at 90% 40%, rgba(107, 182, 255, 0.2), transparent),
-            radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.1), transparent);
-            background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
-            z-index: 1;
-            pointer-events: none;
-            animation: particleDrift 20s linear infinite;
-        }
-        @keyframes particleDrift {
-            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-            100% { background-position: 100% 100%, -100% 100%, 100% -100%, -100% -100%; }
-        }
-        .command-center-puzzle-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 0.7fr 0.7fr;
-            gap: 32px;
-            width: 100%;
-            margin: 0 auto;
-            align-items: flex-start;
-        }
-        .beacon-panel, .beacon-small-text-panel, .beacon-long-expander-panel, .beacon-code-panel {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid #6bb6ff;
-            border-radius: 18px;
-            box-shadow: 0 2px 12px 0 rgba(0,170,255,0.07);
-            padding: 1.2em 1.2em 1.2em 1.2em;
-            color: #c3c8d1;
-            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            position: relative;
-        }
-        .beacon-small-text-panel:hover, .beacon-long-expander-panel:hover, .beacon-panel:hover, .beacon-code-panel:hover {
-            background: #0a1a2f;
-            transform: translateY(-7px) scale(1.045);
-            box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-        }
-        .section-title {
-            color: #6bb6ff;
-            font-weight: 700;
-            margin-bottom: 0.3em;
-            text-align: left;
-            font-size: 1.08em;
-        }
-        .arrow {
-            color: #3a6fa1;
-            font-weight: 500;
-            margin-right: 0.7em;
-            font-size: 1.1em;
-        }
-        .arrow-list li {
-            color: #c3c8d1;
-            font-size: 1em;
-            margin-bottom: 0.12em;
-            display: flex;
-            align-items: center;
-        }
-        .custom-blue-line {
-            height: 2px;
-            background: #3a6fa1;
-            border-radius: 1px;
-            margin-left: 1em;
-            margin-bottom: 1em;
-            width: calc(100% - 1em);
-        }
-        .beacon-long-expander-panel .custom-blue-line {
-            width: calc(100% - 1em);
-            margin-left: 1em;
-            margin-right: 0;
-        }
-        /* Ensure panel links are block-level and flex */
-        .beacon-panel.panel-link,
-        .beacon-small-text-panel.panel-link,
-        .beacon-long-expander-panel.panel-link,
-        .beacon-code-panel.panel-link {
-            display: flex;
-            flex-direction: column;
-            text-decoration: none !important;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-        }
-    </style>
+    <title>Beacon</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    
+    <!-- Reusable Components -->
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+    
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">    
+</head>
+<body>
 
+<div style="display:flex;align-items:flex-start;gap:3em;margin-left:2.5em;margin-right:2.5em;">
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 6em;">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left;">
+                    <span>Beacon.</span>
+                </h1>
+                <div class="main-desc" style="text-align:left;">
+                    Beacon is your guide to creating winning HFT strategies.<br><br>
 
-    <!-- Duplicate meta, title, and link tags removed. Only one <head> and <body> should exist. -->
-    <!-- All relevant styles and meta tags are already present above. -->
-    <!-- The <body> tag is already present below. -->
-
-    <header class="beacon-page-header" style="background: linear-gradient(180deg, #11121a 80%, rgba(10,10,21,0.98) 100%); margin-bottom: 1.5em; position: relative; z-index: 10;">
-        <nav class="beacon-page-nav" style="align-items: center; display: flex; height: 56px;">
-            <div style="display: flex; align-items: flex-end;">
-                <span style="font-size: 2.1rem; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1;">Beacon.</span>
-                <span class="beacon-brand-separator" style="color: rgba(255,255,255,0.6); font-size: 1.5rem; margin: 0 4px 0 10px; line-height: 1.1;">|</span>
-                <span class="beacon-page-title" style="font-size: 1.25rem; font-weight: 700; color: var(--beacon-blue, #6bb6ff); letter-spacing: -0.5px; align-self: flex-end; line-height: 1.1;">Command Center.</span>
-            </div>
-            <div style="flex: 1 1 0%;"></div>
-            <div class="beacon-nav-actions" style="align-items: flex-end; display: flex;">
-                <input type="text" class="beacon-nav-search" placeholder="Search.." style="padding:8px 14px;border-radius:7px;border:none;outline:none;min-width:170px;background:transparent;color:#fff;font-size:1.08em;height:38px;box-sizing:border-box;align-self:flex-end;">
-                    <!-- Search results container required by search.js -->
-                    <div id="search-results" class="search-results"></div>
-                <a href="/" class="beacon-nav-back" style="display: flex; align-items: center; margin-left: 16px; text-decoration: none; color: var(--beacon-blue, #6bb6ff); font-weight: 600; font-size: 1.08em; background: none; border: none; cursor: pointer; padding: 0; transition: color 0.18s;">
-                    <span class="beacon-nav-back-arrow arrow" style="font-size: 1.35em; font-weight: 900; margin-right: 6px; display: flex; align-items: center; height: 2.7rem; line-height: 2.7rem; vertical-align: middle; transition: color 0.18s;">←</span>
-                    Home
-                </a>
-            </div>
-        </nav>
-    </header>
-
-    <div style="padding-top: 3.2em;">
-        <h1 style="text-align: center; color: #fff; font-size: 2.2em; font-weight: 800; margin-top: -1.1em; margin-bottom: 0.1em; letter-spacing: -0.03em;">Command Center.</h1>
-        <p style="text-align: center; color: #fff; font-size: 1.15em; font-weight: 400; margin-top: 0.1em; margin-bottom: 0.1em;">Create an HFT marketplace. Get started with Beacon.</p>
-        <div style="display: flex; justify-content: center; align-items: flex-start; width: 100%; margin-top: 2.2em;">
-            <!-- Vertical Sidebar Navigation -->
-            <nav class="vertical-step-sidebar">
-                <div class="sidebar-steps">
-                    <div class="sidebar-step beacon-tooltip-wrapper">
-                        <a href="/command-center/overview/datasets-explained.html">
-                            <img src="/assets/images/icons/dataset.svg" alt="Author" class="sidebar-icon" />
-                        </a>
-                        <span class="beacon-tooltip">
-                            Create market data.<br>
-                            Store in datasets.<br>
-                            Save and reuse.
-                        </span>
-                    </div>
-                    <div class="sidebar-line"></div>
-                    <div class="sidebar-step beacon-tooltip-wrapper">
-                        <a href="/command-center/overview/playback-explained.html">
-                            <img src="/assets/images/icons/playback.svg" alt="Pulse" class="sidebar-icon" />
-                        </a>
-                        <span class="beacon-tooltip">
-                            Stream your datasets.<br>
-                            Add latency, bursts.<br>
-                            Your strategy listens.
-                        </span>
-                    </div>
-                    <div class="sidebar-line"></div>                    
-                    <div class="sidebar-step beacon-tooltip-wrapper">
-                        <a href="/command-center/overview/strategies-explained.html">
-                            <img src="/assets/images/icons/puzzle.svg" alt="Strategy" class="sidebar-icon" />
-                        </a>
-                        <span class="beacon-tooltip">
-                            Receive market data.<br>
-                            Strategy reacts.<br>
-                            Sends orders.
-                        </span>
-                    </div>
-                    <div class="sidebar-line"></div>
-                    <div class="sidebar-step beacon-tooltip-wrapper">
-                        <a href="/command-center/overview/matching-engine-explained.html">
-                            <img src="/assets/images/icons/match.svg" alt="Match" class="sidebar-icon" />
-                        </a>
-                        <span class="beacon-tooltip">
-                            Recv strategy orders.<br>
-                            Fill or queue.<br>
-                            Broadcast to Becaon.
-                        </span>
-                    </div>
+                    The Author's simple UI lets you create the market dataset used for 
+                    bid/ask prices and liquidity.<br><br>
+                    The Pulse UI allows you to choose one of your market datasets and 
+                    "play" it to your strategy with different speeds, spike/wave patterns.<br><br>
+                    The Core container hosts your strategy which is built using the 
+                    strategy API. Examples provided. Your strategy receives prices, trades, 
+                    two-way communication, and competition.<br><br>
+                    Smart Defaults. Granular, low-level sophistication.
+                    <br><br>
+                    <span style="color:#6bb6ff;font-weight:600;">Check viability. Build. Iterate. Scale.<br><br></span>
                 </div>
-            </nav>
-            <main class="beacon-page-content">
-                <div class="command-center-container">
-                    <div>
-                        <div class="command-center-puzzle-grid" style="
-                            display: grid;
-                            grid-template-columns: 1fr 1fr 1fr;
-                            grid-template-rows: 1fr 1fr;
-                            gap: 32px;
-                            width: 100%;
-                            align-items: stretch;
-                        ">
-
-                            <div class="beacon-small-text-panel panel-link panel-animate-hover" style="grid-column: 1; grid-row: 1;">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">1</span>
-                                    <span style="margin-left:2em;">Enter, Beacon.</span>
-                                </h3>
-                                <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">
-                                    <li><span class="arrow">→</span>Your strategy. Real-time μs.</li>
-                                 </ul>
-                                <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>
-                                <ul class="arrow-list">
-                                   <li><span class="arrow">→</span>Beacon's Strategy API.</li>
-                                    <li><span class="arrow">→</span>Build ideas. Prove viability.</li>
-                                    <li><span class="arrow">→</span>Quick setup. Beacon navigates.</li>
-                                </ul>
-                            </div>
-
-                            <a href="/command-center/overview/strategy-api-explained.html" class="beacon-small-text-panel panel-link" style="grid-column: 2; grid-row: 1;">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">2</span>
-                                    <span style="margin-left:2em;">Core.</span>
-                                </h3>
-                                <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">
-                                    <li><span class="arrow">→</span>Build your strategy. Iterate.</li>
-                                    <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>                                    
-                                    <li><span class="arrow">→</span>Plug-in based architecture.</li>
-                                    <li><span class="arrow">→</span>Single, intuitive interface.</li>
-                                    <li><span class="arrow">→</span>Flexibility. Extension points.</li>
-                                </ul>
-                            </a>
-
-                            <a href="/command-center/overview/datasets-explained.html" class="beacon-small-text-panel panel-link" style="grid-column: 3; grid-row: 1;">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">3</span>
-                                    <span style="margin-left:2em;">Author.</span>
-                                </h3>
-                                <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">
-                                    <li><span class="arrow">→</span>Create. Tailor. Reuse.</li>
-                                    <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>                                    
-                                    <li><span class="arrow">→</span>Exchanges, products.</li>
-                                    <li><span class="arrow">→</span>Bids, asks, spreads, weights.</li>
-                                    <li><span class="arrow">→</span>Statistical modeling.</li>
-                                </ul>
-                            </a>
-
-                            <a href="/command-center/overview/matching-engine-explained.html" class="beacon-small-text-panel panel-link" style="grid-column: 1; grid-row: 2;">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">4</span>
-                                    <span style="margin-left:2em;">Match.</span>
-                                </h3>
-                                <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">
-                                    <li><span class="arrow">→</span>Your Data. Compete for fills.</li>
-                                    <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>                                                                        
-                                    <li><span class="arrow">→</span>Recv instant acks/rejects.</li>
-                                    <li><span class="arrow">→</span>Orders filled or queued.</li>
-                                    <li><span class="arrow">→</span>Book msgs are broadcast.</li>
-                                </ul>
-                                <div class="beacon-tooltip-wrapper" style="width:100%;display:flex;justify-content:center;align-items:center;position:relative;margin-top:0.5em;">
-                                    <span class="beacon-tooltip" style="position:absolute;left:50%;top:100%;transform:translateX(-50%) translateY(18px);margin-top:0.5em;min-width:210px;max-width:320px;z-index:10;">The Matching Engine lets you compete for fills, instantly acknowledges orders, and broadcasts all book messages for true exchange behavior.</span>
-                                </div>
-                            </a>                            
-
-                            <div class="beacon-long-expander-panel panel-link" style="grid-column: 2; grid-row: 2;">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">5</span>
-                                    <span style="margin-left:2em;">Pulse.</span>
-                                </h3>
-                                    <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">
-                                    <li><span class="arrow">→</span>Real market scenrios.</li>
-                                    <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>                                                                        
-                                    <li><span class="arrow">→</span>Native exchange specs.</li>
-                                    <li><span class="arrow">→</span>Clear process boundaries.</li>
-                                    <li><span class="arrow">→</span>Inject spikes and latency.</li>
-                                </ul>
-                            </div>
-
-                            <div class="beacon-small-text-panel panel-link" style="grid-column: 3; grid-row: 2">
-                                <h3 class="section-title" style="position:relative;display:block;text-align:right;">
-                                    <span class="beacon-badge badge-fade-in" style="position:absolute; top:-0.5em; left:-0.5em; display:inline-flex; align-items:center; justify-content:center; width:1.45em; height:1.45em; border-radius:50%; background:#101624; color:#6bb6ff; font-size:1.08em; font-weight:800; box-shadow:0 2px 8px 0 rgba(0,170,255,0.13); border:2px solid #6bb6ff; z-index:2;">6</span>
-                                    <span style="margin-left:2em;">No Internet Required.</span>
-                                </h3>
-                                    <div class="custom-blue-line"></div>
-                                <ul class="arrow-list">                                    
-                                    <li><span class="arrow">→</span>Anytime. Anywhere.</li>
-                                    <div class="panel-divider-example" style="height:1px;background:rgba(107,182,255,0.18);margin:1em 0 1.2em 0;border-radius:1px;"></div>                                    
-                                    <li><span class="arrow">→</span>Data remains on your host.</li>
-                                    <li><span class="arrow">→</span>No network teams required.</li>
-                                    <li><span class="arrow">→</span>Loopback used everywhere.</li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </main>
+            </div>
         </div>
     </div>
 
-<div>
-<style>
-.panel-animate-hover {
-  transition: box-shadow 0.3s, transform 0.3s;
-}
-.panel-animate-hover:hover {
-  box-shadow: 0 12px 36px 0 rgba(80,120,200,0.22), 0 2px 8px 0 rgba(80,120,200,0.08);
-  transform: translateY(-10px) scale(1.06);
-}
-.badge-fade-in {
-  opacity: 0;
-  animation: badgeFadeIn 0.8s ease-out forwards;
-  animation-delay: 0.2s;
-}
-@keyframes badgeFadeIn {
-  from { opacity: 0; transform: scale(0.7); }
-  to { opacity: 1; transform: scale(1); }
-}
-</style>
-<style>
-/* Tooltip styles for sidebar icon */
-.beacon-tooltip-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-/* Tooltip pops left, lighter font, fixed width, aligned */
-.beacon-tooltip {
-    visibility: hidden;
-    opacity: 0;
-    background: rgba(10,26,47,0.98);
-    color: #fff;
-    text-align: left;
-    border-radius: 18px;
-    padding: 0.45em 1.1em 0.85em 1.1em;
-    position: absolute;
-    right: 110%;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    font-size: 0.79em;
-    font-weight: 280;
-    box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-    border: 2px solid #6bb6ff;
-    transition: opacity 0.22s cubic-bezier(.22,1.12,.58,1), visibility 0.22s cubic-bezier(.22,1.12,.58,1);
-    pointer-events: none;
-    min-width: 170px;
-    max-width: 210px;
-    display: block;
-    white-space: pre-line;
-    line-height: 1.08;
-}
-.beacon-tooltip-wrapper:hover .beacon-tooltip,
-.beacon-tooltip-wrapper:focus-within .beacon-tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-/* Tooltip for Matching Engine panel (badge #4) - appears below, centered */
-.beacon-small-text-panel.panel-link .beacon-tooltip-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.beacon-small-text-panel.panel-link .beacon-tooltip {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%) translateY(18px);
-  margin-top: 0.5em;
-  min-width: 210px;
-  max-width: 320px;
-  background: rgba(10,26,47,0.98);
-  color: #fff;
-  text-align: left;
-  border-radius: 18px;
-  padding: 0.45em 1.1em 0.85em 1.1em;
-  z-index: 10;
-  font-size: 0.79em;
-  font-weight: 280;
-  box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-  border: 2px solid #6bb6ff;
-  transition: opacity 0.22s cubic-bezier(.22,1.12,.58,1), visibility 0.22s cubic-bezier(.22,1.12,.58,1);
-  pointer-events: none;
-  display: block;
-  white-space: pre-line;
-  line-height: 1.08;
-}
-.beacon-small-text-panel.panel-link .beacon-tooltip-wrapper:hover .beacon-tooltip,
-.beacon-small-text-panel.panel-link .beacon-tooltip-wrapper:focus-within .beacon-tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-.beacon-small-text-panel.panel-link .beacon-tooltip::after {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 0 10px 12px 10px;
-  border-style: solid;
-  border-color: transparent transparent rgba(10,26,47,0.98) transparent;
-  display: block;
-  width: 0;
-  height: 0;
-  z-index: 11;
-}
-</style>
-    <div id="floatingInfoMenu" class="beacon-floating-info-menu">
-        <button id="infoFab" class="info-fab" aria-label="Info">
-            <img src="/assets/images/icons/info.svg" alt="Info" style="width:56px;height:56px;display:block;" />
-        </button>
-        <div class="info-tooltip-menu" id="infoTooltipMenu">
-            <a href="/cdn-cgi/l/email-protection#3c5f5352485d5f487c5e595d5f5352545a48125f5351" class="tooltip-menu-item">Contact</a>
-            <a href="/command-center/about.html" class="tooltip-menu-item">About</a>
+    <div class="sidebar">
+        <div class="sidebar-panel" style="margin-top: 9em;">
+            <!-- Utility Section -->
+            <div class="utility-section">
+                <div class="utility-icon" style="position: relative;">
+                    <img src="/assets/images/icons/info-orange.svg" alt="Information" style="width:32px;height:32px;" />
+                    <div class="info-dropdown">
+                        <button class="dropdown-link" onclick="window.location.href='mailto:info@beaconhft.com'">Contact</button>
+                        <button class="dropdown-link" onclick="window.location.href='about.html'">About</button>
+                    </div>
+                </div>
+                <div class="utility-icon" style="position: relative;">
+                    <img src="/assets/images/icons/search-orange.svg" alt="Search" style="width:32px;height:32px;" />
+                    <div class="search-dropdown">
+                        <input type="text" class="search-input" placeholder="Type to search..." />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section Separator -->
+            <div class="section-separator"></div>
+            
+            <!-- System Section -->
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/dataset.svg" alt="Author." style="width:32px;height:32px;" />
+                <div class="author-panel">
+                    <div style="position: relative;">
+                        <button onclick="window.location.href='apps/author/index.html'" style="position: absolute; right: 0; top: 0; background: #23234a; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 0.85em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Demo.</button>
+                        <h2 class="title" style="margin:0 0 0.5em 0;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;font-size:1.8em;font-weight:900;color:#fff;">Author.</h2>
+                    </div>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Dataset Creation & Management.</h3>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Key Features</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>Add products and allocate message counts.</li>
+                            <li>Control price, qty, spread, volatility & trend.</li>
+                            <li>Native exchange message format.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/playback.svg" alt="Pulse." style="width:32px;height:32px;" />
+                <div class="pulse-panel">
+                    <div style="position: relative;">
+                        <button onclick="window.location.href='apps/pulse/index.html'" style="position: absolute; right: 0; top: 0; background: #23234a; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 0.85em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Demo.</button>
+                        <h2 style="margin:0 0 0.5em 0;font-size:1.8em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Pulse.</h2>
+                    </div>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Broadcast Datasets.</h3>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Key Features</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>Native CME, NASDAQ & NYSE.</li>
+                            <li>Simulate abnormal behavior.</li>
+                            <li>Receive trades from Match.</li>                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/puzzle.svg" alt="Core." style="width:32px;height:32px;" />
+                <div class="core-panel">
+                    <div style="position: relative;">
+                        <button onclick="window.location.href='apps/core/strategy-api.html'" style="position: absolute; right: 0; top: 0; background: #23234a; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 0.85em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Demo.</button>
+                        <h2 style="margin:0 0 0.5em 0;font-size:1.8em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Strategy API.</h2>
+                    </div>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Example Strategy Implementation</h3>
+                    
+                    <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:0.8em;margin:0.8em 0;border-left:2px solid #6bb6ff;text-align:center;">
+                        <img src="/assets/images/screenshots/strategy-api-preview.png" alt="Strategy API Interface" style="width:100%;max-width:400px;border-radius:6px;opacity:0.9;" />
+                        <p style="margin:0.5em 0 0 0;font-size:0.75em;color:rgba(255,255,255,0.7);">Strategy development interface</p>
+                    </div>
+                    
+                    <div class="code-scroll" style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8em;margin:0.8em 0;border-left:2px solid #6bb6ff;max-height:320px;overflow-y:auto;">
+                        <pre style="margin:0;font-family:'Fira Code','Courier New',monospace;font-size:0.7em;line-height:1.3;color:#f5f7fa;white-space:pre-wrap;"><code style="font-size:0.7em;">#pragma once
+
+#include &lt;beacon_strategy&gt;
+#include &lt;beacon_order&gt;
+
+// - Namespace abbreviations for readability.
+namespace bs = beacon_strategy;
+namespace bo = beacon_order;
+
+// - overrides are for template/concepts.
+// - Some pointer intialization omitted for clarity.
+
+class ExampleStrategy : public bs::StrategyBase {
+public:
+    // - Opportunity to read your own .json.
+    explicit ExampleStrategy(const nlohmann::json& config) : bs::StrategyBase(config) {}
+
+    void onMarketDataReceived(const bo::MarketMessage& msg) override {
+        /* Market Data Thread. */        
+        _reusedOrder.reset();
+
+        /* Strategy Implementation */
+        /* 
+    }
+    void onOrderConfirmed(const bo::Order& order) override {
+        /* Matching Engine Thread. */
+        _reusedOrder.status = OrderStatus.Working;
+
+        /* Strategy Implementation */
+    }
+    void onOrderFilled(const bo::OrderFill& fill) override {}
+    void onOrderRejected(const bo::OrderRequest& req) override {}
+    void onExchangeMessageReceived(const bo::ExchangeMessage& msg) override {}
+
+private:
+    // - All messaging between the strategy and matching engine.
+    // - Ownership is implementation-specific.
+    std::unique_ptr&lt;bo::OrderManager&gt; _orderManager;
+
+    // - Reused for cache locality purposes.
+    bo::Order _reusedOrder;
+};
+
+// - For static template polymorphism.
+REGISTER_ALGORITHM(ExampleStrategy);</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/match.svg" alt="Match." style="width:32px;height:32px;" />
+                <div class="match-panel">
+                    <div style="position: relative;">
+                        <button onclick="window.location.href='apps/match/index.html'" style="position: absolute; right: 0; top: 0; background: #23234a; color: white; border: none; border-radius: 6px; padding: 0.5em 1em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 0.85em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Demo.</button>
+                        <h2 style="margin:0 0 0.5em 0;font-size:1.8em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Match.</h2>
+                    </div>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">True Market Competition.</h3>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Key Features</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>Realistic latency simulation.</li>
+                            <li>Market impact modeling based on your dataset.</li>
+                            <li>Run multiple strategies at once.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <style>
-    .beacon-floating-info-menu {
-        position: fixed;
-        bottom: 56px;
-        right: 44px;
-        overflow: visible;
-        max-width: calc(100vw - 48px);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add double-click handler to Match panel
+    const matchPanel = document.querySelector('.match-panel');
+    if (matchPanel) {
+        matchPanel.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            window.location.href = 'overview/match-explained.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        matchPanel.style.cursor = 'pointer';
     }
-    .info-fab {
-        border: none;
-        background: none;
-        padding: 0;
-        border-radius: 50%;
-        box-shadow: 0 4px 16px 0 rgba(25,118,210,0.15);
-        cursor: pointer;
-        outline: none;
-        transition: box-shadow 0.22s cubic-bezier(.22,1.12,.58,1), background 0.22s cubic-bezier(.22,1.12,.58,1);
-        pointer-events: auto;
+    
+    // Add click handler to Match icon for the app
+    const matchIcon = document.querySelector('.sidebar-icon:has(img[alt="Match."])');
+    if (matchIcon) {
+        matchIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'apps/match/index.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        matchIcon.style.cursor = 'pointer';
     }
-    .info-fab:hover, .info-fab:focus-visible {
-        background: rgba(107,182,255,0.08);
-        box-shadow: 0 0 0 6px rgba(107,182,255,0.18), 0 4px 16px 0 rgba(25,118,210,0.15);
+    
+    // Add click handler to Author panel
+    const authorIcon = document.querySelector('.sidebar-icon:has(img[alt="Author."])');
+    if (authorIcon) {
+        authorIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'apps/author/index.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        authorIcon.style.cursor = 'pointer';
     }
-    .info-tooltip-menu {
-        position: absolute;
-        bottom: 80px;
-        right: 0;
-        min-width: 140px;
-        max-width: 320px;
-        background: rgba(10,26,47,0.98);
-        border-radius: 18px;
-        box-shadow: 0 8px 32px 0 rgba(80,120,200,0.18), 0 1.5px 4px 0 rgba(80,120,200,0.04);
-        border: 2px solid #6bb6ff;
-        padding: 0.7em 0.5em;
-        display: none;
-        flex-direction: column;
-        gap: 0.2em;
-        pointer-events: auto;
-        animation: fadeInMenu 0.22s cubic-bezier(.22,1.12,.58,1);
-        overflow: visible;
+    
+    // Add click handler to Pulse panel
+    const pulseIcon = document.querySelector('.sidebar-icon:has(img[alt="Pulse."])');
+    if (pulseIcon) {
+        pulseIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'apps/pulse/index.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        pulseIcon.style.cursor = 'pointer';
     }
-    .beacon-floating-info-menu.open .info-tooltip-menu {
-        display: flex;
-    }
-    @keyframes fadeInMenu {
-        from { opacity: 0; transform: translateY(10px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .tooltip-menu-item {
-        color: #fff;
-        background: none;
-        border: none;
-        border-radius: 12px;
-        padding: 0.7em 1.2em;
-        font-size: 1.08em;
-        font-weight: 500;
-        text-align: left;
-        text-decoration: none;
-        transition: background 0.18s, color 0.18s;
-        outline: none;
-        cursor: pointer;
-    }
-    .tooltip-menu-item:hover, .tooltip-menu-item:focus {
-        background: #23234a;
-        color: #6bb6ff;
-    }
-    .info-fab:focus-visible { box-shadow: 0 0 0 3px #6bb6ff55; }
-    </style>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Floating tooltip menu logic
-    (function() {
-        var fabMenu = document.getElementById('floatingInfoMenu');
-        var fabBtn = document.getElementById('infoFab');
-        if (!fabMenu || !fabBtn) return;
-        fabBtn.addEventListener('click', function(e) {
+    
+    // Add click handler to Core panel
+    const coreIcon = document.querySelector('.sidebar-icon:has(img[alt="Core."])');
+    if (coreIcon) {
+        coreIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'apps/core/strategy-api.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        coreIcon.style.cursor = 'pointer';
+    }    
+    // Info dropdown functionality
+    const infoIcon = document.querySelector('.utility-icon[style*="position: relative"]');
+    const infoDropdown = document.querySelector('.info-dropdown');
+    
+    if (infoIcon && infoDropdown) {
+        infoIcon.addEventListener('click', function(e) {
             e.stopPropagation();
-            fabMenu.classList.toggle('open');
-        });
-        document.addEventListener('click', function(e) {
-            if (!fabMenu.contains(e.target)) {
-                fabMenu.classList.remove('open');
+            const isVisible = infoDropdown.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.info-dropdown, .search-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+            
+            if (!isVisible) {
+                infoDropdown.classList.add('show');
             }
         });
-    })();
-    </script>
+    }
+    
+    // Search dropdown functionality
+    const searchIcon = document.querySelectorAll('.utility-icon[style*="position: relative"]')[1];
+    const searchDropdown = document.querySelector('.search-dropdown');
+    
+    if (searchIcon && searchDropdown) {
+        searchIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isVisible = searchDropdown.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.info-dropdown, .search-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+            
+            if (!isVisible) {
+                searchDropdown.classList.add('show');
+                // Focus search input and setup listeners
+                setTimeout(() => {
+                    const searchInput = searchDropdown.querySelector('.search-input');
+                    if (searchInput) {
+                        searchInput.focus();
+                        // Setup search listeners if not already done
+                        if (!searchInput.hasAttribute('data-listeners-attached')) {
+                            setupSearchListeners(searchInput);
+                            searchInput.setAttribute('data-listeners-attached', 'true');
+                        }
+                    }
+                }, 100);
+            }
+        });
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.info-dropdown, .search-dropdown').forEach(dropdown => {
+            dropdown.classList.remove('show');
+        });
+    });
+    
+    // Prevent dropdowns from closing when clicking inside them
+    document.querySelectorAll('.info-dropdown, .search-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+    
+    // Search functionality
+    let searchIndex = null;
+    
+    // Load search index
+    fetch('/assets/search-index.json')
+        .then(response => response.json())
+        .then(data => {
+            searchIndex = data;
+        })
+        .catch(error => {
+            console.warn('Search index not available:', error);
+        });
+    
+    // Handle search input
+    function setupSearchListeners(searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim().toLowerCase();
+            
+            if (query.length < 2) {
+                hideSearchResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        });
+        
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.search-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+        });
+    }
+    
+    // Also try to setup listeners on page load for any existing search inputs
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput && !searchInput.hasAttribute('data-listeners-attached')) {
+        setupSearchListeners(searchInput);
+        searchInput.setAttribute('data-listeners-attached', 'true');
+    }
+    
+    function performSearch(query) {
+        if (!searchIndex) return;
+        
+        const results = searchIndex.filter(item => 
+            item.title.toLowerCase().includes(query) ||
+            item.content.toLowerCase().includes(query) ||
+            item.snippet.toLowerCase().includes(query)
+        ).slice(0, 5);
+        
+        displaySearchResults(results, query);
+    }
+    
+    function displaySearchResults(results, query) {
+        const searchDropdown = document.querySelector('.search-dropdown');
+        if (!searchDropdown) return;
+        
+        // Remove existing results
+        const existingResults = searchDropdown.querySelector('.search-results');
+        if (existingResults) {
+            existingResults.remove();
+        }
+        
+        if (results.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.className = 'search-results';
+            noResults.innerHTML = `<p style="margin: 0.5em 0; color: rgba(255,255,255,0.6); font-size: 0.9em;">No results found for "${query}"</p>`;
+            searchDropdown.appendChild(noResults);
+            return;
+        }
+        
+        const resultsContainer = document.createElement('div');
+        resultsContainer.className = 'search-results';
+        resultsContainer.style.cssText = 'margin-top: 0.8em; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8em;';
+        
+        results.forEach(result => {
+            const resultItem = document.createElement('a');
+            resultItem.href = result.url.startsWith('/') ? result.url : '/' + result.url;
+            resultItem.className = 'search-result-item';
+            resultItem.style.cssText = 'display: block; padding: 0.6em 0.4em; text-decoration: none; color: #fff; border-radius: 6px; margin-bottom: 0.3em; transition: background 0.2s;';
+            
+            resultItem.innerHTML = `
+                <div style="font-weight: 600; font-size: 0.9em; margin-bottom: 0.2em; color: #6bb6ff;">${result.title}</div>
+                <div style="font-size: 0.8em; color: rgba(255,255,255,0.7); line-height: 1.3;">${result.snippet}</div>
+            `;
+            
+            resultItem.addEventListener('mouseenter', function() {
+                this.style.background = '#23234a';
+            });
+            
+            resultItem.addEventListener('mouseleave', function() {
+                this.style.background = 'transparent';
+            });
+            
+            resultsContainer.appendChild(resultItem);
+        });
+        
+        searchDropdown.appendChild(resultsContainer);
+    }
+    
+    function hideSearchResults() {
+        const existingResults = document.querySelector('.search-results');
+        if (existingResults) {
+            existingResults.remove();
+        }
+    }});
+</script>
 </body>
-</html><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e5b34c3bd1a84655a159a87c206343e7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</html>

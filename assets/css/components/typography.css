@@ -1,0 +1,99 @@
+/* Typography System */
+
+/* Hero titles */
+.title-hero {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
+    animation: beaconGlow 4s ease-in-out infinite alternate;
+}
+
+/* Large titles */
+.title-large {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 12px;
+    text-shadow: 0 0 15px rgba(107, 182, 255, 0.2);
+}
+
+/* Medium titles */
+.title-medium {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+/* Small titles */
+.title-small {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+/* Description text */
+.text-description {
+    font-size: 1.25em;
+    color: #c3c8d1;
+    max-width: 540px;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.text-description-small {
+    font-size: 1em;
+    color: #c3c8d1;
+    max-width: 480px;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+/* Body text */
+.text-body {
+    font-size: 1em;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+.text-body-secondary {
+    font-size: 0.95em;
+    color: #a3a8b1;
+    line-height: 1.5;
+}
+
+/* Highlighted text */
+.text-highlight-blue {
+    color: #6bb6ff;
+    font-weight: 600;
+}
+
+.text-highlight-orange {
+    color: #ff914d;
+    font-weight: 600;
+}
+
+.text-highlight-green {
+    color: #4dff88;
+    font-weight: 600;
+}
+
+/* Text alignment utilities */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Font family base */
+.font-inter {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}

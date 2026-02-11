@@ -1,183 +1,447 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon - Algorithm Testing</title>
+    <title>Beacon</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    
+    <!-- Reusable Components -->
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+    
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css"> 
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            /* Fonts */
+            --font-logo: 'Electrolize', sans-serif;
+            --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+            
+            /* Colors */
+            --color-orange: #ff914d;
+            --color-blue: #6bb6ff;
+            --color-white: #fff;
+            
+            /* Text Effects */
+            --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
+            --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+            --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
+            --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+            
+            /* Spacing */
+            --spacing-sm: 0.4em;
+            --spacing-md: 1.2em;
+            --spacing-lg: 1.5em;
+        }
         
+        /* Base Font Assignments */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #0a0a15;
-            color: #ffffff;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
+            font-family: var(--font-body);
         }
         
-        .nav {
-            position: absolute;
-            top: 30px;
-            right: 60px;
-            z-index: 10;
-        }
-        
-        .nav a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        
-        .nav a:hover { color: #ffffff; }
-        
-        .content {
-            position: absolute;
-            bottom: 80px;
-            left: 60px;
-            z-index: 5;
+        h1, h2, h3, .title {
+            font-family: var(--font-body);
+            color: var(--color-white);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin: 0 0 var(--spacing-sm) 0;
         }
         
         .title {
-            font-size: clamp(3rem, 8vw, 8rem);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            color: #ffffff;
-            margin-bottom: 16px;
-            text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
-            animation: beaconGlow 4s ease-in-out infinite alternate;
-            text-align: left;
+            font-size: 1.6em;
         }
         
-        @keyframes beaconGlow {
-            0% { text-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1); }
-            100% { text-shadow: 0 0 30px rgba(107, 182, 255, 0.5), 0 0 60px rgba(107, 182, 255, 0.2); }
-        }
-        
-        .subtitle {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            font-weight: 300;
-            color: #ffffff;
-            opacity: 0.8;
-            text-align: right;
-            margin-bottom: 32px;
-            animation: subtitlePulse 6s ease-in-out infinite;
-        }
-        
-        @keyframes subtitlePulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 0.95; }
-        }
-        
-        .cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            font-weight: 600;
+        /* Base Classes */
+        .logo-text {
+            font-family: var(--font-logo);
+            color: var(--color-orange);
+            text-shadow: var(--glow-orange);
+            font-weight: 700;
             transition: all 0.3s ease;
         }
         
-        .cta:hover {
-            color: #ffffff;
+        .logo-text:hover {
+            text-shadow: var(--glow-orange-hover);
+            filter: brightness(1.05);
         }
         
-        .cta:hover .arrow {
-            transform: translateX(3px);
-            text-shadow: 0 0 15px rgba(107, 182, 255, 0.8);
-        }
-        
-        .arrow {
-            color: #6bb6ff;
-            font-size: 2.2em;
-            font-weight: 800;
-            vertical-align: middle;
-            margin-left: 0.15em;
+        .explore-link {
+            font-family: var(--font-logo);
+            color: var(--color-blue);
+            text-shadow: var(--glow-blue);
             transition: all 0.3s ease;
             text-decoration: none;
         }
         
-        body::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.06) 60%, transparent 100%),
-                linear-gradient(140deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.03) 50%, transparent 75%);
-            z-index: 1;
-            pointer-events: none;
-            animation: lightShift 12s ease-in-out infinite;
+        .explore-link:hover {
+            text-shadow: var(--glow-blue-hover);
+            filter: brightness(1.05);
         }
         
-        @keyframes lightShift {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .panel-link {
+            font-family: var(--font-logo);
+            color: var(--color-blue);
+            text-shadow: var(--glow-blue);
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
         
-        body::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: 
-                radial-gradient(1px 1px at 20% 30%, rgba(107, 182, 255, 0.3), transparent),
-                radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2), transparent),
-                radial-gradient(1px 1px at 90% 40%, rgba(107, 182, 255, 0.2), transparent),
-                radial-gradient(1px 1px at 60% 90%, rgba(255, 255, 255, 0.1), transparent);
-            background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
-            z-index: 1;
-            pointer-events: none;
-            animation: particleDrift 20s linear infinite;
+        .panel-link:hover {
+            text-shadow: var(--glow-blue-hover);
+            filter: brightness(1.05);
         }
         
-        @keyframes particleDrift {
-            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-            100% { background-position: 100% 100%, -100% 100%, 100% -100%, -100% -100%; }
+        .main-explore-link {
+            font-family: var(--font-body);
+            color: var(--color-orange);
+            text-shadow: var(--glow-orange);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: right;
+            display: block;
+            font-weight: 600;
         }
         
-        @media (max-width: 768px) {
-            .content {
-                bottom: 60px;
-                left: 30px;
-                right: 30px;
-            }
-            
-            .nav {
-                top: 20px;
-                right: 30px;
-            }
+        .main-explore-link:hover {
+            text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+            filter: brightness(1.05);
         }
-        .beacon-accent {
-            color: #ffffff;
+        
+        .tagline {
+            color: var(--color-blue);
+            font-weight: 700;
+            font-size: 1.8em;
+            margin-bottom: var(--spacing-lg);
         }
-        .beacon-dot {
-            color: #ffffff;
+        
+        .panel-content h3, h3.panel-content {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--color-blue);
+            opacity: 0.95;
+            margin: 0 0 0.6em 0;
+        }
+        
+        .panel-content h4, h4.panel-content {
+            color: var(--color-blue);
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 0.5em 0;
+        }
+        
+        .info-icon {
+            font-family: var(--font-body);
+            color: var(--color-orange);
+            border: 3px solid var(--color-orange);
+        }
+        
+        /* Blue link styling */
+        a[href*="wiki"], a[href*="command-center"], a[href*="mailto"] {
+            color: var(--color-blue);
+            text-decoration: none;
+        }
+        
+        /* Panel styling */
+        .panel-box {
+            background: rgba(107, 182, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.1em;
+            margin: 1.2em 0;
+            border-left: 3px solid var(--color-blue);
+        }
+        
+        .panel-list {
+            margin: 0;
+            padding-left: 1em;
+            color: #f5f7fa;
+            line-height: 1.6;
+            font-size: 0.85em;
+            font-family: var(--font-body);
         }
     </style>
-    <link rel="stylesheet" href="/assets/css/modules/puzzle-panel.css">
 </head>
-<body>
 
-        <nav class="nav"></nav>
-        <div class="content">
-                <h1 class="title"><span class="beacon-accent">Beacon</span><span class="beacon-dot">.</span></h1>
-                <div class="subtitle">Your Guide. Your HFT Companion. <a href="/command-center/" class="arrow">→</a></div>
+<body style="overflow-x: hidden;">
+    <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+</div>
+
+<div style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); width: 100px; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;"></div>
+
+<div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em;max-width:calc(100vw - 5em);box-sizing:border-box;">
+    <div class="main-content">
+        <!-- Callout Bubbles
+        <div class="callout-bubble" style="position: absolute; top: calc(100% - 32em); right: calc(50% - 200px); background: linear-gradient(135deg, rgba(255, 145, 77, 0.15), rgba(255, 145, 77, 0.08)); border: 1px solid rgba(255, 145, 77, 0.3); border-radius: 20px; padding: 8px 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(255, 145, 77, 0.1); z-index: 10;">
+            <div style="font-family: var(--font-logo); color: var(--color-orange); font-size: 0.85em; font-weight: 600; text-shadow: var(--glow-orange);">Synthetic Tick Data</div>
         </div>
+        <div class="callout-bubble" style="position: absolute; top: calc(100% - 32em); left: calc(50% - 220px); background: linear-gradient(135deg, rgba(107, 182, 255, 0.15), rgba(107, 182, 255, 0.08)); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 20px; padding: 8px 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(107, 182, 255, 0.1); z-index: 10;">
+            <div style="font-family: var(--font-logo); color: var(--color-blue); font-size: 0.85em; font-weight: 600; text-shadow: var(--glow-blue);">No Internet</div>
+        </div>
+        -->
 
-    <script>
-        function handleDemoClick() {
-            // Try to navigate to command center if it exists
-            window.location.href = '/command-center/';
-        }
+        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Beacon.</span></h1>
+                <div class="tagline" style="text-align:left;">Wall Street speed. Airplane mode.</div>
+                <div class="main-desc" style="text-align:left; font-size: 1.05em;">
+                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence 
+                   learns the same March 15th quirks, not market behavior patterns.<br><br>
+                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays. 
+                   Your strategy learns market structure, not memorized sequences.<br><br>
+                   The conditions that break strategies aren't in textbooks—they're in the millisecond when 
+                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br>
+                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore the Beacon ecosystem →</span><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-panel" id="sidebar-panel" style="margin-top: 0; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-start; border: 1px solid var(--color-blue); border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03); width: 56px; transition: all 0.3s ease; position: relative;">
+            <div class="info-container sidebar-icon" style="position: relative; display: flex; align-items: center; justify-content: center; margin: 0.4em 0;">
+                <div style="width: 36px; height: 36px; border: 2px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;">
+                    <div class="info-icon" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9em; font-weight: 700; cursor: pointer; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); box-shadow: 0 0 12px rgba(255, 145, 77, 0.2); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 145, 77, 0.4), 0 0 30px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 15px rgba(255, 145, 77, 0.8)'; this.style.transform='scale(1.05)'" onmouseout="this.style.boxShadow='0 0 12px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 8px rgba(255, 145, 77, 0.4)'; this.style.transform='scale(1)'">i</div>
+                </div>
+                <div class="info-emergency-panel" style="position: absolute; top: 50%; left: 100%; margin-left: 24px; transform: translateY(-50%) translateX(-20px); width: 400px; height: 320px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); border-radius: 22px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10); padding: 1.5em; color: #fff; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; z-index: 9998; opacity: 0; pointer-events: none; box-sizing: border-box; overflow: hidden; transition: all 0.3s ease-in; transition-delay: 0.1s;">
+                    <div style="position: relative;">
+                        <h2 class="title">About Beacon.</h2>
+                    </div>
+                    <h3 class="panel-content">Navigation & Contact.</h3>
+                    <div class="panel-box">
+                        <h4 class="panel-content">Quick Links</h4>
+                        <ul class="panel-list">
+                            <li><a href="mailto:info@beaconhft.com">Contact</a></li>
+                            <li><a href="/wiki">Wiki & Documentation</a></li>
+                            <li><a href="/command-center/about.html">About</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.5em auto 1em auto; border-radius: 0.5px;"></div>
+            <div class="apps-container" style="display: flex; flex-direction: column; gap: 0.8em; flex-grow: 1; justify-content: space-evenly; transition: all 0.3s ease;">
+            <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                <img src="/assets/images/icons/dataset.svg" alt="Author." style="width:36px;height:36px;" />
+                <div class="author-panel" style="position: absolute; top: 50%; left: 100%; margin-left: 24px; transform: translateX(-20px) translateY(-50%); width: 400px !important; height: 320px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 22px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10); padding: 1.5em; color: var(--color-white); font-family: var(--font-body); z-index: 9998; opacity: 0; filter: blur(0px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow: hidden; pointer-events: none; box-sizing: border-box;">
+                    <div style="position: relative;">
+                        <a href="command-center/apps/author/index.html" class="explore-link" style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;" onmouseover="this.style.textShadow='0 0 15px rgba(107, 182, 255, 0.8), 0 0 25px rgba(107, 182, 255, 0.4), 0 0 35px rgba(107, 182, 255, 0.2)'; this.style.filter='brightness(1.2)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'" onmouseout="this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.4)'; this.style.filter='brightness(1)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'">Explore.</a>
+                        <h2 class="title">Author.</h2>
+                    </div>
+                    <h3 class="panel-content">Dataset Creation.</h3>
+                    
+                    <div class="panel-box">
+                        <h4 class="panel-content">Key Features</h4>
+                        <ul class="panel-list">
+                            <li>Configure product counts and microstructure.</li>
+                            <li>Spread dynamics and volatility regimes.</li>
+                            <li>Export in CME, NASDAQ, NYSE formats.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                <img src="/assets/images/icons/playback.svg" alt="Pulse." style="width:36px;height:36px;" />
+                <div class="pulse-panel">
+                    <div style="position: relative;">
+                        <a href="command-center/apps/pulse/index.html" class="explore-link" style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;" onmouseover="this.style.textShadow='0 0 15px rgba(107, 182, 255, 0.8), 0 0 25px rgba(107, 182, 255, 0.4), 0 0 35px rgba(107, 182, 255, 0.2)'; this.style.filter='brightness(1.2)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'" onmouseout="this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.4)'; this.style.filter='brightness(1)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'">Explore.</a>
+                        <h2 class="title">Pulse.</h2>
+                    </div>
+                    <h3 class="panel-content">Broadcast Datasets.</h3>
+                    
+                    <div class="panel-box">
+                        <h4 class="panel-content">Key Features</h4>
+                        <ul class="panel-list">
+                            <li>Multicast UDP with exchange-accurate timing.</li>
+                            <li>Inject liquidity gaps and dropped packets.</li>
+                            <li>Real-time strategy fill confirmations.</li>                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                <img src="/assets/images/icons/puzzle.svg" alt="Core." style="width:36px;height:36px;" />
+                <div class="core-panel">
+                    <div style="position: relative;">
+                        <a href="command-center/apps/core/strategy-api.html" class="explore-link" style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;" onmouseover="this.style.textShadow='0 0 15px rgba(107, 182, 255, 0.8), 0 0 25px rgba(107, 182, 255, 0.4), 0 0 35px rgba(107, 182, 255, 0.2)'; this.style.filter='brightness(1.2)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'" onmouseout="this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.4)'; this.style.filter='brightness(1)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'">Explore.</a>
+                        <h2 class="title">Core.</h2>
+                    </div>
+                    <h3 class="panel-content">3.1μs P99 Platform Latency</h3>
+                    
+                    <div class="panel-box">
+                        <h4 class="panel-content">Key Features</h4>
+                        <ul class="panel-list">
+                            <li>Strategy API to receive market data.</li>
+                            <li>Receive real-time fill confirmations.</li>
+                            <li>Optimized, thread-safe hot path.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                <img src="/assets/images/icons/match.svg" alt="Match." style="width:36px;height:36px;" />
+                <div class="match-panel">
+                    <div style="position: relative;">
+                        <a href="wiki/match.html" class="explore-link" style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;" onmouseover="this.style.textShadow='0 0 15px rgba(107, 182, 255, 0.8), 0 0 25px rgba(107, 182, 255, 0.4), 0 0 35px rgba(107, 182, 255, 0.2)'; this.style.filter='brightness(1.2)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'" onmouseout="this.style.textShadow='0 0 10px rgba(107, 182, 255, 0.4)'; this.style.filter='brightness(1)'; document.getElementById('sidebar-panel').style.border='1px solid #6bb6ff'; document.getElementById('sidebar-panel').style.boxShadow='0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03)'">Explore.</a>
+                        <h2 class="title">Match.</h2>
+                    </div>
+                    <h3 class="panel-content">True Market Competition.</h3>
+                    
+                    <div class="panel-box">
+                        <h4 class="panel-content">Key Features</h4>
+                        <ul class="panel-list">
+                            <li>Has Expeditor, configurable competition..</li>
+                            <li>Accepts multiple strategy connections.</li>
+                            <li>Delivers messaging and trades to Pulse.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="info-dropdown" id="info-panel-new" style="position: fixed; bottom: 150px; right: 50px; width: 400px; height: 320px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); border: 2px solid var(--color-blue); border-radius: 22px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10); padding: 1.5em; color: var(--color-white); font-family: var(--font-body); z-index: 999999; opacity: 1; pointer-events: auto; box-sizing: border-box;">
+    <div style="position: relative;">
+        <h2 class="title">Info.</h2>
+    </div>
+    <h3 class="panel-content">Navigation & Contact.</h3>
+    <div class="panel-box">
+        <h4 class="panel-content">Quick Links</h4>
+        <ul class="panel-list">
+            <li><a href="/wiki">Wiki & Documentation</a></li>
+            <li><a href="/command-center/about.html">About Beacon</a></li>
+            <li><a href="mailto:info@beaconhft.com?subject=Beacon%20HFT%20-%20General%20Inquiry">Contact Support</a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes sidebarPulse {
+        0% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+        50% { box-shadow: 0 0 30px rgba(255, 145, 77, 0.4), 0 0 60px rgba(255, 145, 77, 0.15); }
+        100% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+    }
+    .apps-pulse { animation: sidebarPulse 1.5s ease-in-out infinite; }
+    @keyframes connectLine {
+        from { width: 0; opacity: 0; }
+        to { width: 24px; opacity: 1; }
+    }
+    @keyframes shimmer {
+        0% { opacity: 0.4; transform: translateX(-100%); }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; transform: translateX(100%); }
+    }
+    .info-dropdown::before {
+        display: none;
+    }
+    .info-container:hover .info-dropdown::after {
+        content: '';
+        position: absolute;
+        left: -24px;
+        top: -20px;
+        bottom: -20px;
+        width: 44px;
+        background: transparent;
+        z-index: 9997;
+        pointer-events: auto;
+    }
+`;
+document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const infoContainer = document.querySelector('.info-container');
+    const infoDropdown = document.getElementById('info-panel-new');
+    const infoConnector = document.querySelector('.info-connector');
+    
+    if (infoContainer && infoDropdown) {
+            const style = document.createElement('style');
+            style.textContent = `
+                .info-container:hover .info-emergency-panel,
+                .info-emergency-panel:hover {
+                    transform: translateY(-50%) translateX(0) !important;
+                    opacity: 0.65 !important;
+                    pointer-events: auto !important;
+                    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+                    transition-delay: 0.3s;
+                }
+                .info-container:not(:hover) .info-emergency-panel:not(:hover) {
+                    opacity: 0;
+                    transform: translateY(-50%) translateX(100px);
+                    pointer-events: none;
+                transition-delay: 0.1s;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    const exploreText = document.getElementById('explore-ecosystem');
+    const appsContainer = document.querySelector('.apps-container');
+    
+    if (exploreText && appsContainer) {
+        exploreText.addEventListener('mouseenter', function() {
+            appsContainer.classList.add('apps-pulse');
+        });
         
-        console.log('✅ Updated "See it in Action" link for local environment');
-    </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e5b34c3bd1a84655a159a87c206343e7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+        exploreText.addEventListener('mouseleave', function() {
+            appsContainer.classList.remove('apps-pulse');
+        });
+    }
+    
+    const matchPanel = document.querySelector('.match-panel');
+    if (matchPanel) {
+        matchPanel.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            window.location.href = 'overview/match-explained.html';
+        });
+    }
+    
+    const matchIcon = document.querySelector('.sidebar-icon:has(img[alt="Match."])');
+    if (matchIcon) {
+        matchIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/match/index.html';
+        });
+    }
+    
+    const authorIcon = document.querySelector('.sidebar-icon:has(img[alt="Author."])');
+    if (authorIcon) {
+        authorIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/author/index.html';
+        });
+    }
+    
+    const pulseIcon = document.querySelector('.sidebar-icon:has(img[alt="Pulse."])');
+    if (pulseIcon) {
+        pulseIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/pulse/index.html';
+        });
+    }
+    
+    const coreIcon = document.querySelector('.sidebar-icon:has(img[alt="Core."])');
+    if (coreIcon) {
+        coreIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/core/strategy-api.html';
+        });
+    }
+});
+</script>
+
 </body>
 </html>

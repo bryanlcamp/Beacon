@@ -1,0 +1,23 @@
+{
+  "job_id": "sample-001",
+  "total_messages": 1000000,
+  "bucket_size": 1000,
+  "total_buckets": 1000,
+  "buckets_completed": 750,
+  "current_bucket": 751,
+  "progress_percentage": 75.0,
+  "estimated_time_remaining": "00:02:15",
+  "progress_buckets": [
+    {"bucket": 1, "messages": 1000, "avg_latency": "2.9μs", "timestamp": "2026-02-11T18:15:31"},
+    {"bucket": 2, "messages": 1000, "avg_latency": "2.8μs", "timestamp": "2026-02-11T18:15:32"},
+    {"bucket": 750, "messages": 1000, "avg_latency": "3.0μs", "timestamp": "2026-02-11T18:18:45"}
+  ],
+  "performance_stats": {
+    "avg_latency": "2.85μs",
+    "p99_latency": "3.1μs", 
+    "throughput": "142k msg/sec",
+    "memory_usage": "256MB",
+    "cpu_usage": "85%"
+  },
+  "last_updated": "2026-02-11T18:18:45"
+}

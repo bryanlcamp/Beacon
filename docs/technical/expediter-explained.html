@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon - Match</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">    
+</head>
+
+    <style>
+        .dropdown-link:hover, .dropdown-link:focus {
+            background: #23234a;
+            color: #ff914d;
+            outline: none;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        }
+        .sidebar {
+            width: 96px;
+            background: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+            position: relative;
+            z-index: 2;
+        }
+        .sidebar-panel {
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 0.5em 0 0.5em 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            position: relative;
+        }
+        .sidebar-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0.7em 0;
+            border-radius: 50%;
+            background: #181f2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: none;
+            transition: background 0.25s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+            cursor: pointer;
+        }
+        
+        .sidebar-icon::before {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 100px;
+            background: transparent;
+            pointer-events: auto;
+        }
+        
+        .sidebar-icon:hover::after {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(107, 182, 255, 0.3), transparent);
+            border-radius: 1px;
+            animation: connectLine 0.4s ease-out;
+            z-index: 9998;
+        }
+        
+        @keyframes connectLine {
+            from { width: 0; opacity: 0; }
+            to { width: 150px; opacity: 1; }
+        }
+        .sidebar-icon:hover, .sidebar-icon:focus, .sidebar-icon.sidebar-icon-hover {
+            background: #23234a;
+            box-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .sidebar-connector {
+            width: 4px;
+            flex: 1 1 auto;
+            background: linear-gradient(180deg, #6bb6ff 0%, #23234a 100%);
+            margin: 0 auto;
+            border-radius: 2px;
+            min-height: 32px;
+            max-height: 100px;
+            position: relative;
+        }
+        .popout-panel {
+            position: absolute;
+            left: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            min-width: 220px;
+            max-width: 300px;
+            background: #1e263a;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 22px;
+            box-shadow: 0 4px 24px 0 rgba(80,120,200,0.10), 0 1.5px 8px 0 rgba(80,120,200,0.06);
+            border: none;
+            padding: 1.7em 1.5em 1.7em 1.5em;
+            color: #fff;
+            z-index: 100;
+            display: none;
+            animation: fadeInPopout 0.22s cubic-bezier(.22,1.12,.58,1);
+            transition: box-shadow 0.22s, background 0.22s;
+        }
+        .popout-panel::before {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 18px;
+            height: 18px;
+            background: inherit;
+            border-radius: 4px;
+            filter: blur(1px);
+            z-index: 1;
+        }
+        .sidebar-icon:hover .popout-panel:not(.large-panel), .sidebar-icon:focus .popout-panel:not(.large-panel) {
+            display: block;
+        }
+        @keyframes fadeInPopout {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Author panel */
+        /* Author panel exit: blur, dissolve, slide right */
+        .author-panel {
+            position: fixed;
+            top: 50%;
+            left: 150px;
+            transform: translateY(-50%) translateX(-100%);
+            width: 580px;
+            height: 420px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 2em;
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            z-index: 9999;
+            opacity: 0;
+            filter: blur(0px);
+            transition: all 0.8s ease-out;
+            overflow: hidden;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+        
+        .sidebar-icon:not(:hover) .author-panel {
+            opacity: 0;
+            transform: translateY(-50%) translateX(100px);
+            filter: blur(10px);
+            transition: all 0.7s ease-in;
+        }
+        
+        .author-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .author-panel::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            border-radius: 4px;
+            filter: blur(1px);
+            z-index: 1;
+        }
+        
+        /* Invisible bridge for Author panel */
+        .sidebar-icon:hover .author-panel {
+            transform: translateY(-50%) translateX(0);
+            opacity: 0.65;
+            pointer-events: auto;
+            transition-delay: 0.5s;
+            transition-duration: 1.8s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .sidebar-icon:hover .author-panel::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            background: transparent;
+            z-index: 9998;
+        }
+        
+        /* Pulse panel */
+        .pulse-panel {
+            position: fixed;
+            top: 50%;
+            left: 150px;
+            transform: translateY(-50%) translateX(-100%);
+            width: 580px;
+            height: 420px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 2em;
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            z-index: 9999;
+            opacity: 0;
+            filter: blur(0px);
+            transition: all 0.8s ease-out;
+            overflow: hidden;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+        
+        .sidebar-icon:not(:hover) .pulse-panel {
+            opacity: 0;
+            transform: translateY(-50%) translateX(100px);
+            filter: blur(10px);
+            transition: all 0.7s ease-in;
+        }
+        
+        .pulse-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .pulse-panel::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            border-radius: 4px;
+            filter: blur(1px);
+            z-index: 1;
+        }
+        
+        .sidebar-icon:hover .pulse-panel, .pulse-panel:hover {
+            transform: translateY(-50%) translateX(0);
+            opacity: 0.65;
+            pointer-events: auto;
+            transition-delay: 0.5s;
+            transition-duration: 1.8s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Core panel */
+        .core-panel {
+            position: fixed;
+            top: 50%;
+            left: 150px;
+            transform: translateY(-50%) translateX(-100%);
+            width: 580px;
+            height: 420px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 2em;
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            z-index: 9999;
+            opacity: 0;
+            filter: blur(0px);
+            transition: all 0.8s ease-out;
+            overflow: hidden;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+        
+        .sidebar-icon:not(:hover) .core-panel {
+            opacity: 0;
+            transform: translateY(-50%) translateX(100px);
+            filter: blur(10px);
+            transition: all 0.7s ease-in;
+        }
+        
+        .core-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .core-panel::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            border-radius: 4px;
+            filter: blur(1px);
+            z-index: 1;
+        }
+        
+        .sidebar-icon:hover .core-panel, .core-panel:hover {
+            transform: translateY(-50%) translateX(0);
+            opacity: 0.65;
+            pointer-events: auto;
+            transition-delay: 0.5s;
+            transition-duration: 1.8s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Custom beacon-styled scrollbar for core panel code */
+        .core-panel .code-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .core-panel .code-scroll::-webkit-scrollbar-track {
+            background: rgba(16, 22, 36, 0.4);
+            border-radius: 4px;
+        }
+        
+        .core-panel .code-scroll::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6bb6ff 0%, #3a6fa1 100%);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .core-panel .code-scroll::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #7bc4ff 0%, #4a7fb1 100%);
+            box-shadow: 0 0 8px rgba(107, 182, 255, 0.3);
+        }
+        
+        /* Firefox scrollbar styling */
+        .core-panel .code-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #6bb6ff rgba(16, 22, 36, 0.4);
+        }
+        
+        /* Matching engine panel */
+        .match-panel {
+            position: fixed;
+            top: 50%;
+            left: 150px;
+            transform: translateY(-50%) translateX(-100%);
+            width: 580px;
+            height: 420px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 2em;
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            z-index: 9999;
+            opacity: 0;
+            filter: blur(0px);
+            transition: all 0.8s ease-out;
+            overflow: hidden;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+        
+        .sidebar-icon:not(:hover) .match-panel {
+            opacity: 0;
+            transform: translateY(-50%) translateX(100px);
+            filter: blur(10px);
+            transition: all 0.7s ease-in;
+        }
+        
+        .match-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .match-panel::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            border-radius: 4px;
+            filter: blur(1px);
+            z-index: 1;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        .sidebar-icon:hover .match-panel, .match-panel:hover {
+            transform: translateY(-50%) translateX(0);
+            opacity: 0.85;
+            pointer-events: auto;
+            transition-delay: 0.5s;
+            transition-duration: 1.8s;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .large-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.5), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        .sidebar-icon:hover .large-panel {
+            transform: translateY(-50%) translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 0;
+        }
+        .main-glass-panel {
+            text-align: left;
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 22px;
+            box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+            padding: 2em;
+            display: inline-block;
+            margin-left: 2em;
+            box-sizing: border-box;
+        }
+        .main-title {
+            font-size: 2.6em;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0.3em;
+            letter-spacing: -0.03em;
+        }
+        .main-desc {
+            font-size: 1.25em;
+            color: #c3c8d1;
+            max-width: 540px;
+            text-align: left;
+            margin-bottom: 0;
+        }
+        .title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 16px;
+            text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
+            animation: beaconGlow 4s ease-in-out infinite alternate;
+            text-align: left;
+        }
+        @keyframes beaconGlow {
+            0% { text-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1); }
+            100% { text-shadow: 0 0 30px rgba(107, 182, 255, 0.5), 0 0 60px rgba(107, 182, 255, 0.2); }
+        }
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { flex-direction: row; width: 100vw; height: auto; }
+            .main-content { align-items: center; }
+            .main-glass-panel { margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div style="display:flex;align-items:flex-start;gap:3em;margin-left:2.5em;margin-right:2.5em;">
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 10em;">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left;">
+                    <span class="beacon-accent">Match.</span>
+                </h1>
+                <div class="main-desc" style="text-align:left;">
+                    Match is your strategy's order execution exchange.
+                    <br><br>
+
+                    Match, like your strategy, listens in as Pulse is 
+                    broadcasting your dataset containing bid/ask prices. 
+                    It posts these prices as liquidity in its order book.
+                    <br><br> 
+
+                    Hence, Match will post liquidity at the same time your 
+                    strategy sees the new price. However, to actually execute on
+                    this new price, remember that when your strategy sends an order
+                    it must make an extra TCP/IP hop to get there. And by that time
+                    the liquidity could be gone.
+                    <br><br>
+
+                    Match provides you with built-in competition called Expediter. 
+                    You can configure this feature such that it crosses the market to get
+                    filled, be first in line then cancel, the market moves, and you might 
+                    stuck with an unwanted fill. etc.
+                    <br><br>
+
+                    <span style="color:#6bb6ff;font-weight:600;">Check viability. Build. Iterate. Scale.<br><br></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-panel" style="margin-top: 13em;">
+            <div class="sidebar-icon" tabindex="0" style="margin-top: 2em;">
+                <img src="/assets/images/icons/dataset.svg" alt="Author." style="width:32px;height:32px;" />
+                <div class="author-panel">
+                    <h2 style="margin:0 0 0.5em 0;font-size:2.2em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Author.</h2>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Dataset Creation & Management.</h3>
+                    <p style="margin:0 0 1.5em 0;line-height:1.6;color:#f0f3f7;font-size:1em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Create, tailor, and reuse datasets with statistical modeling, exchange simulation, and product configuration.</p>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Key Features</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>Statistical data modeling</li>
+                            <li>Exchange behavior simulation</li>
+                            <li>Custom product definitions</li>
+                            <li>Historical data integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/playback.svg" alt="Pulse." style="width:32px;height:32px;" />
+                <div class="pulse-panel">
+                    <h2 style="margin:0 0 0.5em 0;font-size:2.2em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Pulse.</h2>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Your Market Data Exchange.</h3>
+                    <p style="margin:0 0 1.5em 0;line-height:1.6;color:#f0f3f7;font-size:1em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Broadcast your dataset. Your way.</p>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Functionality:</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>CME (MBO/iLink), NASDAQ (ITCH/OUCH), NYSE (Pillar).</li>
+                            <li>Datasets are broadcast via UDP.</li>
+                            <li>All trades received via TCP/IP from Match.</li>
+                            <li>Add latency, spikes, missing packets, and disasters.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/puzzle.svg" alt="Core." style="width:32px;height:32px;" />
+                <div class="core-panel">
+                    <h2 style="margin:0 0 0.5em 0;font-size:1.8em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Strategy API.</h2>
+                    <h3 style="margin:0 0 0.5em 0;font-size:0.9em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">Example Strategy Implementation</h3>
+                    
+                    <div class="code-scroll" style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.8em;margin:0.8em 0;border-left:2px solid #6bb6ff;max-height:320px;overflow-y:auto;">
+                        <pre style="margin:0;font-family:'Fira Code','Courier New',monospace;font-size:0.7em;line-height:1.3;color:#f5f7fa;white-space:pre-wrap;"><code style="font-size:0.7em;">#pragma once
+
+#include &lt;beacon_strategy&gt;
+#include &lt;beacon_order&gt;
+
+// - Namespace abbreviations for readability.
+namespace bs = beacon_strategy;
+namespace bo = beacon_order;
+
+// - overrides are for template/concepts.
+// - Some pointer intialization omitted for clarity.
+
+class ExampleStrategy : public bs::StrategyBase {
+public:
+    // - Opportunity to read your own .json.
+    explicit ExampleStrategy(const nlohmann::json& config) : bs::StrategyBase(config) {}
+
+    void onMarketDataReceived(const bo::MarketMessage& msg) override {
+        /* Market Data Thread. */        
+        _reusedOrder.reset();
+
+        /* Strategy Implementation */
+        /* 
+    }
+    void onOrderConfirmed(const bo::Order& order) override {
+        /* Matching Engine Thread. */
+        _reusedOrder.status = OrderStatus.Working;
+
+        /* Strategy Implementation */
+    }
+    void onOrderFilled(const bo::OrderFill& fill) override {}
+    void onOrderRejected(const bo::OrderRequest& req) override {}
+    void onExchangeMessageReceived(const bo::ExchangeMessage& msg) override {}
+
+private:
+    // - All messaging between the strategy and matching engine.
+    // - Ownership is implementation-specific.
+    std::unique_ptr&lt;bo::OrderManager&gt; _orderManager;
+
+    // - Reused for cache locality purposes.
+    bo::Order _reusedOrder;
+};
+
+// - For static template polymorphism.
+REGISTER_ALGORITHM(ExampleStrategy);</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-connector"></div>
+            <div class="sidebar-icon" tabindex="0">
+                <img src="/assets/images/icons/match.svg" alt="Match." style="width:32px;height:32px;" />
+                <div class="match-panel">
+                    <h2 style="margin:0 0 0.5em 0;font-size:2.2em;font-weight:900;color:#fff;letter-spacing:-0.03em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Match.</h2>
+                    <h3 style="margin:0 0 0.8em 0;font-size:1.15em;font-weight:600;color:#6bb6ff;opacity:0.95;font-family:'Inter','Segoe UI',Arial,sans-serif;">True Market Competition</h3>
+                    <p style="margin:0 0 1.5em 0;line-height:1.6;color:#f0f3f7;font-size:1em;font-family:'Inter','Segoe UI',Arial,sans-serif;">Experience authentic trading conditions with realistic fills, partial executions, and market impact.</p>
+                    
+                    <div style="background:rgba(107, 182, 255, 0.1);border-radius:12px;padding:1.2em;margin:1.5em 0;border-left:3px solid #6bb6ff;">
+                        <h4 style="margin:0 0 0.6em 0;color:#6bb6ff;font-size:0.9em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter','Segoe UI',Arial,sans-serif;">Key Features</h4>
+                        <ul style="margin:0;padding-left:1em;color:#f5f7fa;line-height:1.8;font-size:0.95em;font-family:'Inter','Segoe UI',Arial,sans-serif;">
+                            <li>Realistic latency simulation.</li>
+                            <li>Market impact modeling based on your dataset.</li>
+                            <li>Run multiple strategies at once.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add double-click handler to Match panel
+    const matchPanel = document.querySelector('.match-panel');
+    if (matchPanel) {
+        matchPanel.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            window.location.href = 'overview/matching-engine-explained.html';
+        });
+        
+        // Add cursor pointer to indicate it's clickable
+        matchPanel.style.cursor = 'pointer';
+    }
+});
+</script>
+</body>
+</html>

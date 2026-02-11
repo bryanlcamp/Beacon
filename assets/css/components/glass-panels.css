@@ -1,0 +1,64 @@
+/* Reusable Glass Panel Components */
+
+/* Base glass panel styles */
+.glass-panel {
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+    position: relative;
+}
+
+/* Glass panel variants */
+.glass-panel-small {
+    padding: 1em;
+    border-radius: 12px;
+}
+
+.glass-panel-medium {
+    padding: 1.5em;
+    border-radius: 16px;
+}
+
+.glass-panel-large {
+    padding: 2em;
+    border-radius: 22px;
+}
+
+/* Sidebar specific glass panel */
+.glass-panel-sidebar {
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+    padding: 0.5em 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    position: relative;
+}
+
+/* Content glass panel */
+.glass-panel-content {
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
+    padding: 2em;
+    box-sizing: border-box;
+}
+
+/* Panel with shimmer effect */
+.glass-panel-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.5), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}

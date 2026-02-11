@@ -1,0 +1,86 @@
+/*!
+ * Beacon Design System - Main CSS
+ * Professional CSS Architecture following ITCSS methodology
+ * Version 1.0
+ */
+
+/* ==========================================================================
+   1. BASE LAYER - Foundation styles (lowest specificity)
+   ========================================================================== */
+
+/* Reset and normalize */
+@import 'base/reset.css';
+
+/* Design tokens and custom properties */
+@import 'base/variables.css';
+
+/* Base typography */
+@import 'components/typography.css';
+
+
+/* ==========================================================================
+   2. LAYOUT LAYER - Structural components
+   ========================================================================== */
+
+/* Navigation and header layout */
+@import 'layout/header-nav.css';
+
+/* Page backgrounds */
+@import 'common/page-gradients/navy-page-gradient.css';
+@import 'common/page-gradients/gray-page-gradient.css';
+
+
+/* ==========================================================================
+   3. COMPONENTS LAYER - Reusable UI components
+   ========================================================================== */
+
+/* Glass morphism system */
+@import 'components/glass-panels.css';
+
+/* Interactive icon system */
+@import 'components/interactive-icons.css';
+
+/* Dropdown and slideout patterns */
+@import 'components/dropdowns.css';
+
+/* Legacy panels (to be refactored) */
+@import 'components/panels.css';
+
+
+/* ==========================================================================
+   4. ANIMATIONS LAYER - Motion and transitions
+   ========================================================================== */
+
+@import 'animations/core-animations.css';
+
+
+/* ==========================================================================
+   5. UTILITIES LAYER - Helper classes (highest specificity)
+   ========================================================================== */
+
+/* Responsive utilities */
+@import 'utilities/responsive.css';
+
+/* General helper classes */
+@import 'utilities/utility.css';
+
+
+/* ==========================================================================
+   6. VENDOR LAYER - Third-party styles
+   ========================================================================== */
+
+/* Font imports */
+@import '../fonts/inter/inter-local.css';
+
+
+/* ==========================================================================
+   USAGE INSTRUCTIONS:
+   
+   1. Include this main.css file first
+   2. Then include page-specific CSS:
+      - pages/command-center/command-center-*.css
+      - pages/strategy-builder/strategy-builder-*.css
+   
+   This follows ITCSS (Inverted Triangle CSS) methodology for maintainable,
+   scalable CSS architecture.
+   ========================================================================== */

@@ -1,0 +1,161 @@
+/* Command Center Utility Components */
+
+/* Utility section styling */
+.utility-section {
+    margin-bottom: 1.2em;
+}
+
+.utility-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0.4em 0;
+    border-radius: 50%;
+    background: #181f2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: none;
+    transition: background 0.25s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+    cursor: pointer;
+}
+
+.utility-icon:hover {
+    background: #23234a;
+    box-shadow: 0 0 16px rgba(255, 145, 77, 0.3);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.section-separator {
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(193, 200, 209, 0.3), transparent);
+    margin: 1em auto;
+    border-radius: 1px;
+}
+
+/* Info dropdown styling - slide out right */
+.info-dropdown {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    min-width: 180px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgba(80,120,200,0.10), 0 1.5px 8px 0 rgba(80,120,200,0.06);
+    padding: 1em;
+    color: #fff;
+    z-index: 1101;
+    opacity: 0;
+    transform: translateX(-20px);
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(.22,1.12,.58,1);
+}
+
+.info-dropdown.show {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.info-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -9px;
+    transform: rotate(45deg);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    border-radius: 4px;
+    filter: blur(1px);
+    z-index: 1102;
+}
+
+/* Search dropdown styling - slide out right */
+.search-dropdown {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    min-width: 220px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgba(80,120,200,0.10), 0 1.5px 8px 0 rgba(80,120,200,0.06);
+    padding: 1em;
+    color: #fff;
+    z-index: 1101;
+    opacity: 0;
+    transform: translateX(-20px);
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(.22,1.12,.58,1);
+}
+
+.search-dropdown.show {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.search-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -9px;
+    transform: rotate(45deg);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    border-radius: 4px;
+    filter: blur(1px);
+    z-index: 1102;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.7em;
+    border-radius: 8px;
+    border: 1px solid rgba(107, 182, 255, 0.3);
+    background: #181f2e;
+    color: #fff;
+    font-size: 0.95em;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #6bb6ff;
+    box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.dropdown-link {
+    text-decoration: none;
+    font-weight: 600;
+    display: block;
+    padding: 0.6em 0.8em;
+    border-radius: 6px;
+    transition: background 0.15s;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.95em;
+}
+
+.dropdown-link:hover, .dropdown-link:focus {
+    background: #23234a;
+    color: #ff914d;
+    outline: none;
+}

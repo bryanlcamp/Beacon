@@ -1,49 +1,85 @@
 [
   {
-    "title": "Panel Grid Demo",
-    "url": "panel-grid-demo.html",
-    "snippet": "",
-    "content": "Panel Grid Demo Panel 1 Panel 2 Main Expander Panel Panel 3 Panel 4"
+    "title": "Beacon - Home",
+    "url": "/",
+    "snippet": "Wall Street speed. Airplane mode. Generate realistic market scenarios from the patterns you specify.",
+    "content": "beacon hft trading platform author pulse core match wall street speed airplane mode realistic market scenarios overfitting historical data strategy training market behavior patterns"
   },
   {
-    "title": "Beacon - Algorithm Testing",
-    "url": "index.html",
-    "snippet": "",
-    "content": "Beacon - Algorithm Testing Beacon . Your Guide. Your HFT Companion. →"
+    "title": "Wiki - Documentation Hub", 
+    "url": "/wiki/",
+    "snippet": "Complete guide to the Beacon HFT platform ecosystem",
+    "content": "beacon documentation wiki hub platform ecosystem author pulse core match dataset creation market data trading execution simulation"
   },
   {
-    "title": "About Me.",
-    "url": "command-center/about.html",
-    "snippet": "Create an HFT marketplace. Get started with Beacon.",
-    "content": "About Me. Beacon. | About Me. → Home About Me. Create an HFT marketplace. Get started with Beacon."
+    "title": "Author - Dataset Creation",
+    "url": "/wiki/author.html", 
+    "snippet": "Dataset creation and market simulation configuration. Generate realistic market scenarios with configurable microstructure parameters.",
+    "content": "author dataset creation market simulation configuration realistic scenarios microstructure parameters product configuration spread dynamics volatility regimes order flow patterns cme nasdaq nyse export overfitting"
   },
   {
-    "title": "Command Center.",
-    "url": "command-center/index.html",
-    "snippet": "Create an HFT marketplace. Get started with Beacon.",
-    "content": "Command Center. Beacon. | Command Center. ← Home Command Center. Create an HFT marketplace. Get started with Beacon. Create market data. Store in datasets. Save and reuse. Stream your datasets. Add latency, bursts. Your strategy listens. Receive market data. Strategy reacts. Sends orders. Recv strategy orders. Fill or queue. Broadcast to Becaon. 1 Enter, Beacon. → Your strategy. Real-time μs. → Beacon's Strategy API. → Build ideas. Prove viability. → Quick setup. Beacon navigates. 2 Strategy API. → Build your strategy. Iterate. → Plug-in based architecture. → Single, intuitive interface. → Flexibility. Extension points. 3 Market Data. → Create. Tailor. Reuse. → Exchanges, products. → Bids, asks, spreads, weights. → Statistical modeling. 4 Matching Engine. → Your Data. Compete for fills. → Recv instant acks/rejects. → Orders filled or queued. → Book msgs are broadcast. The Matching Engine lets you compete for fills, instantly acknowledges orders, and broadcasts all book messages for true exchange behavior. 5 System Architecture. → Real market scenrios. → Native exchange specs. → Clear process boundaries. → Inject spikes and latency. 6 No Internet Required. → Anytime. Anywhere. → Data remains on your host. → No network teams required. → Loopback used everywhere. Contact About"
+    "title": "Pulse - Market Data Broadcasting",
+    "url": "/wiki/pulse.html",
+    "snippet": "Real-time market data broadcasting with exchange-accurate timing. Multicast UDP delivery and strategy fill confirmations.", 
+    "content": "pulse market data broadcasting real-time exchange accurate timing multicast udp delivery strategy fill confirmations liquidity gaps momentum breaks nanosecond precision"
   },
   {
-    "title": "Beacon API Example - Professional HFT Platform",
-    "url": "command-center/apps/strategy-api.html",
-    "snippet": "Plug in your strategies into Beacon's framework.Simple API. HFT performance. Focus on what matters.",
-    "content": "Beacon API Example - Professional HFT Platform Algorithm Container. Plug in your strategies into Beacon's framework. Simple API. HFT performance. Focus on what matters. Example API Usage: #pragma once #include <beacon_algorithm> #include <beacon_order> class ExampleStrategy : public user_algorithms::BaseAlgorithm { public : explicit ExampleStrategy(const nlohmann::json& config) : BaseAlgorithm(config) {} void onMarketDataReceived(const MarketMessage& msg) override { // Your trading logic here } void onOrderConfirmed(const Order& order) override {} void onOrderFiled(const OrderFill& fill) override {} void onOrderRejected(const OrderRequest& req) override {} void onExchangeMessageReceived(const ExchangeMessage& msg) override {}\n};\n\nREGISTER_ALGORITHM(ExampleStrategy);"
+    "title": "Core - Ultra-Low Latency Platform",
+    "url": "/wiki/core.html",
+    "snippet": "Ultra-low latency trading platform with 3.1μs P99 latency. NUMA-aware allocation and zero-copy messaging architecture.",
+    "content": "core ultra low latency trading platform 3.1 microsecond p99 latency numa aware allocation zero copy messaging architecture itch ouch protocols hardware optimization"
   },
   {
-    "title": "Dataset Generator - Beacon HFT Platform",
-    "url": "command-center/apps/dataset-generator/index.html",
-    "snippet": "",
-    "content": "Dataset Generator - Beacon HFT Platform Beacon. | Dataset Generator. ← Command Center i Contact About 🎭 Demo Mode - Limited Functionality Configuration Panel Number of Messages Enter number of messages to generate Exchange Protocol NASDAQ NYSE CME Select exchange protocol for symbols Enter Trading Symbol + Load Config Save Config New Config Generate Symbol Configuration Panel"
+    "title": "Match - Execution Simulation", 
+    "url": "/wiki/match.html",
+    "snippet": "Advanced matching engine simulation with variable latency modeling and multi-strategy competition environments.",
+    "content": "match matching engine simulation variable latency modeling multi strategy competition execution venue specific impact curves shared liquidity pool market competition"
   },
   {
-    "title": "Matching Engine - Beacon HFT Platform",
-    "url": "command-center/apps/matching-engine/index.html",
-    "snippet": "A real-time FIFO matching engine. Driven by your curated dataset.",
-    "content": "Matching Engine - Beacon HFT Platform DEMO MODE Matching Engine. A real-time FIFO matching engine. Driven by your curated dataset. Instant Local Liquidity Liquidity is sourced from your dataset and broadcast locally via UDP. Both your strategy and the Matching Engine receive quotes instantly. No network team required—everything stays on your machine. Strategy Interaction Your strategy interacts with the Matching engine by submit, update and cancel order operations. You will receive an immediate ack or reject and your strategy can act accordingly. The Matching Engine notifies you immediately when you're filled, an unsolicited cancel or trading halt. Automatch Sometimes you want your strategy to compete for liquidity. Not always take it all. The Automatcher addresses this by matching orders based on their time spent in the queue. Your strategy is notified of these matches via trade messages in the quote stream. Scalability The Matching Engine has multiple extension points; so you can adapt it as your needs change. Run competing strategies simultaneously. Desired market-making behavior, or order types. Built with flexible architecture, enhancements feel natural, not forced."
+    "title": "System Overview - Platform Architecture",
+    "url": "/wiki/system-overview.html", 
+    "snippet": "Comprehensive guide showing how all Beacon components work together in the complete platform architecture.",
+    "content": "system overview platform architecture beacon components integration author pulse core match data flow pipeline deployment scenarios strategy development capacity analysis production continuity"
+  },
+  {
+    "title": "About Beacon",
+    "url": "/command-center/about.html",
+    "snippet": "Learn about the vision, technical excellence, and development philosophy behind Beacon HFT platform.",
+    "content": "About Beacon. The Vision. Technical Excellence. Development Philosophy. Contact. Beacon represents the culmination of years of experience in high-frequency trading technology. Built from the ground up to solve the real challenges of algorithmic trading development, testing, and deployment. Sub-microsecond latency capabilities and enterprise-grade reliability. Modern C++20 with concepts and consteval. DPDK for kernel bypass networking. Custom memory allocators and object pools. Real-time market data processing. High-precision timing and latency measurement. Beacon provides the foundation for serious algorithmic trading strategies that can compete at the highest levels."
+  },
+  {
+    "title": "Command Center", 
+    "url": "/command-center/index.html",
+    "snippet": "Beacon's central hub for managing your HFT trading system components - Strategy API, datasets, matching engine, and market data.",
+    "content": "Command Center. Beacon HFT Platform. Strategy API. Author datasets. Pulse market data. Match engine. Core system architecture. Build trading strategies with microsecond latency. Create and tailor datasets with statistical modeling. Stream market data with realistic exchange simulation. Experience authentic trading conditions with realistic fills and market impact. High-frequency trading development and testing platform."
+  },
+  {
+    "title": "Strategy API",
+    "url": "/command-center/apps/core/strategy-api.html",
+    "snippet": "Professional C++ API for developing high-frequency trading algorithms with sub-microsecond latency.",
+    "content": "Strategy API. C++ trading algorithm development. HFT strategies. Market data processing. Order management. Real-time trading. onMarketDataReceived. onOrderConfirmed. onOrderFilled. onOrderRejected. BaseAlgorithm. ExampleStrategy. Modern C++20. Template metaprogramming. Zero-overhead abstractions. Microsecond latency. Professional trading algorithms."
+  },
+  {
+    "title": "Matching Engine Overview", 
+    "url": "/command-center/overview/match-explained.html",
+    "snippet": "Realistic market simulation with authentic fills, partial executions, and market impact modeling.",
+    "content": "Matching Engine. Market simulation. Order matching. Trade execution. Realistic fills. Partial executions. Market impact. Latency simulation. Multiple strategies. Exchange behavior. Order book. Market data broadcast. TCP connections. UDP streaming. Real-time matching. Professional trading simulation."
+  },
+  {
+    "title": "Market Data Generator",
+    "url": "/command-center/apps/author/index.html", 
+    "snippet": "Create, customize, and reuse market datasets with statistical modeling and exchange simulation.",
+    "content": "Market Data. Datasets. Statistical modeling. Exchange simulation. Product configuration. Historical data integration. Custom datasets. Market data creation. Reusable datasets. Bids asks spreads. Market microstructure. Data generation. CME NASDAQ NYSE. Market data feeds."
+  },
+  {
+    "title": "System Requirements",
+    "url": "/command-center/overview/system-requirements.html",
+    "snippet": "Hardware and software requirements for optimal Beacon HFT platform performance.",
+    "content": "System Requirements. Hardware requirements. Software dependencies. Network configuration. Performance optimization. CPU requirements. Memory specifications. Network latency. Operating system support. Installation guide. Performance tuning. System configuration."
   },
   {
     "title": "Dataset Playback - Professional HFT Platform",
-    "url": "command-center/apps/dataset-playback/index.html",
+    "url": "command-center/apps/pulse/index.html",
     "snippet": "Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing.",
     "content": "Dataset Playback - Professional HFT Platform Beacon. | Dataset Playback. ← Command Center i Contact About Dataset Playback. Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing. How it Works: Select a dataset you’ve created or uploaded. Configure playback speed, burst, and spike controls. Stream the dataset to your strategy container. Monitor results and iterate quickly."
   },
@@ -181,25 +217,25 @@
   },
   {
     "title": "Beacon API Example - Professional HFT Platform",
-    "url": "command-center/apps/strategy-api.html",
+    "url": "command-center/apps/core/strategy-api.html",
     "snippet": "Plug in your strategies into Beacon's framework.Simple API. HFT performance. Focus on what matters.",
     "content": "Beacon API Example - Professional HFT Platform Algorithm Container. Plug in your strategies into Beacon's framework. Simple API. HFT performance. Focus on what matters. Example API Usage: #pragma once #include <beacon_algorithm> #include <beacon_order> class ExampleStrategy : public user_algorithms::BaseAlgorithm { public : explicit ExampleStrategy(const nlohmann::json& config) : BaseAlgorithm(config) {} void onMarketDataReceived(const MarketMessage& msg) override { // Your trading logic here } void onOrderConfirmed(const Order& order) override {} void onOrderFiled(const OrderFill& fill) override {} void onOrderRejected(const OrderRequest& req) override {} void onExchangeMessageReceived(const ExchangeMessage& msg) override {}\n};\n\nREGISTER_ALGORITHM(ExampleStrategy);"
   },
   {
     "title": "Dataset Generator - Beacon HFT Platform",
-    "url": "command-center/apps/dataset-generator/index.html",
+    "url": "command-center/apps/author/index.html",
     "snippet": "",
     "content": "Dataset Generator - Beacon HFT Platform Beacon. | Dataset Generator. ← Command Center i Contact About 🎭 Demo Mode - Limited Functionality Configuration Panel Number of Messages Enter number of messages to generate Exchange Protocol NASDAQ NYSE CME Select exchange protocol for symbols Enter Trading Symbol + Load Config Save Config New Config Generate Symbol Configuration Panel"
   },
   {
     "title": "Matching Engine - Beacon HFT Platform",
-    "url": "command-center/apps/matching-engine/index.html",
+    "url": "command-center/apps/match/index.html",
     "snippet": "A real-time FIFO matching engine. Driven by your curated dataset.",
     "content": "Matching Engine - Beacon HFT Platform DEMO MODE Matching Engine. A real-time FIFO matching engine. Driven by your curated dataset. Instant Local Liquidity Liquidity is sourced from your dataset and broadcast locally via UDP. Both your strategy and the Matching Engine receive quotes instantly. No network team required—everything stays on your machine. Strategy Interaction Your strategy interacts with the Matching engine by submit, update and cancel order operations. You will receive an immediate ack or reject and your strategy can act accordingly. The Matching Engine notifies you immediately when you're filled, an unsolicited cancel or trading halt. Automatch Sometimes you want your strategy to compete for liquidity. Not always take it all. The Automatcher addresses this by matching orders based on their time spent in the queue. Your strategy is notified of these matches via trade messages in the quote stream. Scalability The Matching Engine has multiple extension points; so you can adapt it as your needs change. Run competing strategies simultaneously. Desired market-making behavior, or order types. Built with flexible architecture, enhancements feel natural, not forced."
   },
   {
     "title": "Dataset Playback - Professional HFT Platform",
-    "url": "command-center/apps/dataset-playback/index.html",
+    "url": "command-center/apps/pulse/index.html",
     "snippet": "Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing.",
     "content": "Dataset Playback - Professional HFT Platform Beacon. | Dataset Playback. ← Command Center i Contact About Dataset Playback. Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing. How it Works: Select a dataset you’ve created or uploaded. Configure playback speed, burst, and spike controls. Stream the dataset to your strategy container. Monitor results and iterate quickly."
   },
@@ -427,25 +463,25 @@
   },
   {
     "title": "Beacon API Example - Professional HFT Platform",
-    "url": "command-center/apps/strategy-api.html",
+    "url": "command-center/apps/core/strategy-api.html",
     "snippet": "Plug in your strategies into Beacon's framework.Simple API. HFT performance. Focus on what matters.",
     "content": "Beacon API Example - Professional HFT Platform Algorithm Container. Plug in your strategies into Beacon's framework. Simple API. HFT performance. Focus on what matters. Example API Usage: #pragma once #include <beacon_algorithm> #include <beacon_order> class ExampleStrategy : public user_algorithms::BaseAlgorithm { public : explicit ExampleStrategy(const nlohmann::json& config) : BaseAlgorithm(config) {} void onMarketDataReceived(const MarketMessage& msg) override { // Your trading logic here } void onOrderConfirmed(const Order& order) override {} void onOrderFiled(const OrderFill& fill) override {} void onOrderRejected(const OrderRequest& req) override {} void onExchangeMessageReceived(const ExchangeMessage& msg) override {}\n};\n\nREGISTER_ALGORITHM(ExampleStrategy);"
   },
   {
     "title": "Dataset Generator - Beacon HFT Platform",
-    "url": "command-center/apps/dataset-generator/index.html",
+    "url": "command-center/apps/author/index.html",
     "snippet": "",
     "content": "Dataset Generator - Beacon HFT Platform Beacon. | Dataset Generator. ← Command Center i Contact About 🎭 Demo Mode - Limited Functionality Configuration Panel Number of Messages Enter number of messages to generate Exchange Protocol NASDAQ NYSE CME Select exchange protocol for symbols Enter Trading Symbol + Load Config Save Config New Config Generate Symbol Configuration Panel"
   },
   {
     "title": "Matching Engine - Beacon HFT Platform",
-    "url": "command-center/apps/matching-engine/index.html",
+    "url": "command-center/apps/match/index.html",
     "snippet": "A real-time FIFO matching engine. Driven by your curated dataset.",
     "content": "Matching Engine - Beacon HFT Platform DEMO MODE Matching Engine. A real-time FIFO matching engine. Driven by your curated dataset. Instant Local Liquidity Liquidity is sourced from your dataset and broadcast locally via UDP. Both your strategy and the Matching Engine receive quotes instantly. No network team required—everything stays on your machine. Strategy Interaction Your strategy interacts with the Matching engine by submit, update and cancel order operations. You will receive an immediate ack or reject and your strategy can act accordingly. The Matching Engine notifies you immediately when you're filled, an unsolicited cancel or trading halt. Automatch Sometimes you want your strategy to compete for liquidity. Not always take it all. The Automatcher addresses this by matching orders based on their time spent in the queue. Your strategy is notified of these matches via trade messages in the quote stream. Scalability The Matching Engine has multiple extension points; so you can adapt it as your needs change. Run competing strategies simultaneously. Desired market-making behavior, or order types. Built with flexible architecture, enhancements feel natural, not forced."
   },
   {
     "title": "Dataset Playback - Professional HFT Platform",
-    "url": "command-center/apps/dataset-playback/index.html",
+    "url": "command-center/apps/pulse/index.html",
     "snippet": "Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing.",
     "content": "Dataset Playback - Professional HFT Platform Beacon. | Dataset Playback. ← Command Center i Contact About Dataset Playback. Stream your datasets to your strategies. Burst, spike, and control playback speed for robust testing. How it Works: Select a dataset you’ve created or uploaded. Configure playback speed, burst, and spike controls. Stream the dataset to your strategy container. Monitor results and iterate quickly."
   },

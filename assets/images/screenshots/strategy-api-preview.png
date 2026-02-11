@@ -1,0 +1,53 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#101624;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#181f2e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="200" fill="url(#bg)" rx="8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="400" height="30" fill="rgba(107, 182, 255, 0.1)" rx="8"/>
+  <text x="15" y="20" font-family="Arial, sans-serif" font-size="12" fill="#6bb6ff">Strategy Development Interface</text>
+  
+  <!-- Code editor mockup -->
+  <rect x="15" y="45" width="370" height="120" fill="rgba(0,0,0,0.3)" rx="4"/>
+  
+  <!-- Line numbers -->
+  <text x="25" y="60" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.4)">1</text>
+  <text x="25" y="75" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.4)">2</text>
+  <text x="25" y="90" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.4)">3</text>
+  <text x="25" y="105" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.4)">4</text>
+  <text x="25" y="120" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.4)">5</text>
+  
+  <!-- Code text -->
+  <text x="45" y="60" font-family="monospace" font-size="9" fill="#ff914d">class</text>
+  <text x="75" y="60" font-family="monospace" font-size="9" fill="#ffffff">TradingStrategy {</text>
+  
+  <text x="55" y="75" font-family="monospace" font-size="9" fill="#6bb6ff">void</text>
+  <text x="85" y="75" font-family="monospace" font-size="9" fill="#ffffff">onMarketData(</text>
+  <text x="155" y="75" font-family="monospace" font-size="9" fill="#6bb6ff">const</text>
+  <text x="185" y="75" font-family="monospace" font-size="9" fill="#ffffff">Message&amp; msg);</text>
+  
+  <text x="55" y="90" font-family="monospace" font-size="9" fill="#6bb6ff">void</text>
+  <text x="85" y="90" font-family="monospace" font-size="9" fill="#ffffff">onOrderFill(</text>
+  <text x="145" y="90" font-family="monospace" font-size="9" fill="#6bb6ff">const</text>
+  <text x="175" y="90" font-family="monospace" font-size="9" fill="#ffffff">Fill&amp; fill);</text>
+  
+  <text x="55" y="105" font-family="monospace" font-size="9" fill="#888888">// Strategy implementation...</text>
+  
+  <text x="45" y="120" font-family="monospace" font-size="9" fill="#ffffff">};</text>
+  
+  <!-- Status indicators -->
+  <circle cx="25" cy="180" r="3" fill="#6bb6ff"/>
+  <text x="35" y="185" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">Connected</text>
+  
+  <circle cx="120" cy="180" r="3" fill="#00ff88"/>
+  <text x="130" y="185" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">Compiled</text>
+  
+  <circle cx="200" cy="180" r="3" fill="#ff914d"/>
+  <text x="210" y="185" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">3.5μs latency</text>
+</svg>

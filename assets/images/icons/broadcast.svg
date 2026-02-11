@@ -1,0 +1,24 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#6bb6ff" stroke-width="2.5"/>
+  <g>
+    <!-- Broadcast tower -->
+    <rect x="26" y="32" width="4" height="12" fill="#6bb6ff"/>
+    <rect x="24" y="40" width="8" height="2" fill="#6bb6ff"/>
+    
+    <!-- Radio waves -->
+    <path d="M22 28c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M18 28c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#6bb6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    
+    <!-- MPID receivers -->
+    <rect x="14" y="18" width="4" height="3" rx="1" fill="#6bb6ff"/>
+    <rect x="38" y="18" width="4" height="3" rx="1" fill="#6bb6ff"/>
+    <rect x="12" y="35" width="4" height="3" rx="1" fill="#6bb6ff"/>
+    <rect x="40" y="35" width="4" height="3" rx="1" fill="#6bb6ff"/>
+    
+    <!-- ID indicators -->
+    <circle cx="16" cy="17" r="1.5" fill="#6bb6ff"/>
+    <circle cx="40" cy="17" r="1.5" fill="#6bb6ff"/>
+    <circle cx="14" cy="39" r="1.5" fill="#6bb6ff"/>
+    <circle cx="42" cy="39" r="1.5" fill="#6bb6ff"/>
+  </g>
+</svg>

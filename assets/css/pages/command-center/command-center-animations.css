@@ -1,0 +1,16 @@
+/* Command Center Animation Keyframes */
+
+@keyframes connectLine {
+    from { width: 0; opacity: 0; }
+    to { width: 150px; opacity: 1; }
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+@keyframes beaconGlow {
+    0% { text-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1); }
+    100% { text-shadow: 0 0 30px rgba(107, 182, 255, 0.5), 0 0 60px rgba(107, 182, 255, 0.2); }
+}

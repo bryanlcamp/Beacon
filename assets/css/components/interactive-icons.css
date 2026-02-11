@@ -1,0 +1,95 @@
+/* Interactive Icon Components */
+
+/* Base icon styles */
+.icon-base {
+    border-radius: 50%;
+    background: #181f2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: none;
+    transition: background 0.25s, transform 0.22s cubic-bezier(.22,1.12,.58,1);
+    cursor: pointer;
+}
+
+/* Icon sizes */
+.icon-small {
+    width: 40px;
+    height: 40px;
+}
+
+.icon-medium {
+    width: 48px;
+    height: 48px;
+}
+
+.icon-large {
+    width: 56px;
+    height: 56px;
+}
+
+.icon-extra-large {
+    width: 64px;
+    height: 64px;
+}
+
+/* App icon hover (blue glow) */
+.icon-app:hover,
+.icon-app:focus,
+.icon-app.icon-hover {
+    background: #23234a;
+    box-shadow: 0 0 8px rgba(107, 182, 255, 0.15), 0 0 16px rgba(107, 182, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+/* Utility icon hover (orange glow) */
+.icon-utility:hover {
+    background: #23234a;
+    box-shadow: 0 0 16px rgba(255, 145, 77, 0.3);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Warning/alert icon hover (red glow) */
+.icon-warning:hover {
+    background: #23234a;
+    box-shadow: 0 0 16px rgba(255, 77, 77, 0.3);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Success icon hover (green glow) */
+.icon-success:hover {
+    background: #23234a;
+    box-shadow: 0 0 16px rgba(77, 255, 136, 0.3);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Icon with connecting line effect */
+.icon-connect::before {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 60px;
+    background: transparent;
+    pointer-events: auto;
+}
+
+.icon-connect:hover::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(107, 182, 255, 0.3), transparent);
+    border-radius: 1px;
+    animation: connectLine 0.4s ease-out;
+    z-index: 9998;
+}

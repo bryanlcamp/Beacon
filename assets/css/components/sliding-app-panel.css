@@ -1,0 +1,164 @@
+/* Sliding App Panel Component */
+
+/* Base sliding panel styles */
+.sliding-app-panel {
+    position: absolute !important;
+    top: 50% !important;
+    left: 100% !important;
+    margin-left: 24px !important;
+    transform: translateY(-50%) translateX(-20px) !important;
+    width: 350px !important;
+    height: 220px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.15), 0 0 20px rgba(107, 182, 255, 0.2);
+    padding: 1.5em;
+    color: #fff;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    z-index: 9998;
+    opacity: 0;
+    filter: blur(0px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    pointer-events: none;
+    box-sizing: border-box;
+    min-height: auto;
+    max-height: none;
+    cursor: default !important;
+}
+
+/* Panel subtitle styling with truncation and spacing */
+.sliding-app-panel h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 1.8em 0 0.8em 0 !important;
+}
+
+/* Panel shimmer effect on top border */
+.sliding-app-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Panel connector arrow */
+.sliding-app-panel::after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+    border-radius: 4px;
+    filter: blur(1px);
+    z-index: 9995;
+}
+
+/* Panel hover behavior - slide in and show */
+.sidebar-icon:hover .sliding-app-panel, 
+.sliding-app-panel:hover {
+    transform: translateY(-50%) translateX(0) !important;
+    opacity: 0.65 !important;
+    pointer-events: auto !important;
+    transition-delay: 0.3s;
+}
+
+/* Enhanced glow on hover */
+.sidebar-icon:hover .sliding-app-panel {
+    box-shadow: 0 4px 32px 0 rgba(80,120,200,0.25), 0 0 30px rgba(107, 182, 255, 0.4);
+}
+
+/* Allow bullet points to show properly */
+.sliding-app-panel ul li {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+}
+
+/* Key Features section styling */
+.sliding-app-panel .key-features-container {
+    background: rgba(107, 182, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 1.2em !important;
+    margin: 1.5em 0 !important;
+    border-left: 3px solid #6bb6ff !important;
+}
+
+/* Author panel specific margin override */
+.sliding-app-panel.author-panel .key-features-container {
+    margin: 1.8em 0 0 0 !important;
+}
+
+.sliding-app-panel .key-features-title {
+    margin: 0 0 0.6em 0 !important;
+    color: #6bb6ff !important;
+    font-size: 0.9em !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+}
+
+.sliding-app-panel .key-features-list {
+    margin: 0 !important;
+    padding-left: 1em !important;
+    color: #f5f7fa !important;
+    line-height: 1.8 !important;
+    font-size: 0.95em !important;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* Invisible bridge for easier mouse navigation */
+.sidebar-icon:hover .sliding-app-panel:before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: -20px;
+    bottom: -20px;
+    width: 44px;
+    background: transparent;
+    z-index: 9997;
+    pointer-events: auto;
+}
+
+/* Panel exit behavior - slide out and hide */
+.sidebar-icon:not(:hover) .sliding-app-panel {
+    opacity: 0 !important;
+    transform: translateY(-50%) translateX(-20px) !important;
+    filter: blur(10px);
+    transition: all 0.8s ease-in;
+    transition-delay: 0.2s;
+    pointer-events: none !important;
+}
+
+/* Additional exit state for non-hovered panels */
+.sidebar-icon:not(:hover) .sliding-app-panel:not(:hover) {
+    opacity: 0;
+    transform: translateY(-50%) translateX(100px);
+    filter: blur(10px);
+    transition: all 0.3s ease-in;
+    transition-delay: 0.1s;
+}
+
+/* Button hover effects within panels */
+.sliding-app-panel button:hover {
+    background: #23234a !important;
+    box-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1) !important;
+    transform: translateY(-1px);
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}

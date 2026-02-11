@@ -1,0 +1,15 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#6bb6ff" stroke-width="2.5"/>
+  <g>
+    <!-- Connection nodes -->
+    <circle cx="19" cy="28" r="3" fill="#6bb6ff"/>
+    <circle cx="37" cy="28" r="3" fill="#6bb6ff"/>
+    
+    <!-- Bidirectional data flow -->
+    <path d="M22 25h10l-3-3" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34 31H24l3 3" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Connection line -->
+    <line x1="22" y1="28" x2="34" y2="28" stroke="#6bb6ff" stroke-width="1.5" opacity="0.6"/>
+  </g>
+</svg>

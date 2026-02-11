@@ -1,0 +1,11 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#6bb6ff" stroke-width="2.5"/>
+  <g>
+    <!-- Antenna/receiver -->
+    <rect x="24" y="32" width="8" height="8" rx="1" fill="#6bb6ff"/>
+    <!-- Radio waves -->
+    <path d="M20 28c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M17 28c0-6.1 4.9-11 11-11s11 4.9 11 11" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M14 28c0-7.7 6.3-14 14-14s14 6.3 14 14" stroke="#6bb6ff" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+  </g>
+</svg>

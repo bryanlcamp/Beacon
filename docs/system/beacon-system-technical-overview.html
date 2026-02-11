@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon System Technical Overview - Beacon HFT Platform</title>
+    
+    <!-- Import Beacon Design System -->
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    
+    <style>
+        html, body {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: #0a0a15;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .beacon-page-header {
+            background: rgba(16, 22, 36, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1em 2em;
+            border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .beacon-page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .beacon-brand-header {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+        
+        .beacon-brand-main {
+            color: #6bb6ff;
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(107, 182, 255, 0.4);
+        }
+        
+        .beacon-brand-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .beacon-page-title {
+            color: #ffffff;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .beacon-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+        }
+        
+        .beacon-nav-back {
+            color: #6bb6ff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            transition: color 0.3s ease;
+        }
+        
+        .beacon-nav-back:hover {
+            color: #ffffff;
+        }
+        
+        .beacon-page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em;
+        }
+        
+        .doc-hero {
+            text-align: center;
+            padding: 3em 2em;
+            background: rgba(16, 22, 36, 0.5);
+            border-radius: 22px;
+            margin: 2em 0;
+            border: 1px solid rgba(107, 182, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .doc-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            margin: 0 0 0.5em 0;
+            text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
+        }
+        
+        .doc-hero p {
+            font-size: 1.2em;
+            color: #c3c8d1;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .component-section {
+            background: rgba(16, 22, 36, 0.4);
+            border-radius: 16px;
+            padding: 2em;
+            margin: 2em 0;
+            border: 1px solid rgba(107, 182, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .component-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #6bb6ff;
+            margin: 0 0 0.5em 0;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+        
+        .component-subtitle {
+            font-size: 1.2em;
+            color: #ff914d;
+            margin: 0 0 1.5em 0;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5em;
+            margin: 1.5em 0;
+        }
+        
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5em;
+            border-left: 3px solid #6bb6ff;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .feature-title {
+            color: #6bb6ff;
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 0 0 0.8em 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .feature-list {
+            color: #f5f7fa;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .feature-list li {
+            margin: 0.5em 0;
+        }
+        
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2em;
+            margin: 2em 0;
+        }
+        
+        .pros-card, .cons-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.5em;
+        }
+        
+        .pros-card {
+            border-left: 3px solid #00ff88;
+        }
+        
+        .cons-card {
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .pros-title {
+            color: #00ff88;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 0 0 1em 0;
+        }
+        
+        .cons-title {
+            color: #ff6b6b;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 0 0 1em 0;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 1.2em;
+            margin: 1em 0;
+            border-left: 3px solid #ff914d;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            color: #f5f7fa;
+            overflow-x: auto;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(107, 182, 255, 0.1), rgba(255, 145, 77, 0.1));
+            border: 1px solid rgba(107, 182, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5em;
+            margin: 2em 0;
+        }
+        
+        .highlight-title {
+            color: #6bb6ff;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin: 0 0 1em 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .perf-stat {
+            background: rgba(255, 145, 77, 0.1);
+            border: 1px solid #ff914d;
+            border-radius: 8px;
+            padding: 0.8em 1.2em;
+            display: inline-block;
+            margin: 0.5em 0.5em 0.5em 0;
+        }
+        
+        .perf-number {
+            color: #ff914d;
+            font-size: 1.5em;
+            font-weight: 900;
+            display: block;
+        }
+        
+        .perf-label {
+            color: #f5f7fa;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .architecture-flow {
+            background: rgba(107, 182, 255, 0.05);
+            border: 1px solid rgba(107, 182, 255, 0.2);
+            border-radius: 12px;
+            padding: 2em;
+            margin: 2em 0;
+        }
+        
+        .flow-step {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1em;
+            margin: 0.8em 0;
+            border-left: 3px solid #6bb6ff;
+        }
+        
+        .flow-number {
+            color: #ff914d;
+            font-weight: 900;
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .beacon-page-content {
+                padding: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="beacon-page-header">
+        <nav class="beacon-page-nav">
+            <div class="beacon-brand-header">
+                <a href="/" class="beacon-brand-main">Beacon<span style="color: #ff914d;">.</span></a>
+                <span class="beacon-brand-separator">|</span>
+                <h1 class="beacon-page-title">System Architecture</h1>
+            </div>
+            <div class="beacon-nav-actions">
+                <a href="/" class="beacon-nav-back">
+                    <span class="nav-arrow">←</span>
+                    Back to Home
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="beacon-page-content">
+        
+        <section class="doc-hero">
+            <h1>Beacon System Architecture</h1>
+            <p>Complete HFT infrastructure delivering institutional-grade performance on standard laptops. A comprehensive technical overview of all components and capabilities.</p>
+        </section>
+
+        <div class="highlight-box">
+            <div class="highlight-title">Performance Metrics</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 1em;">
+                <div class="perf-stat">
+                    <span class="perf-number">3.1μs</span>
+                    <span class="perf-label">P99 Latency</span>
+                </div>
+                <div class="perf-stat">
+                    <span class="perf-number">0</span>
+                    <span class="perf-label">Lock Operations</span>
+                </div>
+                <div class="perf-stat">
+                    <span class="perf-number">C++20</span>
+                    <span class="perf-label">Technology Stack</span>
+                </div>
+                <div class="perf-stat">
+                    <span class="perf-number">100%</span>
+                    <span class="perf-label">Laptop Deployable</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="component-section">
+            <h2 class="component-title">📊 Author</h2>
+            <div class="component-subtitle">Market Data Generation & Dataset Creation</div>
+            
+            <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Creates synthetic bid/ask price streams with configurable market behaviors. Generates realistic market data without expensive historical data licensing.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Price Control Methods</div>
+                    <ul class="feature-list">
+                        <li><strong>Percentage-based:</strong> Seed price + range multiplier + spread controls</li>
+                        <li><strong>Absolute ranges:</strong> Direct price boundaries for trending scenarios</li>
+                        <li><strong>Outlier simulation:</strong> Configurable % outside bid/ask spread</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Market Scenarios</div>
+                    <ul class="feature-list">
+                        <li>Bullish/bearish dataset creation</li>
+                        <li>Configurable volatility and spread behavior</li>
+                        <li>Sector-by-sector customization</li>
+                        <li>Native exchange message format output</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pros-cons-grid">
+                <div class="pros-card">
+                    <div class="pros-title">✓ Advantages</div>
+                    <ul class="feature-list">
+                        <li>Cost-effective vs expensive tick data licenses</li>
+                        <li>No data gaps or quality issues</li>
+                        <li>Infinite scenario flexibility</li>
+                        <li>Sector-specific behavior modeling</li>
+                    </ul>
+                </div>
+                
+                <div class="cons-card">
+                    <div class="cons-title">⚠ Limitations</div>
+                    <ul class="feature-list">
+                        <li>Price modeling is relatively simple</li>
+                        <li>Requires market dynamics knowledge</li>
+                        <li>Sophistication happens in other components</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2 class="component-title">📡 Pulse</h2>
+            <div class="component-subtitle">Network Simulation & Data Broadcasting</div>
+            
+            <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Controls data flow and simulates real-world network conditions. The chaos engineering platform that tests strategies against infrastructure disasters.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Network Reality Simulation</div>
+                    <ul class="feature-list">
+                        <li>UDP multicast for market data distribution</li>
+                        <li>Configurable latency spikes and packet ordering</li>
+                        <li>Per-product or per-dataset network control</li>
+                        <li>Exchange outage and disaster simulation</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Chaos Engineering</div>
+                    <ul class="feature-list">
+                        <li>Exchange dark periods</li>
+                        <li>Malformed/broken message injection</li>
+                        <li>Message flood stress testing</li>
+                        <li>Administrative message simulation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="architecture-flow">
+                <div style="color: #6bb6ff; font-size: 1.3em; font-weight: 700; margin-bottom: 1em;">Data Flow Architecture</div>
+                
+                <div class="flow-step">
+                    <span class="flow-number">1.</span> <strong>Pulse</strong> reads Author-generated datasets into memory
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">2.</span> <strong>UDP multicast</strong> streams data to Match and Core simultaneously
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">3.</span> <strong>Match</strong> posts liquidity immediately (timing advantage)
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">4.</span> <strong>Core</strong> processes data + sends TCP orders (realistic delay)
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">5.</span> <strong>Match</strong> executes trades and sends back to Pulse
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">6.</span> <strong>Pulse</strong> injects trades into live data stream
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2 class="component-title">⚡ Core</h2>
+            <div class="component-subtitle">Strategy Execution Engine</div>
+            
+            <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">High-performance strategy execution environment with microsecond-consistent latency. Lock-free architecture delivering institutional performance on consumer hardware.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Performance Engineering</div>
+                    <ul class="feature-list">
+                        <li><strong>Lock-free design:</strong> Zero blocking operations</li>
+                        <li><strong>Template metaprogramming:</strong> Compile-time polymorphism</li>
+                        <li><strong>Cache optimization:</strong> L1/L2 awareness throughout</li>
+                        <li><strong>Process isolation:</strong> No shared memory cheating</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Strategy Interface</div>
+                    <div class="code-block" style="font-size: 0.9em;">
+// Dead simple hotpath
+while (running) {
+    tryPop(price_queue);  // Market data
+    tryPop(order_queue);  // Order updates
+    // Your strategy logic here
+}</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Strategy API Events</div>
+                <div class="feature-list">
+                    <li><strong>onMarketDataReceived:</strong> Process incoming market data</li>
+                    <li><strong>onOrderSubmitConfirm:</strong> Order acceptance confirmation</li>
+                    <li><strong>onOrderUpdateConfirm:</strong> Order modification confirmation</li>
+                    <li><strong>onOrderFilled:</strong> Trade execution notification</li>
+                    <li><strong>onOrderRejected:</strong> Order rejection handling</li>
+                    <li><strong>onExchangeMessageReceived:</strong> Admin/disaster messages</li>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2 class="component-title">🎯 Match</h2>
+            <div class="component-subtitle">Matching Engine & Risk Management</div>
+            
+            <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Complete matching engine with realistic market competition and institutional-grade risk controls. Simulates true multi-participant trading environment.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Exchange Simulation</div>
+                    <ul class="feature-list">
+                        <li>Multi-participant TCP connections</li>
+                        <li>MPID tracking and protocol compliance</li>
+                        <li>Individual fills, confirmations, rejections</li>
+                        <li>Exchange-authentic message handling</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Expediter Component</div>
+                    <ul class="feature-list">
+                        <li><strong>In-process market maker:</strong> Ultimate latency advantage</li>
+                        <li><strong>Configurable liquidity:</strong> Control size at price levels</li>
+                        <li><strong>Market improvement:</strong> Realistic spread tightening</li>
+                        <li><strong>Competition modeling:</strong> Simulate co-location advantages</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Risk Management</div>
+                    <ul class="feature-list">
+                        <li>Real-time position limits (long/short)</li>
+                        <li>Notional exposure controls</li>
+                        <li>Order size and rate limiting</li>
+                        <li>Drawdown-based disconnection</li>
+                        <li>Cross-product portfolio limits</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Institutional Features</div>
+                    <ul class="feature-list">
+                        <li>Horizontal scaling via UDP multicast</li>
+                        <li>Multiple strategies competing for liquidity</li>
+                        <li>Real-time market impact visibility</li>
+                        <li>Exchange protocol compliance testing</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2 class="component-title">🏗️ Build System</h2>
+            <div class="component-subtitle">Structured Development Environment</div>
+            
+            <div class="code-block">
+# Technology Stack
+- C++20 for all core components
+- Python (latest) for all scripts  
+- CMake with structured build system
+
+# Build Commands
+build.py              # Builds debug/release
+build.py -T           # Builds debug/release + runs all unit tests
+
+# Hierarchical Structure
+Top level: builds all apps
+App level: individual app builds with same interface
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2 class="component-title">🚀 System-Wide Advantages</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-title">Performance Revolution</div>
+                    <ul class="feature-list">
+                        <li>Democratizes HFT infrastructure</li>
+                        <li>Wall Street performance on laptops</li>
+                        <li>Eliminates expensive co-location requirements</li>
+                        <li>Microsecond-consistent performance</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Testing Paradigm Shift</div>
+                    <ul class="feature-list">
+                        <li>Create scenarios that haven't occurred yet</li>
+                        <li>Test disaster recovery before disasters</li>
+                        <li>Stress test beyond normal conditions</li>
+                        <li>Validate strategies against future scenarios</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Development Benefits</div>
+                    <ul class="feature-list">
+                        <li>Self-contained, no network requirements</li>
+                        <li>Complete analytics and performance tracking</li>
+                        <li>Production-ready infrastructure simulation</li>
+                        <li>Cost-effective development environment</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Business Impact</div>
+                    <ul class="feature-list">
+                        <li>Fraction of historical data licensing costs</li>
+                        <li>Faster time-to-market for strategies</li>
+                        <li>Reduced infrastructure investment</li>
+                        <li>Risk validation before production deployment</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="highlight-box">
+            <div class="highlight-title">The Beacon Difference</div>
+            <p style="color: #f5f7fa; font-size: 1.1em; line-height: 1.6; margin: 0;">
+                Beacon transforms strategy development from expensive, infrastructure-heavy, historically-limited testing 
+                to cost-effective, laptop-deployable, scenario-unlimited validation. It's not just faster backtesting—it's 
+                a fundamentally better approach to building robust, battle-tested trading strategies.
+            </p>
+        </div>
+
+    </main>
+</body>
+</html>
