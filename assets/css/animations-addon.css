@@ -1,0 +1,35 @@
+/* =============================================================================
+   ESSENTIAL ANIMATIONS - Addon to Design System
+============================================================================= */
+
+@keyframes beaconGlow {
+  0% { text-shadow: 0 0 20px rgba(107, 182, 255, 0.3), 0 0 40px rgba(107, 182, 255, 0.1); }
+  100% { text-shadow: 0 0 30px rgba(107, 182, 255, 0.5), 0 0 60px rgba(107, 182, 255, 0.2); }
+}
+
+@keyframes connectLine {
+  from { width: 0; opacity: 0; }
+  to { width: 80px; opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+  50% { box-shadow: 0 0 30px rgba(255, 145, 77, 0.4), 0 0 60px rgba(255, 145, 77, 0.15); }
+  100% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+}
+
+/* Legacy animation compatibility */
+@keyframes sidebarPulse {
+  0% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+  50% { box-shadow: 0 0 30px rgba(255, 145, 77, 0.4), 0 0 60px rgba(255, 145, 77, 0.15); }
+  100% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+}
+
+.apps-pulse { 
+  animation: pulse-glow 1.5s ease-in-out infinite; 
+}

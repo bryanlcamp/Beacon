@@ -6,51 +6,51 @@
     <title>Beacon</title>
     <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
     <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
-    
+
     <!-- Reusable Components -->
     <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
     <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
     <link rel="stylesheet" href="/assets/css/components/typography.css">
     <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
     <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
-    
+
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css"> 
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
     <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
-    
+
     <style>
         :root {
             /* Fonts */
             --font-logo: 'Electrolize', sans-serif;
             --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
-            
+
             /* Colors */
             --color-orange: #ff914d;
             --color-blue: #6bb6ff;
             --color-white: #fff;
-            
+
             /* Text Effects */
             --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
             --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
             --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
             --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
-            
+
             /* Spacing */
             --spacing-sm: 0.4em;
             --spacing-md: 1.2em;
             --spacing-lg: 1.5em;
         }
-        
+
         /* Base Font Assignments */
         body {
             font-family: var(--font-body);
         }
-        
+
         h1, h2, h3, .title {
             font-family: var(--font-body);
             color: var(--color-white);
@@ -58,11 +58,11 @@
             letter-spacing: -0.03em;
             margin: 0 0 var(--spacing-sm) 0;
         }
-        
+
         .title {
             font-size: 1.6em;
         }
-        
+
         /* Base Classes */
         .logo-text {
             font-family: var(--font-logo);
@@ -71,12 +71,12 @@
             font-weight: 700;
             transition: all 0.3s ease;
         }
-        
+
         .logo-text:hover {
             text-shadow: var(--glow-orange-hover);
             filter: brightness(1.05);
         }
-        
+
         .explore-link {
             font-family: var(--font-logo);
             color: var(--color-blue);
@@ -84,12 +84,12 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-        
+
         .explore-link:hover {
             text-shadow: var(--glow-blue-hover);
             filter: brightness(1.05);
         }
-        
+
         .panel-link {
             font-family: var(--font-logo);
             color: var(--color-blue);
@@ -97,12 +97,12 @@
             transition: all 0.3s ease;
             text-decoration: none;
         }
-        
+
         .panel-link:hover {
             text-shadow: var(--glow-blue-hover);
             filter: brightness(1.05);
         }
-        
+
         .main-explore-link {
             font-family: var(--font-body);
             color: var(--color-orange);
@@ -113,19 +113,19 @@
             display: block;
             font-weight: 600;
         }
-        
+
         .main-explore-link:hover {
             text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
             filter: brightness(1.05);
         }
-        
+
         .tagline {
             color: var(--color-blue);
             font-weight: 700;
             font-size: 1.8em;
             margin-bottom: var(--spacing-lg);
         }
-        
+
         .panel-content h3, h3.panel-content {
             font-size: 1.05em;
             font-weight: 600;
@@ -133,7 +133,7 @@
             opacity: 0.95;
             margin: 0 0 0.6em 0;
         }
-        
+
         .panel-content h4, h4.panel-content {
             color: var(--color-blue);
             font-size: 0.8em;
@@ -142,28 +142,28 @@
             letter-spacing: 0.5px;
             margin: 0 0 0.5em 0;
         }
-        
+
         .info-icon {
             font-family: var(--font-body);
             color: var(--color-orange);
             border: 3px solid var(--color-orange);
         }
-        
+
         /* Blue link styling */
         a[href*="wiki"], a[href*="command-center"], a[href*="mailto"] {
             color: var(--color-blue);
             text-decoration: none;
         }
-        
+
         /* Panel styling */
         .panel-box {
             background: rgba(107, 182, 255, 0.1);
             border-radius: 12px;
             padding: 1.1em;
-            margin: 1.2em 0;
+            margin: 1.1em 0;
             border-left: 3px solid var(--color-blue);
         }
-        
+
         .panel-list {
             margin: 0;
             padding-left: 1em;
@@ -183,27 +183,18 @@
 
 <div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em;max-width:calc(100vw - 5em);box-sizing:border-box;">
     <div class="main-content">
-        <!-- Callout Bubbles
-        <div class="callout-bubble" style="position: absolute; top: calc(100% - 32em); right: calc(50% - 200px); background: linear-gradient(135deg, rgba(255, 145, 77, 0.15), rgba(255, 145, 77, 0.08)); border: 1px solid rgba(255, 145, 77, 0.3); border-radius: 20px; padding: 8px 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(255, 145, 77, 0.1); z-index: 10;">
-            <div style="font-family: var(--font-logo); color: var(--color-orange); font-size: 0.85em; font-weight: 600; text-shadow: var(--glow-orange);">Synthetic Tick Data</div>
-        </div>
-        <div class="callout-bubble" style="position: absolute; top: calc(100% - 32em); left: calc(50% - 220px); background: linear-gradient(135deg, rgba(107, 182, 255, 0.15), rgba(107, 182, 255, 0.08)); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 20px; padding: 8px 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(107, 182, 255, 0.1); z-index: 10;">
-            <div style="font-family: var(--font-logo); color: var(--color-blue); font-size: 0.85em; font-weight: 600; text-shadow: var(--glow-blue);">No Internet</div>
-        </div>
-        -->
-
         <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
             <div style="text-align:left;">
                 <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Beacon.</span></h1>
                 <div class="tagline" style="text-align:left;">Wall Street speed. Airplane mode.</div>
                 <div class="main-desc" style="text-align:left; font-size: 1.05em;">
-                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence 
+                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence
                    learns the same March 15th quirks, not market behavior patterns.<br><br>
-                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays. 
+                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays.
                    Your strategy learns market structure, not memorized sequences.<br><br>
-                   The conditions that break strategies aren't in textbooks—they're in the millisecond when 
-                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br>
-                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore the Beacon ecosystem →</span><br><br>
+                   The conditions that break strategies aren't in textbooks—they're in the millisecond when
+                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br><br>
+                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore the Beacon ecosystem →</span>
                 </div>
             </div>
         </div>
@@ -224,8 +215,8 @@
                         <h4 class="panel-content">Quick Links</h4>
                         <ul class="panel-list">
                             <li><a href="mailto:info@beaconhft.com">Contact</a></li>
-                            <li><a href="/wiki">Wiki & Documentation</a></li>
-                            <li><a href="/command-center/about.html">About</a></li>
+                            <li><a href="/wiki/">Wiki & Docs</a></li>
+                            <li><a href="/about.html">About</a></li>
                         </ul>
                     </div>
                 </div>
@@ -240,7 +231,7 @@
                         <h2 class="title">Author.</h2>
                     </div>
                     <h3 class="panel-content">Dataset Creation.</h3>
-                    
+
                     <div class="panel-box">
                         <h4 class="panel-content">Key Features</h4>
                         <ul class="panel-list">
@@ -259,13 +250,13 @@
                         <h2 class="title">Pulse.</h2>
                     </div>
                     <h3 class="panel-content">Broadcast Datasets.</h3>
-                    
+
                     <div class="panel-box">
                         <h4 class="panel-content">Key Features</h4>
                         <ul class="panel-list">
                             <li>Multicast UDP with exchange-accurate timing.</li>
                             <li>Inject liquidity gaps and dropped packets.</li>
-                            <li>Real-time strategy fill confirmations.</li>                            
+                            <li>Real-time strategy fill confirmations.</li>
                         </ul>
                     </div>
                 </div>
@@ -278,7 +269,7 @@
                         <h2 class="title">Core.</h2>
                     </div>
                     <h3 class="panel-content">3.1μs P99 Platform Latency</h3>
-                    
+
                     <div class="panel-box">
                         <h4 class="panel-content">Key Features</h4>
                         <ul class="panel-list">
@@ -297,7 +288,7 @@
                         <h2 class="title">Match.</h2>
                     </div>
                     <h3 class="panel-content">True Market Competition.</h3>
-                    
+
                     <div class="panel-box">
                         <h4 class="panel-content">Key Features</h4>
                         <ul class="panel-list">
@@ -366,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const infoContainer = document.querySelector('.info-container');
     const infoDropdown = document.getElementById('info-panel-new');
     const infoConnector = document.querySelector('.info-connector');
-    
+
     if (infoContainer && infoDropdown) {
             const style = document.createElement('style');
             style.textContent = `
@@ -387,20 +378,20 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         document.head.appendChild(style);
     }
-    
+
     const exploreText = document.getElementById('explore-ecosystem');
     const appsContainer = document.querySelector('.apps-container');
-    
+
     if (exploreText && appsContainer) {
         exploreText.addEventListener('mouseenter', function() {
             appsContainer.classList.add('apps-pulse');
         });
-        
+
         exploreText.addEventListener('mouseleave', function() {
             appsContainer.classList.remove('apps-pulse');
         });
     }
-    
+
     const matchPanel = document.querySelector('.match-panel');
     if (matchPanel) {
         matchPanel.addEventListener('dblclick', function(e) {
@@ -408,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'overview/match-explained.html';
         });
     }
-    
+
     const matchIcon = document.querySelector('.sidebar-icon:has(img[alt="Match."])');
     if (matchIcon) {
         matchIcon.addEventListener('click', function(e) {
@@ -416,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'command-center/apps/match/index.html';
         });
     }
-    
+
     const authorIcon = document.querySelector('.sidebar-icon:has(img[alt="Author."])');
     if (authorIcon) {
         authorIcon.addEventListener('click', function(e) {
@@ -424,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'command-center/apps/author/index.html';
         });
     }
-    
+
     const pulseIcon = document.querySelector('.sidebar-icon:has(img[alt="Pulse."])');
     if (pulseIcon) {
         pulseIcon.addEventListener('click', function(e) {
@@ -432,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'command-center/apps/pulse/index.html';
         });
     }
-    
+
     const coreIcon = document.querySelector('.sidebar-icon:has(img[alt="Core."])');
     if (coreIcon) {
         coreIcon.addEventListener('click', function(e) {

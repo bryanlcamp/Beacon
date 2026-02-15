@@ -1,0 +1,53 @@
+[
+    {
+        "key": "ctrl+shift+i",
+        "command": "githubIssues.createIssue",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+u",
+        "command": "githubIssues.openIssue",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+g i",
+        "command": "workbench.view.extension.github-pull-requests"
+    },
+    {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.tasks.runTask",
+        "args": "📋 List My Issues"
+    },
+    {
+        "key": "ctrl+shift+o",
+        "command": "workbench.action.tasks.runTask",
+        "args": "🚀 Open Beacon Web (Local)"
+    },
+    {
+        "key": "ctrl+shift+h",
+        "command": "workbench.action.openWorkspace",
+        "args": {
+            "uri": "${workspaceFolder}/beacon-platform.code-workspace"
+        }
+    },
+    {
+        "key": "ctrl+shift+c",
+        "command": "workbench.panel.chat.view.copilot.focus"
+    },
+    {
+        "key": "ctrl+shift+b",
+        "command": "workbench.view.extension.github-issues"
+    },
+    {
+        "key": "ctrl+shift+e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "ctrl+shift+`",
+        "command": "workbench.action.terminal.focus"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "workbench.action.tasks.build"
+    }
+]

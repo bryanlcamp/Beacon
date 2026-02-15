@@ -1,0 +1,249 @@
+/* =============================================================================
+   Sidebar Component (BEM)
+   Complete sidebar implementation using design tokens
+============================================================================= */
+
+/* Sidebar Block */
+.sidebar {
+  position: absolute;
+  left: 700px;
+  top: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-lg);
+  box-sizing: border-box;
+}
+
+.sidebar__panel {
+  margin-top: 0;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: 0.4em;
+  box-shadow: 
+    0 0 25px rgba(107, 182, 255, 0.18),
+    0 0 50px rgba(107, 182, 255, 0.08),
+    0 0 80px rgba(107, 182, 255, 0.03);
+  width: 56px;
+  transition: var(--transition-normal);
+  position: relative;
+}
+
+/* Sidebar Icons */
+.sidebar__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.4em 0;
+}
+
+.sidebar__icon--info {
+  /* Info icon container styles */
+}
+
+.sidebar__icon-button {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.sidebar__icon-inner {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  font-weight: 700;
+  text-shadow: var(--glow-accent);
+  box-shadow: var(--glow-accent);
+  transition: var(--transition-normal);
+}
+
+.sidebar__icon-inner:hover {
+  box-shadow: var(--glow-accent-hover);
+  text-shadow: var(--glow-accent-hover);
+  transform: scale(1.05);
+}
+
+/* App Icons */
+.sidebar__app-icon {
+  margin: 0.4em 0;
+  width: 36px;
+  height: 36px;
+}
+
+.sidebar__apps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  transition: var(--transition-normal);
+}
+
+.sidebar__apps-container--pulse {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Sidebar Dropdowns */
+.sidebar__dropdown {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: 24px;
+  transform: translateY(-50%) translateX(-20px);
+  width: 400px;
+  height: 320px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 32px rgba(80, 120, 200, 0.1);
+  padding: var(--spacing-lg);
+  color: var(--color-white);
+  font-family: var(--font-primary);
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  transition-delay: 0.1s;
+}
+
+.sidebar__dropdown--info {
+  /* Info dropdown specific styles */
+}
+
+.sidebar__dropdown--author {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  filter: blur(0px);
+  transition: var(--transition-smooth);
+}
+
+.sidebar__dropdown--pulse {
+  /* Pulse dropdown specific styles */
+}
+
+.sidebar__dropdown--core {
+  /* Core dropdown specific styles */
+}
+
+.sidebar__dropdown--match {
+  /* Match dropdown specific styles */
+}
+
+/* Dropdown Content */
+.sidebar__dropdown-header {
+  position: relative;
+}
+
+.sidebar__dropdown-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: var(--transition-normal);
+  z-index: 10;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-family: var(--font-brand);
+  text-shadow: var(--glow-primary);
+}
+
+.sidebar__dropdown-link:hover {
+  text-shadow: 
+    0 0 15px rgba(107, 182, 255, 0.8),
+    0 0 25px rgba(107, 182, 255, 0.4),
+    0 0 35px rgba(107, 182, 255, 0.2);
+  filter: brightness(1.2);
+}
+
+.sidebar__dropdown-title {
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  color: var(--color-white);
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: -0.03em;
+}
+
+.sidebar__dropdown-subtitle {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.sidebar__dropdown-section {
+  background: rgba(107, 182, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  border-left: 3px solid var(--color-primary);
+}
+
+.sidebar__dropdown-section-title {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.sidebar__dropdown-list {
+  margin: 0;
+  padding-left: var(--spacing-md);
+  color: var(--color-gray-light);
+  line-height: 1.8;
+  font-size: var(--font-size-sm);
+}
+
+.sidebar__dropdown-list a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.sidebar__dropdown-list a:hover {
+  color: var(--color-white);
+  text-shadow: var(--glow-primary);
+}
+
+/* Hover States */
+.sidebar__icon:hover .sidebar__dropdown,
+.sidebar__dropdown:hover {
+  transform: translateY(-50%) translateX(0) !important;
+  opacity: 0.65 !important;
+  pointer-events: auto !important;
+  transition: var(--transition-smooth);
+  transition-delay: 0.3s;
+}
+
+.sidebar__icon:not(:hover) .sidebar__dropdown:not(:hover) {
+  opacity: 0;
+  transform: translateY(-50%) translateX(100px);
+  pointer-events: none;
+  transition-delay: 0.1s;
+}
+
+/* Panel Glow Effects on Link Hover */
+.sidebar__dropdown-link:hover ~ .sidebar__panel,
+.sidebar__dropdown-link:hover + * .sidebar__panel {
+  border: 1px solid var(--color-primary);
+  box-shadow: 
+    0 0 25px rgba(107, 182, 255, 0.18),
+    0 0 50px rgba(107, 182, 255, 0.08),
+    0 0 80px rgba(107, 182, 255, 0.03);
+}

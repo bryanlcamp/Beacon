@@ -1,0 +1,112 @@
+{
+    // Beacon Platform VS Code Configuration
+    // Optimized for Remote SSH Development
+    // Editor Settings
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
+    // File Settings
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    // HTML/CSS/JS Settings for Beacon Frontend
+    "html.format.indentInnerHtml": true,
+    "css.validate": true,
+    "[html]": {
+        "editor.tabSize": 4
+    },
+    "[css]": {
+        "editor.tabSize": 4
+    },
+    "[javascript]": {
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    // Beacon-specific file associations
+    "files.associations": {
+        "*.settings.exchange": "json",
+        "*.data": "plaintext"
+    },
+    // GitHub Issues Configuration
+    "github-issues.queries": [
+        {
+            "label": "🏠 My Beacon Issues",
+            "query": "assignee:@me repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "🔥 Critical Issues",
+            "query": "is:open label:severity:critical repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "🎨 CSS Issues",
+            "query": "is:open label:component:css repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "⚠️ Needs Triage",
+            "query": "is:open label:status:needs-triage repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "🔧 Build Issues",
+            "query": "is:open label:component:build-system repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "⚡ Performance Issues",
+            "query": "is:open label:type:performance repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        },
+        {
+            "label": "📝 All Open Issues",
+            "query": "is:open repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        }
+    ],
+    "github.remoteRepositories": [
+        "bryanlcamp/beacon-web",
+        "bryanlcamp/beacon-core"
+    ],
+    "githubIssues.workingIssue.enabled": true,
+    "githubIssues.createInsertFormat": "number",
+    "githubIssues.ignoreMilestones": false,
+    "githubPullRequests.pullBranch": "never",
+    "githubPullRequests.showInSCM": true,
+    "githubIssues.queries": [
+        {
+            "label": "📋 Beacon Issues",
+            "query": "repo:bryanlcamp/beacon-web repo:bryanlcamp/beacon-core"
+        }
+    ],
+    // Workspace Layout Settings - Minimal focused layout
+    "workbench.startupEditor": "none",
+    "workbench.sideBar.location": "left",
+    "workbench.panel.defaultLocation": "right",
+    "workbench.panel.opensMaximized": "never",
+    "workbench.statusBar.visible": false,
+    "explorer.openEditors.visible": 0,
+    "explorer.autoReveal": false,
+    "problems.autoReveal": false,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.showExitAlert": false,
+    "git.openRepositoryInParentFolders": "always",
+    "git.autofetch": true,
+    "scm.defaultViewMode": "tree",
+    "workbench.view.alwaysShowHeaderActions": false,
+    "breadcrumbs.enabled": false,
+    // Focus on essential views only
+    "workbench.view.extension.github-issues.visibility": "visible",
+    "github.copilot.enable": true,
+    "github.copilot.chat.enabled": true,
+    "workbench.activityBar.iconClickBehavior": "focus",
+    "workbench.editor.showTabs": "single",
+    "workbench.editor.openPositioning": "first",
+    // Auto-open GitHub view on startup
+    "workbench.view.extensions.github.showPanel": true,
+    "github.copilot.chat.welcomeMessage": "disabled"
+}

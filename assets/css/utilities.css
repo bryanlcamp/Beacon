@@ -1,0 +1,36 @@
+/* =============================================================================
+   UTILITY CLASSES
+   Common utility classes for layout, typography, and positioning
+============================================================================= */
+
+/* Text Alignment */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Positioning */
+.position-relative {
+  position: relative;
+}
+
+/* Typography Utilities */
+.hero-title {
+  font-size: 4.5em;
+}
+
+/* Layout Utilities */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}

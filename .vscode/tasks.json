@@ -1,0 +1,156 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🐛 Create Bug Issue (Web)",
+            "type": "shell",
+            "command": "./create-issue.sh",
+            "args": [
+                "web",
+                "${input:component}",
+                "${input:severity}",
+                "${input:title}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🔧 Create Bug Issue (Core)",
+            "type": "shell",
+            "command": "./create-issue.sh",
+            "args": [
+                "core",
+                "${input:component}",
+                "${input:severity}",
+                "${input:title}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "📋 List My Issues",
+            "type": "shell",
+            "command": "gh",
+            "args": [
+                "issue",
+                "list",
+                "--repo",
+                "bryanlcamp/beacon-web",
+                "--repo",
+                "bryanlcamp/beacon-core",
+                "-a",
+                "bryanlcamp"
+            ],
+            "group": "build",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🏠 Minimal Workspace Setup",
+            "type": "shell",
+            "command": "./.vscode/setup-workspace.sh",
+            "group": "build",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🎯 Open Four Views",
+            "type": "shell",
+            "command": "echo '🌐 Solution Explorer | 💬 Chat | 📋 Bug List | ⌨️ Terminal - Use Ctrl+Shift+E/C/B/` to focus'",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "⚡ Build Beacon C++",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "beacon-core/beacon-build.py",
+                "--release"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc",
+                "$msCompile"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "component",
+            "description": "Component",
+            "type": "pickString",
+            "options": [
+                "iconbar",
+                "css",
+                "js",
+                "flask-api",
+                "c++",
+                "build-system",
+                "documentation"
+            ]
+        },
+        {
+            "id": "severity",
+            "description": "Severity",
+            "type": "pickString",
+            "options": [
+                "critical",
+                "high",
+                "medium",
+                "low"
+            ]
+        },
+        {
+            "id": "title",
+            "description": "Issue Title",
+            "type": "promptString"
+        }
+    ]
+}

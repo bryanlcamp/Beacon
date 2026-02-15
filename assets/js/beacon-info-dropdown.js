@@ -29,7 +29,7 @@ function injectBeaconInfoDropdown() {
                 style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;"
             >Contact</a>
             <a
-                href="/command-center/about.html"
+                href="/about.html"
                 style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;"
             >About</a>
         </div>

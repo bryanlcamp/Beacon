@@ -12,7 +12,7 @@ SCAN_FOLDERS = [
     '.',
     'command-center',
     'command-center/overview',
-    'command-center/about.html',
+    'about.html',
     'command-center/apps',
     'web',
 ]

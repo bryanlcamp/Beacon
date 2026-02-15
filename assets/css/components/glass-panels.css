@@ -49,6 +49,9 @@
     box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10);
     padding: 2em;
     box-sizing: border-box;
+    width: 600px;
+    max-width: 600px;
+    min-width: 600px;
 }
 
 /* Panel with shimmer effect */

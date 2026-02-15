@@ -18,7 +18,7 @@ url = 'https://api.cloudflare.com/client/v4/zones'
 print('Fetching Cloudflare zones...')
 resp = requests.get(url, headers=headers)
 if resp.status_code == 400 and 'Invalid format for Authorization header' in resp.text:
-    print('ERROR: Invalid format for Authorization header. Make sure your API token is correct and set as CF_API_TOKEN.')
+    print('ERROR: Invalid for mat for Authorization header. Make sure your API token is correct and set as CF_API_TOKEN.')
     exit(1)
 elif resp.status_code != 200:
     print(f'ERROR: {resp.status_code} - {resp.text}')
