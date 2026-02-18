@@ -27,6 +27,7 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 # Add include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/nlohmann)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/src/apps/common)
@@ -77,7 +78,13 @@ endif()
 
 # Enable testing - with error handling and CI/CD option
 option(BUILD_TESTING "Build the testing tree" ON)
-
+# Add vendor dependencies
+if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/googletest/CMakeLists.txt")
+    add_subdirectory(vendor/googletest)
+    message(STATUS "Added GoogleTest from vendor directory")
+else()
+    message(WARNING "GoogleTest not found in vendor directory")
+endif()
 if(BUILD_TESTING)
     enable_testing()
 

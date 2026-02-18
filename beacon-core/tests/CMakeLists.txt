@@ -3,9 +3,8 @@ project(beacon_tests)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Find testing framework
-find_package(GTest REQUIRED)
-find_package(benchmark REQUIRED)
+# Use GoogleTest from vendor directory
+# GoogleTest is built as part of the main build system
 
 # Include beacon libraries
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -17,7 +16,7 @@ add_executable(test_latency_tracker
 )
 target_link_libraries(test_latency_tracker
     beacon_hft
-    GTest::gtest_main
+    gtest_main
 )
 
 add_executable(test_ringbuffer
@@ -25,8 +24,7 @@ add_executable(test_ringbuffer
 )
 target_link_libraries(test_ringbuffer
     beacon_hft
-    GTest::gtest_main
-    benchmark::benchmark
+    gtest_main
 )
 
 # Algorithm tests
@@ -35,7 +33,7 @@ add_executable(test_strategy_logic
 )
 target_link_libraries(test_strategy_logic
     beacon_algorithm
-    GTest::gtest_main
+    gtest_main
 )
 
 # Integration tests
@@ -46,7 +44,7 @@ target_link_libraries(test_tick_to_trade
     beacon_hft
     beacon_algorithm
     beacon_networking
-    GTest::gtest_main
+    gtest_main
 )
 
 # Enable testing
