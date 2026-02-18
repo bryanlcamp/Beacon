@@ -1,0 +1,31 @@
+{
+  "algorithm": {
+    "type": "TWAP",
+    "time_window_minutes": 30,
+    "position_limit": 1000000,
+    "risk_limit": 500000,
+    "participation_rate": 0.1
+  },
+  "market_data": {
+    "host": "localhost",
+    "port": 9999,
+    "protocol": "ITCH",
+    "symbols": [
+      "AAPL",
+      "TSLA",
+      "NVDA",
+      "MSFT"
+    ]
+  },
+  "execution": {
+    "gateway": "NASDAQ_OUCH",
+    "host": "10.1.1.100",
+    "port": 8001,
+    "order_entry_latency_target_us": 50
+  },
+  "performance": {
+    "thread_affinity_core": 1,
+    "latency_tracking": true,
+    "tick_to_trade_target_us": 100
+  }
+}
