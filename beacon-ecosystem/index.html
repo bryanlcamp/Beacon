@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+
+    <!-- Reusable Components -->
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+
+    <style>
+        :root {
+            /* Fonts */
+            --font-logo: 'Electrolize', sans-serif;
+            --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+            /* Colors */
+            --color-orange: #ff914d;
+            --color-blue: #6bb6ff;
+            --color-white: #fff;
+
+            /* Text Effects */
+            --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
+            --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+            --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
+            --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+
+            /* Spacing */
+            --spacing-sm: 0.4em;
+            --spacing-md: 1.2em;
+            --spacing-lg: 1.5em;
+        }
+
+        /* Base Font Assignments */
+        body {
+            font-family: var(--font-body);
+        }
+
+        h1, h2, h3, .title {
+            font-family: var(--font-body);
+            color: var(--color-white);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin: 0 0 var(--spacing-sm) 0;
+            margin-bottom: 0.01em;
+        }
+        .title {
+            font-size: 1.6em;
+        }
+        /* Base Classes */
+        .logo-text {
+            font-family: var(--font-logo);
+            color: var(--color-orange);
+            text-shadow: var(--glow-orange);
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .logo-text:hover {
+            text-shadow: var(--glow-orange-hover);
+            filter: brightness(1.05);
+        }
+
+        .explore-link {
+            font-family: var(--font-logo);
+            color: var(--color-blue);
+            text-shadow: var(--glow-blue);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .explore-link:hover {
+            text-shadow: var(--glow-blue-hover);
+            filter: brightness(1.05);
+        }
+
+        .panel-link {
+            font-family: var(--font-logo);
+            color: var(--color-blue);
+            text-shadow: var(--glow-blue);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .panel-link:hover {
+            text-shadow: var(--glow-blue-hover);
+            filter: brightness(1.05);
+        }
+
+        .main-explore-link {
+            font-family: var(--font-body);
+            color: var(--color-orange);
+            text-shadow: var(--glow-orange);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: right;
+            display: block;
+            font-weight: 600;
+        }
+
+        .main-explore-link:hover {
+            text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+            filter: brightness(1.05);
+        }
+
+        .tagline {
+            color: var(--color-blue);
+            font-weight: 900;
+            font-size: 1.6em;
+            padding-top: 0.1em;
+            margin-bottom: 0.1em;
+            margin-right: var(--spacing-sm);
+        }
+
+        .panel-content h3, h3.panel-content {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--color-blue);
+            opacity: 0.95;
+            margin: 0 0 0.2em 0;
+        }
+
+        .panel-content h4, h4.panel-content {
+            color: var(--color-blue);
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 0.2em 0;
+        }
+
+        .info-icon {
+            font-family: var(--font-body);
+            color: var(--color-orange);
+            border: 3px solid var(--color-orange);
+        }
+
+        /* Blue link styling */
+        a[href*="wiki"], a[href*="command-center"], a[href*="mailto"] {
+            color: var(--color-blue);
+            text-decoration: none;
+        }
+
+        /* Panel styling */
+        .panel-box {
+            background: rgba(107, 182, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.5em;
+            margin: 0.5em 0;
+            border-left: 3px solid var(--color-blue);
+        }
+
+        .panel-list {
+            margin: 0;
+            padding-left: 1em;
+            color: #f5f7fa;
+            line-height: 1.6;
+            font-size: 0.85em;
+            font-family: var(--font-body);
+        }
+        .nav-bar {
+            position: fixed;
+            top: 2em;
+            right: 2em;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+            padding-bottom: 0.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .nav-item {
+            color: #ff914d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 145, 77, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+            filter: brightness(1.2);
+        }        
+    </style>
+</head>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="/" class="nav-item">←Home</a>
+</div>
+
+<body style="overflow-x: hidden;">
+    <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+</div>
+
+<div style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); 
+    width: 200; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;"></div>
+
+<div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em;
+    max-width:calc(100vw - 5em);box-sizing:border-box;">
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px 
+            rgba(107, 182, 255, 0.03);">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left; font-size: 3.5em;"><span>Author.</span></h1>
+                    <div class="tagline" style="text-align:left; font-size: 1.35em;">Create Datasets.</div>
+                    <ul>
+                        <li>Unlimited Products.</li>
+                        <li>Product Price/Qtys.</li>
+                        <li>Weight/Range Based.</li>
+                        <li>Custom Chaos Modes.</li>                                               
+                        <li>% Msgs per Dataset.</li>
+                        <li>Market Trends.</li>
+                        <li>Save/Open Settings.</li>
+                        <li>Native Protocols.</li>                                              
+                    </ul>
+
+                    <div class="main-desc" style="text-align:left; font-size: 1.05em;">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px 
+        rgba(107, 182, 255, 0.03);">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left; font-size: 3.5em;"><span>Pulse.</span></h1>
+                <div class="tagline" style="text-align:left; font-size: 1.35em;">Broadcast Datasets.</div>
+
+                    <ul>
+                        <li>Broadcast via UDP.</li>
+                        <li>Custom Chaos Modes.</li>
+                        <li>Malformed Packets.</li>                                               
+                        <li>Exchanges go dark.</li>
+                        <li>Hardware Timestamps.</li>
+                        <li>Reliable Seq #s.</li>
+                        <li>Save/Open Settings.</li>                        
+                        <li>Saved in Native Protocol.</li>
+                    </ul>
+                <div class="main-desc" style="text-align:left; font-size: 0.4em;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px 
+        rgba(107, 182, 255, 0.03);">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left; font-size: 3.5em;"><span>Core.</span></h1>
+                <div class="tagline" style="text-align:left; font-size: 1.35em;">Plug-in Your Strategy.</div>
+                    <ul>
+                        <li>Receive Prcs/Send Orders.</li>
+                        <li>Infrastructure Provided.</li>
+                        <li>Ultra-Low Latency.</li>
+                        <li>3.6us Tick-To-Trade.</li>                                              
+                        <li>Simple Callback API.</li>
+                        <li>Just Plug-In Your Strategy.</li>
+                        <li>Risk Limits Provided.</li>
+                        <li>Bi-Directional Order Server.</li>                                              
+                    </ul>
+                <div class="main-desc" style="text-align:left; font-size: 1.05em;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px 
+        rgba(107, 182, 255, 0.03);">
+            <div style="text-align:left;">
+                <h1 class="title" style="text-align:left; font-size: 3.5em; margin-bottom: 0.01em;"><span>Match.</span></h1>
+                <div class="tagline" style="text-align:left; font-size: 1.35em; padding-top: 0.01em;">Execute and Compete.</div>
+                    <ul>
+                        <li>Test1</li>
+                        <li>Test2</li>
+                        <li>Test3</li>
+                        <li>Test4</li>                                               
+                        <li>Test5</li>
+                        <li>Test6</li>
+                        <li>Test7</li>
+                        <li>Test8</li>                                              
+                    </ul>
+                <div class="main-desc" style="text-align:left; font-size: 1.05em;"></div>
+            </div>
+        </div>
+    </div>        
+</div>
+
+<script>
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes sidebarPulse {
+        0% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+        50% { box-shadow: 0 0 30px rgba(255, 145, 77, 0.4), 0 0 60px rgba(255, 145, 77, 0.15); }
+        100% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
+    }
+    .apps-pulse { animation: sidebarPulse 1.5s ease-in-out infinite; }
+    @keyframes connectLine {
+        from { width: 0; opacity: 0; }
+        to { width: 24px; opacity: 1; }
+    }
+    @keyframes shimmer {
+        0% { opacity: 0.4; transform: translateX(-100%); }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; transform: translateX(100%); }
+    }
+    .info-dropdown::before {
+        display: none;
+    }
+    .info-container:hover .info-dropdown::after {
+        content: '';
+        position: absolute;
+        left: -24px;
+        top: -20px;
+        bottom: -20px;
+        width: 44px;
+        background: transparent;
+        z-index: 9997;
+        pointer-events: auto;
+    }
+`;
+document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const infoContainer = document.querySelector('.info-container');
+    const infoDropdown = document.getElementById('info-panel-new');
+    const infoConnector = document.querySelector('.info-connector');
+
+    if (infoContainer && infoDropdown) {
+            const style = document.createElement('style');
+            style.textContent = `
+                .info-container:hover .info-emergency-panel,
+                .info-emergency-panel:hover {
+                    transform: translateY(-50%) translateX(0) !important;
+                    opacity: 0.65 !important;
+                    pointer-events: auto !important;
+                    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+                    transition-delay: 0.3s;
+                }
+                .info-container:not(:hover) .info-emergency-panel:not(:hover) {
+                    opacity: 0;
+                    transform: translateY(-50%) translateX(100px);
+                    pointer-events: none;
+                transition-delay: 0.1s;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    const exploreText = document.getElementById('explore-ecosystem');
+    const appsContainer = document.querySelector('.apps-container');
+
+    if (exploreText && appsContainer) {
+        exploreText.addEventListener('mouseenter', function() {
+            appsContainer.classList.add('apps-pulse');
+        });
+
+        exploreText.addEventListener('mouseleave', function() {
+            appsContainer.classList.remove('apps-pulse');
+        });
+    }
+
+    const matchPanel = document.querySelector('.match-panel');
+    if (matchPanel) {
+        matchPanel.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            window.location.href = 'overview/match-explained.html';
+        });
+    }
+
+    const matchIcon = document.querySelector('.sidebar-icon:has(img[alt="Match."])');
+    if (matchIcon) {
+        matchIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/match/index.html';
+        });
+    }
+
+    const authorIcon = document.querySelector('.sidebar-icon:has(img[alt="Author."])');
+    if (authorIcon) {
+        authorIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/author/index.html';
+        });
+    }
+
+    const pulseIcon = document.querySelector('.sidebar-icon:has(img[alt="Pulse."])');
+    if (pulseIcon) {
+        pulseIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/pulse/index.html';
+        });
+    }
+
+    const coreIcon = document.querySelector('.sidebar-icon:has(img[alt="Core."])');
+    if (coreIcon) {
+        coreIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'command-center/apps/core/strategy-api.html';
+        });
+    }
+});
+</script>
+
+</body>
+</html>

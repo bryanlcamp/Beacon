@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Beacon - Content Swap Test</title>
+        <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+        <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+
+        <!-- Reusable Components -->
+        <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+        <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+        <link rel="stylesheet" href="/assets/css/components/typography.css">
+        <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+        <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+
+        <!-- Page-specific styles -->
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+
+        <style>
+            :root {
+                /* Fonts */
+                --font-logo: 'Electrolize', sans-serif;
+                --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+                /* Colors */
+                --color-orange: #ff914d;
+                --color-blue: #6bb6ff;
+                --color-white: #fff;
+
+                /* Text Effects */
+                --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
+                --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+                --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
+                --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+
+                /* Spacing */
+                --spacing-sm: 0.4em;
+                --spacing-md: 1.2em;
+                --spacing-lg: 1.5em;
+            }
+
+            /* Base Font Assignments */
+            body {
+                font-family: var(--font-body);
+            }
+
+            h1,
+            h2,
+            h3,
+            .title {
+                font-family: var(--font-body);
+                color: #fff;
+                font-weight: 900;
+                letter-spacing: -0.03em;
+                margin: 0 0 var(--spacing-sm) 0;
+            }
+
+            .title {
+                font-size: 1.6em;
+            }
+
+            /* Base Classes */
+            .logo-text {
+                font-family: var(--font-logo);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                font-weight: 700;
+                transition: all 0.3s ease;
+            }
+
+            .logo-text:hover {
+                text-shadow: var(--glow-orange-hover);
+                filter: brightness(1.05);
+            }
+
+            .explore-link {
+                font-family: var(--font-logo);
+                color: var(--color-blue);
+                text-shadow: var(--glow-blue);
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .explore-link:hover {
+                text-shadow: var(--glow-blue-hover);
+                filter: brightness(1.05);
+            }
+
+            .main-explore-link {
+                font-family: var(--font-body);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                transition: all 0.3s ease;
+                text-decoration: none;
+                text-align: right;
+                display: block;
+                font-weight: 600;
+            }
+
+            .main-explore-link:hover {
+                text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+                filter: brightness(1.05);
+            }
+
+            .tagline {
+                color: var(--color-blue);
+                font-weight: 700;
+                font-size: 1.8em;
+                margin-bottom: var(--spacing-lg);
+            }
+
+            /* Content transition styles */
+            .main-content-container {
+                transition: opacity 250ms ease-in-out, transform 200ms ease-in-out;
+                transform: translateX(0);
+            }
+
+            .main-content-container.transitioning {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            /* Sidebar icon active state */
+            .sidebar-icon.active {
+                transform: scale(1.05);
+                border-color: var(--color-orange) !important;
+                background: linear-gradient(135deg, rgba(255, 145, 77, 0.2), rgba(107, 182, 255, 0.1)) !important;
+                box-shadow: 0 0 20px rgba(255, 145, 77, 0.3) !important;
+            }
+
+            .sidebar-icon.active img {
+                filter: brightness(1.2) !important;
+            }
+
+            /* Remove underline from all links */
+            a,
+            a:visited,
+            a:active,
+            a:hover {
+                text-decoration: none !important;
+            }
+
+            /* Prevent visited links from turning purple */
+            a:visited {
+                color: var(--color-blue) !important;
+                text-decoration: none !important;
+            }
+
+            .info-icon {
+                font-family: var(--font-body);
+                color: var(--color-orange);
+                border: 3px solid var(--color-orange);
+            }
+        </style>
+    </head>
+
+    <body style="overflow-x: hidden;">
+        <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+
+        <div
+            style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); width: 100px; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;">
+        </div>
+
+        <div
+            style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em;max-width:calc(100vw - 5em);box-sizing:border-box;">
+            <div class="main-content">
+                <div class="main-glass-panel"
+                    style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
+                    <div class="main-content-container" id="main-content">
+                        <!-- Default Content -->
+                        <div id="default-content">
+                            <h1 class="title" style="font-size: 3.5em;"><span>Beacon.</span></h1>
+                            <div class="tagline">Wall Street speed. Airplane mode.</div>
+                            <div class="main-desc" style="font-size: 1.05em;">
+                                Complete trading platform designed for strategy development and competitive testing.
+                                Beacon bridges the gap between simulation and production by providing realistic market
+                                conditions,
+                                competitive dynamics, and institutional-grade execution throughout the development
+                                process.<br><br>
+
+                                <strong style="color: var(--color-blue);">Hover over the icons →</strong> to explore
+                                each component
+                                of the platform and see how they work together to create a comprehensive trading
+                                ecosystem.<br><br>
+
+                                <a class="main-explore-link" href="/wiki/system-overview.html">Deep Dive →</a>
+                            </div>
+                        </div>
+
+                        <!-- Author Content -->
+                        <div id="author-content" style="display: none;">
+                            <h1 class="title" style="font-size: 3.5em;"><span>Author.</span></h1>
+                            <div class="tagline">Dataset Creation.</div>
+                            <div class="main-desc" style="font-size: 1.05em;">
+                                <strong style="color: var(--color-blue);">Synthetic Market Generation</strong><br>
+                                Author creates realistic market scenarios from configurable parameters rather than
+                                replaying
+                                historical sequences. Generate diverse market conditions that test strategy robustness
+                                without overfitting to specific dates or events.<br><br>
+
+                                <strong style="color: var(--color-blue);">Key Capabilities</strong><br>
+                                • Configure product counts and microstructure dynamics<br>
+                                • Control spread behaviors and volatility regimes<br>
+                                • Export in CME, NASDAQ, NYSE exchange formats<br>
+                                • Embed realistic participant behaviors and order flow patterns<br>
+                                • Generate trending, ranging, and stress-test scenarios<br><br>
+
+                                <a class="main-explore-link" href="/apps/author/">Launch Author →</a>
+                            </div>
+                        </div>
+
+                        <!-- Pulse Content -->
+                        <div id="pulse-content" style="display: none;">
+                            <h1 class="title" style="font-size: 3.5em;"><span>Pulse.</span></h1>
+                            <div class="tagline">Market Data Broadcasting.</div>
+                            <div class="main-desc" style="font-size: 1.05em;">
+                                <strong style="color: var(--color-blue);">Exchange-Accurate Delivery</strong><br>
+                                Pulse broadcasts market data with precise timing characteristics that mirror real
+                                exchange
+                                infrastructure. Strategies experience realistic network effects, processing delays,
+                                and delivery patterns during development.<br><br>
+
+                                <strong style="color: var(--color-blue);">Key Capabilities</strong><br>
+                                • Multicast UDP with exchange-accurate timing precision<br>
+                                • Inject liquidity gaps and simulate dropped packets<br>
+                                • Real-time strategy fill confirmations and trade reporting<br>
+                                • Configurable network stress testing and disaster scenarios<br>
+                                • Support for multiple simultaneous strategy connections<br><br>
+
+                                <a class="main-explore-link" href="/apps/pulse/">Launch Pulse →</a>
+                            </div>
+                        </div>
+
+                        <!-- Core Content -->
+                        <div id="core-content" style="display: none;">
+                            <h1 class="title" style="font-size: 3.5em;"><span>Core.</span></h1>
+                            <div class="tagline">Strategy Execution Engine.</div>
+                            <div class="main-desc" style="font-size: 1.05em;">
+                                <strong style="color: var(--color-blue);">Ultra-Low Latency Framework</strong><br>
+                                Core provides the execution engine that strategies run on, delivering 3.1μs P99 platform
+                                latency
+                                that approaches tier-1 infrastructure performance. The same API used in development
+                                deploys directly to live markets.<br><br>
+
+                                <strong style="color: var(--color-blue);">Key Capabilities</strong><br>
+                                • Strategy API for receiving market data and submitting orders<br>
+                                • Real-time fill confirmations with realistic execution timing<br>
+                                • Optimized, thread-safe hot path for maximum performance<br>
+                                • Seamless transition from simulation to live trading<br>
+                                • Built-in risk management and position monitoring<br><br>
+
+                                <a class="main-explore-link" href="/beacon-core/">Explore Core →</a>
+                            </div>
+                        </div>
+
+                        <!-- Match Content -->
+                        <div id="match-content" style="display: none;">
+                            <h1 class="title" style="font-size: 3.5em;"><span>Match.</span></h1>
+                            <div class="tagline">Execution Simulation.</div>
+                            <div class="main-desc" style="font-size: 1.05em;">
+                                <strong style="color: var(--color-blue);">Competitive Execution Testing</strong><br>
+                                Match simulates realistic order execution including venue latency, partial fills, and
+                                most importantly - competition from other strategies. Test how your algorithms perform
+                                when multiple participants compete for the same liquidity.<br><br>
+
+                                <strong style="color: var(--color-blue);">Key Capabilities</strong><br>
+                                • Expeditor feature for configurable liquidity consumption<br>
+                                • Support for multiple simultaneous strategy connections<br>
+                                • Realistic venue latency and execution quality simulation<br>
+                                • Trade message delivery coordination with market data<br>
+                                • Stress testing under various competitive scenarios<br><br>
+
+                                <a class="main-explore-link" href="/apps/match/">Launch Match →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-panel" id="sidebar-panel"
+                    style="margin-top: 0; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-start; border: 1px solid var(--color-blue); border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03); width: 56px; transition: all 0.3s ease; position: relative;">
+
+                    <!-- Info Icon -->
+                    <div class="info-container sidebar-icon"
+                        style="position: relative; display: flex; align-items: center; justify-content: center; margin: 0.4em 0;">
+                        <div
+                            style="width: 36px; height: 36px; border: 2px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;">
+                            <div class="info-icon"
+                                style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9em; font-weight: 700; cursor: pointer; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); box-shadow: 0 0 12px rgba(255, 145, 77, 0.2); transition: all 0.3s ease;"
+                                onmouseover="this.style.boxShadow='0 0 20px rgba(255, 145, 77, 0.4), 0 0 30px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 15px rgba(255, 145, 77, 0.8)'; this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.boxShadow='0 0 12px rgba(255, 145, 77, 0.2)'; this.style.textShadow='0 0 8px rgba(255, 145, 77, 0.4)'; this.style.transform='scale(1)'">
+                                i</div>
+                        </div>
+                    </div>
+
+                    <!-- Gradient Separator -->
+                    <div
+                        style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.5em auto 1em auto; border-radius: 0.5px;">
+                    </div>
+
+                    <!-- App Icons Container -->
+                    <div class="apps-container"
+                        style="display: flex; flex-direction: column; gap: 0.8em; flex-grow: 1; justify-content: space-evenly; transition: all 0.3s ease;">
+
+                        <!-- Author Icon -->
+                        <div class="sidebar-icon" data-content="author" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/dataset.svg" alt="Author." style="width:36px;height:36px;" />
+                        </div>
+
+                        <!-- Pulse Icon -->
+                        <div class="sidebar-icon" data-content="pulse" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/playback.svg" alt="Pulse." style="width:36px;height:36px;" />
+                        </div>
+
+                        <!-- Core Icon -->
+                        <div class="sidebar-icon" data-content="core" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/puzzle.svg" alt="Core." style="width:36px;height:36px;" />
+                        </div>
+
+                        <!-- Match Icon -->
+                        <div class="sidebar-icon" data-content="match" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/match.svg" alt="Match." style="width:36px;height:36px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Content switching logic
+            let hoverTimeout;
+            let currentContent = 'default';
+            let isTransitioning = false;
+
+            // Get all sidebar icons (excluding info icon)
+            const sidebarIcons = document.querySelectorAll('.sidebar-icon[data-content]');
+            const mainContentContainer = document.getElementById('main-content');
+
+            function showContent(contentId) {
+                if (isTransitioning || currentContent === contentId) return;
+
+                isTransitioning = true;
+
+                // Start fade out
+                mainContentContainer.classList.add('transitioning');
+
+                setTimeout(() => {
+                    // Hide all content
+                    document.getElementById('default-content').style.display = 'none';
+                    document.getElementById('author-content').style.display = 'none';
+                    document.getElementById('pulse-content').style.display = 'none';
+                    document.getElementById('core-content').style.display = 'none';
+                    document.getElementById('match-content').style.display = 'none';
+
+                    // Show target content
+                    document.getElementById(contentId + '-content').style.display = 'block';
+                    currentContent = contentId;
+
+                    // Update active states
+                    sidebarIcons.forEach(icon => icon.classList.remove('active'));
+                    if (contentId !== 'default') {
+                        document.querySelector(`[data-content="${contentId}"]`).classList.add('active');
+                    }
+
+                    // Fade in
+                    setTimeout(() => {
+                        mainContentContainer.classList.remove('transitioning');
+                        isTransitioning = false;
+                    }, 50);
+                }, 250);
+            }
+
+            // Add hover listeners to sidebar icons
+            sidebarIcons.forEach(icon => {
+                const contentType = icon.getAttribute('data-content');
+
+                icon.addEventListener('mouseenter', () => {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                        showContent(contentType);
+                    }, 300); // 300ms delay to prevent accidental triggers
+                });
+
+                icon.addEventListener('mouseleave', () => {
+                    clearTimeout(hoverTimeout);
+                });
+            });
+
+            // Return to default when leaving the entire sidebar
+            document.querySelector('.sidebar').addEventListener('mouseleave', () => {
+                clearTimeout(hoverTimeout);
+                hoverTimeout = setTimeout(() => {
+                    showContent('default');
+                }, 200); // Shorter delay for returning to default
+            });
+
+        </script>
+
+    </body>
+
+</html>

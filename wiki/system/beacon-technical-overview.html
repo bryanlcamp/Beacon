@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beacon System Technical Overview - Beacon HFT Platform</title>
-    
+
     <!-- Import Beacon Design System -->
     <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
     <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
-    
+
     <style>
         html, body {
             overflow-y: auto;
             scroll-behavior: smooth;
         }
-        
         body {
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
             background: #0a0a15;
@@ -23,7 +22,7 @@
             padding: 0;
             min-height: 100vh;
         }
-        
+
         .beacon-page-header {
             background: rgba(16, 22, 36, 0.9);
             backdrop-filter: blur(10px);
@@ -33,7 +32,7 @@
             top: 0;
             z-index: 100;
         }
-        
+
         .beacon-page-nav {
             display: flex;
             justify-content: space-between;
@@ -41,13 +40,13 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
         .beacon-brand-header {
             display: flex;
             align-items: center;
             gap: 1em;
         }
-        
+
         .beacon-brand-main {
             color: #6bb6ff;
             text-decoration: none;
@@ -55,24 +54,24 @@
             font-weight: 900;
             text-shadow: 0 0 10px rgba(107, 182, 255, 0.4);
         }
-        
+
         .beacon-brand-separator {
             color: rgba(255, 255, 255, 0.5);
         }
-        
+
         .beacon-page-title {
             color: #ffffff;
             font-size: 1.5em;
             font-weight: 700;
             margin: 0;
         }
-        
+
         .beacon-nav-actions {
             display: flex;
             align-items: center;
             gap: 1.5em;
         }
-        
+
         .beacon-nav-back {
             color: #6bb6ff;
             text-decoration: none;
@@ -81,17 +80,17 @@
             gap: 0.5em;
             transition: color 0.3s ease;
         }
-        
+
         .beacon-nav-back:hover {
             color: #ffffff;
         }
-        
+
         .beacon-page-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2em;
         }
-        
+
         .doc-hero {
             text-align: center;
             padding: 3em 2em;
@@ -101,7 +100,7 @@
             border: 1px solid rgba(107, 182, 255, 0.1);
             backdrop-filter: blur(10px);
         }
-        
+
         .doc-hero h1 {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 800;
@@ -110,7 +109,7 @@
             margin: 0 0 0.5em 0;
             text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
         }
-        
+
         .doc-hero p {
             font-size: 1.2em;
             color: #c3c8d1;
@@ -118,7 +117,7 @@
             margin: 0 auto;
             line-height: 1.6;
         }
-        
+
         .component-section {
             background: rgba(16, 22, 36, 0.4);
             border-radius: 16px;
@@ -127,7 +126,7 @@
             border: 1px solid rgba(107, 182, 255, 0.1);
             backdrop-filter: blur(5px);
         }
-        
+
         .component-title {
             font-size: 2em;
             font-weight: 700;
@@ -138,7 +137,7 @@
             align-items: center;
             gap: 0.5em;
         }
-        
+
         .component-subtitle {
             font-size: 1.2em;
             color: #ff914d;
@@ -146,14 +145,14 @@
             font-weight: 600;
             opacity: 0.9;
         }
-        
+
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5em;
             margin: 1.5em 0;
         }
-        
+
         .feature-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 12px;
@@ -161,12 +160,12 @@
             border-left: 3px solid #6bb6ff;
             transition: all 0.3s ease;
         }
-        
+
         .feature-card:hover {
             background: rgba(0, 0, 0, 0.5);
             transform: translateY(-2px);
         }
-        
+
         .feature-title {
             color: #6bb6ff;
             font-size: 1.1em;
@@ -175,52 +174,52 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .feature-list {
             color: #f5f7fa;
             line-height: 1.6;
             font-size: 0.95em;
         }
-        
+
         .feature-list li {
             margin: 0.5em 0;
         }
-        
+
         .pros-cons-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2em;
             margin: 2em 0;
         }
-        
+
         .pros-card, .cons-card {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             padding: 1.5em;
         }
-        
+
         .pros-card {
             border-left: 3px solid #00ff88;
         }
-        
+
         .cons-card {
             border-left: 3px solid #ff6b6b;
         }
-        
+
         .pros-title {
             color: #00ff88;
             font-size: 1.2em;
             font-weight: 700;
             margin: 0 0 1em 0;
         }
-        
+
         .cons-title {
             color: #ff6b6b;
             font-size: 1.2em;
             font-weight: 700;
             margin: 0 0 1em 0;
         }
-        
+
         .code-block {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 8px;
@@ -231,7 +230,7 @@
             color: #f5f7fa;
             overflow-x: auto;
         }
-        
+
         .highlight-box {
             background: linear-gradient(135deg, rgba(107, 182, 255, 0.1), rgba(255, 145, 77, 0.1));
             border: 1px solid rgba(107, 182, 255, 0.2);
@@ -239,7 +238,7 @@
             padding: 1.5em;
             margin: 2em 0;
         }
-        
+
         .highlight-title {
             color: #6bb6ff;
             font-size: 1.3em;
@@ -248,7 +247,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .perf-stat {
             background: rgba(255, 145, 77, 0.1);
             border: 1px solid #ff914d;
@@ -257,20 +256,20 @@
             display: inline-block;
             margin: 0.5em 0.5em 0.5em 0;
         }
-        
+
         .perf-number {
             color: #ff914d;
             font-size: 1.5em;
             font-weight: 900;
             display: block;
         }
-        
+
         .perf-label {
             color: #f5f7fa;
             font-size: 0.9em;
             opacity: 0.9;
         }
-        
+
         .architecture-flow {
             background: rgba(107, 182, 255, 0.05);
             border: 1px solid rgba(107, 182, 255, 0.2);
@@ -278,7 +277,7 @@
             padding: 2em;
             margin: 2em 0;
         }
-        
+
         .flow-step {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
@@ -286,18 +285,18 @@
             margin: 0.8em 0;
             border-left: 3px solid #6bb6ff;
         }
-        
+
         .flow-number {
             color: #ff914d;
             font-weight: 900;
             font-size: 1.2em;
         }
-        
+
         @media (max-width: 768px) {
             .pros-cons-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .beacon-page-content {
                 padding: 1em;
             }
@@ -322,7 +321,7 @@
     </header>
 
     <main class="beacon-page-content">
-        
+
         <section class="doc-hero">
             <h1>Beacon System Architecture</h1>
             <p>Complete HFT infrastructure delivering institutional-grade performance on standard laptops. A comprehensive technical overview of all components and capabilities.</p>
@@ -353,9 +352,9 @@
         <section class="component-section">
             <h2 class="component-title">📊 Author</h2>
             <div class="component-subtitle">Market Data Generation & Dataset Creation</div>
-            
+
             <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Creates synthetic bid/ask price streams with configurable market behaviors. Generates realistic market data without expensive historical data licensing.</p>
-            
+
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-title">Price Control Methods</div>
@@ -365,7 +364,7 @@
                         <li><strong>Outlier simulation:</strong> Configurable % outside bid/ask spread</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Market Scenarios</div>
                     <ul class="feature-list">
@@ -387,7 +386,7 @@
                         <li>Sector-specific behavior modeling</li>
                     </ul>
                 </div>
-                
+
                 <div class="cons-card">
                     <div class="cons-title">⚠ Limitations</div>
                     <ul class="feature-list">
@@ -402,9 +401,9 @@
         <section class="component-section">
             <h2 class="component-title">📡 Pulse</h2>
             <div class="component-subtitle">Network Simulation & Data Broadcasting</div>
-            
+
             <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Controls data flow and simulates real-world network conditions. The chaos engineering platform that tests strategies against infrastructure disasters.</p>
-            
+
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-title">Network Reality Simulation</div>
@@ -415,7 +414,7 @@
                         <li>Exchange outage and disaster simulation</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Chaos Engineering</div>
                     <ul class="feature-list">
@@ -429,7 +428,7 @@
 
             <div class="architecture-flow">
                 <div style="color: #6bb6ff; font-size: 1.3em; font-weight: 700; margin-bottom: 1em;">Data Flow Architecture</div>
-                
+
                 <div class="flow-step">
                     <span class="flow-number">1.</span> <strong>Pulse</strong> reads Author-generated datasets into memory
                 </div>
@@ -454,9 +453,9 @@
         <section class="component-section">
             <h2 class="component-title">⚡ Core</h2>
             <div class="component-subtitle">Strategy Execution Engine</div>
-            
+
             <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">High-performance strategy execution environment with microsecond-consistent latency. Lock-free architecture delivering institutional performance on consumer hardware.</p>
-            
+
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-title">Performance Engineering</div>
@@ -467,7 +466,7 @@
                         <li><strong>Process isolation:</strong> No shared memory cheating</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Strategy Interface</div>
                     <div class="code-block" style="font-size: 0.9em;">
@@ -496,9 +495,9 @@ while (running) {
         <section class="component-section">
             <h2 class="component-title">🎯 Match</h2>
             <div class="component-subtitle">Matching Engine & Risk Management</div>
-            
+
             <p style="color: #c3c8d1; font-size: 1.1em; line-height: 1.6;">Complete matching engine with realistic market competition and institutional-grade risk controls. Simulates true multi-participant trading environment.</p>
-            
+
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-title">Exchange Simulation</div>
@@ -509,7 +508,7 @@ while (running) {
                         <li>Exchange-authentic message handling</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Expediter Component</div>
                     <ul class="feature-list">
@@ -532,7 +531,7 @@ while (running) {
                         <li>Cross-product portfolio limits</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Institutional Features</div>
                     <ul class="feature-list">
@@ -548,11 +547,11 @@ while (running) {
         <section class="component-section">
             <h2 class="component-title">🏗️ Build System</h2>
             <div class="component-subtitle">Structured Development Environment</div>
-            
+
             <div class="code-block">
 # Technology Stack
 - C++20 for all core components
-- Python (latest) for all scripts  
+- Python (latest) for all scripts
 - CMake with structured build system
 
 # Build Commands
@@ -567,7 +566,7 @@ App level: individual app builds with same interface
 
         <section class="component-section">
             <h2 class="component-title">🚀 System-Wide Advantages</h2>
-            
+
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-title">Performance Revolution</div>
@@ -578,7 +577,7 @@ App level: individual app builds with same interface
                         <li>Microsecond-consistent performance</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Testing Paradigm Shift</div>
                     <ul class="feature-list">
@@ -588,7 +587,7 @@ App level: individual app builds with same interface
                         <li>Validate strategies against future scenarios</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Development Benefits</div>
                     <ul class="feature-list">
@@ -598,7 +597,7 @@ App level: individual app builds with same interface
                         <li>Cost-effective development environment</li>
                     </ul>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-title">Business Impact</div>
                     <ul class="feature-list">
@@ -614,8 +613,8 @@ App level: individual app builds with same interface
         <div class="highlight-box">
             <div class="highlight-title">The Beacon Difference</div>
             <p style="color: #f5f7fa; font-size: 1.1em; line-height: 1.6; margin: 0;">
-                Beacon transforms strategy development from expensive, infrastructure-heavy, historically-limited testing 
-                to cost-effective, laptop-deployable, scenario-unlimited validation. It's not just faster backtesting—it's 
+                Beacon transforms strategy development from expensive, infrastructure-heavy, historically-limited testing
+                to cost-effective, laptop-deployable, scenario-unlimited validation. It's not just faster backtesting—it's
                 a fundamentally better approach to building robust, battle-tested trading strategies.
             </p>
         </div>

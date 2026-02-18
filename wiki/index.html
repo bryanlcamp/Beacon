@@ -1,393 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon</title>
-    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
-    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
 
-    <!-- Reusable Components -->
-    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
-    <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
-    <link rel="stylesheet" href="/assets/css/components/typography.css">
-    <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
-    <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Beacon</title>
+        <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+        <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
 
-    <!-- Page-specific styles -->
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
-    <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+        <!-- Reusable Components -->
+        <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+        <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+        <link rel="stylesheet" href="/assets/css/components/typography.css">
+        <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+        <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
 
-    <style>
-        :root {
-            /* Fonts */
-            --font-logo: 'Electrolize', sans-serif;
-            --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+        <!-- Page-specific styles -->
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
 
-            /* Colors */
-            --color-orange: #ff914d;
-            --color-blue: #6bb6ff;
-            --color-white: #fff;
+        <style>
+            :root {
+                /* Fonts */
+                --font-logo: 'Electrolize', sans-serif;
+                --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
 
-            /* Text Effects */
-            --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
-            --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
-            --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
-            --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+                /* Colors */
+                --color-orange: #ff914d;
+                --color-blue: #6bb6ff;
+                --color-white: #fff;
+                --color-gray: rgba(200, 200, 200, 1);
 
-            /* Spacing */
-            --spacing-sm: 0.4em;
-            --spacing-md: 1.2em;
-            --spacing-lg: 1.5em;
-        }
+                /* Text Effects */
+                --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
+                --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+                --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
+                --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
 
-        /* Base Font Assignments */
-        body {
-            font-family: var(--font-body);
-        }
-
-        h1, h2, h3, .title {
-            font-family: var(--font-body);
-            color: var(--color-white);
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            margin: 0 0 var(--spacing-sm) 0;
-        }
-
-        .title {
-            font-size: 1.6em;
-        }
-
-        /* Base Classes */
-        .logo-text {
-            font-family: var(--font-logo);
-            color: var(--color-orange);
-            text-shadow: var(--glow-orange);
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .logo-text:hover {
-            text-shadow: var(--glow-orange-hover);
-            filter: brightness(1.05);
-        }
-
-        .explore-link {
-            font-family: var(--font-logo);
-            color: var(--color-blue);
-            text-shadow: var(--glow-blue);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .explore-link:hover {
-            text-shadow: var(--glow-blue-hover);
-            filter: brightness(1.05);
-        }
-
-        .panel-link {
-            font-family: var(--font-logo);
-            color: var(--color-blue);
-            text-shadow: var(--glow-blue);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .panel-link:hover {
-            text-shadow: var(--glow-blue-hover);
-            filter: brightness(1.05);
-        }
-
-        .main-explore-link {
-            font-family: var(--font-body);
-            color: var(--color-orange);
-            text-shadow: var(--glow-orange);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            text-align: right;
-            display: block;
-            font-weight: 600;
-        }
-
-        .main-explore-link:hover {
-            text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
-            filter: brightness(1.05);
-        }
-
-        .tagline {
-            color: var(--color-blue);
-            font-weight: 700;
-            font-size: 1.8em;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .panel-content h3, h3.panel-content {
-            font-size: 1.05em;
-            font-weight: 600;
-            color: var(--color-blue);
-            opacity: 0.95;
-            margin: 0 0 0.6em 0;
-        }
-
-        .panel-content h4, h4.panel-content {
-            color: var(--color-blue);
-            font-size: 0.8em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 0 0 0.5em 0;
-        }
-
-        .info-icon {
-            font-family: var(--font-body);
-            color: var(--color-orange);
-            border: 3px solid var(--color-orange);
-        }
-
-        /* Blue link styling */
-        a[href*="wiki"], a[href*="command-center"], a[href*="mailto"] {
-            color: var(--color-blue);
-            text-decoration: none;
-        }
-
-        /* Panel styling */
-        .panel-box {
-            background: rgba(107, 182, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.1em;
-            margin: 1.1em 0;
-            border-left: 3px solid var(--color-blue);
-        }
-
-        .panel-list {
-            margin: 0;
-            padding-left: 1em;
-            color: #f5f7fa;
-            line-height: 1.6;
-            font-size: 0.85em;
-            font-family: var(--font-body);
-        }
-    </style>
-</head>
-
-<body style="overflow-x: hidden;">
-    <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
-</div>
-
-<div style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); width: 100px; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;"></div>
-
-<div style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em;max-width:calc(100vw - 5em);box-sizing:border-box;">
-    <div class="main-content">
-        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
-            <div style="text-align:left;">
-                <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Author.</span></h1>
-                <div class="tagline" style="text-align:left;">Create Datasets. Your Way.</div>
-                <div class="main-desc" style="text-align:left; font-size: 1.05em;">
-                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence
-                   learns the same March 15th quirks, not market behavior patterns.<br><br>
-                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays.
-                   Your strategy learns market structure, not memorized sequences.<br><br>
-                   The conditions that break strategies aren't in textbooks—they're in the millisecond when
-                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br><br>
-		   <a href="author-example.html">Explore<span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">View →</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
-            <div style="text-align:left;">
-                <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Pulse.</span></h1>
-                <div class="tagline" style="text-align:left;">Broadcast Your Datasets.</div>
-                <div class="main-desc" style="text-align:left; font-size: 1.05em;">
-                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence
-                   learns the same March 15th quirks, not market behavior patterns.<br><br>
-                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays.
-                   Your strategy learns market structure, not memorized sequences.<br><br>
-                   The conditions that break strategies aren't in textbooks—they're in the millisecond when
-                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br><br>
-                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">View →</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
-            <div style="text-align:left;">
-                <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Core.</span></h1>
-                <div class="tagline" style="text-align:left;">Your Strategy. Your Data.</div>
-                <div class="main-desc" style="text-align:left; font-size: 1.05em;">
-                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence
-                   learns the same March 15th quirks, not market behavior patterns.<br><br>
-                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays.
-                   Your strategy learns market structure, not memorized sequences.<br><br>
-                   The conditions that break strategies aren't in textbooks—they're in the millisecond when
-                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br><br>
-                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">View →</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--
-    <div class="main-content">
-        <div class="main-glass-panel" style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
-            <div style="text-align:left;">
-                <h1scp class="title" style="text-align:left; font-size: 4.5em;"><span>Match.</span></h1>
-                <div class="tagline" style="text-align:left;">Wall Street speed. Airplane mode.</div>
-                <div class="main-desc" style="text-align:left; font-size: 1.05em;">
-                   You understand the overfitting trap of historical data. Every strategy trained on the same March 15th sequence
-                   learns the same March 15th quirks, not market behavior patterns.<br><br>
-                   Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday becomes fifty unique quiet Tuesdays.
-                   Your strategy learns market structure, not memorized sequences.<br><br>
-                   The conditions that break strategies aren't in textbooks—they're in the millisecond when
-                   three algos hit the same level. Beacon puts you there until you know how to react.<br><br><br>
-                   <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">View →</span>
-                </div>
-            </div>
-        </div>
-    </div>
--->
-    </div>
-</div>
-
-<div class="info-dropdown" id="info-panel-new" style="position: fixed; bottom: 150px; right: 50px; width: 400px; height: 320px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); border: 2px solid var(--color-blue); border-radius: 22px; box-shadow: 0 4px 32px 0 rgba(80,120,200,0.10); padding: 1.5em; color: var(--color-white); font-family: var(--font-body); z-index: 999999; opacity: 1; pointer-events: auto; box-sizing: border-box;">
-    <div style="position: relative;">
-        <h2 class="title">Info.</h2>
-    </div>
-    <h3 class="panel-content">Navigation & Contact.</h3>
-    <div class="panel-box">
-        <h4 class="panel-content">Quick Links</h4>
-        <ul class="panel-list">
-            <li><a href="/wiki">Wiki & Documentation</a></li>
-            <li><a href="/command-center/about.html">About Beacon</a></li>
-            <li><a href="mailto:info@beaconhft.com?subject=Beacon%20HFT%20-%20General%20Inquiry">Contact Support</a></li>
-        </ul>
-    </div>
-</div>
-
-<script>
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes sidebarPulse {
-        0% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
-        50% { box-shadow: 0 0 30px rgba(255, 145, 77, 0.4), 0 0 60px rgba(255, 145, 77, 0.15); }
-        100% { box-shadow: 0 0 20px rgba(255, 145, 77, 0.15), 0 0 40px rgba(255, 145, 77, 0.05); }
-    }
-    .apps-pulse { animation: sidebarPulse 1.5s ease-in-out infinite; }
-    @keyframes connectLine {
-        from { width: 0; opacity: 0; }
-        to { width: 24px; opacity: 1; }
-    }
-    @keyframes shimmer {
-        0% { opacity: 0.4; transform: translateX(-100%); }
-        50% { opacity: 1; }
-        100% { opacity: 0.4; transform: translateX(100%); }
-    }
-    .info-dropdown::before {
-        display: none;
-    }
-    .info-container:hover .info-dropdown::after {
-        content: '';
-        position: absolute;
-        left: -24px;
-        top: -20px;
-        bottom: -20px;
-        width: 44px;
-        background: transparent;
-        z-index: 9997;
-        pointer-events: auto;
-    }
-`;
-document.head.appendChild(style);
-
-document.addEventListener('DOMContentLoaded', function() {
-    const infoContainer = document.querySelector('.info-container');
-    const infoDropdown = document.getElementById('info-panel-new');
-    const infoConnector = document.querySelector('.info-connector');
-
-    if (infoContainer && infoDropdown) {
-            const style = document.createElement('style');
-            style.textContent = `
-                .info-container:hover .info-emergency-panel,
-                .info-emergency-panel:hover {
-                    transform: translateY(-50%) translateX(0) !important;
-                    opacity: 0.65 !important;
-                    pointer-events: auto !important;
-                    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-                    transition-delay: 0.3s;
-                }
-                .info-container:not(:hover) .info-emergency-panel:not(:hover) {
-                    opacity: 0;
-                    transform: translateY(-50%) translateX(100px);
-                    pointer-events: none;
-                transition-delay: 0.1s;
+                /* Spacing */
+                --spacing-sm: 0.4em;
+                --spacing-md: 1.2em;
+                --spacing-lg: 1.5em;
             }
-        `;
-        document.head.appendChild(style);
-    }
 
-    const exploreText = document.getElementById('explore-ecosystem');
-    const appsContainer = document.querySelector('.apps-container');
+            /* Base Font Assignments */
+            body {
+                font-family: var(--font-body);
+            }
 
-    if (exploreText && appsContainer) {
-        exploreText.addEventListener('mouseenter', function() {
-            appsContainer.classList.add('apps-pulse');
-        });
+            h1,
+            h2,
+            h3,
+            .title {
+                font-family: var(--font-body);
+                color: var(--color-white);
+                font-weight: 900;
+                letter-spacing: -0.03em;
+                margin: 0 0 var(--spacing-sm) 0;
+                margin-bottom: 0.01em;
+            }
 
-        exploreText.addEventListener('mouseleave', function() {
-            appsContainer.classList.remove('apps-pulse');
-        });
-    }
+            .title {
+                font-size: 1.6em;
+            }
 
-    const matchPanel = document.querySelector('.match-panel');
-    if (matchPanel) {
-        matchPanel.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-            window.location.href = 'overview/match-explained.html';
-        });
-    }
+            /* Base Classes */
+            .logo-text {
+                font-family: var(--font-logo);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                font-weight: 700;
+                transition: all 0.3s ease;
+            }
 
-    const matchIcon = document.querySelector('.sidebar-icon:has(img[alt="Match."])');
-    if (matchIcon) {
-        matchIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'command-center/apps/match/index.html';
-        });
-    }
+            .logo-text:hover {
+                text-shadow: var(--glow-orange-hover);
+                filter: brightness(1.05);
+            }
 
-    const authorIcon = document.querySelector('.sidebar-icon:has(img[alt="Author."])');
-    if (authorIcon) {
-        authorIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'command-center/apps/author/index.html';
-        });
-    }
+            .explore-link {
+                font-family: var(--font-logo);
+                color: var(--color-blue);
+                text-shadow: var(--glow-blue);
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
 
-    const pulseIcon = document.querySelector('.sidebar-icon:has(img[alt="Pulse."])');
-    if (pulseIcon) {
-        pulseIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'command-center/apps/pulse/index.html';
-        });
-    }
+            .explore-link:hover {
+                text-shadow: var(--glow-blue-hover);
+                filter: brightness(1.05);
+            }
 
-    const coreIcon = document.querySelector('.sidebar-icon:has(img[alt="Core."])');
-    if (coreIcon) {
-        coreIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'command-center/apps/core/strategy-api.html';
-        });
-    }
-});
-</script>
+            .panel-link {
+                font-family: var(--font-logo);
+                color: var(--color-blue);
+                text-shadow: var(--glow-blue);
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
 
-</body>
+            .panel-link:hover {
+                text-shadow: var(--glow-blue-hover);
+                filter: brightness(1.05);
+            }
+
+            .main-explore-link {
+                font-family: var(--font-body);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                transition: all 0.3s ease;
+                text-decoration: none;
+                text-align: right;
+                display: block;
+                font-weight: 600;
+            }
+
+            .main-explore-link:hover {
+                text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+                filter: brightness(1.05);
+            }
+
+            .tagline {
+                color: var(--color-blue);
+                font-weight: 900;
+                font-size: 1.6em;
+                padding-top: 0.1em;
+                margin-bottom: 0.1em;
+                margin-right: var(--spacing-sm);
+            }
+
+            .panel-content h3,
+            h3.panel-content {
+                font-size: 1.05em;
+                font-weight: 600;
+                color: var(--color-blue);
+                opacity: 0.95;
+                margin: 0 0 0.2em 0;
+            }
+
+            .panel-content h4,
+            h4.panel-content {
+                color: var(--color-blue);
+                font-size: 0.8em;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin: 0 0 0.2em 0;
+            }
+
+            .info-icon {
+                font-family: var(--font-body);
+                color: var(--color-orange);
+                border: 3px solid var(--color-orange);
+            }
+
+            /* Blue link styling */
+            a[href*="wiki"],
+            a[href*="command-center"],
+            a[href*="mailto"] {
+                color: var(--color-blue);
+                text-decoration: none;
+            }
+
+            /* Panel styling */
+            .panel-box {
+                background: rgba(107, 182, 255, 0.1);
+                border-radius: 12px;
+                padding: 0.5em;
+                margin: 0.5em 0;
+                border-left: 3px solid var(--color-blue);
+            }
+
+            .panel-list {
+                margin: 0;
+                padding-left: 1em;
+                color: #f5f7fa;
+                line-height: 1.6;
+                font-size: 0.85em;
+                font-family: var(--font-body);
+            }
+
+            .nav-bar {
+                position: fixed;
+                top: 2em;
+                right: 2em;
+                z-index: 10001;
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+                padding-bottom: 0.8em;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            }
+
+            .nav-item {
+                color: #ff914d;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 0.95em;
+                font-family: 'Electrolize', sans-serif;
+                text-shadow: 0 0 10px rgba(255, 145, 77, 0.4);
+                transition: all 0.3s ease;
+            }
+
+            .nav-item:hover {
+                text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+                filter: brightness(1.2);
+            }
+
+            .li {
+                padding: 110%;
+                /* Adjust the value as needed */
+            }
+
+            ;
+        </style>
+    </head>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <a href="/" class="nav-item">←Home</a>
+    </div>
+
+    <body style="overflow-x: hidden;">
+        <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+        <div
+            style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); width: 200px; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;">
+        </div>
+        <div
+            style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em; max-width:calc(100vw - 5em);box-sizing:border-box;">
+            <!-- Modernized Wiki Landing Page (matches main landing page style) -->
+            <div class="main-content">
+                <div class="main-glass-panel"
+                    style="margin-top: 0; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
+                    <div style="text-align:left;">
+                        <h1 class="title" style="text-align:left; font-size: 4.5em;"><span>Beacon Wiki.</span></h1>
+                        <div class="tagline" style="text-align:left;">Documentation & Knowledge Base</div>
+                        <div class="main-desc" style="text-align:left; font-size: 1.05em;">
+                            Welcome to the Beacon Wiki. Here you'll find guides, technical docs, and system overviews
+                            for the Beacon platform.<br><br>
+                            <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore
+                                Documentation→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar">
+                <div class="sidebar-panel" id="sidebar-panel"
+                    style="margin-top: 0; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-start; border: 1px solid var(--color-blue); border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03); width: 56px; transition: all 0.3s ease; position: relative;">
+                    <div class="apps-container"
+                        style="display: flex; flex-direction: column; gap: 0.8em; flex-grow: 1; justify-content: flex-start; max-height: 85vh; overflow-y: auto; transition: all 0.3s ease; padding-bottom: 1.5em;">
+                        <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/dataset.svg" alt="Author." style="width:36px;height:36px;" />
+                            <div class="author-panel wiki-slideout-panel"
+                                style="position: absolute; top: 50%; left: 100%; margin-left: 32px; transform: translateX(-20px) translateY(-50%); width: 600px !important; height: 440px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; box-shadow: 0 8px 48px 0 rgba(80,120,200,0.18); padding: 2.2em; color: var(--color-white); font-family: var(--font-body); z-index: 10001; opacity: 0; filter: blur(0px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow: hidden; pointer-events: none; box-sizing: border-box;">
+                                <button class="wiki-slideout-close"
+                                    style="position:absolute;top:18px;right:22px;background:rgba(0,0,0,0.18);border:none;color:#fff;font-size:1.6em;cursor:pointer;border-radius:50%;width:36px;height:36px;z-index:10002;display:none;align-items:center;justify-content:center;">×</button>
+                                <div style="position: relative;">
+                                    <a href="/wiki/apps/author/index.html" class="explore-link"
+                                        style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Explore.</a>
+                                    <h2 class="title">Author.</h2>
+                                </div>
+                                <h3 class="panel-content">Dataset Creation.</h3>
+                                <div class="panel-box">
+                                    <h4 class="panel-content">Key Features</h4>
+                                    <ul class="panel-list">
+                                        <li>Configure product counts and microstructure.</li>
+                                        <li>Spread dynamics and volatility regimes.</li>
+                                        <li>Export in CME, NASDAQ, NYSE formats.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/playback.svg" alt="Pulse." style="width:36px;height:36px;" />
+                            <div class="pulse-panel wiki-slideout-panel"
+                                style="position: absolute; top: 50%; left: 100%; margin-left: 32px; transform: translateX(-20px) translateY(-50%); width: 600px !important; height: 440px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; box-shadow: 0 8px 48px 0 rgba(80,120,200,0.18); padding: 2.2em; color: var(--color-white); font-family: var(--font-body); z-index: 10001; opacity: 0; filter: blur(0px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow: hidden; pointer-events: none; box-sizing: border-box;">
+                                <button class="wiki-slideout-close"
+                                    style="position:absolute;top:18px;right:22px;background:rgba(0,0,0,0.18);border:none;color:#fff;font-size:1.6em;cursor:pointer;border-radius:50%;width:36px;height:36px;z-index:10002;display:none;align-items:center;justify-content:center;">×</button>
+                                <div style="position: relative;">
+                                    <a href="/wiki/apps/pulse/index.html" class="explore-link"
+                                        style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Explore.</a>
+                                    <h2 class="title">Pulse.</h2>
+                                </div>
+                                <h3 class="panel-content">Broadcast Datasets.</h3>
+                                <div class="panel-box">
+                                    <h4 class="panel-content">Key Features</h4>
+                                    <ul class="panel-list">
+                                        <li>Multicast UDP with exchange-accurate timing.</li>
+                                        <li>Inject liquidity gaps and dropped packets.</li>
+                                        <li>Real-time strategy fill confirmations.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/puzzle.svg" alt="Core." style="width:36px;height:36px;" />
+                            <div class="core-panel wiki-slideout-panel"
+                                style="position: absolute; top: 50%; left: 100%; margin-left: 32px; transform: translateX(-20px) translateY(-50%); width: 600px !important; height: 440px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; box-shadow: 0 8px 48px 0 rgba(80,120,200,0.18); padding: 2.2em; color: var(--color-white); font-family: var(--font-body); z-index: 10001; opacity: 0; filter: blur(0px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow: hidden; pointer-events: none; box-sizing: border-box;">
+                                <button class="wiki-slideout-close"
+                                    style="position:absolute;top:18px;right:22px;background:rgba(0,0,0,0.18);border:none;color:#fff;font-size:1.6em;cursor:pointer;border-radius:50%;width:36px;height:36px;z-index:10002;display:none;align-items:center;justify-content:center;">×</button>
+                                <div style="position: relative;">
+                                    <a href="/wiki/apps/core/strategy-api.html" class="explore-link"
+                                        style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Explore.</a>
+                                    <h2 class="title">Core.</h2>
+                                </div>
+                                <h3 class="panel-content">3.1μs P99 Platform Latency</h3>
+                                <div class="panel-box">
+                                    <h4 class="panel-content">Key Features</h4>
+                                    <ul class="panel-list">
+                                        <li>Strategy API to receive market data.</li>
+                                        <li>Receive real-time fill confirmations.</li>
+                                        <li>Optimized, thread-safe hot path.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-icon" tabindex="0" style="margin: 0.4em 0;">
+                            <img src="/assets/images/icons/match.svg" alt="Match." style="width:36px;height:36px;" />
+                            <div class="match-panel wiki-slideout-panel"
+                                style="position: absolute; top: 50%; left: 100%; margin-left: 32px; transform: translateX(-20px) translateY(-50%); width: 600px !important; height: 440px; background: linear-gradient(180deg, #101624 80%, #181f2e 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; box-shadow: 0 8px 48px 0 rgba(80,120,200,0.18); padding: 2.2em; color: var(--color-white); font-family: var(--font-body); z-index: 10001; opacity: 0; filter: blur(0px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow: hidden; pointer-events: none; box-sizing: border-box;">
+                                <button class="wiki-slideout-close"
+                                    style="position:absolute;top:18px;right:22px;background:rgba(0,0,0,0.18);border:none;color:#fff;font-size:1.6em;cursor:pointer;border-radius:50%;width:36px;height:36px;z-index:10002;display:none;align-items:center;justify-content:center;">×</button>
+                                <div style="position: relative;">
+                                    <a href="/wiki/apps/match/index.html" class="explore-link"
+                                        style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10;">Explore.</a>
+                                    <h2 class="title">Match.</h2>
+                                </div>
+                                <h3 class="panel-content">True Market Competition.</h3>
+                                <div class="panel-box">
+                                    <h4 class="panel-content">Key Features</h4>
+                                    <ul class="panel-list">
+                                        <li>Has Expeditor, configurable competition.</li>
+                                        <li>Accepts multiple strategy connections.</li>
+                                        <li>Delivers messaging and trades to Pulse.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="wiki-slideout-overlay"
+            style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(16,22,36,0.45);backdrop-filter:blur(2.5px);z-index:10000;transition:opacity 0.3s;">
+        </div>
+        <script>
+            // Slideout, overlay, and back button logic
+            document.addEventListener('DOMContentLoaded', function () {
+                const overlay = document.getElementById('wiki-slideout-overlay');
+                const panels = document.querySelectorAll('.wiki-slideout-panel');
+                const closeBtns = document.querySelectorAll('.wiki-slideout-close');
+                const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+                let openPanel = null;
+
+                function openSlideout(panel) {
+                    if (overlay) {
+                        overlay.style.display = 'block';
+                        overlay.style.opacity = 1;
+                    }
+                    panels.forEach(p => {
+                        p.classList.remove('fullscreen', 'active');
+                        p.style.display = 'none';
+                    });
+                    closeBtns.forEach(btn => btn.style.display = 'flex');
+                    panel.classList.add('fullscreen', 'active');
+                    panel.style.display = 'block';
+                    openPanel = panel;
+                }
+
+                function closeSlideout() {
+                    if (overlay) {
+                        overlay.style.opacity = 0;
+                        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+                    }
+                    panels.forEach(p => {
+                        p.classList.remove('fullscreen', 'active');
+                        p.style.display = 'none';
+                    });
+                    closeBtns.forEach(btn => btn.style.display = 'none');
+                    openPanel = null;
+                }
+
+                closeBtns.forEach(btn => btn.addEventListener('click', closeSlideout));
+                if (overlay) overlay.addEventListener('click', closeSlideout);
+
+                sidebarIcons.forEach(icon => {
+                    icon.addEventListener('click', function (e) {
+                        const panel = icon.querySelector('.wiki-slideout-panel');
+                        if (panel) {
+                            e.stopPropagation();
+                            openSlideout(panel);
+                        }
+                    });
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeSlideout();
+                });
+                panels.forEach(panel => {
+                    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+                });
+                document.body.addEventListener('click', function (e) {
+                    if (openPanel) closeSlideout();
+                });
+
+                // Orange glow on sidebar when hovering Explore Docs
+                const exploreText = document.getElementById('explore-ecosystem');
+                const sidebarPanel = document.getElementById('sidebar-panel');
+                if (exploreText && sidebarPanel) {
+                    exploreText.addEventListener('mouseenter', function () {
+                        sidebarPanel.classList.add('apps-glow');
+                    });
+                    exploreText.addEventListener('mouseleave', function () {
+                        sidebarPanel.classList.remove('apps-glow');
+                    });
+                }
+
+                // Restore back button functionality
+                var backBtn = document.getElementById('back-button');
+                if (backBtn) {
+                    backBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        if (window.history.length > 1) {
+                            window.history.back();
+                        } else {
+                            window.location.href = '/';
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+
 </html>

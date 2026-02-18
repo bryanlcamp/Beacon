@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse - Beacon Documentation</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <style>
+        body { overflow-x: hidden; }
+        .wiki-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 2em; 
+            box-sizing: border-box; 
+        }
+        .nav-bar {
+            position: fixed;
+            top: 2em;
+            right: 2em;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+            padding-bottom: 0.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .nav-item {
+            color: #ff914d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 145, 77, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+            filter: brightness(1.2);
+        }
+        .content-panel {
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 22px;
+            padding: 3em;
+            border: 1px solid rgba(107, 182, 255, 0.2);
+            box-shadow: 0 0 30px rgba(107, 182, 255, 0.08);
+            margin-top: 2em;
+        }
+        h1 {
+            color: #ff914d;
+            font-size: 2.5em;
+            margin: 0 0 1em 0;
+            font-weight: 900;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 20px rgba(255, 145, 77, 0.4);
+        }
+        h2 {
+            color: #6bb6ff;
+            font-size: 1.6em;
+            margin: 2em 0 1em 0;
+            font-weight: 700;
+        }
+        h3 {
+            color: #6bb6ff;
+            font-size: 1.2em;
+            margin: 1.5em 0 0.8em 0;
+            font-weight: 600;
+        }
+        p, li {
+            color: #f5f7fa;
+            line-height: 1.7;
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-left: 1.5em;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5em;
+            margin: 2em 0;
+        }
+        .feature-item {
+            background: rgba(107, 182, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5em;
+            border-left: 3px solid #6bb6ff;
+        }
+        .feature-item h4 {
+            color: #6bb6ff;
+            margin: 0 0 0.5em 0;
+            font-weight: 600;
+        }
+        .feature-item p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .tech-spec {
+            background: rgba(255, 145, 77, 0.1);
+            border-radius: 12px;
+            padding: 1.5em;
+            border-left: 3px solid #ff914d;
+            margin: 2em 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="/" class="nav-item">Home</a>
+    <a href="/wiki" class="nav-item">← Wiki</a>
+    <a href="/command-center/apps/pulse/" class="nav-item">Launch App</a>
+</div>
+
+<div class="wiki-container">
+    <div class="content-panel">
+        <h1>Pulse</h1>
+        <p style="color: #6bb6ff; font-size: 1.2em; font-weight: 600; margin-bottom: 2em;">
+            Real-Time Market Data Broadcasting Engine
+        </p>
+
+        <h2>Overview</h2>
+        <p>
+            Pulse is Beacon's market data distribution engine that delivers realistic market scenarios with exchange-accurate timing. It bridges the gap between simulated datasets and live trading environments, ensuring your strategies experience market data with the same temporal characteristics they'll encounter in production.
+        </p>
+
+        <h2>Core Capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h4>Exchange-Accurate Timing</h4>
+                <p>Maintains nanosecond precision timing that mirrors real exchange delivery patterns and jitter.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Multicast UDP Delivery</h4>
+                <p>High-performance network distribution using optimized multicast protocols for minimal latency.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Liquidity Gap Injection</h4>
+                <p>Introduce realistic market stress scenarios including sudden liquidity withdrawals and momentum breaks.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Real-Time Fill Confirmations</h4>
+                <p>Strategy execution confirmations delivered with realistic venue latency and order lifecycle timing.</p>
+            </div>
+        </div>
+
+        <h2>Technical Architecture</h2>
+        <div class="tech-spec">
+            <h4 style="color: #ff914d; margin: 0 0 0.8em 0;">Performance Specifications</h4>
+            <ul style="margin: 0;">
+                <li>Sub-microsecond message processing latency</li>
+                <li>Support for 10M+ messages per second</li>
+                <li>NUMA-aware memory allocation for consistent performance</li>
+                <li>Zero-copy networking stack integration</li>
+            </ul>
+        </div>
+
+        <h2>How It Works</h2>
+        <h3>1. Dataset Loading</h3>
+        <p>
+            Pulse ingests datasets created by Author or historical market data, parsing message formats and extracting timing metadata. It builds an internal representation that preserves both order book states and temporal relationships.
+        </p>
+
+        <h3>2. Timing Reconstruction</h3>
+        <p>
+            The engine reconstructs realistic timing patterns including:
+        </p>
+        <ul>
+            <li>Network jitter and delivery variance</li>
+            <li>Exchange processing delays and batching</li>
+            <li>Cross-venue timing skews and synchronization</li>
+            <li>Market stress amplification effects</li>
+        </ul>
+
+        <h3>3. Real-Time Delivery</h3>
+        <p>
+            Market data streams to subscribers with production-level characteristics, allowing strategies to experience realistic timing pressures and network effects during development and testing.
+        </p>
+
+        <h2>Market Scenario Control</h2>
+        <h3>Liquidity Events</h3>
+        <p>
+            Pulse can inject controlled liquidity stress scenarios:
+        </p>
+        <ul>
+            <li>Sudden spread widening events</li>
+            <li>Market maker withdrawals</li>
+            <li>Momentum gap scenarios</li>
+            <li>Cross-market arbitrage opportunities</li>
+        </ul>
+
+        <h3>Execution Feedback</h3>
+        <p>
+            When strategies submit orders through Core, Pulse provides realistic fill confirmations with venue-specific characteristics including partial fills, latency variance, and rejection scenarios.
+        </p>
+
+        <h2>Integration Points</h2>
+        <p>
+            Pulse sits at the center of the Beacon ecosystem:
+        </p>
+        <ul>
+            <li><strong>Author</strong> → provides market datasets with embedded timing metadata</li>
+            <li><strong>Core</strong> → receives ultra-low latency market data feeds</li>
+            <li><strong>Match</strong> → coordinates execution confirmations and venue modeling</li>
+        </ul>
+
+        <h2>Getting Started</h2>
+        <ol>
+            <li>Load your dataset (from Author or historical sources)</li>
+            <li>Configure timing parameters and stress scenarios</li>
+            <li>Set up multicast groups for strategy subscribers</li>
+            <li>Initiate real-time market data broadcasting</li>
+            <li>Monitor delivery metrics and strategy performance</li>
+        </ol>
+
+        <p style="margin-top: 3em; padding-top: 2em; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #6bb6ff; font-style: italic;">
+            The critical insight behind Pulse is that market data timing isn't just about speed—it's about realistic variance. Your strategy needs to work when the market data arrives 50 microseconds late, or when three tickers arrive bunched together after a brief gap. Pulse ensures you're prepared for production timing realities.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

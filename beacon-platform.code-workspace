@@ -1,8 +1,12 @@
 {
     "folders": [
         {
-            "name": "🚀 Beacon Platform",
+            "name": "🌐 beacon-web (root)",
             "path": "."
+        },
+        {
+            "name": "🛠 beacon-core",
+            "path": "beacon-core"
         }
     ],
     "settings": {

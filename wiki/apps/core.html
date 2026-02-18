@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core - Beacon Documentation</title>
+    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+    <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+    <link rel="stylesheet" href="/assets/css/components/typography.css">
+    <style>
+        body { overflow-x: hidden; }
+        .wiki-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 2em; 
+            box-sizing: border-box; 
+        }
+        .nav-bar {
+            position: fixed;
+            top: 2em;
+            right: 2em;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+            padding-bottom: 0.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .nav-item {
+            color: #ff914d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 145, 77, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            text-shadow: 0 0 15px rgba(255, 145, 77, 0.8);
+            filter: brightness(1.2);
+        }
+        .content-panel {
+            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 22px;
+            padding: 3em;
+            border: 1px solid rgba(107, 182, 255, 0.2);
+            box-shadow: 0 0 30px rgba(107, 182, 255, 0.08);
+            margin-top: 2em;
+        }
+        h1 {
+            color: #ff914d;
+            font-size: 2.5em;
+            margin: 0 0 1em 0;
+            font-weight: 900;
+            font-family: 'Electrolize', sans-serif;
+            text-shadow: 0 0 20px rgba(255, 145, 77, 0.4);
+        }
+        h2 {
+            color: #6bb6ff;
+            font-size: 1.6em;
+            margin: 2em 0 1em 0;
+            font-weight: 700;
+        }
+        h3 {
+            color: #6bb6ff;
+            font-size: 1.2em;
+            margin: 1.5em 0 0.8em 0;
+            font-weight: 600;
+        }
+        p, li {
+            color: #f5f7fa;
+            line-height: 1.7;
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-left: 1.5em;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5em;
+            margin: 2em 0;
+        }
+        .feature-item {
+            background: rgba(107, 182, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5em;
+            border-left: 3px solid #6bb6ff;
+        }
+        .feature-item h4 {
+            color: #6bb6ff;
+            margin: 0 0 0.5em 0;
+            font-weight: 600;
+        }
+        .feature-item p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .perf-highlight {
+            background: rgba(255, 145, 77, 0.1);
+            border-radius: 12px;
+            padding: 2em;
+            border-left: 3px solid #ff914d;
+            margin: 2em 0;
+            text-align: center;
+        }
+        .perf-number {
+            color: #ff914d;
+            font-size: 3em;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 0 0 20px rgba(255, 145, 77, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="/" class="nav-item">Home</a>
+    <a href="/wiki" class="nav-item">← Wiki</a>
+    <a href="/command-center/apps/core/strategy-api.html" class="nav-item">API Docs</a>
+</div>
+
+<div class="wiki-container">
+    <div class="content-panel">
+        <h1>Core</h1>
+        <p style="color: #6bb6ff; font-size: 1.2em; font-weight: 600; margin-bottom: 2em;">
+            Ultra-Low Latency Trading Platform
+        </p>
+
+        <div class="perf-highlight">
+            <div class="perf-number">3.1μs</div>
+            <p style="color: #ff914d; font-weight: 600; margin: 0;">P99 Platform Latency</p>
+        </div>
+
+        <h2>Overview</h2>
+        <p>
+            Core is Beacon's ultra-low latency trading engine designed to execute strategies with Wall Street-grade performance without requiring co-location. It combines zero-copy messaging, NUMA-aware memory allocation, and hardware-optimized networking to achieve sub-microsecond execution latencies on standard server hardware.
+        </p>
+
+        <h2>Core Capabilities</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h4>Sub-Microsecond Execution</h4>
+                <p>Strategy execution with 3.1μs P99 latency from market data receipt to order transmission.</p>
+            </div>
+            <div class="feature-item">
+                <h4>NUMA-Aware Architecture</h4>
+                <p>Intelligent core pinning and memory allocation that maximizes cache efficiency and minimizes latency variance.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Zero-Copy Messaging</h4>
+                <p>Direct memory access patterns that eliminate unnecessary data copying and reduce memory pressure.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Protocol Optimization</h4>
+                <p>Native support for ITCH/OUCH protocols with hardware-accelerated message parsing.</p>
+            </div>
+        </div>
+
+        <h2>Technical Architecture</h2>
+        <h3>Hardware Independence</h3>
+        <p>
+            Unlike traditional HFT platforms that require specialized hardware or co-location, Core achieves exceptional performance on standard server hardware. Deploy anywhere with confidence that latency characteristics remain consistent.
+        </p>
+
+        <h3>Memory Management</h3>
+        <p>
+            Core employs sophisticated memory management techniques:
+        </p>
+        <ul>
+            <li>Pre-allocated object pools to eliminate garbage collection pauses</li>
+            <li>Lock-free data structures for concurrent strategy execution</li>
+            <li>CPU cache-aware data layout optimization</li>
+            <li>Huge page support for reduced TLB pressure</li>
+        </ul>
+
+        <h3>Network Stack</h3>
+        <p>
+            The networking subsystem bypasses kernel overhead through:
+        </p>
+        <ul>
+            <li>User-space TCP/UDP implementation</li>
+            <li>Direct NIC access via DPDK integration</li>
+            <li>Batched message processing with flow control</li>
+            <li>Hardware timestamping for precise latency measurement</li>
+        </ul>
+
+        <h2>Strategy Development API</h2>
+        <p>
+            Core provides a clean, high-performance API that abstracts low-level optimizations while exposing the necessary controls for sophisticated strategies:
+        </p>
+
+        <h3>Market Data Interface</h3>
+        <ul>
+            <li>Real-time order book reconstruction with depth visibility</li>
+            <li>Trade and quote stream processing with microsecond timestamps</li>
+            <li>Custom aggregation and windowing functions</li>
+        </ul>
+
+        <h3>Order Management</h3>
+        <ul>
+            <li>Direct market access with venue-specific order types</li>
+            <li>Portfolio-level risk controls and position tracking</li>
+            <li>Real-time P&L calculation and exposure monitoring</li>
+        </ul>
+
+        <h3>Execution Controls</h3>
+        <ul>
+            <li>Configurable execution policies and routing logic</li>
+            <li>Dynamic venue selection based on liquidity and latency</li>
+            <li>Intelligent order slicing and iceberg execution</li>
+        </ul>
+
+        <h2>Performance Characteristics</h2>
+        <p>
+            Core's performance profile enables strategies that were previously only viable with co-located infrastructure:
+        </p>
+        <ul>
+            <li><strong>Market Data Processing:</strong> Sub-100ns message parsing</li>
+            <li><strong>Strategy Computation:</strong> ~500ns for typical alpha generation</li>
+            <li><strong>Order Generation:</strong> ~200ns order creation and validation</li>
+            <li><strong>Network Transmission:</strong> ~2μs to wire with hardware timestamping</li>
+        </ul>
+
+        <h2>Integration with Beacon Ecosystem</h2>
+        <p>
+            Core seamlessly integrates with other Beacon components:
+        </p>
+        <ul>
+            <li><strong>Pulse</strong> delivers market data with production-accurate timing characteristics</li>
+            <li><strong>Match</strong> provides realistic execution simulation including venue-specific latency modeling</li>
+            <li><strong>Author</strong> generates the synthetic datasets that test strategy robustness</li>
+        </ul>
+
+        <h2>Deployment Options</h2>
+        <h3>Cloud Deployment</h3>
+        <p>
+            Core runs efficiently on cloud platforms including AWS, Azure, and GCP. Specific instance types are optimized for different strategy profiles and latency requirements.
+        </p>
+
+        <h3>On-Premises</h3>
+        <p>
+            For maximum control and minimal latency variance, Core deploys on dedicated hardware with optimized kernel configurations and network tuning.
+        </p>
+
+        <h3>Hybrid Configurations</h3>
+        <p>
+            Development and testing in cloud environments with production deployment on optimized hardware, maintaining identical API interfaces across environments.
+        </p>
+
+        <p style="margin-top: 3em; padding-top: 2em; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #6bb6ff; font-style: italic;">
+            Core represents a fundamental shift in trading platform architecture: achieving co-location-grade performance without the geographic and infrastructure constraints. This democratizes access to ultra-low latency trading while maintaining the precision required for institutional-grade strategies.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
