@@ -1,0 +1,60 @@
+{
+  "system_config": {
+    "system_name": "beacon_trading_platform",
+    "startup_sequence": [
+      "matching_engine",
+      "client_algorithm",
+      "playback"
+    ],
+    "shutdown_timeout": 10,
+    "monitoring": {
+      "enabled": true,
+      "interval_seconds": 5,
+      "latency_alerts": true
+    }
+  },
+  "component_configs": {
+    "matching_engine": {
+      "enabled": true,
+      "config_file": "config/templates/matching_engine/default.json",
+      "binary_name": "matching_engine",
+      "startup_delay": 0
+    },
+    "client_algorithm": {
+      "enabled": true,
+      "config_file": "config/templates/client_algorithm/default.json",
+      "binary_name": "client_algorithm",
+      "startup_delay": 2
+    },
+    "playback": {
+      "enabled": true,
+      "config_file": "config/templates/playback/default.json",
+      "binary_name": "playback",
+      "startup_delay": 1
+    },
+    "generator": {
+      "enabled": false,
+      "config_file": "config/templates/generator/sample_config.json",
+      "binary_name": "generator",
+      "startup_delay": 0
+    }
+  },
+  "quick_config": {
+    "exchange": "ALL",
+    "algorithm_type": "TWAP",
+    "risk_limits": {
+      "max_position": 1000000,
+      "max_order_size": 50000
+    },
+    "networking": {
+      "market_data_port": 15001,
+      "execution_port": 9001,
+      "multicast_group": "239.195.1.1"
+    },
+    "performance": {
+      "latency_target_us": 10,
+      "thread_affinity": true,
+      "memory_locked": true
+    }
+  }
+}

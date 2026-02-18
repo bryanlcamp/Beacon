@@ -1,0 +1,45 @@
+{
+  "system_config": {
+    "system_name": "beacon_cme_hft",
+    "startup_sequence": [
+      "matching_engine",
+      "client_algorithm"
+    ],
+    "exchange": "CME"
+  },
+  "component_configs": {
+    "matching_engine": {
+      "enabled": true,
+      "config_file": "config/templates/matching_engine/cme_matching.json"
+    },
+    "client_algorithm": {
+      "enabled": true,
+      "config_file": "config/templates/client_algorithm/cme_hft.json"
+    }
+  },
+  "quick_config": {
+    "exchange": "CME",
+    "algorithm_type": "HFT",
+    "symbols": [
+      "ES",
+      "NQ",
+      "YM",
+      "RTY"
+    ],
+    "risk_limits": {
+      "max_position": 5000000,
+      "max_order_size": 100000
+    },
+    "networking": {
+      "market_data_host": "224.0.62.2",
+      "market_data_port": 14310,
+      "execution_host": "10.1.2.100",
+      "execution_port": 9001
+    },
+    "performance": {
+      "latency_target_us": 5,
+      "thread_affinity": 2,
+      "cpu_isolation": true
+    }
+  }
+}

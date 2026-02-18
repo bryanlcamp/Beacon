@@ -1,0 +1,41 @@
+{
+  "trading_strategy": "MOMENTUM_HFT",
+  "risk_management": {
+    "max_position_size": 2000000,
+    "max_daily_loss": 100000,
+    "position_limits": {
+      "ES": 500000,
+      "NQ": 300000,
+      "YM": 200000
+    }
+  },
+  "algorithm_parameters": {
+    "momentum_threshold": 0.002,
+    "entry_signal_strength": 0.75,
+    "exit_signal_strength": 0.25,
+    "lookback_periods": 10,
+    "position_scaling": true
+  },
+  "execution_parameters": {
+    "order_type": "LIMIT",
+    "time_in_force": "IOC",
+    "aggressive_fills": true,
+    "latency_target_us": 5
+  },
+  "market_data": {
+    "exchanges": [
+      "CME"
+    ],
+    "symbols": [
+      "ES",
+      "NQ",
+      "YM"
+    ],
+    "data_types": [
+      "TRADE",
+      "QUOTE",
+      "BOOK"
+    ],
+    "fast_updates": true
+  }
+}
