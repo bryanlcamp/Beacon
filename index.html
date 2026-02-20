@@ -274,7 +274,7 @@
             <!-- Sidebar with smart panels -->
             <div class="sidebar">
                 <div class="sidebar-panel" id="sidebar-panel"
-                    style="margin-top: 0; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); width: 68px; transition: all 0.3s ease; position: relative;">
+                    style="margin-top: 0; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); width: 68px; transition: all 0.3s ease; position: relative; margin-left: 8px;">
 
                     <!-- Tracking line -->
                     <div class="tracking-line" id="tracking-line"></div>
@@ -284,14 +284,14 @@
 
                         <!-- Info Icon -->
                         <div class="info-container"
-                            style="display: flex; align-items: center; justify-content: center; margin: 0.8em 0 0.2em 0;">
+                            style="display: flex; align-items: center; justify-content: center; margin: -0.05em 0 0em 0;">
                             <div style="width: 40px; height: 40px; border: 3px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; font-size: 1.1em; font-weight: 700; cursor: pointer; color: var(--color-orange); text-shadow: var(--glow-orange); box-shadow: 0 0 8px rgba(255, 145, 77, 0.12); transition: all 0.3s ease;"
                                 class="info-icon sidebar-icon" data-app="info">i</div>
                         </div>
 
                         <!-- Gradient Separator -->
                         <div
-                            style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.2em auto 0.6em auto; border-radius: 0.5px;">
+                            style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0em auto 0.4em auto; border-radius: 0.5px;">
                         </div>
 
                         <!-- App Icons Section -->
@@ -299,31 +299,31 @@
                             style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0; display: flex; flex-direction: column; align-items: center; user-select: none;">
 
                             <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center; -webkit-user-drag: none; -webkit-user-select: none;"
                                 data-app="author">
                                 <img src="/assets/images/icons/dataset.svg" alt="Author."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none; -webkit-user-drag: none; -webkit-user-select: none;" />
                             </div>
 
                             <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center; -webkit-user-drag: none; -webkit-user-select: none;"
                                 data-app="pulse">
                                 <img src="/assets/images/icons/playback.svg" alt="Pulse."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none; -webkit-user-drag: none; -webkit-user-select: none;" />
                             </div>
 
                             <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center; -webkit-user-drag: none; -webkit-user-select: none;"
                                 data-app="strategy">
                                 <img src="/assets/images/icons/puzzle.svg" alt="Strategy."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none; -webkit-user-drag: none; -webkit-user-select: none;" />
                             </div>
 
                             <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center; -webkit-user-drag: none; -webkit-user-select: none;"
                                 data-app="match">
                                 <img src="/assets/images/icons/match.svg" alt="Match."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none; -webkit-user-drag: none; -webkit-user-select: none;" />
                             </div>
                         </div>
                         <!-- End App Icons Section -->
@@ -396,7 +396,9 @@
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
                                 Market stress?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Crank up playback speed. Add more products and bursty periods. Note your strategy price queue for packet drops.</p>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Crank
+                                up playback speed. Add more products and bursty periods. Note your strategy price queue
+                                for packet drops.</p>
                         </div>
                     </div>
                 </div>
@@ -410,26 +412,27 @@
                         Algorithm Framework.</h3>
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Execute trading algorithms through clean C++ APIs designed for performance-critical
-                        applications. Same code transitions seamlessly from simulation to live execution.</p>
+                        Strategy is an executable, consumer of Pulse, that delivers your dataset to your trading
+                        strategy via a simple callback-based API.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Need clean APIs?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Clean
-                                C++ interface for market data and order submission. Designed for professional
-                                algorithmic trading applications.</p>
+                                Functionality.</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">When
+                                you receive
+                                a new tick it is your code's hot path. Should you choose to act on it, send an order to
+                                Match.</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Worried about latency?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Same
-                                code runs in simulation and live markets. Deploy strategies with confidence knowing
-                                simulation results translate directly to production environments.</p>
+                                Latency.</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Beacon
+                                is optimized, lock free, and runs near Tier-1 speeds. At the end of each run,
+                                you receive a detailed summary.</p>
                         </div>
                     </div>
                 </div>
@@ -444,25 +447,25 @@
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
                         Face competition where market predators compete for the same liquidity. Recognize instantly and
-                        adjust strategy behavior when needed.</p>
+                        adjust behavior accordingly.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Execution speed?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Instant
-                                execution responses uncover strategy logic errors. Pace yourself or unwind positions
-                                when facing consecutive rejects and high pressure.</p>
+                                Instant Feedback.</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">
+                                Whenever you send an order to Match you receive instant feedback. Quickly uncover logic
+                                errors. Pace or unwind.</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Facing competition?</h4>
+                                Competition.</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Face
-                                multiple tiers of competition from built-in market players to external participants.
-                                Adapt your strategy behavior and risk management accordingly.</p>
+                                multiple tiers of competition from built-in functionality or external players.
+                                Adapt execution and risk management.</p>
                         </div>
                     </div>
                 </div>
@@ -708,6 +711,32 @@
                         }
                     });
                 }, 100);
+
+                // Prevent all dragging on sidebar icons and images
+                sidebarIcons.forEach(icon => {
+                    icon.addEventListener('dragstart', function (e) {
+                        e.preventDefault();
+                        return false;
+                    });
+
+                    icon.addEventListener('contextmenu', function (e) {
+                        e.preventDefault();
+                        return false;
+                    });
+
+                    const img = icon.querySelector('img');
+                    if (img) {
+                        img.addEventListener('dragstart', function (e) {
+                            e.preventDefault();
+                            return false;
+                        });
+
+                        img.addEventListener('contextmenu', function (e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                    }
+                });
             });
         </script>
     </body>

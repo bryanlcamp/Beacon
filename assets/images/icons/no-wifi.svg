@@ -1,0 +1,15 @@
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="25" fill="#101624" stroke="#6bb6ff" stroke-width="2.5"/>
+  <g>
+    <!-- WiFi arcs -->
+    <path d="M15 28c0-7.2 5.8-13 13-13s13 5.8 13 13" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+    <path d="M19 28c0-5 4-9 9-9s9 4 9 9" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+    <path d="M23 28c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#6bb6ff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+
+    <!-- WiFi signal point -->
+    <circle cx="28" cy="28" r="1.5" fill="#6bb6ff" opacity="0.4"/>
+
+    <!-- Clean diagonal strikethrough -->
+    <line x1="17" y1="39" x2="39" y2="17" stroke="#6bb6ff" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>
