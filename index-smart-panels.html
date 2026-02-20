@@ -113,15 +113,6 @@
                 filter: brightness(1.05);
             }
 
-            /* Prevent visited link color changes for contact links */
-            a[href*="mailto:"]:visited {
-                color: var(--color-orange) !important;
-            }
-
-            a[href*="mailto:"]:hover {
-                opacity: 1 !important;
-            }
-
             .tagline {
                 color: var(--color-blue);
                 font-weight: 900;
@@ -169,7 +160,7 @@
             /* Tracking line */
             .tracking-line {
                 position: absolute;
-                left: 62px;
+                left: 75px;
                 width: 3px;
                 height: 44px;
                 background: linear-gradient(180deg, rgba(107, 182, 255, 0.8), rgba(107, 182, 255, 0.4));
@@ -229,8 +220,6 @@
                 opacity: 0;
                 transition: opacity 0.3s ease;
                 pointer-events: none;
-                overflow: hidden;
-                box-sizing: border-box;
             }
 
             .panel-content.active {
@@ -280,50 +269,42 @@
                     <div class="tracking-line" id="tracking-line"></div>
 
                     <div class="apps-container"
-                        style="display: flex; flex-direction: column; gap: 1.2em; flex-grow: 1; justify-content: flex-start; max-height: 85vh; overflow-y: auto; transition: all 0.3s ease; padding-bottom: 0.2em;">
+                        style="display: flex; flex-direction: column; gap: 1.2em; flex-grow: 1; justify-content: flex-start; max-height: 85vh; overflow-y: auto; transition: all 0.3s ease; padding-bottom: 0.5em;">
 
                         <!-- Info Icon -->
                         <div class="info-container"
-                            style="display: flex; align-items: center; justify-content: center; margin: 0.8em 0 0.2em 0;">
+                            style="display: flex; align-items: center; justify-content: center; margin: 0.8em 0 0.4em 0;">
                             <div style="width: 40px; height: 40px; border: 3px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; font-size: 1.1em; font-weight: 700; cursor: pointer; color: var(--color-orange); text-shadow: var(--glow-orange); box-shadow: 0 0 8px rgba(255, 145, 77, 0.12); transition: all 0.3s ease;"
-                                class="info-icon sidebar-icon" data-app="info">i</div>
+                                class="info-icon">i</div>
                         </div>
 
                         <!-- Gradient Separator -->
                         <div
-                            style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.2em auto 0.6em auto; border-radius: 0.5px;">
+                            style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 1.2em auto 0.8em auto; border-radius: 0.5px;">
                         </div>
 
                         <!-- App Icons Section -->
                         <div class="app-icons-section" id="app-icons-section"
-                            style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0; display: flex; flex-direction: column; align-items: center; user-select: none;">
+                            style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0.4em 0;">
 
-                            <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
-                                data-app="author">
+                            <div class="sidebar-icon" tabindex="0" style="margin: 0.6em 0;" data-app="author">
                                 <img src="/assets/images/icons/dataset.svg" alt="Author."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
-                                data-app="pulse">
+                            <div class="sidebar-icon" tabindex="0" style="margin: 0.6em 0;" data-app="pulse">
                                 <img src="/assets/images/icons/playback.svg" alt="Pulse."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
-                                data-app="strategy">
+                            <div class="sidebar-icon" tabindex="0" style="margin: 0.6em 0;" data-app="strategy">
                                 <img src="/assets/images/icons/puzzle.svg" alt="Strategy."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false"
-                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
-                                data-app="match">
+                            <div class="sidebar-icon" tabindex="0" style="margin: 0.6em 0;" data-app="match">
                                 <img src="/assets/images/icons/match.svg" alt="Match."
-                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
+                                    style="width:44px;height:44px;" />
                             </div>
                         </div>
                         <!-- End App Icons Section -->
@@ -332,40 +313,39 @@
             </div>
         </div>
 
-        <!-- Detail Panel positioned for equal spacing -->
-        <div class="detail-panel" id="smart-info-panel"
-            style="position: fixed; bottom: 2.5em; left: calc(100vw + 400px); width: 400px; height: 435px; background: linear-gradient(180deg, #101624 85%, #181f2e 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); padding: 2.5em; color: var(--color-white); font-family: var(--font-body); opacity: 0; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none; box-sizing: border-box; overflow-y: auto;">
-            <div class="panel-content-container" style="position: relative; width: 100%; height: 100%;">
+        <!-- Smart Info Panel -->
+        <div class="smart-info-panel" id="smart-info-panel">
+            <div class="panel-content-container">
 
                 <!-- Author content -->
                 <div class="panel-content" id="author-content">
                     <div style="position: relative;">
+                        <a href="/apps/author/" class="explore-link"
+                            style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10; text-decoration: none;">Explore
+                            →</a>
                         <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Author.</h2>
                     </div>
                     <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
-                        Create Market Datasets.</h3>
-                    <p
-                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Beacon allows you to train your strategy with datasets that you create. Choose from multiple
-                        options and store data in exchange format.</p>
+                        Dataset Creation & Market Generation</h3>
+                    <p style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em;">Create
+                        realistic market scenarios from configurable parameters rather than replaying historical
+                        sequences.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Expecting chaos?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Be
-                                prepared. Control individual spread behavior, volatility, and market trends.
-                                Change products; hedge accordingly.</p>
+                                Configurable Parameters</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Control spread behaviors,
+                                volatility regimes, and microstructure dynamics</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Recent Pattern?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Enter
-                                recent prices as a baseline. Then use one slider to adjust all products instantly. Save
-                                time and avoid typos!</p>
+                                Exchange Formats</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Export in CME, NASDAQ, NYSE
+                                formats with realistic participant behaviors</p>
                         </div>
                     </div>
                 </div>
@@ -373,30 +353,31 @@
                 <!-- Pulse content -->
                 <div class="panel-content" id="pulse-content">
                     <div style="position: relative;">
+                        <a href="/apps/pulse/" class="explore-link"
+                            style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10; text-decoration: none;">Explore
+                            →</a>
                         <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Pulse.</h2>
                     </div>
                     <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
-                        Broadcast Market Datasets.</h3>
-                    <p
-                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Broadcast market data with precise timing control. Control playback speeds and simulate market
-                        disrupting behavior.</p>
+                        Market Data Broadcasting</h3>
+                    <p style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em;">Broadcast
+                        market data with precise timing that mirrors real exchange infrastructure.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Real-time data?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Play
-                                datasets at any speed, with dropped malformed, corrupt packets. Hardware
-                                timestamps. Native protocols. Be ready.</p>
+                                Real-time Broadcasting</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Multicast UDP with
+                                exchange-accurate timing precision</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Market stress?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Crank up playback speed. Add more products and bursty periods. Note your strategy price queue for packet drops.</p>
+                                Network Simulation</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Inject liquidity gaps and
+                                test dropped packet scenarios</p>
                         </div>
                     </div>
                 </div>
@@ -404,32 +385,31 @@
                 <!-- Strategy content -->
                 <div class="panel-content" id="strategy-content">
                     <div style="position: relative;">
+                        <a href="/apps/strategy/" class="explore-link"
+                            style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10; text-decoration: none;">Explore
+                            →</a>
                         <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Strategy.</h2>
                     </div>
                     <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
-                        Algorithm Framework.</h3>
-                    <p
-                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Execute trading algorithms through clean C++ APIs designed for performance-critical
-                        applications. Same code transitions seamlessly from simulation to live execution.</p>
+                        Ultra-Low Latency Execution</h3>
+                    <p style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em;">Execute trading
+                        algorithms with 3.1μs P99 platform latency.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Need clean APIs?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Clean
-                                C++ interface for market data and order submission. Designed for professional
-                                algorithmic trading applications.</p>
+                                Strategy API</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Clean C++ interface for
+                                market data and order submission</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Worried about latency?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Same
-                                code runs in simulation and live markets. Deploy strategies with confidence knowing
-                                simulation results translate directly to production environments.</p>
+                                Live Transition</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Same code runs in simulation
+                                and live markets</p>
                         </div>
                     </div>
                 </div>
@@ -437,57 +417,32 @@
                 <!-- Match content -->
                 <div class="panel-content" id="match-content">
                     <div style="position: relative;">
+                        <a href="/apps/match/" class="explore-link"
+                            style="position: absolute; right: 0; top: 0; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 10; text-decoration: none;">Explore
+                            →</a>
                         <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Match.</h2>
                     </div>
                     <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
-                        Competitive Execution.</h3>
-                    <p
-                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Face competition where market predators compete for the same liquidity. Recognize instantly and
-                        adjust strategy behavior when needed.</p>
+                        Competitive Execution Simulation</h3>
+                    <p style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em;">Simulate
+                        realistic order execution with venue latency and competition.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Execution speed?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Instant
-                                execution responses uncover strategy logic errors. Pace yourself or unwind positions
-                                when facing consecutive rejects and high pressure.</p>
+                                Venue Simulation</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Realistic latency, partial
+                                fills, and order book dynamics</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Facing competition?</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Face
-                                multiple tiers of competition from built-in market players to external participants.
-                                Adapt your strategy behavior and risk management accordingly.</p>
+                                Multi-Strategy Testing</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4;">Support multiple strategy
+                                connections with stress testing</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Info content -->
-                <div class="panel-content" id="info-content">
-                    <div style="position: relative;">
-                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Contact Us.</h2>
-                    </div>
-                    <h3 style="color: var(--color-orange); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">We
-                        value your feedback.</h3>
-                    <p
-                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Our goal is to provide realistic market data while allowing you to override key behaviors. We
-                        focus on intuitive interfaces and competitive execution. If you have questions, ideas for
-                        improvement, or find any bugs please let us know.</p>
-                    <div style="text-align: center; margin: 2em 0;">
-                        <a href="mailto:contact@beaconhft.com"
-                            style="color: var(--color-orange); font-size: 1.1em; text-decoration: none; font-weight: 600; background: rgba(255, 145, 77, 0.1); padding: 0.8em 1.5em; border-radius: 8px; border: 1px solid rgba(255, 145, 77, 0.3); display: inline-block;">contact@beaconhft.com</a>
-                    </div>
-
-                    <div style="position: absolute; bottom: 0.8em; right: 0.8em;">
-                        <a href="mailto:newuser@beaconhft.com?subject=New%20User%20Inquiry%20-%20from%20Contact%20Panel&body=Hi,%0A%0A[Your%20message%20here]%0A%0A---%0ASent%20from:%20Contact%20Panel%20-%20%22New%20to%20Beacon%22%20link%0APage:%20beaconhft.com"
-                            style="color: var(--color-orange); font-size: 0.8em; text-decoration: none; font-weight: 500; opacity: 0.8; transition: opacity 0.3s ease;">New
-                            to Beacon? →</a>
                     </div>
                 </div>
             </div>
@@ -506,50 +461,6 @@
                 let currentIcon = null;
                 let isActive = false;
                 let hoverTimeout = null;
-                let mouseX = 0;
-                let mouseY = 0;
-
-                // Track mouse position
-                document.addEventListener('mousemove', function (e) {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                });
-
-                // Calculate distance between mouse and icon center
-                function getDistanceToIcon(icon) {
-                    const rect = icon.getBoundingClientRect();
-                    const iconCenterX = rect.left + rect.width / 2;
-                    const iconCenterY = rect.top + rect.height / 2;
-                    return Math.sqrt(Math.pow(mouseX - iconCenterX, 2) + Math.pow(mouseY - iconCenterY, 2));
-                }
-
-                // Find closest icon to mouse position
-                function getClosestIcon() {
-                    let closest = null;
-                    let minDistance = Infinity;
-
-                    sidebarIcons.forEach(icon => {
-                        const distance = getDistanceToIcon(icon);
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            closest = icon;
-                        }
-                    });
-
-                    return closest;
-                }
-
-                // Check if mouse is over icon bar area (including some padding)
-                function isOverIconBarArea() {
-                    const sidebar = document.querySelector('.sidebar-panel');
-                    const rect = sidebar.getBoundingClientRect();
-                    const padding = 20; // Extra padding around icon bar
-
-                    return mouseX >= rect.left - padding &&
-                        mouseX <= rect.right + padding &&
-                        mouseY >= rect.top - padding &&
-                        mouseY <= rect.bottom + padding;
-                }
 
                 // Calculate icon positions for tracking line
                 function getIconPosition(icon) {
@@ -576,14 +487,17 @@
                     if (!isActive) {
                         isActive = true;
 
-                        // Calculate position with proper spacing to avoid overlap
-                        const sidebar = document.querySelector('.sidebar');
-                        const sidebarRect = sidebar.getBoundingClientRect();
-                        const targetLeft = sidebarRect.right + 32; // 32px gap from sidebar
-
-                        smartPanel.style.opacity = '1';
-                        smartPanel.style.left = targetLeft + 'px';
-                        smartPanel.style.pointerEvents = 'auto';
+                        if (fromDeadSpace) {
+                            // Dramatic slide from dead space
+                            smartPanel.classList.remove('subtle-move');
+                            smartPanel.classList.add('visible');
+                        } else {
+                            // Subtle movement when already active
+                            smartPanel.classList.add('subtle-move');
+                            if (!smartPanel.classList.contains('visible')) {
+                                smartPanel.classList.add('visible');
+                            }
+                        }
                     }
                 }
 
@@ -592,9 +506,7 @@
                     currentApp = null;
                     currentIcon = null;
 
-                    smartPanel.style.opacity = '0';
-                    smartPanel.style.left = 'calc(100vw + 400px)';
-                    smartPanel.style.pointerEvents = 'none';
+                    smartPanel.classList.remove('visible');
                     trackingLine.style.opacity = '0';
 
                     // Hide all content
@@ -638,36 +550,17 @@
                             }
                         }
                     });
-                });
 
-                // Add global mouse movement handler for icon bar area
-                document.addEventListener('mousemove', function () {
-                    if (isOverIconBarArea()) {
+                    icon.addEventListener('mouseleave', function () {
                         clearTimeout(hoverTimeout);
 
-                        const closestIcon = getClosestIcon();
-                        if (closestIcon && closestIcon.dataset.app) {
-                            if (currentIcon !== closestIcon) {
-                                // Switch to closest icon's content
-                                moveTrackingLine(closestIcon);
-                                showContent(closestIcon.dataset.app);
-                                if (!isActive) {
-                                    showPanel(true);
-                                }
-                                currentIcon = closestIcon;
+                        // Start hide timer
+                        hoverTimeout = setTimeout(() => {
+                            if (!smartPanel.matches(':hover') && !icon.matches(':hover')) {
+                                hidePanel();
                             }
-                        }
-                    } else {
-                        // Mouse left icon bar area - start hide timer
-                        if (isActive && !smartPanel.matches(':hover')) {
-                            clearTimeout(hoverTimeout);
-                            hoverTimeout = setTimeout(() => {
-                                if (!isOverIconBarArea() && !smartPanel.matches(':hover')) {
-                                    hidePanel();
-                                }
-                            }, 400);
-                        }
-                    }
+                        }, 300);
+                    });
                 });
 
                 // Keep panel open when hovering it
@@ -676,13 +569,7 @@
                 });
 
                 smartPanel.addEventListener('mouseleave', function () {
-                    clearTimeout(hoverTimeout);
-                    // Only hide if also not over icon bar area
-                    hoverTimeout = setTimeout(() => {
-                        if (!isOverIconBarArea()) {
-                            hidePanel();
-                        }
-                    }, 400);
+                    hidePanel();
                 });
 
                 // Orange glow on app icons section when hovering explore link
@@ -694,20 +581,6 @@
                         appIconsSection.classList.remove('apps-glow');
                     });
                 }
-
-                // Check if mouse is already hovering over an icon on page load
-                setTimeout(() => {
-                    sidebarIcons.forEach(icon => {
-                        if (icon.matches(':hover')) {
-                            const appType = icon.dataset.app;
-                            if (appType) {
-                                moveTrackingLine(icon);
-                                showContent(appType);
-                                showPanel(true);
-                            }
-                        }
-                    });
-                }, 100);
             });
         </script>
     </body>
