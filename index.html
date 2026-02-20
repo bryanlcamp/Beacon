@@ -296,26 +296,34 @@
 
                         <!-- App Icons Section -->
                         <div class="app-icons-section" id="app-icons-section"
-                            style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0;">
+                            style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0; display: flex; flex-direction: column; align-items: center; user-select: none;">
 
-                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="author">
+                            <div class="sidebar-icon" draggable="false"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                data-app="author">
                                 <img src="/assets/images/icons/dataset.svg" alt="Author."
-                                    style="width:44px;height:44px;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="pulse">
+                            <div class="sidebar-icon" draggable="false"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                data-app="pulse">
                                 <img src="/assets/images/icons/playback.svg" alt="Pulse."
-                                    style="width:44px;height:44px;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="strategy">
+                            <div class="sidebar-icon" draggable="false"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                data-app="strategy">
                                 <img src="/assets/images/icons/puzzle.svg" alt="Strategy."
-                                    style="width:44px;height:44px;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
                             </div>
 
-                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="match">
+                            <div class="sidebar-icon" draggable="false"
+                                style="margin: 0.6em 0; user-select: none; pointer-events: auto; display: flex; justify-content: center;"
+                                data-app="match">
                                 <img src="/assets/images/icons/match.svg" alt="Match."
-                                    style="width:44px;height:44px;" />
+                                    style="width:44px;height:44px; user-select: none; pointer-events: none;" />
                             </div>
                         </div>
                         <!-- End App Icons Section -->
@@ -371,31 +379,26 @@
                         Broadcast Market Datasets.</h3>
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Broadcast
-                        market data with precise timing that mirrors real exchange infrastructure. Multiple protocol
-                        options available. Configurable latency profiles.
-                        Protocol testing built-in.</p>
+                        Broadcast market data with precise timing control. Control playback speeds and simulate market
+                        disrupting behavior.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Real-time Broadcasting</h4>
-                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">
-                                Multicast UDP with
-                                exchange-accurate timing precision. Test network conditions and packet delivery
-                                scenarios thoroughly.</p>
+                                Real-time data?</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Market
+                                feeds with precise timestamps. Replay at different speeds. Observe strategy behavior
+                                under burst scenarios and volume spikes.</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Network Simulation</h4>
+                                Market stress?</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Inject
-                                liquidity gaps
-                                and
-                                test dropped packet scenarios. Simulate exchange outages and network congestion
-                                behavior. Control market disruption patterns completely.</p>
+                                feed gaps during critical moments. Drop packets before earnings announcements. Watch
+                                your strategy handle exchange outages and recovery scenarios.</p>
                         </div>
                     </div>
                 </div>
@@ -409,31 +412,26 @@
                         Algorithm Framework.</h3>
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Execute
-                        trading
-                        algorithms through clean C++ APIs designed for performance-critical applications. Same code
-                        transitions from simulation to live execution. No latency surprises.</p>
+                        Execute trading algorithms through clean C++ APIs designed for performance-critical
+                        applications. Same code transitions from simulation to live execution.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Strategy API</h4>
+                                Need clean APIs?</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Clean
-                                C++ interface for
-                                market data and order submission. Designed for professional algorithmic trading
-                                applications.</p>
+                                C++ interface for market data and order submission. Designed for professional
+                                algorithmic trading applications.</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Live Transition</h4>
+                                Worried about latency?</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Same
-                                code runs in
-                                simulation
-                                and live markets. Deploy strategies with confidence knowing simulation results translate
-                                directly to production trading environments.</p>
+                                code runs in simulation and live markets. Deploy strategies with confidence knowing
+                                simulation results translate directly to production environments.</p>
                         </div>
                     </div>
                 </div>
@@ -447,29 +445,26 @@
                         Competitive Execution.</h3>
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Face
-                        competition where market predators compete for the same liquidity. Recognize instantly, and
-                        adjust strategy behavior. Notice consecutive rejects and pace yourself to avoid risk
-                        constraints.</p>
+                        Face competition where market predators compete for the same liquidity. Recognize instantly and
+                        adjust strategy behavior when needed.</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Responsive Matching</h4>
+                                Getting filled too slow?</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Instant
-                                execution responses
-                                uncover strategy
-                                logic errors. Pace yourself or unwind your positions.</p>
+                                execution responses uncover strategy logic errors. Pace yourself or unwind your
+                                positions when facing consecutive rejects.</p>
                         </div>
                         <div
                             style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
                             <h4
                                 style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
-                                Layered Competition</h4>
+                                Competing against others?</h4>
                             <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Face
-                                multiple tiers of
-                                competition - from built-in market players to other external participants.</p>
+                                multiple tiers of competition from built-in market players to other external
+                                participants. Adapt your strategy accordingly.</p>
                         </div>
                     </div>
                 </div>
@@ -483,10 +478,9 @@
                         value your feedback.</h3>
                     <p
                         style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
-                        Our goal is to
-                        provide realistic market data, while allowing you to override key behaviors. Intuitive UIs.
-                        Competitive execution.<br><br>If you
-                        have questions, ideas for improvement or find any bugs, please let us know. </p>
+                        Our goal is to provide realistic market data while allowing you to override key behaviors. We
+                        focus on intuitive interfaces and competitive execution. If you have questions, ideas for
+                        improvement, or find any bugs please let us know.</p>
                     <div style="text-align: center; margin: 2em 0;">
                         <a href="mailto:contact@beaconhft.com"
                             style="color: var(--color-orange); font-size: 1.1em; text-decoration: none; font-weight: 600; background: rgba(255, 145, 77, 0.1); padding: 0.8em 1.5em; border-radius: 8px; border: 1px solid rgba(255, 145, 77, 0.3); display: inline-block;">contact@beaconhft.com</a>
