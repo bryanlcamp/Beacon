@@ -4,410 +4,720 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Beacon</title>
-
-        <!-- Essential CSS Files Only -->
+        <title>Beacon - Smart Panels</title>
         <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
         <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
-        <link rel="stylesheet" href="/assets/css/beacon-main.css">
+
+        <!-- Reusable Components -->
+        <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+        <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+        <link rel="stylesheet" href="/assets/css/components/typography.css">
+        <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+        <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+
+        <!-- Page-specific styles -->
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-author-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-pulse-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-core-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-match-panel.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-layout.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+
+        <style>
+            :root {
+                /* Fonts */
+                --font-logo: 'Electrolize', sans-serif;
+                --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+                /* Colors */
+                --color-orange: #ff914d;
+                --color-blue: #6bb6ff;
+                --color-white: #fff;
+                --color-gray: rgba(200, 200, 200, 1);
+
+                /* Text Effects */
+                --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
+                --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+                --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
+                --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+
+                /* Spacing */
+                --spacing-sm: 0.4em;
+                --spacing-md: 1.2em;
+                --spacing-lg: 1.5em;
+            }
+
+            /* Base Font Assignments */
+            body {
+                font-family: var(--font-body);
+            }
+
+            h1,
+            h2,
+            h3,
+            .title {
+                font-family: var(--font-body);
+                color: var(--color-white);
+                font-weight: 900;
+                letter-spacing: -0.03em;
+                margin: 0 0 var(--spacing-sm) 0;
+                margin-bottom: 0.01em;
+            }
+
+            .title {
+                font-size: 1.6em;
+            }
+
+            /* Base Classes */
+            .logo-text {
+                font-family: var(--font-logo);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                font-weight: 700;
+                transition: all 0.3s ease;
+            }
+
+            .logo-text:hover {
+                text-shadow: var(--glow-orange-hover);
+                filter: brightness(1.05);
+            }
+
+            .explore-link {
+                font-family: var(--font-logo);
+                color: var(--color-blue);
+                text-shadow: var(--glow-blue);
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .explore-link:hover {
+                text-shadow: var(--glow-blue-hover);
+                filter: brightness(1.05);
+            }
+
+            .main-explore-link {
+                font-family: var(--font-body);
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange);
+                transition: all 0.3s ease;
+                text-decoration: none;
+                text-align: right;
+                display: block;
+                font-weight: 600;
+                font-size: 1.4em;
+            }
+
+            .main-explore-link:hover {
+                text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+                filter: brightness(1.05);
+            }
+
+            /* Prevent visited link color changes for contact links */
+            a[href*="mailto:"]:visited {
+                color: var(--color-orange) !important;
+            }
+
+            a[href*="mailto:"]:hover {
+                opacity: 1 !important;
+            }
+
+            .tagline {
+                color: var(--color-blue);
+                font-weight: 900;
+                font-size: 2em;
+                padding-top: 0.3em;
+                margin-bottom: 1.5em;
+                text-shadow: var(--glow-blue);
+            }
+
+            /* Sidebar icon glow effects */
+            .sidebar .sidebar-icon {
+                box-shadow: 0 0 16px rgba(107, 182, 255, 0.25);
+                position: relative;
+                cursor: pointer;
+            }
+
+            .sidebar .sidebar-icon:hover {
+                box-shadow: 0 0 24px rgba(107, 182, 255, 0.5);
+            }
+
+            .sidebar .sidebar-icon img {
+                display: block;
+                transition: none;
+            }
+
+            /* Orange glow effect for just the app icons section when hovering explore link */
+            .app-icons-section.apps-glow {
+                border-radius: 16px;
+                box-shadow:
+                    inset 0 0 8px rgba(255, 145, 77, 0.08),
+                    0 0 12px rgba(255, 145, 77, 0.25),
+                    0 0 20px rgba(255, 145, 77, 0.15),
+                    0 0 28px rgba(255, 145, 77, 0.08) !important;
+                border: 1px solid rgba(255, 145, 77, 0.2) !important;
+                background: rgba(255, 145, 77, 0.04);
+                transition: all 0.3s ease;
+            }
+
+            /* Info icon hover effect */
+            .info-icon:hover {
+                box-shadow: 0 0 14px rgba(255, 145, 77, 0.25);
+                text-shadow: var(--glow-orange-hover);
+            }
+
+            /* Tracking line */
+            .tracking-line {
+                position: absolute;
+                left: 62px;
+                width: 3px;
+                height: 44px;
+                background: linear-gradient(180deg, rgba(107, 182, 255, 0.8), rgba(107, 182, 255, 0.4));
+                border-radius: 2px;
+                box-shadow: 0 0 8px rgba(107, 182, 255, 0.4);
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+                z-index: 50;
+            }
+
+            /* Smart info panel */
+            .smart-info-panel {
+                position: fixed;
+                top: 20vh;
+                right: 4vw;
+                width: 35vw;
+                height: 40vh;
+                background: linear-gradient(180deg, #101624 85%, #181f2e 100%);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-radius: 16px;
+                box-shadow: -8px 0 40px rgba(80, 120, 200, 0.25), 0 8px 40px rgba(80, 120, 200, 0.15);
+                padding: 2.5em;
+                color: var(--color-white);
+                font-family: var(--font-body);
+                z-index: 10001;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+                pointer-events: none;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+
+            .smart-info-panel.visible {
+                opacity: 1;
+                transform: translateX(0);
+                pointer-events: auto;
+            }
+
+            .smart-info-panel.subtle-move {
+                transition: all 0.3s ease;
+            }
+
+            .panel-content-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            .panel-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+                overflow: hidden;
+                box-sizing: border-box;
+            }
+
+            .panel-content.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        </style>
     </head>
 
-    <body>
-        <!-- Decorative elements -->
-        <div style="width: 3px; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 50%;"></div>
+    <body style="overflow-x: hidden;">
         <div
-            style="position: fixed; bottom: 26.5em; left: 44.5%; transform: translateX(-50%); width: 100px; height: 1px; background: rgba(107, 182, 255, 0.08); z-index: 10000;">
-        </div>
-
-        <!-- Main Layout Container -->
-        <main
-            style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display: flex; align-items: flex-end; gap: 1.5em; max-width: calc(100vw - 5em); box-sizing: border-box;">
-
-            <!-- Fixed Main Content (Your Core Message - Never Changes) -->
-            <section class="main-content">
+            style="position: fixed; bottom: 2.5em; left: 2.5em; right: 2.5em; display:flex;align-items:flex-end;gap:1.5em; max-width:calc(100vw - 5em);box-sizing:border-box;">
+            <!-- Main Landing Page -->
+            <div class="main-content">
                 <div class="main-glass-panel"
-                    style="box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03);">
-                    <header>
-                        <h1 class="title" style="font-size: 3.5em; margin: 0;">Beacon.</h1>
-                        <p class="tagline">Wall Street speed. Airplane mode.</p>
-                    </header>
-
-                    <div class="main-desc" style="font-size: 1.05em; line-height: 1.6;">
-                        You understand the overfitting trap of historical data. Every strategy trained on the same March
-                        15th sequence learns the same March 15th quirks, not market behavior patterns.<br><br>
-
-                        Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday
-                        becomes fifty unique quiet Tuesdays. Your strategy learns market structure, not memorized
-                        sequences.<br><br>
-
-                        The conditions that break strategies aren't in textbooks—they're in the millisecond when three
-                        algos hit the same level. Beacon puts you there until you know how to react.<br><br>
-
-                        <a href="/wiki/system-overview.html" class="main-explore-link">Explore Beacon →</a>
+                    style="margin-top: 0; min-height: 420px; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="text-align:left; padding-top: 1.8em;">
+                        <h1 class="title" style="text-align:left; font-size: 3.5em; margin-bottom: 0.2em;">
+                            <span>Beacon.</span>
+                        </h1>
+                        <div class="tagline" style="text-align:left;">Wall Street speed. Airplane mode.</div>
                     </div>
-                </div>
-            </section>
-
-            <!-- Icon Sidebar -->
-            <aside class="sidebar">
-                <nav class="sidebar-panel"
-                    style="min-height: 340px; display: flex; flex-direction: column; justify-content: flex-start; width: 56px; box-shadow: 0 0 25px rgba(107, 182, 255, 0.18), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.03);">
-
-                    <!-- Info Icon -->
-                    <div class="info-container"
-                        style="display: flex; align-items: center; justify-content: center; margin: 0.4em 0;">
-                        <div
-                            style="width: 36px; height: 36px; border: 2px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;">
-                            <div class="info-icon">i</div>
+                    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div class="main-desc" style="text-align:left; font-size: 1.05em; margin-top: 1em;">
+                            You understand the overfitting trap of historical data. Every strategy trained on the same
+                            March 15th sequence learns the same March 15th quirks, not market behavior patterns.<br><br>
+                            Beacon generates realistic market scenarios from the patterns you specify. One quiet Tuesday
+                            becomes fifty unique quiet Tuesdays. Your strategy learns market structure, not memorized
+                            sequences.<br><br>
+                            The conditions that break strategies aren't in textbooks—they're in the millisecond when
+                            three algos hit the same level. Beacon puts you there until you know how to react.
+                        </div>
+                        <div style="margin-top: 2em; padding-bottom: 1.5em;">
+                            <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore
+                                Beacon →</span>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Gradient Separator -->
-                    <div
-                        style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.5em auto 1em auto; border-radius: 0.5px;">
-                    </div>
+            <!-- Sidebar with smart panels -->
+            <div class="sidebar">
+                <div class="sidebar-panel" id="sidebar-panel"
+                    style="margin-top: 0; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 14px; padding: 0.4em; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); width: 68px; transition: all 0.3s ease; position: relative;">
 
-                    <!-- App Icons -->
+                    <!-- Tracking line -->
+                    <div class="tracking-line" id="tracking-line"></div>
+
                     <div class="apps-container"
-                        style="display: flex; flex-direction: column; gap: 0.8em; flex-grow: 1; justify-content: space-evenly;">
+                        style="display: flex; flex-direction: column; gap: 1.2em; flex-grow: 1; justify-content: flex-start; max-height: 85vh; overflow-y: auto; transition: all 0.3s ease; padding-bottom: 0.2em;">
 
-                        <button class="sidebar-icon" data-app="author" style="margin: 0.4em 0;">
-                            <img src="/assets/images/icons/dataset.svg" alt="Author - Dataset Creation"
-                                style="width: 36px; height: 36px;">
-                        </button>
+                        <!-- Info Icon -->
+                        <div class="info-container"
+                            style="display: flex; align-items: center; justify-content: center; margin: 0.8em 0 0.2em 0;">
+                            <div style="width: 40px; height: 40px; border: 3px solid var(--color-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; font-size: 1.1em; font-weight: 700; cursor: pointer; color: var(--color-orange); text-shadow: var(--glow-orange); box-shadow: 0 0 8px rgba(255, 145, 77, 0.12); transition: all 0.3s ease;"
+                                class="info-icon sidebar-icon" data-app="info">i</div>
+                        </div>
 
-                        <button class="sidebar-icon" data-app="pulse" style="margin: 0.4em 0;">
-                            <img src="/assets/images/icons/playback.svg" alt="Pulse - Data Broadcasting"
-                                style="width: 36px; height: 36px;">
-                        </button>
+                        <!-- Gradient Separator -->
+                        <div
+                            style="width: 32px; height: 1px; background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.6), transparent); margin: 0.2em auto 0.6em auto; border-radius: 0.5px;">
+                        </div>
 
-                        <button class="sidebar-icon" data-app="core" style="margin: 0.4em 0;">
-                            <img src="/assets/images/icons/puzzle.svg" alt="Core - Strategy Execution"
-                                style="width: 36px; height: 36px;">
-                        </button>
+                        <!-- App Icons Section -->
+                        <div class="app-icons-section" id="app-icons-section"
+                            style="padding: 0.6em 0.4em; border-radius: 16px; margin: 0;">
 
-                        <button class="sidebar-icon" data-app="match" style="margin: 0.4em 0;">
-                            <img src="/assets/images/icons/match.svg" alt="Match - Execution Simulation"
-                                style="width: 36px; height: 36px;">
-                        </button>
+                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="author">
+                                <img src="/assets/images/icons/dataset.svg" alt="Author."
+                                    style="width:44px;height:44px;" />
+                            </div>
+
+                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="pulse">
+                                <img src="/assets/images/icons/playback.svg" alt="Pulse."
+                                    style="width:44px;height:44px;" />
+                            </div>
+
+                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="strategy">
+                                <img src="/assets/images/icons/puzzle.svg" alt="Strategy."
+                                    style="width:44px;height:44px;" />
+                            </div>
+
+                            <div class="sidebar-icon" draggable="false" style="margin: 0.6em 0;" data-app="match">
+                                <img src="/assets/images/icons/match.svg" alt="Match."
+                                    style="width:44px;height:44px;" />
+                            </div>
+                        </div>
+                        <!-- End App Icons Section -->
                     </div>
-                </nav>
-            </aside>
-        </main>
-
-        <!-- Right-Side Detail Panel (Hidden by default) -->
-        <aside id="detail-panel" class="detail-panel">
-            <div class="detail-content">
-                <!-- Static structure - only text content changes -->
-                <h2 id="detail-title" class="detail-title"><!-- Dynamic --></h2>
-                <p id="detail-subtitle" class="detail-subtitle"><!-- Dynamic --></p>
-                <p id="detail-description" class="detail-description"><!-- Dynamic --></p>
-
-                <section class="detail-section">
-                    <h3 class="detail-section-title">Key Capabilities</h3>
-                    <ul id="detail-features" class="detail-list">
-                        <!-- Dynamic content -->
-                    </ul>
-                </section>
-
-                <a id="detail-link" href="#" class="detail-link"><!-- Dynamic text --></a>
+                </div>
             </div>
-        </aside>
+        </div>
 
-        <!-- Info Panel (Contact/Navigation) -->
-        <aside id="info-panel" class="info-panel">
-            <div class="detail-content">
-                <h2 class="detail-title">About Beacon.</h2>
-                <p class="detail-subtitle">Navigation & Contact</p>
+        <!-- Detail Panel positioned for equal spacing -->
+        <div class="detail-panel" id="smart-info-panel"
+            style="position: fixed; bottom: 2.5em; left: calc(100vw + 400px); width: 400px; height: 435px; background: linear-gradient(180deg, #101624 85%, #181f2e 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); padding: 2.5em; color: var(--color-white); font-family: var(--font-body); opacity: 0; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none; box-sizing: border-box; overflow-y: auto;">
+            <div class="panel-content-container" style="position: relative; width: 100%; height: 100%;">
 
-                <section class="detail-section">
-                    <h3 class="detail-section-title">Quick Links</h3>
-                    <ul class="detail-list">
-                        <li><a href="mailto:bryan@beaconplatform.net" class="detail-link">Contact</a></li>
-                        <li><a href="/beacon-ecosystem/" class="detail-link">Ecosystem</a></li>
-                        <li><a href="/about.html" class="detail-link">About</a></li>
-                    </ul>
-                </section>
+                <!-- Author content -->
+                <div class="panel-content" id="author-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Author.</h2>
+                    </div>
+                    <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
+                        Create Market Datasets.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Beacon allows you to train your strategy with datasets that you create. Choose from multiple
+                        options and store data in exchange format.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Expecting chaos?</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Be
+                                prepared. Control individual spread behavior, volatility, and market trends. Change
+                                products; hedge accordingly.</p>
+                        </div>
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Recent Pattern?</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Enter
+                                recent prices as a baseline. Then use one slider to adjust all products instantly. Save
+                                time and avoid typos!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pulse content -->
+                <div class="panel-content" id="pulse-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Pulse.</h2>
+                    </div>
+                    <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
+                        Broadcast Market Datasets.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Broadcast
+                        market data with precise timing that mirrors real exchange infrastructure. Multiple protocol
+                        options available. Configurable latency profiles.
+                        Protocol testing built-in.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Real-time Broadcasting</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">
+                                Multicast UDP with
+                                exchange-accurate timing precision. Test network conditions and packet delivery
+                                scenarios thoroughly.</p>
+                        </div>
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Network Simulation</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Inject
+                                liquidity gaps
+                                and
+                                test dropped packet scenarios. Simulate exchange outages and network congestion
+                                behavior. Control market disruption patterns completely.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategy content -->
+                <div class="panel-content" id="strategy-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Strategy.</h2>
+                    </div>
+                    <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
+                        Algorithm Framework.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Execute
+                        trading
+                        algorithms through clean C++ APIs designed for performance-critical applications. Same code
+                        transitions from simulation to live execution. No latency surprises.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Strategy API</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Clean
+                                C++ interface for
+                                market data and order submission. Designed for professional algorithmic trading
+                                applications.</p>
+                        </div>
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Live Transition</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Same
+                                code runs in
+                                simulation
+                                and live markets. Deploy strategies with confidence knowing simulation results translate
+                                directly to production trading environments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Match content -->
+                <div class="panel-content" id="match-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Match.</h2>
+                    </div>
+                    <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
+                        Competitive Execution.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Face
+                        competition where market predators compete for the same liquidity. Recognize instantly, and
+                        adjust strategy behavior. Notice consecutive rejects and pace yourself to avoid risk
+                        constraints.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Responsive Matching</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Instant
+                                execution responses
+                                uncover strategy
+                                logic errors. Pace yourself or unwind your positions.</p>
+                        </div>
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Layered Competition</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Face
+                                multiple tiers of
+                                competition - from built-in market players to other external participants.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info content -->
+                <div class="panel-content" id="info-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Contact Us.</h2>
+                    </div>
+                    <h3 style="color: var(--color-orange); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">We
+                        value your feedback.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Our goal is to
+                        provide realistic market data, while allowing you to override key behaviors. Intuitive UIs.
+                        Competitive execution.<br><br>If you
+                        have questions, ideas for improvement or find any bugs, please let us know. </p>
+                    <div style="text-align: center; margin: 2em 0;">
+                        <a href="mailto:contact@beaconhft.com"
+                            style="color: var(--color-orange); font-size: 1.1em; text-decoration: none; font-weight: 600; background: rgba(255, 145, 77, 0.1); padding: 0.8em 1.5em; border-radius: 8px; border: 1px solid rgba(255, 145, 77, 0.3); display: inline-block;">contact@beaconhft.com</a>
+                    </div>
+
+                    <div style="position: absolute; bottom: 0.8em; right: 0.8em;">
+                        <a href="mailto:newuser@beaconhft.com?subject=New%20User%20Inquiry%20-%20from%20Contact%20Panel&body=Hi,%0A%0A[Your%20message%20here]%0A%0A---%0ASent%20from:%20Contact%20Panel%20-%20%22New%20to%20Beacon%22%20link%0APage:%20beaconhft.com"
+                            style="color: var(--color-orange); font-size: 0.8em; text-decoration: none; font-weight: 500; opacity: 0.8; transition: opacity 0.3s ease;">New
+                            to Beacon? →</a>
+                    </div>
+                </div>
             </div>
-        </aside>
+        </div>
 
         <script>
-            // Beacon namespace - clean organization
-            const Beacon = {
-                // App content data (your preserved text)
-                apps: {
-                    author: {
-                        title: "Author.",
-                        subtitle: "Dataset Creation & Market Generation",
-                        description: "Create realistic market scenarios from configurable parameters rather than replaying historical sequences. Generate diverse market conditions that test strategy robustness without overfitting to specific dates or events.",
-                        features: [
-                            "Configure product counts and microstructure dynamics",
-                            "Control spread behaviors and volatility regimes",
-                            "Export in CME, NASDAQ, NYSE exchange formats",
-                            "Embed realistic participant behaviors and order flow patterns",
-                            "Generate trending, ranging, and stress-test scenarios"
-                        ],
-                        link: "/apps/author/",
-                        linkText: "Launch Author"
-                    },
-                    pulse: {
-                        title: "Pulse.",
-                        subtitle: "Market Data Broadcasting & Distribution",
-                        description: "Broadcast market data with precise timing characteristics that mirror real exchange infrastructure. Strategies experience realistic network effects, processing delays, and delivery patterns during development.",
-                        features: [
-                            "Multicast UDP with exchange-accurate timing precision",
-                            "Inject liquidity gaps and simulate dropped packets",
-                            "Real-time strategy fill confirmations and trade reporting",
-                            "Configurable network stress testing and disaster scenarios",
-                            "Support for multiple simultaneous strategy connections"
-                        ],
-                        link: "/apps/pulse/",
-                        linkText: "Launch Pulse"
-                    },
-                    strategy: {
-                        title: "Strategy.",
-                        subtitle: "Ultra-Low Latency Algorithm Execution",
-                        description: "The execution engine where your trading algorithms run, delivering 3.1μs P99 platform latency that approaches tier-1 infrastructure performance. The same API used in development deploys directly to live markets.",
-                        features: [
-                            "Strategy API for receiving market data and submitting orders",
-                            "Real-time fill confirmations with realistic execution timing",
-                            "Optimized, thread-safe hot path for maximum performance",
-                            "Seamless transition from simulation to live trading",
-                            "Built-in risk management and position monitoring"
-                        ],
-                        link: "/apps/strategy/",
-                        linkText: "Launch Strategy"
-                    },
-                    match: {
-                        title: "Match.",
-                        subtitle: "Competitive Execution Simulation",
-                        description: "Simulate realistic order execution including venue latency, partial fills, and most importantly - competition from other strategies. Test how your algorithms perform when multiple participants compete for the same liquidity.",
-                        features: [
-                            "Expeditor feature for configurable liquidity consumption",
-                            "Support for multiple simultaneous strategy connections",
-                            "Realistic venue latency and execution quality simulation",
-                            "Trade message delivery coordination with market data",
-                            "Stress testing under various competitive scenarios"
-                        ],
-                        link: "/apps/match/",
-                        linkText: "Launch Match"
-                    }
-                },
+            // Smart panel system with intelligent motion
+            document.addEventListener('DOMContentLoaded', function () {
+                const smartPanel = document.getElementById('smart-info-panel');
+                const trackingLine = document.getElementById('tracking-line');
+                const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+                const exploreText = document.getElementById('explore-ecosystem');
+                const appIconsSection = document.getElementById('app-icons-section');
 
-                // UI state management
-                currentApp: null,
-                currentPanel: null,
-                hoverTimeout: null,
-                isAnimating: false,
+                let currentApp = null;
+                let currentIcon = null;
+                let isActive = false;
+                let hoverTimeout = null;
+                let mouseX = 0;
+                let mouseY = 0;
 
-                // Initialize the application
-                init() {
-                    this.bindEvents();
-                },
+                // Track mouse position
+                document.addEventListener('mousemove', function (e) {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
 
-                // Bind event listeners
-                bindEvents() {
-                    const sidebarIcons = document.querySelectorAll('.sidebar-icon[data-app]');
-                    const infoIcon = document.querySelector('.info-icon');
-                    const detailPanel = document.getElementById('detail-panel');
-                    const infoPanel = document.getElementById('info-panel');
-                    const sidebar = document.querySelector('.sidebar');
+                // Calculate distance between mouse and icon center
+                function getDistanceToIcon(icon) {
+                    const rect = icon.getBoundingClientRect();
+                    const iconCenterX = rect.left + rect.width / 2;
+                    const iconCenterY = rect.top + rect.height / 2;
+                    return Math.sqrt(Math.pow(mouseX - iconCenterX, 2) + Math.pow(mouseY - iconCenterY, 2));
+                }
 
-                    // App icon hover events
+                // Find closest icon to mouse position
+                function getClosestIcon() {
+                    let closest = null;
+                    let minDistance = Infinity;
+
                     sidebarIcons.forEach(icon => {
-                        const appName = icon.getAttribute('data-app');
-
-                        icon.addEventListener('mouseenter', () => {
-                            this.clearHoverTimeout();
-                            this.hoverTimeout = setTimeout(() => {
-                                this.showDetailPanel(appName);
-                            }, 200); // 200ms delay to prevent accidental triggers
-                        });
-
-                        icon.addEventListener('mouseleave', () => {
-                            this.clearHoverTimeout();
-                        });
-
-                        // Click events to navigate to app pages
-                        icon.addEventListener('click', () => {
-                            const app = this.apps[appName];
-                            if (app) {
-                                window.location.href = app.link;
-                            }
-                        });
-                    });
-
-                    // Info icon hover events
-                    if (infoIcon) {
-                        infoIcon.parentElement.addEventListener('mouseenter', () => {
-                            this.clearHoverTimeout();
-                            this.hoverTimeout = setTimeout(() => {
-                                this.showInfoPanel();
-                            }, 200);
-                        });
-
-                        infoIcon.parentElement.addEventListener('mouseleave', () => {
-                            this.clearHoverTimeout();
-                        });
-                    }
-
-                    // Hide panels when leaving sidebar
-                    sidebar.addEventListener('mouseleave', () => {
-                        this.clearHoverTimeout();
-                        this.hoverTimeout = setTimeout(() => {
-                            this.hidePanels();
-                        }, 100);
-                    });
-
-                    // Keep panels visible when hovering over them
-                    [detailPanel, infoPanel].forEach(panel => {
-                        if (panel) {
-                            panel.addEventListener('mouseenter', () => {
-                                this.clearHoverTimeout();
-                            });
-
-                            panel.addEventListener('mouseleave', () => {
-                                this.hidePanels();
-                            });
-                        }
-                    });
-                },
-
-                // Clear hover timeout
-                clearHoverTimeout() {
-                    if (this.hoverTimeout) {
-                        clearTimeout(this.hoverTimeout);
-                        this.hoverTimeout = null;
-                    }
-                },
-
-                // Show detail panel with app content
-                showDetailPanel(appName) {
-                    if (this.isAnimating || this.currentApp === appName) return;
-
-                    const app = this.apps[appName];
-                    if (!app) return;
-
-                    this.isAnimating = true;
-                    this.updateActiveStates(appName);
-
-                    // Hide info panel if visible
-                    this.hideInfoPanel();
-
-                    // If detail panel is already visible, just update content
-                    if (this.currentPanel === 'detail') {
-                        this.updateContent(app);
-                        this.currentApp = appName;
-                        this.isAnimating = false;
-                        return;
-                    }
-
-                    // Show detail panel for the first time
-                    this.updateContent(app);
-                    document.getElementById('detail-panel').classList.add('visible');
-                    this.currentApp = appName;
-                    this.currentPanel = 'detail';
-
-                    setTimeout(() => {
-                        this.isAnimating = false;
-                    }, 300);
-                },
-
-                // Show info panel
-                showInfoPanel() {
-                    if (this.isAnimating || this.currentPanel === 'info') return;
-
-                    this.isAnimating = true;
-
-                    // Hide detail panel if visible
-                    this.hideDetailPanel();
-
-                    document.getElementById('info-panel').classList.add('visible');
-                    this.currentPanel = 'info';
-                    this.updateActiveStates('info');
-
-                    setTimeout(() => {
-                        this.isAnimating = false;
-                    }, 300);
-                },
-
-                // Hide detail panel
-                hideDetailPanel() {
-                    if (this.currentPanel !== 'detail') return;
-
-                    document.getElementById('detail-panel').classList.remove('visible');
-                    this.currentApp = null;
-                    this.currentPanel = null;
-                },
-
-                // Hide info panel
-                hideInfoPanel() {
-                    if (this.currentPanel !== 'info') return;
-
-                    document.getElementById('info-panel').classList.remove('visible');
-                    this.currentPanel = null;
-                },
-
-                // Hide all panels
-                hidePanels() {
-                    if (this.isAnimating) return;
-
-                    this.isAnimating = true;
-                    this.hideDetailPanel();
-                    this.hideInfoPanel();
-                    this.updateActiveStates(null);
-
-                    setTimeout(() => {
-                        this.isAnimating = false;
-                    }, 300);
-                },
-
-                // Update panel content (static structure, dynamic text)
-                updateContent(app) {
-                    document.getElementById('detail-title').textContent = app.title;
-                    document.getElementById('detail-subtitle').textContent = app.subtitle;
-                    document.getElementById('detail-description').textContent = app.description;
-
-                    // Update features list
-                    const featuresList = document.getElementById('detail-features');
-                    featuresList.innerHTML = app.features.map(feature => `<li>${feature}</li>`).join('');
-
-                    // Update link
-                    const detailLink = document.getElementById('detail-link');
-                    detailLink.href = app.link;
-                    detailLink.textContent = app.linkText + ' →';
-                },
-
-                // Update active states for icons
-                updateActiveStates(activeItem) {
-                    const icons = document.querySelectorAll('.sidebar-icon[data-app]');
-                    icons.forEach(icon => {
-                        const appName = icon.getAttribute('data-app');
-                        if (appName === activeItem) {
-                            icon.classList.add('active');
-                        } else {
-                            icon.classList.remove('active');
+                        const distance = getDistanceToIcon(icon);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closest = icon;
                         }
                     });
 
-                    // Info icon state
-                    const infoIcon = document.querySelector('.info-icon');
-                    if (infoIcon) {
-                        if (activeItem === 'info') {
-                            infoIcon.parentElement.classList.add('active');
-                        } else {
-                            infoIcon.parentElement.classList.remove('active');
-                        }
+                    return closest;
+                }
+
+                // Check if mouse is over icon bar area (including some padding)
+                function isOverIconBarArea() {
+                    const sidebar = document.querySelector('.sidebar-panel');
+                    const rect = sidebar.getBoundingClientRect();
+                    const padding = 20; // Extra padding around icon bar
+
+                    return mouseX >= rect.left - padding &&
+                        mouseX <= rect.right + padding &&
+                        mouseY >= rect.top - padding &&
+                        mouseY <= rect.bottom + padding;
+                }
+
+                // Calculate icon positions for tracking line
+                function getIconPosition(icon) {
+                    const iconRect = icon.getBoundingClientRect();
+                    const sidebarRect = icon.closest('.sidebar-panel').getBoundingClientRect();
+                    return iconRect.top - sidebarRect.top + icon.offsetHeight / 2 - 22; // Center line on icon
+                }
+
+                function showContent(app) {
+                    // Hide all content
+                    const allContent = document.querySelectorAll('.panel-content');
+                    allContent.forEach(content => content.classList.remove('active'));
+
+                    // Show selected content
+                    const targetContent = document.getElementById(app + '-content');
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+
+                    currentApp = app;
+                }
+
+                function showPanel(fromDeadSpace = false) {
+                    if (!isActive) {
+                        isActive = true;
+
+                        // Calculate position with proper spacing to avoid overlap
+                        const sidebar = document.querySelector('.sidebar');
+                        const sidebarRect = sidebar.getBoundingClientRect();
+                        const targetLeft = sidebarRect.right + 32; // 32px gap from sidebar
+
+                        smartPanel.style.opacity = '1';
+                        smartPanel.style.left = targetLeft + 'px';
+                        smartPanel.style.pointerEvents = 'auto';
                     }
                 }
-            };
 
-            // Initialize when DOM is ready
-            document.addEventListener('DOMContentLoaded', () => {
-                Beacon.init();
+                function hidePanel() {
+                    isActive = false;
+                    currentApp = null;
+                    currentIcon = null;
+
+                    smartPanel.style.opacity = '0';
+                    smartPanel.style.left = 'calc(100vw + 400px)';
+                    smartPanel.style.pointerEvents = 'none';
+                    trackingLine.style.opacity = '0';
+
+                    // Hide all content
+                    const allContent = document.querySelectorAll('.panel-content');
+                    allContent.forEach(content => content.classList.remove('active'));
+                }
+
+                function moveTrackingLine(icon) {
+                    const position = getIconPosition(icon);
+                    trackingLine.style.top = position + 'px';
+                    trackingLine.style.opacity = '1';
+                    currentIcon = icon;
+                }
+
+                // Attach hover events to icons
+                sidebarIcons.forEach(icon => {
+                    const appType = icon.dataset.app;
+
+                    icon.addEventListener('mouseenter', function () {
+                        clearTimeout(hoverTimeout);
+
+                        const wasActive = isActive;
+                        const fromDeadSpace = !wasActive;
+
+                        if (appType) {
+                            // Update tracking line immediately
+                            moveTrackingLine(icon);
+
+                            // Show content
+                            showContent(appType);
+
+                            // Show panel with appropriate animation
+                            if (fromDeadSpace) {
+                                // Coming from dead space - dramatic entrance after timeout
+                                hoverTimeout = setTimeout(() => {
+                                    showPanel(true);
+                                }, 200);
+                            } else {
+                                // Already active - immediate subtle movement
+                                showPanel(false);
+                            }
+                        }
+                    });
+                });
+
+                // Add global mouse movement handler for icon bar area
+                document.addEventListener('mousemove', function () {
+                    if (isOverIconBarArea()) {
+                        clearTimeout(hoverTimeout);
+
+                        const closestIcon = getClosestIcon();
+                        if (closestIcon && closestIcon.dataset.app) {
+                            if (currentIcon !== closestIcon) {
+                                // Switch to closest icon's content
+                                moveTrackingLine(closestIcon);
+                                showContent(closestIcon.dataset.app);
+                                if (!isActive) {
+                                    showPanel(true);
+                                }
+                                currentIcon = closestIcon;
+                            }
+                        }
+                    } else {
+                        // Mouse left icon bar area - start hide timer
+                        if (isActive && !smartPanel.matches(':hover')) {
+                            clearTimeout(hoverTimeout);
+                            hoverTimeout = setTimeout(() => {
+                                if (!isOverIconBarArea() && !smartPanel.matches(':hover')) {
+                                    hidePanel();
+                                }
+                            }, 400);
+                        }
+                    }
+                });
+
+                // Keep panel open when hovering it
+                smartPanel.addEventListener('mouseenter', function () {
+                    clearTimeout(hoverTimeout);
+                });
+
+                smartPanel.addEventListener('mouseleave', function () {
+                    clearTimeout(hoverTimeout);
+                    // Only hide if also not over icon bar area
+                    hoverTimeout = setTimeout(() => {
+                        if (!isOverIconBarArea()) {
+                            hidePanel();
+                        }
+                    }, 400);
+                });
+
+                // Orange glow on app icons section when hovering explore link
+                if (exploreText && appIconsSection) {
+                    exploreText.addEventListener('mouseenter', function () {
+                        appIconsSection.classList.add('apps-glow');
+                    });
+                    exploreText.addEventListener('mouseleave', function () {
+                        appIconsSection.classList.remove('apps-glow');
+                    });
+                }
+
+                // Check if mouse is already hovering over an icon on page load
+                setTimeout(() => {
+                    sidebarIcons.forEach(icon => {
+                        if (icon.matches(':hover')) {
+                            const appType = icon.dataset.app;
+                            if (appType) {
+                                moveTrackingLine(icon);
+                                showContent(appType);
+                                showPanel(true);
+                            }
+                        }
+                    });
+                }, 100);
             });
         </script>
-
     </body>
 
 </html>
