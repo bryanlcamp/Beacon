@@ -166,6 +166,39 @@
                 text-shadow: var(--glow-orange-hover);
             }
 
+            /* Airplane mode text glow on no-wifi hover */
+            #no-wifi-icon:hover~div #airplane-mode-text {
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange-hover);
+                transition: all 0.3s ease;
+            }
+
+            #airplane-mode-text {
+                transition: all 0.3s ease;
+            }
+
+            /* Reverse interaction - airplane text hover makes icon orange */
+            #airplane-mode-text:hover {
+                color: var(--color-orange);
+                text-shadow: var(--glow-orange-hover);
+            }
+
+            /* Target the icon when airplane text is hovered */
+            .main-glass-panel:has(#airplane-mode-text:hover) #no-wifi-icon {
+                filter: drop-shadow(0 0 20px rgba(255, 145, 77, 0.6));
+                transition: all 0.3s ease;
+            }
+
+            #no-wifi-icon {
+                transition: all 0.3s ease;
+            }
+
+            /* Icon hover effect */
+            #no-wifi-icon:hover {
+                filter: drop-shadow(0 0 20px rgba(255, 145, 77, 0.6));
+                transition: all 0.3s ease;
+            }
+
             /* Tracking line */
             .tracking-line {
                 position: absolute;
@@ -246,16 +279,18 @@
             <!-- Main Landing Page -->
             <div class="main-content">
                 <div class="main-glass-panel"
-                    style="position: relative; margin-top: 0; min-height: 420px; box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                    style="position: relative; margin-top: 0; min-height: 420px; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); display: flex; flex-direction: column; justify-content: space-between;">
+                    <!-- Original: box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); -->
 
-                    <!-- Subtle airplane icon -->
-                    <img src="/assets/images/icons/airplane-mode.svg" alt=""
-                        style="position: absolute; bottom: 1em; left: 1.2em; width: 44px; height: 44px; opacity: 1.0; pointer-events: none;" />
+                    <!-- No wifi required icon -->
+                    <img src="/assets/images/icons/no-wifi.svg" alt="" id="no-wifi-icon"
+                        style="position: absolute; bottom: 1em; left: 1.2em; width: 44px; height: 44px; opacity: 1.0;" />
                     <div style="text-align:left; padding-top: 1.8em;">
                         <h1 class="title" style="text-align:left; font-size: 3.5em; margin-bottom: 0.2em;">
                             <span>Beacon.</span>
                         </h1>
-                        <div class="tagline" style="text-align:left;">Wall Street speed. Airplane mode.</div>
+                        <div class="tagline" style="text-align:left;">Wall Street speed. <span
+                                id="airplane-mode-text">Airplane mode.</span></div>
                     </div>
                     <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
                         <div class="main-desc" style="text-align:left; font-size: 1.05em; margin-top: 1em;">
@@ -268,7 +303,7 @@
                             three algos hit the same level. Beacon puts you there until you know how to react.
                         </div>
                         <div style="margin-top: 2em; padding-bottom: 1.5em;">
-                            <span id="explore-ecosystem" class="main-explore-link" style="cursor: pointer;">Explore
+                            <span id="explore-ecosystem" class="main-explore-link">Explore
                                 Beacon →</span>
                         </div>
                     </div>
