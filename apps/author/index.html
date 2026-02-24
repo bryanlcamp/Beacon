@@ -122,7 +122,7 @@
 
             .beacon-page-content {
                 max-width: 1400px;
-                margin: 2em auto;
+                margin: 0.25em auto 2em auto;
                 padding: 0 2em;
             }
 
@@ -544,8 +544,8 @@
         <!-- Adjust page content for demo banner -->
         <style>
             .beacon-page-content {
-                padding-top: 140px !important;
-                /* Account for demo banner */
+                padding-top: 0.5em !important;
+                /* Minimal space after demo banner */
             }
         </style>
 
@@ -579,26 +579,6 @@
                         <span class="nav-arrow">←</span>
                         <span>Home</span>
                     </a>
-                    <div class="utility-icons">
-                        <div class="utility-icon" id="infoIcon" style="position: relative;">
-                            <img src="/assets/images/icons/info-orange.svg" alt="Information"
-                                style="width:20px;height:20px;" />
-                            <div class="info-dropdown" id="infoDropdown"
-                                style="display:none;position:absolute;right:0;top:110%;min-width:120px;background:#181828;border:1.5px solid #ff914d;border-radius:8px;box-shadow:0 4px 16px 0 rgba(0,0,0,0.3);z-index:100;padding:0.5em 0;text-align:left;">
-                                <a href="mailto:contact@beaconhft.com"
-                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Contact</a>
-                                <a href="/command-center/about.html"
-                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">About</a>
-                            </div>
-                        </div>
-                        <div class="utility-icon" id="searchIcon" style="position: relative;">
-                            <img src="/assets/images/icons/search-orange.svg" alt="Search"
-                                style="width:20px;height:20px;" />
-                            <div class="search-dropdown" id="searchDropdown">
-                                <input type="text" class="search-input" placeholder="Search datasets, parameters..." />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </nav>
         </header>
@@ -619,47 +599,35 @@
 
                 <!-- Left Panel: Configuration -->
                 <section class="config-panel" aria-labelledby="config-panel-title">
-                    <!-- Dataset Creation Section -->
+                    <!-- Top Controls: Exchange and Symbol -->
                     <div class="config-section">
-                        <h2 class="section-title">Dataset Creation</h2>
-
-                        <!-- Format Dropdowns -->
                         <div class="form-group">
-                            <label for="outputFormat" class="input-label" style="text-align: left;">Format</label>
-                            <div style="display: flex; gap: 12px;">
-                                <select id="exchangeSelect" class="form-select" style="flex: 1;">
-                                    <option value="CME">CME</option>
-                                    <option value="NASDAQ">NASDAQ</option>
-                                    <option value="NYSE">NYSE</option>
-                                </select>
-                                <select id="outputFormat2" class="form-select" style="flex: 1;">
-                                    <option value="CME">CME</option>
-                                    <option value="NASDAQ">NASDAQ</option>
-                                    <option value="NYSE">NYSE</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Blue Separator -->
-                    <div class="section-separator"></div>
-
-                    <!-- Add Symbol Section -->
-                    <div class="config-section">
-                        <h3 class="section-title" style="font-size: 1.2em; margin-bottom: 1em;">Add Product</h3>
-                        <div class="form-group">
-                            <label for="symbolInput" class="input-label">Symbol</label>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="symbolInput" class="symbol-input"
-                                    placeholder="Enter symbol (e.g., MSFT)" style="flex: 1; text-transform: uppercase;">
-                                <button type="button" id="addSymbol" class="btn btn-secondary"
-                                    style="padding: 0.75em 1em;">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                </button>
+                            <div style="display: flex; gap: 16px; align-items: flex-end;">
+                                <div style="flex: 1;">
+                                    <label for="exchangeSelect" class="input-label">Exchange</label>
+                                    <select id="exchangeSelect" class="form-select exchange-select"
+                                        style="font-size: 1.1em; padding: 1em; height: 52px;">
+                                        <option value="CME">CME</option>
+                                        <option value="NASDAQ">NASDAQ</option>
+                                        <option value="NYSE">NYSE</option>
+                                    </select>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="symbolInput" class="input-label">Symbol</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="symbolInput" class="symbol-input"
+                                            placeholder="Enter symbol (e.g., MSFT)"
+                                            style="flex: 1; text-transform: uppercase; font-size: 1.1em; padding: 1em; height: 52px; box-sizing: border-box;">
+                                        <button type="button" id="addSymbol" class="btn btn-secondary"
+                                            style="padding: 1em; height: 52px; box-sizing: border-box;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1098,6 +1066,17 @@
                 const newAddBtn = addSymbolBtn.cloneNode(true);
                 addSymbolBtn.parentNode.replaceChild(newAddBtn, addSymbolBtn);
 
+                // Rule 5: Button State Management (inside scope)
+                function toggleAddButtonState() {
+                    const symbolValue = symbolInput.value.trim();
+                    const isEmpty = symbolValue.length === 0;
+
+                    // Disable button if input is empty
+                    newAddBtn.disabled = isEmpty;
+                    newAddBtn.style.opacity = isEmpty ? '0.5' : '1';
+                    newAddBtn.style.cursor = isEmpty ? 'not-allowed' : 'pointer';
+                }
+
                 newAddBtn.addEventListener('click', () => {
                     const symbol = symbolInput.value.trim().toUpperCase();
 
@@ -1140,19 +1119,28 @@
                     // Update display after adding
                     updateAllocationDisplay();
                     updateEmptyStateDisplay(); // Rule 2: Hide empty message when products exist
+                    toggleAddButtonState(); // Rule 5: Update button state after clearing input
                 }
                     });
 
             symbolInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    newAddBtn.click();
+                    // Only proceed if symbol is not empty
+                    const symbol = symbolInput.value.trim();
+                    if (symbol.length > 0) {
+                        newAddBtn.click();
+                    }
                 }
             });
 
-            // Rule 3: Capitalize symbol input in real-time
+            // Rule 3: Capitalize symbol input in real-time and manage button state
             symbolInput.addEventListener('input', (e) => {
                 capitalizeSymbolInput(e.target);
+                toggleAddButtonState(); // Rule 5: Update button state
             });
+
+            // Rule 5: Initialize button state
+            toggleAddButtonState();
             try {
                 console.log('🔄 Toggling advanced mode...');
 
