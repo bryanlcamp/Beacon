@@ -1,2 +1,13 @@
 scripts/utils/search/venv/
 *.tar.gz
+
+# Files that belong in other repositories
+beacon-core/
+ai/
+apps/strategy/example_strategy.cpp
+
+# Development artifacts  
+.DS_Store
+node_modules/
+*.log
+.env
