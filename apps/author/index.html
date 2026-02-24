@@ -746,8 +746,8 @@
                     <!-- Datacard container for dynamic datacards -->
                     <div id="datacardContainer" class="datacard-container"
                         style="margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 16px;">
-                        <!-- Empty container - products will be added dynamically -->
-                        <div
+                        <!-- Empty container message - hidden when products are added -->
+                        <div id="emptyProductsMessage"
                             style="grid-column: 1 / -1; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
                             No products added yet. Use the "Add Product" section to get started.
                         </div>
@@ -997,6 +997,7 @@
                     // Redistribute percentages after removal
                     redistributeCleanPercentages();
                     updateAllocationDisplay();
+                    updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
                 });
 
                 // Add percentage input validation
@@ -1046,89 +1047,150 @@
             window.createSimpleDataCard = window.createDetailedDatacard;
             window.createDataCard = window.createDetailedDatacard;
 
-            // Fallback symbol functionality if the main app fails
-            function setupFallbackSymbolInput() {
-                const symbolInput = document.getElementById('symbolInput');
-                const addSymbolBtn = document.getElementById('addSymbol');
-                const datacardContainer = document.getElementById('datacardContainer');
+            // =============================================================================
+            // VALIDATION RULES
+            // =============================================================================
 
-                if (symbolInput && addSymbolBtn && datacardContainer) {
-                    // Remove any existing listeners
-                    const newAddBtn = addSymbolBtn.cloneNode(true);
-                    addSymbolBtn.parentNode.replaceChild(newAddBtn, addSymbolBtn);
+            // Rule 1: Duplicate Symbol Prevention
+            function isDuplicateSymbol(symbol) {
+                return document.querySelector(`[data-symbol="${symbol}"]`) !== null;
+            }
 
-                    newAddBtn.addEventListener('click', () => {
-                        const symbol = symbolInput.value.trim().toUpperCase();
-                        if (symbol && !document.querySelector(`[data-symbol="${symbol}"]`)) {
-                            // Calculate auto-allocation percentage
-                            const autoPercentage = redistributeCleanPercentages();
+            // Rule 2: Empty State Management
+            function updateEmptyStateDisplay() {
+                const emptyMessage = document.getElementById('emptyProductsMessage');
+                const datacards = document.querySelectorAll('.datacard');
 
-                            // Create new datacard with auto-allocated percentage
-                            const newCard = createDetailedDatacard(symbol);
-                            const newPercentageInput = newCard.querySelector('.percentage-input');
-                            if (newPercentageInput) {
-                                newPercentageInput.value = autoPercentage;
-
-                                // Mark as clean since it's auto-allocated
-                                productPercentages.set(symbol, { percentage: autoPercentage, isDirty: false });
-                            }
-
-                            datacardContainer.appendChild(newCard);
-                            symbolInput.value = '';
-
-                            // Update display after adding
-                            updateAllocationDisplay();
-                        }
-                    });
-
-                    symbolInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            newAddBtn.click();
-                        }
-                    });
+                if (emptyMessage) {
+                    // Hide message if we have any products, show if we have none
+                    emptyMessage.style.display = datacards.length > 0 ? 'none' : 'block';
                 }
             }
 
-            // Make toggleAdvancedMode globally accessible
-            window.toggleAdvancedMode = function (toggleElement) {
-                try {
-                    console.log('🔄 Toggling advanced mode...');
+            // Rule 3: Symbol Input Formatting
+            function capitalizeSymbolInput(input) {
+                const cursorPos = input.selectionStart;
+                const value = input.value.toUpperCase();
+                input.value = value;
 
-                    const card = toggleElement.closest('.datacard');
-                    if (!card) {
-                        console.error('❌ Could not find parent datacard');
-                        return;
-                    }
+                // Preserve cursor position after transformation
+                input.setSelectionRange(cursorPos, cursorPos);
+            }
 
-                    const defaultMode = card.querySelector('.pricing-mode-default');
-                    const advancedMode = card.querySelector('.pricing-mode-advanced');
-
-                    if (!defaultMode || !advancedMode) {
-                        console.error('❌ Could not find pricing mode elements');
-                        console.log('Default mode:', defaultMode);
-                        console.log('Advanced mode:', advancedMode);
-                        return;
-                    }
-
-                    const isAdvanced = advancedMode.style.display === 'block';
-                    console.log('Current state - isAdvanced:', isAdvanced);
-
-                    if (isAdvanced) {
-                        // Switch to default mode
-                        advancedMode.style.display = 'none';
-                        defaultMode.style.display = 'block';
-                        toggleElement.classList.remove('expanded');
-                        console.log('✅ Switched to default mode');
-                    } else {
-                        // Switch to advanced mode
-                        defaultMode.style.display = 'none';
-                        advancedMode.style.display = 'block';
-                        toggleElement.classList.add('expanded');
-                        console.log('✅ Switched to advanced mode');
-                    }
-                } catch (error) {
-                    console.error('❌ Error toggling advanced mode:', error);
+            // Rule 4: Symbol Format Validation
+            function validateSymbolFormat(symbol) {
+                // Check length (max 12 characters)
+                if (symbol.length > 12) {
+                    return { valid: false, error: 'Symbol cannot exceed 12 characters' };
                 }
+
+                // Check for alphanumeric only (no special characters)
+                const alphanumericPattern = /^[A-Z0-9]+$/;
+                if (!alphanumericPattern.test(symbol)) {
+                    return { valid: false, error: 'Symbol can only contain letters and numbers' };
+                }
+
+                return { valid: true };
+            }
+
+            if (symbolInput && addSymbolBtn && datacardContainer) {
+                // Remove any existing listeners
+                const newAddBtn = addSymbolBtn.cloneNode(true);
+                addSymbolBtn.parentNode.replaceChild(newAddBtn, addSymbolBtn);
+
+                newAddBtn.addEventListener('click', () => {
+                    const symbol = symbolInput.value.trim().toUpperCase();
+
+                    // Rule 1: Check for empty symbol
+                    if (!symbol) {
+                        showValidationError('Please enter a symbol');
+                        return;
+                    }
+
+                    // Rule 1: Check for duplicate symbol
+                    if (isDuplicateSymbol(symbol)) {
+                        showValidationError(`Symbol "${symbol}" is already in the dataset`);
+                        symbolInput.value = ''; // Clear the input
+                        return;
+                    }
+
+                    // Rule 4: Validate symbol format
+                    const formatValidation = validateSymbolFormat(symbol);
+                    if (!formatValidation.valid) {
+                        showValidationError(formatValidation.error);
+                        return;
+                    }
+
+                    // Calculate auto-allocation percentage
+                    const autoPercentage = redistributeCleanPercentages();
+
+                    // Create new datacard with auto-allocated percentage
+                    const newCard = createDetailedDatacard(symbol);
+                    const newPercentageInput = newCard.querySelector('.percentage-input');
+                    if (newPercentageInput) {
+                        newPercentageInput.value = autoPercentage;
+
+                        // Mark as clean since it's auto-allocated
+                        productPercentages.set(symbol, { percentage: autoPercentage, isDirty: false });
+                    }
+
+                    datacardContainer.appendChild(newCard);
+                    symbolInput.value = '';
+
+                    // Update display after adding
+                    updateAllocationDisplay();
+                    updateEmptyStateDisplay(); // Rule 2: Hide empty message when products exist
+                }
+                    });
+
+            symbolInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    newAddBtn.click();
+                }
+            });
+
+            // Rule 3: Capitalize symbol input in real-time
+            symbolInput.addEventListener('input', (e) => {
+                capitalizeSymbolInput(e.target);
+            });
+            try {
+                console.log('🔄 Toggling advanced mode...');
+
+                const card = toggleElement.closest('.datacard');
+                if (!card) {
+                    console.error('❌ Could not find parent datacard');
+                    return;
+                }
+
+                const defaultMode = card.querySelector('.pricing-mode-default');
+                const advancedMode = card.querySelector('.pricing-mode-advanced');
+
+                if (!defaultMode || !advancedMode) {
+                    console.error('❌ Could not find pricing mode elements');
+                    console.log('Default mode:', defaultMode);
+                    console.log('Advanced mode:', advancedMode);
+                    return;
+                }
+
+                const isAdvanced = advancedMode.style.display === 'block';
+                console.log('Current state - isAdvanced:', isAdvanced);
+
+                if (isAdvanced) {
+                    // Switch to default mode
+                    advancedMode.style.display = 'none';
+                    defaultMode.style.display = 'block';
+                    toggleElement.classList.remove('expanded');
+                    console.log('✅ Switched to default mode');
+                } else {
+                    // Switch to advanced mode
+                    defaultMode.style.display = 'none';
+                    advancedMode.style.display = 'block';
+                    toggleElement.classList.add('expanded');
+                    console.log('✅ Switched to advanced mode');
+                }
+            } catch (error) {
+                console.error('❌ Error toggling advanced mode:', error);
+            }
             }
 
         </script>
@@ -2051,6 +2113,7 @@
                                 card.remove();
                                 redistributeCleanPercentages();
                                 updateAllocationDisplay();
+                                updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
                             });
                         }
                     }
@@ -2058,6 +2121,7 @@
 
                 // Initial validation update
                 updateAllocationDisplay();
+                updateEmptyStateDisplay(); // Rule 2: Set initial empty state
                 console.log('✅ Percentage validation initialized for existing datacards');
             });
         </script>
