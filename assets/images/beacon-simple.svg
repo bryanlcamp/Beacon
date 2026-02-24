@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <!-- Based on your original lighthouse design -->
+  
+  <!-- Main lighthouse structure (triangular tower) -->
+  <path d="M 32 8 L 24 52 L 40 52 Z" 
+        fill="#6bb6ff" 
+        stroke="#6bb6ff" 
+        stroke-width="1"
+        stroke-linejoin="round"/>
+  
+  <!-- Light housing (circle in middle) -->
+  <circle cx="32" cy="22" r="5" 
+          fill="#6bb6ff" 
+          stroke="#6bb6ff" 
+          stroke-width="1"/>
+  
+  <!-- Left light beam (truncated triangle) -->
+  <path d="M 27 22 L 8 16 L 8 28 Z" 
+        fill="#ff914d" 
+        opacity="0.7"/>
+  
+  <!-- Right light beam (truncated triangle) -->
+  <path d="M 37 22 L 56 16 L 56 28 Z" 
+        fill="#ff914d" 
+        opacity="0.7"/>
+  
+  <!-- Top triangle -->
+  <path d="M 32 8 L 28 2 L 36 2 Z" 
+        fill="#6bb6ff"/>
+        
+  <!-- Base -->
+  <rect x="20" y="52" width="24" height="8" 
+        fill="#6bb6ff" 
+        rx="2"/>
+</svg>

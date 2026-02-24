@@ -5,9 +5,14 @@ scripts/utils/search/venv/
 beacon-core/
 ai/
 apps/strategy/example_strategy.cpp
+web-server-api/
+docs/
+wiki/
 
-# Development artifacts  
-.DS_Store
-node_modules/
-*.log
-.env
+# Utility scripts and backup files
+create-issue.sh
+setup-github-labels.sh
+setup-ide.sh
+index-backup.html
+index-experimental.html
+quick-test.html

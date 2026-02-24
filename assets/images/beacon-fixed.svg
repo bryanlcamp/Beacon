@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Based on your perfect original lighthouse -->
+  
+  <!-- Main lighthouse structure (triangular tower) - your original white to blue -->
+  <path d="M 32 8 L 24 52 L 40 52 Z" 
+        fill="#6bb6ff" 
+        stroke="#6bb6ff" 
+        stroke-width="1" 
+        stroke-linejoin="round"/>
+  
+  <!-- Light housing (circle) - your original white to blue -->
+  <circle cx="32" cy="20" r="4" 
+          fill="#6bb6ff" 
+          stroke="#6bb6ff" 
+          stroke-width="1"/>
+  
+  <!-- Left light beam - your original gray to orange -->
+  <path d="M 26 20 L 8 12 L 8 28 L 28 24 Z" 
+        fill="#ff914d" 
+        opacity="0.8"/>
+  
+  <!-- Right light beam - your original gray to orange -->
+  <path d="M 38 20 L 56 12 L 56 28 L 36 24 Z" 
+        fill="#ff914d" 
+        opacity="0.8"/>
+  
+  <!-- Top triangle - your original white to blue -->
+  <path d="M 32 8 L 28 4 L 36 4 Z" 
+        fill="#6bb6ff"/>
+        
+  <!-- NOTE: NO BLACK BACKGROUND - transparent! -->
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <!-- Main lighthouse structure (triangular base) -->
+  <path d="M 32 8 L 24 52 L 40 52 Z" 
+        fill="#6bb6ff" 
+        stroke="#6bb6ff" 
+        stroke-width="2"
+        stroke-linejoin="round"
+        style="filter: drop-shadow(0 0 8px rgba(107, 182, 255, 0.4))"/>
+  
+  <!-- Light housing (circle) -->
+  <circle cx="32" cy="20" r="6" 
+          fill="#6bb6ff" 
+          stroke="#6bb6ff" 
+          stroke-width="1.5"
+          style="filter: drop-shadow(0 0 6px rgba(107, 182, 255, 0.5))"/>
+  
+  <!-- Left light beam -->
+  <path d="M 26 20 L 8 14 L 12 10 L 28 18 Z" 
+        fill="#ff914d" 
+        opacity="0.8"
+        style="filter: drop-shadow(0 0 10px rgba(255, 145, 77, 0.6))"/>
+  
+  <!-- Right light beam -->
+  <path d="M 38 20 L 56 14 L 52 10 L 36 18 Z" 
+        fill="#ff914d" 
+        opacity="0.8"
+        style="filter: drop-shadow(0 0 10px rgba(255, 145, 77, 0.6))"/>
+  
+  <!-- Top triangle -->
+  <path d="M 32 8 L 28 4 L 36 4 Z" 
+        fill="#6bb6ff" 
+        stroke="#6bb6ff" 
+        stroke-width="1"
+        style="filter: drop-shadow(0 0 6px rgba(107, 182, 255, 0.4))"/>
+  
+  <!-- Base foundation -->
+  <rect x="22" y="52" width="20" height="4" 
+        fill="#6bb6ff" 
+        rx="2"
+        style="filter: drop-shadow(0 0 4px rgba(107, 182, 255, 0.3))"/>
+</svg>
