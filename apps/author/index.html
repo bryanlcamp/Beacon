@@ -2915,7 +2915,7 @@
                 }
 
                 try {
-                    const response = await fetch('/command-center/apps/dataset-generator/config/validation-rules.json');
+                    const response = await fetch('/apps/author/config/validation-rules.json');
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                     }
