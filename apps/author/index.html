@@ -3527,7 +3527,7 @@
                         }
                     }
                 });
-            });
+            }
 
             // Track datacard changes (will work with both real app and fallback)
             const observer = new MutationObserver((mutations) => {
@@ -3542,7 +3542,6 @@
             const datacardContainer = document.getElementById('datacardContainer');
             if (datacardContainer) {
                 observer.observe(datacardContainer, { childList: true, subtree: true });
-            }
             }
         </script>
 
