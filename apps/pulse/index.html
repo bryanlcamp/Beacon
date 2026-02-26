@@ -1,449 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulse - Beacon HFT Platform</title>
-    
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <style>
-        body {
-            overflow-y: auto !important;
-            min-height: 100vh;
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-            background: #0a0a15;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .beacon-page-header {
-            background: rgba(16, 22, 36, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1em 2em;
-            border-bottom: 1px solid rgba(107, 182, 255, 0.2);
-        }
-        
-        .beacon-page-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .beacon-brand-header {
-            display: flex;
-            align-items: center;
-            gap: 1em;
-        }
-        
-        .beacon-brand-main {
-            color: #6bb6ff;
-            text-decoration: none;
-            font-size: 1.5em;
-            font-weight: 900;
-        }
-        
-        .beacon-brand-separator {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .beacon-page-title {
-            color: #ffffff;
-            font-size: 1.5em;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .beacon-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5em;
-        }
-        
-        .beacon-nav-back {
-            color: #6bb6ff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5em;
-            transition: color 0.3s ease;
-        }
-        
-        .beacon-nav-back:hover {
-            color: #ffffff;
-        }
-        
-        .utility-icons {
-            display: flex;
-            gap: 0.75em;
-            align-items: center;
-        }
-        
-        .utility-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 145, 77, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .utility-icon:hover {
-            background: rgba(255, 145, 77, 0.2);
-            transform: translateY(-1px);
-        }
-        
-        .search-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 110%;
-            min-width: 250px;
-            background: #181828;
-            border: 1.5px solid #ff914d;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.3);
-            z-index: 100;
-            padding: 1em;
-        }
-        
-        .search-dropdown.show {
-            display: block;
-        }
-        
-        .search-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 145, 77, 0.3);
-            border-radius: 6px;
-            padding: 0.75em;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 0.9em;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #ff914d;
-            box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
-        }
-        
-        main.beacon-page-content {
-            padding-top: 100px;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-left: 24px;
-            padding-right: 24px;
-        }
-    </style>
-</head>
-<body>
-    <header class="beacon-page-header">
-        <nav class="beacon-page-nav">
-            <div class="beacon-brand-header">
-                <a href="/" class="beacon-brand-main">Beacon.</a>
-                <span class="beacon-brand-separator">|</span>
-                <h1 class="beacon-page-title">Pulse.</h1>
-            </div>
-            <div class="beacon-nav-actions">
-                <a href="/" class="beacon-nav-back">
-                    <span class="nav-arrow">←</span>
-                    <span>Home</span>
-                </a>
-                <div class="utility-icons">
-                    <div class="utility-icon" id="infoIcon">
-                        <img src="/assets/images/icons/info-orange.svg" alt="Information" />
-                        <div class="info-dropdown" id="infoDropdown">
-                            <a href="mailto:info@beaconhft.com">Contact</a>
-                            <a href="/about.html">About</a>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pulse - Beacon HFT Platform</title>
+
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <style>
+            body {
+                overflow-y: auto !important;
+                min-height: 100vh;
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+                background: #0a0a15;
+                color: #ffffff;
+                margin: 0;
+                padding: 0;
+            }
+
+            .beacon-page-header {
+                background: rgba(16, 22, 36, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 1em 2em;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .beacon-page-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .beacon-brand-header {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+            }
+
+            .beacon-brand-main {
+                color: #6bb6ff;
+                text-decoration: none;
+                font-size: 1.5em;
+                font-weight: 900;
+            }
+
+            .beacon-brand-separator {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .beacon-page-title {
+                color: #ffffff;
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .beacon-nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+            }
+
+            .beacon-nav-back {
+                color: #6bb6ff;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                transition: color 0.3s ease;
+            }
+
+            .beacon-nav-back:hover {
+                color: #ffffff;
+            }
+
+            .utility-icons {
+                display: flex;
+                gap: 0.75em;
+                align-items: center;
+            }
+
+            .utility-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(255, 145, 77, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .utility-icon:hover {
+                background: rgba(255, 145, 77, 0.2);
+                transform: translateY(-1px);
+            }
+
+            .search-dropdown {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 110%;
+                min-width: 250px;
+                background: #181828;
+                border: 1.5px solid #ff914d;
+                border-radius: 8px;
+                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+                z-index: 100;
+                padding: 1em;
+            }
+
+            .search-dropdown.show {
+                display: block;
+            }
+
+            .search-input {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 145, 77, 0.3);
+                border-radius: 6px;
+                padding: 0.75em;
+                color: #ffffff;
+                font-family: inherit;
+                font-size: 0.9em;
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-color: #ff914d;
+                box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
+            }
+
+            main.beacon-page-content {
+                padding-top: 100px;
+                max-width: 900px;
+                margin: 0 auto;
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="beacon-page-header">
+            <nav class="beacon-page-nav">
+                <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-main">Beacon.</a>
+                    <span class="beacon-brand-separator">|</span>
+                    <h1 class="beacon-page-title">Pulse.</h1>
+                </div>
+                <div class="beacon-nav-actions">
+                    <a href="/" class="beacon-nav-back">
+                        <span class="nav-arrow">←</span>
+                        <span>Home</span>
+                    </a>
+                    <div class="utility-icons">
+                        <div class="utility-icon" id="infoIcon">
+                            <img src="/assets/images/icons/info-orange.svg" alt="Information" />
+                            <div class="info-dropdown" id="infoDropdown">
+                                <a href="mailto:contact@beaconhft.com">Contact</a>
+                                <a href="/about.html">About</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="utility-icon" id="searchIcon">
-                        <img src="/assets/images/icons/search-orange.svg" alt="Search" />
-                        <div class="search-dropdown" id="searchDropdown">
-                            <input type="text" class="search-input" placeholder="Search pulse settings..." />
+                        <div class="utility-icon" id="searchIcon">
+                            <img src="/assets/images/icons/search-orange.svg" alt="Search" />
+                            <div class="search-dropdown" id="searchDropdown">
+                                <input type="text" class="search-input" placeholder="Search pulse settings..." />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
+        </header>
+        </div>
+        </div>
         </nav>
-    </header>
-                </div>
-            </div>
-        </nav>
-    </header>
+        </header>
 
-    <!-- Large Title Overlay -->
-    <div style="position: relative; text-align: center; margin: 1em 0; z-index: 1000; pointer-events: none;">
-        <h1 style="font-size: 4rem; font-weight: 900; color: #ffffff; margin: 0; text-shadow: 0 0 20px rgba(107, 182, 255, 0.3); font-family: 'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.05em;">Pulse.</h1>
-    </div>
-
-    <main class="beacon-page-content">
-        <section class="doc-hero">
-            <h1>Dataset Playback & Monitoring.</h1>
-            <p>Stream your datasets to your strategies with real-time progress tracking.</p>
-        </section>
-
-        <!-- Progress Header -->
-        <div id="progressHeader" style="background: rgba(107, 182, 255, 0.1); padding: 1.5em; border-radius: 8px; margin-bottom: 2em; border-left: 3px solid #6bb6ff; display: none;">
-            <h2 id="jobTitle">No active simulation</h2>
-            <p id="jobStatus">Configure and start dataset streaming</p>
-            <div style="width: 100%; height: 12px; background: #333; border-radius: 6px; margin: 1em 0;">
-                <div id="progressFill" style="height: 100%; background: linear-gradient(90deg, #6bb6ff, #00ff88); border-radius: 6px; width: 0%; transition: width 0.5s ease;"></div>
-            </div>
-            <p id="progressText">0% complete</p>
+        <!-- Large Title Overlay -->
+        <div style="position: relative; text-align: center; margin: 1em 0; z-index: 1000; pointer-events: none;">
+            <h1
+                style="font-size: 4rem; font-weight: 900; color: #ffffff; margin: 0; text-shadow: 0 0 20px rgba(107, 182, 255, 0.3); font-family: 'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.05em;">
+                Pulse.</h1>
         </div>
 
-        <!-- Dataset Configuration Panel -->
-        <section class="doc-content">
-            <h2>Configuration:</h2>
-            <div class="beacon-code-panel" style="margin-top:1.2em; padding: 1.5em;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5em; margin-bottom: 2em;">
-                    <div>
-                        <label style="display: block; color: #6bb6ff; font-weight: 600; margin-bottom: 0.5em;">Messages:</label>
-                        <select id="messageCount" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; padding: 0.75em; color: white; font-family: inherit;">
-                            <option value="1000">1,000 messages</option>
-                            <option value="10000">10,000 messages</option>
-                            <option value="100000">100,000 messages</option>
-                            <option value="1000000" selected>1,000,000 messages</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; color: #6bb6ff; font-weight: 600; margin-bottom: 0.5em;">Dataset:</label>
-                        <select id="dataset" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; padding: 0.75em; color: white; font-family: inherit;">
-                            <option value="cme">CME (Futures)</option>
-                            <option value="nasdaq">NASDAQ (Equities)</option>
-                            <option value="nyse">NYSE (Blue Chip)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; margin: 2em 0;">
-                    <button id="startBtn" onclick="startStream()" style="background: #00ff88; color: #1a1a2e; border: none; padding: 1em 2em; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1.1em;">
-                        Start Dataset Stream
-                    </button>
-                    <button id="stopBtn" onclick="stopStream()" disabled style="background: #ff6b6b; color: white; border: none; padding: 1em 2em; border-radius: 6px; cursor: pointer; font-weight: 600; margin-left: 1em; opacity: 0.5;">
-                        Stop Stream
-                    </button>
-                </div>
-            </div>
-        </section>
+        <main class="beacon-page-content">
+            <section class="doc-hero">
+                <h1>Dataset Playback & Monitoring.</h1>
+                <p>Stream your datasets to your strategies with real-time progress tracking.</p>
+            </section>
 
-        <!-- Progress Data Grid -->
-        <section id="progressSection" style="display: none;">
-            <h2>Live Progress:</h2>
-            <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; overflow: hidden; margin: 2em 0;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">Metric</th>
-                            <th style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">Current Value</th>
-                            <th style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody id="metricsTable">
-                        <tr><td colspan="3" style="padding: 1em; text-align: center; color: #666;">No streaming data available</td></tr>
-                    </tbody>
-                </table>
+            <!-- Progress Header -->
+            <div id="progressHeader"
+                style="background: rgba(107, 182, 255, 0.1); padding: 1.5em; border-radius: 8px; margin-bottom: 2em; border-left: 3px solid #6bb6ff; display: none;">
+                <h2 id="jobTitle">No active simulation</h2>
+                <p id="jobStatus">Configure and start dataset streaming</p>
+                <div style="width: 100%; height: 12px; background: #333; border-radius: 6px; margin: 1em 0;">
+                    <div id="progressFill"
+                        style="height: 100%; background: linear-gradient(90deg, #6bb6ff, #00ff88); border-radius: 6px; width: 0%; transition: width 0.5s ease;">
+                    </div>
+                </div>
+                <p id="progressText">0% complete</p>
             </div>
-        </section>
-    </main>
-    <script>
-    // Search functionality (copied from Command Center)
-    function showSearchIfResults() {
-        if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
-    }
-    function hideSearchDelayed() {
-        setTimeout(() => {
-            document.querySelector('.beacon-search-results').style.display = 'none';
-        }, 300);
-    }
-    function performSearch(query = document.querySelector('.beacon-search-field').value) {
-        const results = document.getElementById('searchResults');
-        if (!query.trim()) return results.style.display = 'none';
-        const mockResults = [
-            { title: "Market Data Generation", section: "Infrastructure", snippet: "Generate datasets with 4.5μs latency...", url: "cpp/market-data-generation.html" },
-            { title: "CME Protocol Support", section: "Protocols", snippet: "Native binary CME, Nasdaq, NYSE protocols...", url: "protocols/support-cme-nasdaq-nyse.html" },
-            { title: "Strategy Container", section: "Applications", snippet: "Plug in your strategy and start testing immediately...", url: "../apps/algorithm-plugin/" }
-        ].filter(item => 
-            item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.snippet.toLowerCase().includes(query.toLowerCase())
-        );
-        if (mockResults.length) {
-            results.innerHTML = mockResults.map(item => `
+
+            <!-- Dataset Configuration Panel -->
+            <section class="doc-content">
+                <h2>Configuration:</h2>
+                <div class="beacon-code-panel" style="margin-top:1.2em; padding: 1.5em;">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5em; margin-bottom: 2em;">
+                        <div>
+                            <label
+                                style="display: block; color: #6bb6ff; font-weight: 600; margin-bottom: 0.5em;">Messages:</label>
+                            <select id="messageCount"
+                                style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; padding: 0.75em; color: white; font-family: inherit;">
+                                <option value="1000">1,000 messages</option>
+                                <option value="10000">10,000 messages</option>
+                                <option value="100000">100,000 messages</option>
+                                <option value="1000000" selected>1,000,000 messages</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="display: block; color: #6bb6ff; font-weight: 600; margin-bottom: 0.5em;">Dataset:</label>
+                            <select id="dataset"
+                                style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; padding: 0.75em; color: white; font-family: inherit;">
+                                <option value="cme">CME (Futures)</option>
+                                <option value="nasdaq">NASDAQ (Equities)</option>
+                                <option value="nyse">NYSE (Blue Chip)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2em 0;">
+                        <button id="startBtn" onclick="startStream()"
+                            style="background: #00ff88; color: #1a1a2e; border: none; padding: 1em 2em; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1.1em;">
+                            Start Dataset Stream
+                        </button>
+                        <button id="stopBtn" onclick="stopStream()" disabled
+                            style="background: #ff6b6b; color: white; border: none; padding: 1em 2em; border-radius: 6px; cursor: pointer; font-weight: 600; margin-left: 1em; opacity: 0.5;">
+                            Stop Stream
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Data Grid -->
+            <section id="progressSection" style="display: none;">
+                <h2>Live Progress:</h2>
+                <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; overflow: hidden; margin: 2em 0;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th
+                                    style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">
+                                    Metric</th>
+                                <th
+                                    style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">
+                                    Current Value</th>
+                                <th
+                                    style="background: #23234a; padding: 1em; text-align: left; font-weight: 600; color: #6bb6ff;">
+                                    Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metricsTable">
+                            <tr>
+                                <td colspan="3" style="padding: 1em; text-align: center; color: #666;">No streaming data
+                                    available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        <script>
+            // Search functionality (copied from Command Center)
+            function showSearchIfResults() {
+                if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
+            }
+            function hideSearchDelayed() {
+                setTimeout(() => {
+                    document.querySelector('.beacon-search-results').style.display = 'none';
+                }, 300);
+            }
+            function performSearch(query = document.querySelector('.beacon-search-field').value) {
+                const results = document.getElementById('searchResults');
+                if (!query.trim()) return results.style.display = 'none';
+                const mockResults = [
+                    { title: "Market Data Generation", section: "Infrastructure", snippet: "Generate datasets with 4.5μs latency...", url: "cpp/market-data-generation.html" },
+                    { title: "CME Protocol Support", section: "Protocols", snippet: "Native binary CME, Nasdaq, NYSE protocols...", url: "protocols/support-cme-nasdaq-nyse.html" },
+                    { title: "Strategy Container", section: "Applications", snippet: "Plug in your strategy and start testing immediately...", url: "../apps/algorithm-plugin/" }
+                ].filter(item =>
+                    item.title.toLowerCase().includes(query.toLowerCase()) ||
+                    item.snippet.toLowerCase().includes(query.toLowerCase())
+                );
+                if (mockResults.length) {
+                    results.innerHTML = mockResults.map(item => `
                 <div class="search-result" onclick="window.location.href='${item.url}'">
                     <div class="result-title">${item.title}</div>
                     <div class="result-section">${item.section}</div>
                     <div class="result-snippet">${item.snippet}</div>
                 </div>
             `).join('');
-            results.style.display = 'block';
-        } else {
-            results.style.display = 'none';
-        }
-    }
-    // Setup utility icon dropdown functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Info dropdown
-        const infoIcon = document.getElementById('infoIcon');
-        const infoDropdown = document.getElementById('infoDropdown');
-        
-        if (infoIcon && infoDropdown) {
-            infoIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isVisible = infoDropdown.style.display === 'block';
-                
-                // Close search dropdown if open
-                const searchDropdown = document.getElementById('searchDropdown');
-                if (searchDropdown) {
-                    searchDropdown.classList.remove('show');
-                }
-                
-                infoDropdown.style.display = isVisible ? 'none' : 'block';
-            });
-        }
-        
-        // Search dropdown
-        const searchIcon = document.getElementById('searchIcon');
-        const searchDropdown = document.getElementById('searchDropdown');
-        
-        if (searchIcon && searchDropdown) {
-            searchIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isVisible = searchDropdown.classList.contains('show');
-                
-                // Close info dropdown if open
-                if (infoDropdown) {
-                    infoDropdown.style.display = 'none';
-                }
-                
-                if (isVisible) {
-                    searchDropdown.classList.remove('show');
+                    results.style.display = 'block';
                 } else {
-                    searchDropdown.classList.add('show');
-                    // Focus on search input when opened
-                    const searchInput = searchDropdown.querySelector('.search-input');
-                    if (searchInput) {
-                        setTimeout(() => searchInput.focus(), 100);
+                    results.style.display = 'none';
+                }
+            }
+            // Setup utility icon dropdown functionality
+            document.addEventListener('DOMContentLoaded', function () {
+                // Info dropdown
+                const infoIcon = document.getElementById('infoIcon');
+                const infoDropdown = document.getElementById('infoDropdown');
+
+                if (infoIcon && infoDropdown) {
+                    infoIcon.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const isVisible = infoDropdown.style.display === 'block';
+
+                        // Close search dropdown if open
+                        const searchDropdown = document.getElementById('searchDropdown');
+                        if (searchDropdown) {
+                            searchDropdown.classList.remove('show');
+                        }
+
+                        infoDropdown.style.display = isVisible ? 'none' : 'block';
+                    });
+                }
+
+                // Search dropdown
+                const searchIcon = document.getElementById('searchIcon');
+                const searchDropdown = document.getElementById('searchDropdown');
+
+                if (searchIcon && searchDropdown) {
+                    searchIcon.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const isVisible = searchDropdown.classList.contains('show');
+
+                        // Close info dropdown if open
+                        if (infoDropdown) {
+                            infoDropdown.style.display = 'none';
+                        }
+
+                        if (isVisible) {
+                            searchDropdown.classList.remove('show');
+                        } else {
+                            searchDropdown.classList.add('show');
+                            // Focus on search input when opened
+                            const searchInput = searchDropdown.querySelector('.search-input');
+                            if (searchInput) {
+                                setTimeout(() => searchInput.focus(), 100);
+                            }
+                        }
+                    });
+                }
+
+                // Close utility dropdowns when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!e.target.closest('.utility-icon')) {
+                        // Close info dropdown
+                        if (infoDropdown) {
+                            infoDropdown.style.display = 'none';
+                        }
+                        // Close search dropdown
+                        if (searchDropdown) {
+                            searchDropdown.classList.remove('show');
+                        }
                     }
-                }
+                });
             });
-        }
-        
-        // Close utility dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.utility-icon')) {
-                // Close info dropdown
-                if (infoDropdown) {
-                    infoDropdown.style.display = 'none';
-                }
-                // Close search dropdown
-                if (searchDropdown) {
-                    searchDropdown.classList.remove('show');
-                }
+        </script>
+
+        <script>
+            // Pulse streaming functionality
+            let currentStreamId = null;
+            let streamInterval = null;
+
+            function startStream() {
+                const messageCount = parseInt(document.getElementById('messageCount').value);
+                const dataset = document.getElementById('dataset').value;
+
+                currentStreamId = 'stream-' + Date.now().toString().slice(-6);
+
+                // Update UI
+                document.getElementById('progressHeader').style.display = 'block';
+                document.getElementById('progressSection').style.display = 'block';
+                document.getElementById('jobTitle').textContent = `Streaming: ${currentStreamId}`;
+                document.getElementById('jobStatus').textContent = `Processing ${messageCount.toLocaleString()} ${dataset.toUpperCase()} messages...`;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                document.getElementById('stopBtn').style.opacity = '1';
+
+                // Start simulated streaming
+                simulateStream(messageCount, dataset);
             }
-        });
-    });
-    </script>
 
-    <script>
-        // Pulse streaming functionality
-        let currentStreamId = null;
-        let streamInterval = null;
-
-        function startStream() {
-            const messageCount = parseInt(document.getElementById('messageCount').value);
-            const dataset = document.getElementById('dataset').value;
-            
-            currentStreamId = 'stream-' + Date.now().toString().slice(-6);
-            
-            // Update UI
-            document.getElementById('progressHeader').style.display = 'block';
-            document.getElementById('progressSection').style.display = 'block';
-            document.getElementById('jobTitle').textContent = `Streaming: ${currentStreamId}`;
-            document.getElementById('jobStatus').textContent = `Processing ${messageCount.toLocaleString()} ${dataset.toUpperCase()} messages...`;
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('stopBtn').disabled = false;
-            document.getElementById('stopBtn').style.opacity = '1';
-            
-            // Start simulated streaming
-            simulateStream(messageCount, dataset);
-        }
-
-        function stopStream() {
-            if (streamInterval) {
-                clearInterval(streamInterval);
-                streamInterval = null;
-            }
-            
-            document.getElementById('jobStatus').textContent = 'Stream stopped by user';
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('stopBtn').disabled = true;
-            document.getElementById('stopBtn').style.opacity = '0.5';
-        }
-
-        function simulateStream(totalMessages, dataset) {
-            let messagesProcessed = 0;
-            const bucketSize = 1000;
-            const totalBuckets = Math.ceil(totalMessages / bucketSize);
-            
-            streamInterval = setInterval(() => {
-                messagesProcessed += bucketSize * (0.8 + Math.random() * 0.4); // Vary processing speed
-                
-                if (messagesProcessed >= totalMessages) {
-                    messagesProcessed = totalMessages;
+            function stopStream() {
+                if (streamInterval) {
                     clearInterval(streamInterval);
-                    document.getElementById('jobStatus').textContent = 'Stream completed successfully!';
-                    document.getElementById('startBtn').disabled = false;
-                    document.getElementById('stopBtn').disabled = true;
-                    document.getElementById('stopBtn').style.opacity = '0.5';
+                    streamInterval = null;
                 }
-                
-                const currentBucket = Math.floor(messagesProcessed / bucketSize);
-                const progressPercent = (messagesProcessed / totalMessages * 100).toFixed(1);
-                
-                const streamData = {
-                    stream_id: currentStreamId,
-                    dataset: dataset,
-                    total_messages: totalMessages,
-                    messages_processed: Math.floor(messagesProcessed),
-                    bucket_size: bucketSize,
-                    current_bucket: currentBucket,
-                    total_buckets: totalBuckets,
-                    progress_percentage: progressPercent,
-                    performance_stats: {
-                        avg_latency: (2.3 + Math.random() * 1.0).toFixed(2) + 'μs',
-                        p99_latency: (2.8 + Math.random() * 0.7).toFixed(2) + 'μs',
-                        throughput: Math.floor(130 + Math.random() * 50) + 'k msg/sec',
-                        memory_usage: Math.floor(180 + Math.random() * 120) + 'MB',
-                        network_io: Math.floor(50 + Math.random() * 30) + 'MB/s'
-                    },
-                    stream_stats: {
-                        packets_sent: Math.floor(messagesProcessed / 10),
-                        retransmissions: Math.floor(Math.random() * 5),
-                        buffer_utilization: Math.floor(45 + Math.random() * 40) + '%'
-                    },
-                    last_updated: new Date().toISOString().slice(11, 19)
-                };
-                
-                updateStreamDisplay(streamData);
-            }, 150);
-        }
 
-        function updateStreamDisplay(data) {
-            // Update progress bar
-            document.getElementById('progressFill').style.width = data.progress_percentage + '%';
-            document.getElementById('progressText').textContent = 
-                `${data.progress_percentage}% - ${data.messages_processed.toLocaleString()} / ${data.total_messages.toLocaleString()} messages`;
+                document.getElementById('jobStatus').textContent = 'Stream stopped by user';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+                document.getElementById('stopBtn').style.opacity = '0.5';
+            }
 
-            // Update metrics table
-            const metricsHtml = `
+            function simulateStream(totalMessages, dataset) {
+                let messagesProcessed = 0;
+                const bucketSize = 1000;
+                const totalBuckets = Math.ceil(totalMessages / bucketSize);
+
+                streamInterval = setInterval(() => {
+                    messagesProcessed += bucketSize * (0.8 + Math.random() * 0.4); // Vary processing speed
+
+                    if (messagesProcessed >= totalMessages) {
+                        messagesProcessed = totalMessages;
+                        clearInterval(streamInterval);
+                        document.getElementById('jobStatus').textContent = 'Stream completed successfully!';
+                        document.getElementById('startBtn').disabled = false;
+                        document.getElementById('stopBtn').disabled = true;
+                        document.getElementById('stopBtn').style.opacity = '0.5';
+                    }
+
+                    const currentBucket = Math.floor(messagesProcessed / bucketSize);
+                    const progressPercent = (messagesProcessed / totalMessages * 100).toFixed(1);
+
+                    const streamData = {
+                        stream_id: currentStreamId,
+                        dataset: dataset,
+                        total_messages: totalMessages,
+                        messages_processed: Math.floor(messagesProcessed),
+                        bucket_size: bucketSize,
+                        current_bucket: currentBucket,
+                        total_buckets: totalBuckets,
+                        progress_percentage: progressPercent,
+                        performance_stats: {
+                            avg_latency: (2.3 + Math.random() * 1.0).toFixed(2) + 'μs',
+                            p99_latency: (2.8 + Math.random() * 0.7).toFixed(2) + 'μs',
+                            throughput: Math.floor(130 + Math.random() * 50) + 'k msg/sec',
+                            memory_usage: Math.floor(180 + Math.random() * 120) + 'MB',
+                            network_io: Math.floor(50 + Math.random() * 30) + 'MB/s'
+                        },
+                        stream_stats: {
+                            packets_sent: Math.floor(messagesProcessed / 10),
+                            retransmissions: Math.floor(Math.random() * 5),
+                            buffer_utilization: Math.floor(45 + Math.random() * 40) + '%'
+                        },
+                        last_updated: new Date().toISOString().slice(11, 19)
+                    };
+
+                    updateStreamDisplay(streamData);
+                }, 150);
+            }
+
+            function updateStreamDisplay(data) {
+                // Update progress bar
+                document.getElementById('progressFill').style.width = data.progress_percentage + '%';
+                document.getElementById('progressText').textContent =
+                    `${data.progress_percentage}% - ${data.messages_processed.toLocaleString()} / ${data.total_messages.toLocaleString()} messages`;
+
+                // Update metrics table
+                const metricsHtml = `
                 <tr>
                     <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Stream ID</td>
                     <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.stream_id}</td>
@@ -500,13 +523,14 @@
                     <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Timestamp of last update</td>
                 </tr>
             `;
-            
-            document.getElementById('metricsTable').innerHTML = metricsHtml;
-        }
 
-        // Real implementation would replace simulation with API calls:
-        // fetch(`/api/simulation`, { method: 'POST', body: JSON.stringify(config) })
-        // setInterval(() => fetch(`/api/simulation/${streamId}/progress`), 1000)
-    </script>
-</body>
+                document.getElementById('metricsTable').innerHTML = metricsHtml;
+            }
+
+            // Real implementation would replace simulation with API calls:
+            // fetch(`/api/simulation`, { method: 'POST', body: JSON.stringify(config) })
+            // setInterval(() => fetch(`/api/simulation/${streamId}/progress`), 1000)
+        </script>
+    </body>
+
 </html>

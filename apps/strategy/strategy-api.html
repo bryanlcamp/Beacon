@@ -1,520 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core - Beacon HFT Platform</title>
-    
-    <!-- Import Beacon Design System -->
-    <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
-    <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
-    
-    <style>
-        html, body {
-            overflow-y: auto;
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-            background: #0a0a15;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-        
-        .beacon-page-header {
-            background: rgba(16, 22, 36, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1em 2em;
-            border-bottom: 1px solid rgba(107, 182, 255, 0.2);
-        }
-        
-        .beacon-page-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .beacon-brand-header {
-            display: flex;
-            align-items: center;
-            gap: 1em;
-        }
-        
-        .beacon-brand-main {
-            color: #6bb6ff;
-            text-decoration: none;
-            font-size: 1.5em;
-            font-weight: 900;
-        }
-        
-        .beacon-brand-separator {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .beacon-page-title {
-            color: #ffffff;
-            font-size: 1.5em;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .beacon-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5em;
-        }
-        
-        .beacon-nav-back {
-            color: #6bb6ff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5em;
-            transition: color 0.3s ease;
-        }
-        
-        .beacon-nav-back:hover {
-            color: #ffffff;
-        }
-        
-        .utility-icons {
-            display: flex;
-            gap: 0.75em;
-            align-items: center;
-        }
-        
-        .utility-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 145, 77, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .utility-icon:hover {
-            background: rgba(255, 145, 77, 0.2);
-            transform: translateY(-1px);
-        }
-        
-        .search-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 110%;
-            min-width: 250px;
-            background: #181828;
-            border: 1.5px solid #ff914d;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.3);
-            z-index: 100;
-            padding: 1em;
-        }
-        
-        .search-dropdown.show {
-            display: block;
-        }
-        
-        .search-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 145, 77, 0.3);
-            border-radius: 6px;
-            padding: 0.75em;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 0.9em;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #ff914d;
-            box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
-        }
-        
-        .beacon-page-content {
-            max-width: 1400px;
-            margin: 2em auto;
-            padding: 0 2em;
-        }
-        
-        /* Enhanced Code Panel Styling */
-        .beacon-code-panel {
-            background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: 22px;
-            box-shadow: 0 8px 48px 0 rgba(80,120,200,0.15);
-            border: 1px solid rgba(107, 182, 255, 0.1);
-            padding: 2em;
-            margin: 2em 0;
-            overflow-x: auto;
-            position: relative;
-        }
-        
-        .beacon-code-panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.5), transparent);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        .beacon-code-panel pre {
-            margin: 0;
-            padding: 0;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.8em;
-            line-height: 1.0;
-            color: #ffffff;
-            overflow-x: auto;
-        }
-        
-        /* Enhanced C++ Syntax Highlighting */
-        .cpp-keyword {
-            color: #ff6b9d;
-            font-weight: 600;
-        }
-        
-        .cpp-type {
-            color: #4ecdc4;
-            font-weight: 500;
-        }
-        
-        .cpp-function {
-            color: #ffd93d;
-            font-weight: 500;
-        }
-        
-        .cpp-comment {
-            color: #7c7c7c;
-            font-style: italic;
-        }
-        
-        .cpp-string {
-            color: #98d8c8;
-        }
-        
-        .cpp-include {
-            color: #6bb6ff;
-        }
-        
-        .cpp-macro {
-            color: #ff9a56;
-            font-weight: 600;
-        }
-        
-        .cpp-operator {
-            color: #ff6b9d;
-        }
-        
-        .cpp-number {
-            color: #ffd93d;
-        }
-        
-        /* Documentation Styling */
-        .doc-hero {
-            text-align: center;
-            padding: 3em 0;
-            background: rgba(16, 22, 36, 0.5);
-            border-radius: 22px;
-            margin: 2em 0;
-            border: 1px solid rgba(107, 182, 255, 0.1);
-        }
-        
-        .doc-hero h1 {
-            font-size: clamp(3rem, 6vw, 4.5rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #ffffff;
-            margin: 0 0 0.5em 0;
-            text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
-        }
-        
-        .doc-hero p {
-            font-size: 1.4em;
-            color: #c3c8d1;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .doc-content {
-            margin: 3em 0;
-        }
-        
-        .doc-content h2 {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: #6bb6ff;
-            margin: 2em 0 1em 0;
-            letter-spacing: -0.02em;
-        }
-        
-        .doc-content p {
-            color: #c3c8d1;
-            line-height: 1.6;
-            margin: 1em 0;
-            font-size: 1.1em;
-        }
-        
-        /* Animation */
-        @keyframes shimmer {
-            0% { opacity: 0.3; transform: translateX(-100%); }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; transform: translateX(100%); }
-        }
-        
-        /* Demo banner styling */
-        .demo-banner {
-            background: linear-gradient(90deg, #6bb6ff, #3a7afe);
-            border: 2px solid rgba(58, 122, 254, 0.4);
-            color: white;
-            padding: 1em;
-            text-align: center;
-            margin: 1em 2em;
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            font-size: 1.1em;
-        }
-        
-        .beacon-page-title {
-            color: #ffffff;
-            font-size: 1.5em;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .beacon-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5em;
-        }
-        
-        .beacon-nav-back {
-            color: #6bb6ff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5em;
-            transition: color 0.3s ease;
-            font-size: 1.1em;
-        }
-        
-        .beacon-nav-back:hover {
-            color: #ffffff;
-        }
-        
-        .utility-icons {
-            display: flex;
-            gap: 0.75em;
-            align-items: center;
-        }
-        
-        .utility-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 145, 77, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .utility-icon:hover {
-            background: rgba(255, 145, 77, 0.2);
-            transform: translateY(-1px);
-        }
-        
-        .search-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 110%;
-            min-width: 250px;
-            background: #181828;
-            border: 1.5px solid #ff914d;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.3);
-            z-index: 100;
-            padding: 1em;
-        }
-        
-        .search-dropdown.show {
-            display: block;
-        }
-        
-        .search-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 145, 77, 0.3);
-            border-radius: 6px;
-            padding: 0.75em;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 1em;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #ff914d;
-            box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
-        }
-        
-        .beacon-page-content {
-            max-width: 1400px;
-            margin: 2em auto;
-            padding: 0 2em;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Core - Beacon HFT Platform</title>
+
+        <!-- Import Beacon Design System -->
+        <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+        <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+
+        <style>
+            html,
+            body {
+                overflow-y: auto;
+                scroll-behavior: smooth;
+            }
+
+            body {
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+                background: #0a0a15;
+                color: #ffffff;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+            }
+
+            .beacon-page-header {
+                background: rgba(16, 22, 36, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 1em 2em;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .beacon-page-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .beacon-brand-header {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+            }
+
+            .beacon-brand-main {
+                color: #6bb6ff;
+                text-decoration: none;
+                font-size: 1.5em;
+                font-weight: 900;
+            }
+
+            .beacon-brand-separator {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .beacon-page-title {
+                color: #ffffff;
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .beacon-nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+            }
+
+            .beacon-nav-back {
+                color: #6bb6ff;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                transition: color 0.3s ease;
+            }
+
+            .beacon-nav-back:hover {
+                color: #ffffff;
+            }
+
+            .utility-icons {
+                display: flex;
+                gap: 0.75em;
+                align-items: center;
+            }
+
+            .utility-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(255, 145, 77, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .utility-icon:hover {
+                background: rgba(255, 145, 77, 0.2);
+                transform: translateY(-1px);
+            }
+
+            .search-dropdown {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 110%;
+                min-width: 250px;
+                background: #181828;
+                border: 1.5px solid #ff914d;
+                border-radius: 8px;
+                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+                z-index: 100;
+                padding: 1em;
+            }
+
+            .search-dropdown.show {
+                display: block;
+            }
+
+            .search-input {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 145, 77, 0.3);
+                border-radius: 6px;
+                padding: 0.75em;
+                color: #ffffff;
+                font-family: inherit;
+                font-size: 0.9em;
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-color: #ff914d;
+                box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
+            }
+
             .beacon-page-content {
-                padding: 0 1em;
+                max-width: 1400px;
+                margin: 2em auto;
+                padding: 0 2em;
             }
-            
+
+            /* Enhanced Code Panel Styling */
             .beacon-code-panel {
-                padding: 1.5em;
+                background: linear-gradient(180deg, #101624 80%, #181f2e 100%);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border-radius: 22px;
+                box-shadow: 0 8px 48px 0 rgba(80, 120, 200, 0.15);
+                border: 1px solid rgba(107, 182, 255, 0.1);
+                padding: 2em;
+                margin: 2em 0;
+                overflow-x: auto;
+                position: relative;
             }
-        }
-    </style>
-</head>
-<body>
-    <header class="beacon-page-header">
-        <nav class="beacon-page-nav">
-            <div class="beacon-brand-header">
-                <a href="/" class="beacon-brand-main">Beacon.</a>
-                <span class="beacon-brand-separator">|</span>
-                <h1 class="beacon-page-title">Core.</h1>
-            </div>
-            <div class="beacon-nav-actions">
-                <a href="/" class="beacon-nav-back">
-                    <span class="nav-arrow">←</span>
-                    <span>Home</span>
-                </a>
-                <div class="utility-icons">
-                    <div class="utility-icon" id="infoIcon" style="position: relative;">
-                        <img src="/assets/images/icons/info-orange.svg" alt="Information" style="width:20px;height:20px;" />
-                        <div class="info-dropdown" id="infoDropdown" style="display:none;position:absolute;right:0;top:110%;min-width:120px;background:#181828;border:1.5px solid #ff914d;border-radius:8px;box-shadow:0 4px 16px 0 rgba(0,0,0,0.3);z-index:100;padding:0.5em 0;text-align:left;">
-                            <a href="mailto:info@beaconhft.com" style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Contact</a>
-                            <a href="/command-center/about.html" style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">About</a>
+
+            .beacon-code-panel::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.5), transparent);
+                animation: shimmer 3s ease-in-out infinite;
+            }
+
+            .beacon-code-panel pre {
+                margin: 0;
+                padding: 0;
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                font-size: 0.8em;
+                line-height: 1.0;
+                color: #ffffff;
+                overflow-x: auto;
+            }
+
+            /* Enhanced C++ Syntax Highlighting */
+            .cpp-keyword {
+                color: #ff6b9d;
+                font-weight: 600;
+            }
+
+            .cpp-type {
+                color: #4ecdc4;
+                font-weight: 500;
+            }
+
+            .cpp-function {
+                color: #ffd93d;
+                font-weight: 500;
+            }
+
+            .cpp-comment {
+                color: #7c7c7c;
+                font-style: italic;
+            }
+
+            .cpp-string {
+                color: #98d8c8;
+            }
+
+            .cpp-include {
+                color: #6bb6ff;
+            }
+
+            .cpp-macro {
+                color: #ff9a56;
+                font-weight: 600;
+            }
+
+            .cpp-operator {
+                color: #ff6b9d;
+            }
+
+            .cpp-number {
+                color: #ffd93d;
+            }
+
+            /* Documentation Styling */
+            .doc-hero {
+                text-align: center;
+                padding: 3em 0;
+                background: rgba(16, 22, 36, 0.5);
+                border-radius: 22px;
+                margin: 2em 0;
+                border: 1px solid rgba(107, 182, 255, 0.1);
+            }
+
+            .doc-hero h1 {
+                font-size: clamp(3rem, 6vw, 4.5rem);
+                font-weight: 800;
+                letter-spacing: -0.03em;
+                color: #ffffff;
+                margin: 0 0 0.5em 0;
+                text-shadow: 0 0 20px rgba(107, 182, 255, 0.3);
+            }
+
+            .doc-hero p {
+                font-size: 1.4em;
+                color: #c3c8d1;
+                max-width: 700px;
+                margin: 0 auto;
+                line-height: 1.6;
+            }
+
+            .doc-content {
+                margin: 3em 0;
+            }
+
+            .doc-content h2 {
+                font-size: 2.2em;
+                font-weight: 700;
+                color: #6bb6ff;
+                margin: 2em 0 1em 0;
+                letter-spacing: -0.02em;
+            }
+
+            .doc-content p {
+                color: #c3c8d1;
+                line-height: 1.6;
+                margin: 1em 0;
+                font-size: 1.1em;
+            }
+
+            /* Animation */
+            @keyframes shimmer {
+                0% {
+                    opacity: 0.3;
+                    transform: translateX(-100%);
+                }
+
+                50% {
+                    opacity: 1;
+                }
+
+                100% {
+                    opacity: 0.3;
+                    transform: translateX(100%);
+                }
+            }
+
+            /* Demo banner styling */
+            .demo-banner {
+                background: linear-gradient(90deg, #6bb6ff, #3a7afe);
+                border: 2px solid rgba(58, 122, 254, 0.4);
+                color: white;
+                padding: 1em;
+                text-align: center;
+                margin: 1em 2em;
+                border-radius: 8px;
+                font-weight: 600;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                font-size: 1.1em;
+            }
+
+            .beacon-page-title {
+                color: #ffffff;
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .beacon-nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+            }
+
+            .beacon-nav-back {
+                color: #6bb6ff;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                transition: color 0.3s ease;
+                font-size: 1.1em;
+            }
+
+            .beacon-nav-back:hover {
+                color: #ffffff;
+            }
+
+            .utility-icons {
+                display: flex;
+                gap: 0.75em;
+                align-items: center;
+            }
+
+            .utility-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(255, 145, 77, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .utility-icon:hover {
+                background: rgba(255, 145, 77, 0.2);
+                transform: translateY(-1px);
+            }
+
+            .search-dropdown {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 110%;
+                min-width: 250px;
+                background: #181828;
+                border: 1.5px solid #ff914d;
+                border-radius: 8px;
+                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+                z-index: 100;
+                padding: 1em;
+            }
+
+            .search-dropdown.show {
+                display: block;
+            }
+
+            .search-input {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 145, 77, 0.3);
+                border-radius: 6px;
+                padding: 0.75em;
+                color: #ffffff;
+                font-family: inherit;
+                font-size: 1em;
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-color: #ff914d;
+                box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
+            }
+
+            .beacon-page-content {
+                max-width: 1400px;
+                margin: 2em auto;
+                padding: 0 2em;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .beacon-page-content {
+                    padding: 0 1em;
+                }
+
+                .beacon-code-panel {
+                    padding: 1.5em;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="beacon-page-header">
+            <nav class="beacon-page-nav">
+                <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-main">Beacon.</a>
+                    <span class="beacon-brand-separator">|</span>
+                    <h1 class="beacon-page-title">Core.</h1>
+                </div>
+                <div class="beacon-nav-actions">
+                    <a href="/" class="beacon-nav-back">
+                        <span class="nav-arrow">←</span>
+                        <span>Home</span>
+                    </a>
+                    <div class="utility-icons">
+                        <div class="utility-icon" id="infoIcon" style="position: relative;">
+                            <img src="/assets/images/icons/info-orange.svg" alt="Information"
+                                style="width:20px;height:20px;" />
+                            <div class="info-dropdown" id="infoDropdown"
+                                style="display:none;position:absolute;right:0;top:110%;min-width:120px;background:#181828;border:1.5px solid #ff914d;border-radius:8px;box-shadow:0 4px 16px 0 rgba(0,0,0,0.3);z-index:100;padding:0.5em 0;text-align:left;">
+                                <a href="mailto:contact@beaconhft.com"
+                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Contact</a>
+                                <a href="/command-center/about.html"
+                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">About</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="utility-icon" id="searchIcon" style="position: relative;">
-                        <img src="/assets/images/icons/search-orange.svg" alt="Search" style="width:20px;height:20px;" />
-                        <div class="search-dropdown" id="searchDropdown">
-                            <input type="text" class="search-input" placeholder="Search API docs..." />
+                        <div class="utility-icon" id="searchIcon" style="position: relative;">
+                            <img src="/assets/images/icons/search-orange.svg" alt="Search"
+                                style="width:20px;height:20px;" />
+                            <div class="search-dropdown" id="searchDropdown">
+                                <input type="text" class="search-input" placeholder="Search API docs..." />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 
-    <main class="beacon-page-content">
+        <main class="beacon-page-content">
 
-    <section class="doc-content">
-    <h2>Quick Start Example</h2>
-    <div class="code-scroll" style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.7em;margin:0.8em 0;border-left:2px solid #6bb6ff;max-height:800px;overflow-y:auto;">
-    <div style="display:flex;justify-content:flex-start;align-items:center;margin-bottom:0.5em;">
-        <span style="color:#6bb6ff;font-weight:600;">example_strategy.cpp</span>
-    </div>
-    <pre style="margin:0;font-family:'Fira Code','Courier New',monospace;font-size:0.85em;line-height:1.3;color:#f5f7fa;white-space:pre-wrap;">
+            <section class="doc-content">
+                <h2>Quick Start Example</h2>
+                <div class="code-scroll"
+                    style="background:rgba(0,0,0,0.3);border-radius:8px;padding:0.7em;margin:0.8em 0;border-left:2px solid #6bb6ff;max-height:800px;overflow-y:auto;">
+                    <div style="display:flex;justify-content:flex-start;align-items:center;margin-bottom:0.5em;">
+                        <span style="color:#6bb6ff;font-weight:600;">example_strategy.cpp</span>
+                    </div>
+                    <pre
+                        style="margin:0;font-family:'Fira Code','Courier New',monospace;font-size:0.85em;line-height:1.3;color:#f5f7fa;white-space:pre-wrap;">
     <code style="font-size:1em;" id="cpp-code-content">
     Loading C++ code...
     </code>
     </pre>
-    </div>
+                </div>
 
-    <script>
-    // Load C++ file content
-    fetch('/command-center/apps/core/example_strategy.cpp')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('cpp-code-content').textContent = data;
-        })
-        .catch(error => {
-            document.getElementById('cpp-code-content').textContent = 'Error loading C++ file: ' + error;
-        });
+                <script>
+                    // Load C++ file content
+                    fetch('/command-center/apps/core/example_strategy.cpp')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('cpp-code-content').textContent = data;
+                        })
+                        .catch(error => {
+                            document.getElementById('cpp-code-content').textContent = 'Error loading C++ file: ' + error;
+                        });
 
-    // Setup utility icon dropdown functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Info dropdown
-        const infoIcon = document.getElementById('infoIcon');
-        const infoDropdown = document.getElementById('infoDropdown');
-        
-        if (infoIcon && infoDropdown) {
-            infoIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isVisible = infoDropdown.style.display === 'block';
-                
-                // Close search dropdown if open
-                const searchDropdown = document.getElementById('searchDropdown');
-                if (searchDropdown) {
-                    searchDropdown.classList.remove('show');
-                }
-                
-                infoDropdown.style.display = isVisible ? 'none' : 'block';
-            });
-        }
-        
-        // Search dropdown
-        const searchIcon = document.getElementById('searchIcon');
-        const searchDropdown = document.getElementById('searchDropdown');
-        
-        if (searchIcon && searchDropdown) {
-            searchIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isVisible = searchDropdown.classList.contains('show');
-                
-                // Close info dropdown if open
-                if (infoDropdown) {
-                    infoDropdown.style.display = 'none';
-                }
-                
-                if (isVisible) {
-                    searchDropdown.classList.remove('show');
-                } else {
-                    searchDropdown.classList.add('show');
-                    // Focus on search input when opened
-                    const searchInput = searchDropdown.querySelector('.search-input');
-                    if (searchInput) {
-                        setTimeout(() => searchInput.focus(), 100);
-                    }
-                }
-            });
-        }
-        
-        // Close utility dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.utility-icon')) {
-                // Close info dropdown
-                if (infoDropdown) {
-                    infoDropdown.style.display = 'none';
-                }
-                // Close search dropdown
-                if (searchDropdown) {
-                    searchDropdown.classList.remove('show');
-                }
-            }
-        });
-    });
-    </script>
-</body>
+                    // Setup utility icon dropdown functionality
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Info dropdown
+                        const infoIcon = document.getElementById('infoIcon');
+                        const infoDropdown = document.getElementById('infoDropdown');
+
+                        if (infoIcon && infoDropdown) {
+                            infoIcon.addEventListener('click', function (e) {
+                                e.stopPropagation();
+                                const isVisible = infoDropdown.style.display === 'block';
+
+                                // Close search dropdown if open
+                                const searchDropdown = document.getElementById('searchDropdown');
+                                if (searchDropdown) {
+                                    searchDropdown.classList.remove('show');
+                                }
+
+                                infoDropdown.style.display = isVisible ? 'none' : 'block';
+                            });
+                        }
+
+                        // Search dropdown
+                        const searchIcon = document.getElementById('searchIcon');
+                        const searchDropdown = document.getElementById('searchDropdown');
+
+                        if (searchIcon && searchDropdown) {
+                            searchIcon.addEventListener('click', function (e) {
+                                e.stopPropagation();
+                                const isVisible = searchDropdown.classList.contains('show');
+
+                                // Close info dropdown if open
+                                if (infoDropdown) {
+                                    infoDropdown.style.display = 'none';
+                                }
+
+                                if (isVisible) {
+                                    searchDropdown.classList.remove('show');
+                                } else {
+                                    searchDropdown.classList.add('show');
+                                    // Focus on search input when opened
+                                    const searchInput = searchDropdown.querySelector('.search-input');
+                                    if (searchInput) {
+                                        setTimeout(() => searchInput.focus(), 100);
+                                    }
+                                }
+                            });
+                        }
+
+                        // Close utility dropdowns when clicking outside
+                        document.addEventListener('click', function (e) {
+                            if (!e.target.closest('.utility-icon')) {
+                                // Close info dropdown
+                                if (infoDropdown) {
+                                    infoDropdown.style.display = 'none';
+                                }
+                                // Close search dropdown
+                                if (searchDropdown) {
+                                    searchDropdown.classList.remove('show');
+                                }
+                            }
+                        });
+                    });
+                </script>
+    </body>
+
 </html>

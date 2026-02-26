@@ -6,8 +6,7 @@
     "editor.insertSpaces": true,
     "editor.detectIndentation": true,
     "editor.formatOnSave": true,
-    "editor.rulers": [
-    ],
+    "editor.rulers": [],
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 120,
     // File Settings
@@ -106,5 +105,45 @@
     "workbench.editor.openPositioning": "first",
     // Auto-open GitHub view on startup
     "workbench.view.extensions.github.showPanel": true,
-    "github.copilot.chat.welcomeMessage": "disabled"
+    "github.copilot.chat.welcomeMessage": "disabled",
+    // GitHub Issues Sprint Configuration
+    "github.issues.queries": [
+        {
+            "label": "🔥 Current Sprint",
+            "query": "is:open is:issue milestone:\"Sprint 1\" repo:bryanlcamp/beacon-core repo:bryanlcamp/beacon-web-ui repo:bryanlcamp/beacon-webserver-api"
+        },
+        {
+            "label": "📋 Next Sprint",
+            "query": "is:open is:issue milestone:\"Sprint 2\" repo:bryanlcamp/beacon-core repo:bryanlcamp/beacon-web-ui repo:bryanlcamp/beacon-webserver-api"
+        },
+        {
+            "label": "🎯 My Issues",
+            "query": "is:open is:issue assignee:@me"
+        },
+        {
+            "label": "🐛 Bugs",
+            "query": "is:open is:issue label:bug"
+        },
+        {
+            "label": "✨ Features",
+            "query": "is:open is:issue label:enhancement"
+        },
+        {
+            "label": "📦 Backlog",
+            "query": "is:open is:issue no:milestone"
+        },
+        {
+            "label": "✅ Recently Closed",
+            "query": "is:closed is:issue updated:>2024-02-01"
+        }
+    ],
+    "github.issues.createInsertFormat": "number",
+    "git.inputValidationSubjectLength": 72,
+    // Enhanced Git workflow configuration
+    "git.enableCommitSigning": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "scm.defaultViewMode": "tree",
+    "gitlens.views.repositories.showBranchComparison": "working",
+    "gitlens.statusBar.enabled": true
 }

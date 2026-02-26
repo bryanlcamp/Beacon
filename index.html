@@ -4,7 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Beacon - Smart Panels</title>
+        <title>Beacon Trading Technologies</title>
+
+        <!-- Lighthouse Favicon -->
+        <link rel="icon" href="/assets/images/beacon-original-fixed.svg?v=5">
+
         <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
         <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
 
@@ -31,16 +35,19 @@
                 --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
 
                 /* Colors */
-                --color-orange: #ff914d;
+                --color-orange: #B8673A;
                 --color-blue: #6bb6ff;
+                --color-purple: #4A2C66;
                 --color-white: #fff;
                 --color-gray: rgba(200, 200, 200, 1);
 
                 /* Text Effects */
-                --glow-orange: 0 0 6px rgba(255, 145, 77, 0.2), 0 0 12px rgba(255, 145, 77, 0.1);
-                --glow-orange-hover: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 14px rgba(255, 145, 77, 0.12);
+                --glow-orange: 0 0 6px rgba(184, 103, 58, 0.2), 0 0 12px rgba(184, 103, 58, 0.1);
+                --glow-orange-hover: 0 0 8px rgba(184, 103, 58, 0.25), 0 0 14px rgba(184, 103, 58, 0.12);
                 --glow-blue: 0 0 6px rgba(107, 182, 255, 0.2), 0 0 12px rgba(107, 182, 255, 0.1);
                 --glow-blue-hover: 0 0 8px rgba(107, 182, 255, 0.25), 0 0 14px rgba(107, 182, 255, 0.12);
+                --glow-purple: 0 0 8px rgba(74, 44, 102, 0.25), 0 0 14px rgba(74, 44, 102, 0.12);
+                --glow-purple-hover: 0 0 10px rgba(74, 44, 102, 0.4), 0 0 20px rgba(74, 44, 102, 0.2);
 
                 /* Spacing */
                 --spacing-sm: 0.4em;
@@ -109,7 +116,7 @@
             }
 
             .main-explore-link:hover {
-                text-shadow: 0 0 12px rgba(255, 145, 77, 0.4), 0 0 20px rgba(255, 145, 77, 0.2);
+                text-shadow: 0 0 8px rgba(255, 145, 77, 0.25), 0 0 12px rgba(255, 145, 77, 0.12);
                 filter: brightness(1.05);
             }
 
@@ -185,7 +192,7 @@
 
             /* Target the icon when airplane text is hovered */
             .main-glass-panel:has(#airplane-mode-text:hover) #no-wifi-icon {
-                filter: drop-shadow(0 0 20px rgba(255, 145, 77, 0.6));
+                filter: drop-shadow(0 0 20px rgba(184, 103, 58, 0.6));
                 transition: all 0.3s ease;
             }
 
@@ -195,7 +202,40 @@
 
             /* Icon hover effect */
             #no-wifi-icon:hover {
-                filter: drop-shadow(0 0 20px rgba(255, 145, 77, 0.6));
+                filter: drop-shadow(0 0 20px rgba(184, 103, 58, 0.6));
+                transition: all 0.3s ease;
+            }
+
+            /* Wall Street speed text glow on speed icon hover */
+            #custom-icon:hover~div #wall-street-speed-text {
+                color: var(--color-purple);
+                text-shadow: var(--glow-purple-hover);
+                transition: all 0.3s ease;
+            }
+
+            #wall-street-speed-text {
+                transition: all 0.3s ease;
+            }
+
+            /* Reverse interaction - Wall Street speed text hover makes icon purple */
+            #wall-street-speed-text:hover {
+                color: var(--color-purple);
+                text-shadow: var(--glow-purple-hover);
+            }
+
+            /* Target the speed icon when Wall Street speed text is hovered */
+            .main-glass-panel:has(#wall-street-speed-text:hover) #custom-icon {
+                filter: drop-shadow(0 0 20px rgba(74, 44, 102, 0.8));
+                transition: all 0.3s ease;
+            }
+
+            #custom-icon {
+                transition: all 0.3s ease;
+            }
+
+            /* Direct hover on speed icon */
+            #custom-icon:hover {
+                filter: drop-shadow(0 0 20px rgba(74, 44, 102, 0.8));
                 transition: all 0.3s ease;
             }
 
@@ -264,11 +304,15 @@
                 pointer-events: none;
                 overflow: hidden;
                 box-sizing: border-box;
+                display: none;
+                /* Force hidden by default */
             }
 
             .panel-content.active {
                 opacity: 1;
                 pointer-events: auto;
+                display: block;
+                /* Show when active */
             }
         </style>
     </head>
@@ -282,15 +326,18 @@
                     style="position: relative; margin-top: 0; min-height: 420px; box-shadow: 0 0 25px rgba(107, 182, 255, 0.15), 0 0 50px rgba(107, 182, 255, 0.08), 0 0 80px rgba(107, 182, 255, 0.04); display: flex; flex-direction: column; justify-content: space-between;">
                     <!-- Original: box-shadow: 0 0 30px rgba(107, 182, 255, 0.08), 0 0 60px rgba(107, 182, 255, 0.03); -->
 
+                    <!-- Custom μs∂ icon -->
+                    <img src="/assets/images/icons/speed.svg" alt="" id="custom-icon"
+                        style="position: absolute; bottom: 1em; left: 0.8em; width: 38px; height: 38px; opacity: 1.0;" />
                     <!-- No wifi required icon -->
                     <img src="/assets/images/icons/no-wifi.svg" alt="" id="no-wifi-icon"
-                        style="position: absolute; bottom: 1em; left: 1.2em; width: 44px; height: 44px; opacity: 1.0;" />
+                        style="position: absolute; bottom: 1em; left: 3.8em; width: 38px; height: 38px; opacity: 1.0;" />
                     <div style="text-align:left; padding-top: 1.8em;">
                         <h1 class="title" style="text-align:left; font-size: 3.5em; margin-bottom: 0.2em;">
                             <span>Beacon.</span>
                         </h1>
-                        <div class="tagline" style="text-align:left;">Wall Street speed. <span
-                                id="airplane-mode-text">Airplane mode.</span></div>
+                        <div class="tagline" style="text-align:left;"><span id="wall-street-speed-text">Wall Street
+                                speed.</span> <span id="airplane-mode-text">Airplane mode.</span></div>
                     </div>
                     <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
                         <div class="main-desc" style="text-align:left; font-size: 1.05em; margin-top: 1em;">
@@ -380,6 +427,14 @@
                 <div class="panel-content" id="author-content">
                     <div style="position: relative;">
                         <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Author.</h2>
+                        <!-- Launch button -->
+                        <div style="position: absolute; top: 0; right: 0.5em;">
+                            <a href="/apps/author"
+                                style="color: var(--color-blue); font-size: 1.0em; text-decoration: none; font-weight: 700; opacity: 1.0; transition: all 0.3s ease; text-shadow: var(--glow-blue); cursor: pointer;"
+                                onmouseover="this.style.textShadow='var(--glow-blue-hover)'; this.style.transform='scale(1.05)';"
+                                onmouseout="this.style.textShadow='var(--glow-blue)'; this.style.transform='scale(1)';">Launch
+                                →</a>
+                        </div>
                     </div>
                     <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
                         Create Market Datasets.</h3>
@@ -509,6 +564,39 @@
                     </div>
                 </div>
 
+                <!-- Strategy content -->
+                <div class="panel-content" id="strategy-content">
+                    <div style="position: relative;">
+                        <h2 class="title" style="font-size: 1.8em; margin-bottom: 0.5em;">Strategy.</h2>
+                    </div>
+                    <h3 style="color: var(--color-blue); font-size: 1.1em; font-weight: 600; margin-bottom: 0.8em;">
+                        Build & Test Algorithms.</h3>
+                    <p
+                        style="color: #e2e8f0; font-size: 0.9em; line-height: 1.6; margin-bottom: 1.5em; text-align: justify;">
+                        Create trading algorithms that respond to market conditions in real time. Test your strategies
+                        with realistic market scenarios before deploying capital.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Logic Framework</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">Build
+                                strategies with decision trees and conditions. Test edge cases without risking capital.
+                            </p>
+                        </div>
+                        <div
+                            style="background: rgba(107, 182, 255, 0.08); border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 8px; padding: 1em;">
+                            <h4
+                                style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.3em; font-size: 0.85em;">
+                                Market Behavior</h4>
+                            <p style="color: #cbd5e0; font-size: 0.75em; line-height: 1.4; text-align: justify;">
+                                Understand how strategies perform across different volatility and liquidity conditions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Info content -->
                 <div class="panel-content" id="info-content">
                     <div style="position: relative;">
@@ -527,7 +615,7 @@
                     </div>
 
                     <div style="position: absolute; bottom: 0.8em; right: 0.8em;">
-                        <a href="mailto:newuser@beaconhft.com?subject=New%20User%20Inquiry%20-%20from%20Contact%20Panel&body=Hi,%0A%0A[Your%20message%20here]%0A%0A---%0ASent%20from:%20Contact%20Panel%20-%20%22New%20to%20Beacon%22%20link%0APage:%20beaconhft.com"
+                        <a href="mailto:signup@beaconhft.com?subject=New%20User%20Signup%20-%20from%20Contact%20Panel&body=Hi,%0A%0A[Your%20message%20here]%0A%0A---%0ASent%20from:%20Contact%20Panel%20-%20%22New%20to%20Beacon%22%20link%0APage:%20beaconhft.com"
                             style="color: var(--color-orange); font-size: 0.8em; text-decoration: none; font-weight: 500; opacity: 0.8; transition: opacity 0.3s ease;">New
                             to Beacon? →</a>
                     </div>
@@ -609,6 +697,9 @@
                     const targetContent = document.getElementById(app + '-content');
                     if (targetContent) {
                         targetContent.classList.add('active');
+                        console.log('Showing content for:', app); // Debug
+                    } else {
+                        console.log('Content not found for:', app); // Debug
                     }
 
                     currentApp = app;
@@ -778,6 +869,31 @@
                 });
             });
         </script>
+
+        <!-- Social Media Footer -->
+        <div style="position: fixed; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 1000;">
+            <!-- X (Twitter) Icon -->
+            <a href="https://x.com/beaconhft" target="_blank" rel="noopener noreferrer"
+                style="color: #e2e8f0; transition: all 0.3s ease; text-decoration: none;"
+                onmouseover="this.style.color='#1DA1F2'; this.style.transform='scale(1.1)';"
+                onmouseout="this.style.color='#e2e8f0'; this.style.transform='scale(1)';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                </svg>
+            </a>
+
+            <!-- GitHub Icon -->
+            <a href="https://github.com/bryanlcamp" target="_blank" rel="noopener noreferrer"
+                style="color: #e2e8f0; transition: all 0.3s ease; text-decoration: none;"
+                onmouseover="this.style.color='#6bb6ff'; this.style.transform='scale(1.1)';"
+                onmouseout="this.style.color='#e2e8f0'; this.style.transform='scale(1)';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+            </a>
+        </div>
     </body>
 
 </html>
