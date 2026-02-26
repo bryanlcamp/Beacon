@@ -3509,26 +3509,12 @@
                         const isVisible = infoDropdown.style.display === 'block';
 
                         // Close search dropdown if open
+                        const searchDropdown = document.getElementById('searchDropdown');
+                        if (searchDropdown) {
+                            searchDropdown.style.display = 'none';
                         }
 
                         infoDropdown.style.display = isVisible ? 'none' : 'block';
-                    });
-                }
-
-                // Search dropdown
-
-                        e.stopPropagation();
-
-                        // Close info dropdown if open
-                        if (infoDropdown) {
-                            infoDropdown.style.display = 'none';
-                        }
-
-                        if (isVisible) {
-                        } else {
-                            // Focus on search input when opened
-                            }
-                        }
                     });
                 }
 
@@ -3539,25 +3525,24 @@
                         if (infoDropdown) {
                             infoDropdown.style.display = 'none';
                         }
-                        // Close search dropdown
-                        }
                     }
                 });
+            });
 
-                // Track datacard changes (will work with both real app and fallback)
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                            // New datacards added - mark as changed
-                            markUnsavedChanges();
-                        }
-                    });
+            // Track datacard changes (will work with both real app and fallback)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        // New datacards added - mark as changed
+                        markUnsavedChanges();
+                    }
                 });
+            });
 
-                const datacardContainer = document.getElementById('datacardContainer');
-                if (datacardContainer) {
-                    observer.observe(datacardContainer, { childList: true, subtree: true });
-                }
+            const datacardContainer = document.getElementById('datacardContainer');
+            if (datacardContainer) {
+                observer.observe(datacardContainer, { childList: true, subtree: true });
+            }
             }
         </script>
 
