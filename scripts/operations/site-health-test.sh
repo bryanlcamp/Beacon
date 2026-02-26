@@ -1,6 +1,6 @@
 #!/bin/bash
-# Beacon Platform - Quick Testing Script
-# Usage: ./quick-test.sh [component]
+# Beacon Platform - Site Health Testing Script
+# Usage: ./site-health-test.sh [component]
 
 set -e
 
@@ -284,10 +284,10 @@ main() {
     echo "📊 Full report: $LOG_DIR/test_report.txt"
     echo ""
     echo "Quick commands:"
-    echo "  ./quick-test.sh web       # Test web interface only"
-    echo "  ./quick-test.sh core      # Test beacon core only"
-    echo "  ./quick-test.sh perf      # Run performance tests"
-    echo "  ./quick-test.sh all       # Run all tests (default)"
+    echo "  ./site-health-test.sh web       # Test web interface only"
+    echo "  ./site-health-test.sh core      # Test beacon core only"
+    echo "  ./site-health-test.sh perf      # Run performance tests"
+    echo "  ./site-health-test.sh all       # Run all tests (default)"
 }
 
 # Install bc if not available (for floating point arithmetic)
