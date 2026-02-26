@@ -100,41 +100,6 @@
                 transform: translateY(-1px);
             }
 
-            .search-dropdown {
-                display: none;
-                position: absolute;
-                right: 0;
-                top: 110%;
-                min-width: 250px;
-                background: #181828;
-                border: 1.5px solid #ff914d;
-                border-radius: 8px;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
-                z-index: 100;
-                padding: 1em;
-            }
-
-            .search-dropdown.show {
-                display: block;
-            }
-
-            .search-input {
-                width: 100%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 145, 77, 0.3);
-                border-radius: 6px;
-                padding: 0.75em;
-                color: #ffffff;
-                font-family: inherit;
-                font-size: 0.9em;
-            }
-
-            .search-input:focus {
-                outline: none;
-                border-color: #ff914d;
-                box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
-            }
-
             main.beacon-page-content {
                 padding-top: 100px;
                 max-width: 900px;
@@ -163,13 +128,7 @@
                             <img src="/assets/images/icons/info-orange.svg" alt="Information" />
                             <div class="info-dropdown" id="infoDropdown">
                                 <a href="mailto:contact@beaconhft.com">Contact</a>
-                                <a href="/about.html">About</a>
-                            </div>
-                        </div>
-                        <div class="utility-icon" id="searchIcon">
-                            <img src="/assets/images/icons/search-orange.svg" alt="Search" />
-                            <div class="search-dropdown" id="searchDropdown">
-                                <input type="text" class="search-input" placeholder="Search pulse settings..." />
+                                <a href="/">Home</a>
                             </div>
                         </div>
                     </div>
@@ -278,39 +237,6 @@
             </section>
         </main>
         <script>
-            // Search functionality (copied from Command Center)
-            function showSearchIfResults() {
-                if (document.querySelector('.beacon-search-field').value.trim()) performSearch();
-            }
-            function hideSearchDelayed() {
-                setTimeout(() => {
-                    document.querySelector('.beacon-search-results').style.display = 'none';
-                }, 300);
-            }
-            function performSearch(query = document.querySelector('.beacon-search-field').value) {
-                const results = document.getElementById('searchResults');
-                if (!query.trim()) return results.style.display = 'none';
-                const mockResults = [
-                    { title: "Market Data Generation", section: "Infrastructure", snippet: "Generate datasets with 4.5μs latency...", url: "cpp/market-data-generation.html" },
-                    { title: "CME Protocol Support", section: "Protocols", snippet: "Native binary CME, Nasdaq, NYSE protocols...", url: "protocols/support-cme-nasdaq-nyse.html" },
-                    { title: "Strategy Container", section: "Applications", snippet: "Plug in your strategy and start testing immediately...", url: "../apps/algorithm-plugin/" }
-                ].filter(item =>
-                    item.title.toLowerCase().includes(query.toLowerCase()) ||
-                    item.snippet.toLowerCase().includes(query.toLowerCase())
-                );
-                if (mockResults.length) {
-                    results.innerHTML = mockResults.map(item => `
-                <div class="search-result" onclick="window.location.href='${item.url}'">
-                    <div class="result-title">${item.title}</div>
-                    <div class="result-section">${item.section}</div>
-                    <div class="result-snippet">${item.snippet}</div>
-                </div>
-            `).join('');
-                    results.style.display = 'block';
-                } else {
-                    results.style.display = 'none';
-                }
-            }
             // Setup utility icon dropdown functionality
             document.addEventListener('DOMContentLoaded', function () {
                 // Info dropdown
@@ -323,9 +249,6 @@
                         const isVisible = infoDropdown.style.display === 'block';
 
                         // Close search dropdown if open
-                        const searchDropdown = document.getElementById('searchDropdown');
-                        if (searchDropdown) {
-                            searchDropdown.classList.remove('show');
                         }
 
                         infoDropdown.style.display = isVisible ? 'none' : 'block';
@@ -333,13 +256,8 @@
                 }
 
                 // Search dropdown
-                const searchIcon = document.getElementById('searchIcon');
-                const searchDropdown = document.getElementById('searchDropdown');
 
-                if (searchIcon && searchDropdown) {
-                    searchIcon.addEventListener('click', function (e) {
                         e.stopPropagation();
-                        const isVisible = searchDropdown.classList.contains('show');
 
                         // Close info dropdown if open
                         if (infoDropdown) {
@@ -347,13 +265,8 @@
                         }
 
                         if (isVisible) {
-                            searchDropdown.classList.remove('show');
                         } else {
-                            searchDropdown.classList.add('show');
                             // Focus on search input when opened
-                            const searchInput = searchDropdown.querySelector('.search-input');
-                            if (searchInput) {
-                                setTimeout(() => searchInput.focus(), 100);
                             }
                         }
                     });
@@ -367,8 +280,6 @@
                             infoDropdown.style.display = 'none';
                         }
                         // Close search dropdown
-                        if (searchDropdown) {
-                            searchDropdown.classList.remove('show');
                         }
                     }
                 });

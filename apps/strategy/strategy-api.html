@@ -108,7 +108,6 @@
                 transform: translateY(-1px);
             }
 
-            .search-dropdown {
                 display: none;
                 position: absolute;
                 right: 0;
@@ -122,11 +121,9 @@
                 padding: 1em;
             }
 
-            .search-dropdown.show {
                 display: block;
             }
 
-            .search-input {
                 width: 100%;
                 background: rgba(255, 255, 255, 0.05);
                 border: 1px solid rgba(255, 145, 77, 0.3);
@@ -137,7 +134,6 @@
                 font-size: 0.9em;
             }
 
-            .search-input:focus {
                 outline: none;
                 border-color: #ff914d;
                 box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
@@ -354,7 +350,6 @@
                 transform: translateY(-1px);
             }
 
-            .search-dropdown {
                 display: none;
                 position: absolute;
                 right: 0;
@@ -368,11 +363,9 @@
                 padding: 1em;
             }
 
-            .search-dropdown.show {
                 display: block;
             }
 
-            .search-input {
                 width: 100%;
                 background: rgba(255, 255, 255, 0.05);
                 border: 1px solid rgba(255, 145, 77, 0.3);
@@ -383,7 +376,6 @@
                 font-size: 1em;
             }
 
-            .search-input:focus {
                 outline: none;
                 border-color: #ff914d;
                 box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
@@ -429,15 +421,11 @@
                                 style="display:none;position:absolute;right:0;top:110%;min-width:120px;background:#181828;border:1.5px solid #ff914d;border-radius:8px;box-shadow:0 4px 16px 0 rgba(0,0,0,0.3);z-index:100;padding:0.5em 0;text-align:left;">
                                 <a href="mailto:contact@beaconhft.com"
                                     style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Contact</a>
-                                <a href="/command-center/about.html"
-                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">About</a>
+                                <a href="/"
+                                    style="display:block;color:#fff;text-decoration:none;padding:0.5em 1.2em;font-size:1em;transition:background 0.18s,color 0.18s;">Home</a>
                             </div>
                         </div>
-                        <div class="utility-icon" id="searchIcon" style="position: relative;">
-                            <img src="/assets/images/icons/search-orange.svg" alt="Search"
                                 style="width:20px;height:20px;" />
-                            <div class="search-dropdown" id="searchDropdown">
-                                <input type="text" class="search-input" placeholder="Search API docs..." />
                             </div>
                         </div>
                     </div>
@@ -484,10 +472,6 @@
                                 e.stopPropagation();
                                 const isVisible = infoDropdown.style.display === 'block';
 
-                                // Close search dropdown if open
-                                const searchDropdown = document.getElementById('searchDropdown');
-                                if (searchDropdown) {
-                                    searchDropdown.classList.remove('show');
                                 }
 
                                 infoDropdown.style.display = isVisible ? 'none' : 'block';
@@ -495,13 +479,8 @@
                         }
 
                         // Search dropdown
-                        const searchIcon = document.getElementById('searchIcon');
-                        const searchDropdown = document.getElementById('searchDropdown');
 
-                        if (searchIcon && searchDropdown) {
-                            searchIcon.addEventListener('click', function (e) {
                                 e.stopPropagation();
-                                const isVisible = searchDropdown.classList.contains('show');
 
                                 // Close info dropdown if open
                                 if (infoDropdown) {
@@ -509,13 +488,7 @@
                                 }
 
                                 if (isVisible) {
-                                    searchDropdown.classList.remove('show');
                                 } else {
-                                    searchDropdown.classList.add('show');
-                                    // Focus on search input when opened
-                                    const searchInput = searchDropdown.querySelector('.search-input');
-                                    if (searchInput) {
-                                        setTimeout(() => searchInput.focus(), 100);
                                     }
                                 }
                             });
@@ -528,9 +501,6 @@
                                 if (infoDropdown) {
                                     infoDropdown.style.display = 'none';
                                 }
-                                // Close search dropdown
-                                if (searchDropdown) {
-                                    searchDropdown.classList.remove('show');
                                 }
                             }
                         });

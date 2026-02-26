@@ -1,6 +1,6 @@
-∏# 🌐 Beacon Platform - Web Frontend
+# 🌐 Beacon Platform - Web Frontend
 
-**Financial Trading Platform Frontend** - React-based web interface for the Beacon trading system.
+**Financial Trading Platform Frontend** - Modern web interface for the Beacon trading system built with HTML, CSS, and JavaScript.
 
 ## 🚀 Quick Start
 
@@ -13,12 +13,13 @@
 ```
 🌐 beacon-web/
 ├── 📄 index.html              # Main dashboard
-├── 📄 about.html              # Platform information
-├── 🗂️ apps/                   # Trading applications
+├── �️ apps/                   # Trading applications
 │   ├── author/                 # Strategy authoring tool
 │   ├── match/                  # Order matching visualization
 │   ├── pulse/                  # Market pulse monitor
 │   └── strategy/              # Strategy development
+├── 🗂️ demos/                  # Alternative layouts & experiments
+│   └── smart-panels.html       # Alternative dashboard layout
 ├── 🗂️ api/                    # Backend API integration
 │   └── flask-app/             # Python Flask API
 ├── 🗂️ assets/                 # Static resources
