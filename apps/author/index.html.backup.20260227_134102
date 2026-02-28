@@ -1,0 +1,3840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Author - Beacon HFT Platform</title>
+
+        <!-- Import Beacon Design System -->
+        <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+        <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+
+        <!-- Reusable Components -->
+        <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+        <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+        <link rel="stylesheet" href="/assets/css/components/typography.css">
+        <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+        <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+
+        <!-- Page-specific styles for Author app -->
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+
+        <!-- Author app specific styles -->
+        <style>
+            :root {
+                /* Beacon color system - much darker, professional palette */
+                --color-orange: #d97841;
+                --color-blue: #3d5a7a;
+                --color-white: #fff;
+                --color-red: #d66565;
+
+                /* Glass panel backgrounds */
+                --glass-panel: rgba(16, 22, 36, 0.8);
+                --glass-input: rgba(24, 31, 46, 0.8);
+
+                /* Border colors - very subtle */
+                --border-blue: rgba(61, 90, 122, 0.1);
+                --border-blue-active: rgba(61, 90, 122, 0.25);
+                --border-red: rgba(214, 101, 101, 0.35);
+
+                /* Spacing */
+                --spacing-xs: 0.5em;
+                --spacing-sm: 0.75em;
+                --spacing-md: 1em;
+                --spacing-lg: 1.5em;
+                --spacing-xl: 2em;
+            }
+
+            html,
+            body {
+                overflow-y: auto;
+                scroll-behavior: smooth;
+            }
+
+            body {
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+                background: #0a0a15;
+                color: rgba(255, 255, 255, 0.75);
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+            }
+
+            .beacon-page-header {
+                background: rgba(16, 22, 36, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 1em 2em;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .beacon-page-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .beacon-brand-header {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+            }
+
+            .beacon-brand-main {
+                color: var(--color-blue);
+                text-decoration: none;
+                font-size: 1.5em;
+                font-weight: 900;
+            }
+
+            .beacon-brand-separator {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .beacon-page-title {
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .beacon-nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+            }
+
+            .beacon-nav-back {
+                color: var(--color-blue);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                transition: color 0.3s ease;
+            }
+
+            .beacon-nav-back:hover {
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .beacon-page-content {
+                max-width: 1400px;
+                margin: 0.25em auto 2em auto;
+                padding: 0 2em;
+            }
+
+            .app-layout {
+                display: grid;
+                grid-template-columns: 320px 1fr;
+                gap: 2em;
+                min-height: 600px;
+            }
+
+            .config-panel,
+            .datacards-panel {
+                background: rgba(16, 22, 36, 0.8);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 12px;
+                padding: 1.5em;
+            }
+
+            .form-group {
+                margin-bottom: 1.5em;
+            }
+
+            .config-section {
+                margin-bottom: 1.5em;
+            }
+
+            .spinner-input,
+            .symbol-input,
+            .exchange-select,
+            .form-select {
+                width: 100%;
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 6px;
+                padding: 0.75em;
+                color: rgba(255, 255, 255, 0.75);
+                font-family: inherit;
+            }
+
+            /* Hide browser's default number input arrows */
+            .spinner-input::-webkit-outer-spin-button,
+            .spinner-input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            .spinner-input[type=number] {
+                -moz-appearance: textfield;
+                appearance: textfield;
+            }
+
+            .exchange-select {
+                appearance: none !important;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpolyline points='6,9 12,15 18,9' stroke='%23ffffff99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e") !important;
+                background-position: right 12px center !important;
+                background-repeat: no-repeat !important;
+                background-size: 16px !important;
+                padding-right: 40px !important;
+            }
+
+            .spinner-input:focus,
+            .symbol-input:focus,
+            .exchange-select:focus {
+                outline: none;
+                border-color: var(--color-blue);
+                box-shadow: 0 0 0 2px var(--border-blue-active);
+            }
+
+            .btn {
+                background: var(--color-blue);
+                color: rgba(255, 255, 255, 0.95);
+                border: none;
+                border-radius: 6px;
+                padding: 0.75em 1.5em;
+                font-family: inherit;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5em;
+            }
+
+            .btn:hover {
+                background: #5aa3e6;
+                transform: translateY(-1px);
+            }
+
+            .btn-secondary {
+                background: rgba(107, 182, 255, 0.1);
+                color: #6bb6ff;
+                border: 1px solid rgba(107, 182, 255, 0.3);
+            }
+
+            .btn-secondary:hover {
+                background: rgba(107, 182, 255, 0.2);
+                color: rgba(255, 255, 255, 0.75);
+            }
+
+            .config-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75em;
+            }
+
+            .demo-banner {
+                background: rgba(255, 145, 77, 0.1);
+                border: 1px solid rgba(255, 145, 77, 0.3);
+                color: #ff914d;
+                padding: 0.75em;
+                text-align: center;
+                margin: 1em 2em;
+                border-radius: 8px;
+            }
+
+            .datacard-container {
+                display: grid;
+                gap: 1em;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .range-control-group {
+                display: flex;
+                gap: 1em;
+                margin-bottom: 1em;
+            }
+
+            .range-control.half-width {
+                flex: 1;
+            }
+
+            .advanced-toggle {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 20px;
+                height: 20px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, 0.6);
+                transition: all 0.2s ease;
+                z-index: 1001;
+            }
+
+            .advanced-toggle:hover {
+                background: rgba(107, 182, 255, 0.1);
+                border-color: rgba(107, 182, 255, 0.4);
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .advanced-toggle.expanded {
+                background: rgba(107, 182, 255, 0.15);
+                border-color: rgba(107, 182, 255, 0.5);
+                color: #6bb6ff;
+            }
+
+            .price-controls-section {
+                position: relative;
+                margin-bottom: 0.5em;
+            }
+
+            /* Section styling */
+            .section-title {
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 1.4em;
+                font-weight: 600;
+                margin: 0 0 1.5em 0;
+                padding-bottom: 0.5em;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .section-separator {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(107, 182, 255, 0.3), transparent);
+                margin: 1.5em 0;
+            }
+
+            .input-label {
+                display: block;
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 0.95em;
+                font-weight: 500;
+                margin-bottom: 0.5em;
+            }
+
+            /* Percentage Allocation Display */
+            .allocation-display {
+                background: rgba(24, 31, 46, 0.9);
+                border: 2px solid rgba(107, 182, 255, 0.3);
+                border-radius: 8px;
+                padding: 1.5em;
+                margin: 1em 0;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+
+            .allocation-display.invalid {
+                border-color: rgba(255, 88, 88, 0.6);
+                background: rgba(255, 88, 88, 0.05);
+            }
+
+            .allocation-percentage {
+                font-size: 2.2em;
+                font-weight: 700;
+                margin-bottom: 0.25em;
+                color: #6bb6ff;
+                transition: color 0.3s ease;
+            }
+
+            .allocation-display.invalid .allocation-percentage {
+                color: #ff5858;
+            }
+
+            .allocation-label {
+                font-size: 1.1em;
+                color: rgba(255, 255, 255, 0.8);
+                font-weight: 500;
+            }
+
+            /* Red Adorner for Invalid Percentage Inputs */
+            .percentage-input.invalid {
+                border-color: #ff5858 !important;
+                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.2) !important;
+            }
+
+            .percentage-input.invalid:focus {
+                border-color: #ff5858 !important;
+                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.3) !important;
+            }
+
+            /* Real-time Symbol Input Validation States */
+            .symbol-input.duplicate-symbol {
+                border-color: #ff5858 !important;
+                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.2) !important;
+                background: rgba(255, 88, 88, 0.05) !important;
+            }
+
+            .symbol-input.valid-symbol {
+                border-color: #6bb6ff !important;
+                box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2) !important;
+                background: rgba(107, 182, 255, 0.05) !important;
+            }
+
+            /* Allocation Display States */
+            .allocation-status-box {
+                transition: all 0.3s ease;
+            }
+
+            .allocation-status-box.invalid {
+                background: rgba(255, 88, 88, 0.1) !important;
+                border-color: #ff5858 !important;
+            }
+
+            .allocation-status-box.invalid span {
+                color: #ff5858 !important;
+            }
+
+            .allocation-status-box:not(.invalid) {
+                background: rgba(34, 197, 94, 0.1) !important;
+                border-color: #22c55e !important;
+            }
+
+            .allocation-status-box:not(.invalid) span {
+                color: #22c55e !important;
+            }
+
+            /* Datacard styling fallback */
+            .datacard {
+                background: rgba(24, 31, 46, 0.9);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 8px;
+                padding: 0.6em;
+                margin-bottom: 0.5em;
+                transition: all 0.3s ease;
+            }
+
+            .datacard.has-micro-periods {
+                background: rgba(107, 182, 255, 0.08) !important;
+                border-color: rgba(107, 182, 255, 0.3) !important;
+                box-shadow: 0 0 15px rgba(107, 182, 255, 0.1) !important;
+            }
+
+            .datacard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5em;
+                padding-bottom: 0.3em;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .symbol-display {
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 1.1em;
+                letter-spacing: 0.01em;
+                line-height: 1.0;
+                margin: 0;
+                white-space: nowrap;
+            }
+
+            .exchange-prefix {
+                color: #6bb6ff;
+                margin-right: 0.25em;
+                font-weight: 700;
+            }
+
+            .symbol-name {
+                color: rgba(255, 255, 255, 0.75);
+                font-weight: 800;
+            }
+
+            .datacard-controls {
+                display: flex;
+                align-items: center;
+                gap: 0.3em;
+            }
+
+            .percentage-input {
+                width: 60px;
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 4px;
+                padding: 0.25em 0.4em;
+                color: rgba(255, 255, 255, 0.75);
+                font-family: inherit;
+                text-align: center;
+                font-size: 0.85em;
+            }
+
+            .remove-symbol {
+                background: rgba(255, 88, 88, 0.1);
+                border: 1px solid rgba(255, 88, 88, 0.3);
+                color: #ff5858;
+                border-radius: 4px;
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+            }
+
+            .remove-symbol:hover {
+                background: rgba(255, 88, 88, 0.2);
+                border-color: #ff5858;
+            }
+
+            /* Responsive */
+            @media (max-width: 1024px) {
+                .app-layout {
+                    grid-template-columns: 1fr;
+                }
+
+                .config-actions {
+                    justify-content: center;
+                }
+            }
+
+            /* Datacard styling fallback */
+            .datacard {
+                background: rgba(24, 31, 46, 0.9);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 8px;
+                padding: 0.6em;
+                margin-bottom: 0.5em;
+                transition: all 0.3s ease;
+            }
+
+            .datacard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5em;
+                padding-bottom: 0.3em;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .datacard.collapsed .datacard-content {
+                max-height: 0;
+                overflow: hidden;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-top: 0;
+                opacity: 0;
+            }
+
+            .datacard-content {
+                max-height: 1000px;
+                overflow: visible;
+                transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+                opacity: 1;
+            }
+
+            .collapse-button {
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 16px;
+                cursor: pointer;
+                padding: 4px;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+                transform-origin: center;
+                margin-right: 8px;
+            }
+
+            .collapse-button:hover {
+                color: #6bb6ff;
+                background: rgba(107, 182, 255, 0.1);
+            }
+
+            .datacard.collapsed .collapse-button {
+                transform: rotate(-90deg);
+            }
+
+            .datacard.collapsed {
+                min-height: auto;
+            }
+
+            .datacard.collapsed .datacard-content {
+                max-height: 0 !important;
+                overflow: hidden !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                opacity: 0 !important;
+                transition: all 0.4s ease;
+            }
+
+            .datacard:not(.collapsed) .datacard-content {
+                max-height: 1000px;
+                opacity: 1;
+                transition: all 0.4s ease;
+            }
+
+            .symbol-display {
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 1.1em;
+                letter-spacing: 0.01em;
+                line-height: 1.0;
+                margin: 0;
+                white-space: nowrap;
+            }
+
+            .exchange-prefix {
+                color: #6bb6ff;
+                margin-right: 0.25em;
+                font-weight: 700;
+            }
+
+            .symbol-name {
+                color: rgba(255, 255, 255, 0.75);
+                font-weight: 800;
+            }
+
+            .datacard-controls {
+                display: flex;
+                align-items: center;
+                gap: 0.3em;
+            }
+
+            .percentage-input {
+                width: 60px;
+                background: rgba(16, 22, 36, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 4px;
+                padding: 0.25em 0.5em;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 0.85em;
+            }
+
+            .remove-symbol {
+                background: transparent;
+                border: none;
+                color: #ff5858;
+                font-size: 1.2em;
+                font-weight: bold;
+                cursor: pointer;
+                padding: 0.25em 0.5em;
+                border-radius: 4px;
+                transition: background 0.2s;
+            }
+
+            .remove-symbol:hover {
+                background: rgba(255, 88, 88, 0.1);
+            }
+
+            .datacard-content {
+                margin-top: 0.5em;
+            }
+
+            .precise-input {
+                width: 100%;
+                background: rgba(16, 22, 36, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 4px;
+                padding: 0.4em 0.6em;
+                color: rgba(255, 255, 255, 0.85);
+                font-family: 'Inter', monospace;
+                font-size: 0.85em;
+                text-align: right;
+                transition: all 0.2s ease;
+            }
+
+            .precise-input:focus {
+                outline: none;
+                border-color: var(--color-blue);
+                background: rgba(16, 22, 36, 0.95);
+                box-shadow: 0 0 0 2px rgba(90, 159, 216, 0.15);
+            }
+
+            .precise-input::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+                font-style: italic;
+            }
+
+            /* Click-to-edit range values */
+            .range-value {
+                cursor: pointer;
+                border-radius: 3px;
+                padding: 2px 4px;
+                transition: background-color 0.2s ease;
+            }
+
+            .range-value:hover {
+                background-color: rgba(61, 90, 122, 0.06);
+            }
+
+            .range-value.editing {
+                background-color: rgba(61, 90, 122, 0.1);
+            }
+
+            .range-value input {
+                background: transparent;
+                border: none;
+                color: inherit;
+                font: inherit;
+                text-align: center;
+                width: 60px;
+                outline: none;
+                padding: 0;
+            }
+
+            .range-control {
+                margin-bottom: 0.4em;
+                position: relative;
+                /* Required for dropdown positioning */
+            }
+
+            .range-label {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 0.75em;
+                margin-bottom: 0.3em;
+                display: block;
+                font-weight: 500;
+            }
+
+            .range-input {
+                width: 100%;
+                margin-bottom: 0.25em;
+                -webkit-appearance: none;
+                appearance: none;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 2px;
+                outline: none;
+                cursor: pointer;
+            }
+
+            .range-input::-webkit-slider-track {
+                height: 4px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 2px;
+            }
+
+            .range-input::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+
+            .range-input::-webkit-slider-thumb:hover {
+                background: var(--color-blue);
+                border-color: var(--color-blue);
+                transform: scale(1.1);
+            }
+
+            .range-input::-moz-range-track {
+                height: 4px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 2px;
+                border: none;
+            }
+
+            .range-input::-moz-range-thumb {
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+
+            .range-value {
+                color: rgba(255, 255, 255, 0.65);
+                font-weight: 500;
+                font-size: 0.85em;
+            }
+
+            /* Volatility Periods Styling */
+            .volatility-periods {
+                margin-top: 0.8em;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding-top: 0.5em;
+            }
+
+            .periods-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5em;
+            }
+
+            .periods-label {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.8em;
+                font-weight: 600;
+            }
+
+            .add-period-btn {
+                background: var(--color-blue);
+                color: white;
+                border: none;
+                border-radius: 3px;
+                width: 20px;
+                height: 20px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.15s ease;
+            }
+
+            .add-period-btn:hover {
+                background: rgba(61, 90, 122, 0.8);
+                transform: scale(1.05);
+            }
+
+            .volatility-period {
+                display: flex;
+                gap: 0.5em;
+                margin-bottom: 0.4em;
+                padding: 0.4em;
+                background: rgba(255, 255, 255, 0.03);
+                border-radius: 4px;
+                align-items: center;
+            }
+
+            .period-range {
+                flex: 1;
+                display: flex;
+                gap: 0.3em;
+                align-items: center;
+            }
+
+            .period-input {
+                width: 50px;
+                background: rgba(16, 22, 36, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 3px;
+                padding: 0.2em 0.4em;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 0.8em;
+                text-align: center;
+            }
+
+            .period-volatility {
+                flex: 1;
+            }
+
+            .period-volatility .range-input {
+                margin-bottom: 0;
+            }
+
+            .remove-period-btn {
+                background: rgba(214, 101, 101, 0.3);
+                color: white;
+                border: none;
+                border-radius: 3px;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .remove-period-btn:hover {
+                background: rgba(214, 101, 101, 0.6);
+            }
+
+            /* Global Period Styling */
+            .global-period {
+                background: rgba(61, 90, 122, 0.1);
+                border: 1px solid rgba(61, 90, 122, 0.2);
+                margin-bottom: 0.6em;
+            }
+
+            .period-row {
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                padding: 0.4em;
+                border-radius: 4px;
+            }
+
+            .period-label {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.8em;
+                font-weight: 600;
+                min-width: 50px;
+            }
+
+            .period-controls {
+                display: flex;
+                gap: 0.8em;
+                flex: 1;
+            }
+
+            .global-vol,
+            .global-trend {
+                display: flex;
+                align-items: center;
+                gap: 0.3em;
+                flex: 1;
+            }
+
+            .global-vol label,
+            .global-trend label {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.75em;
+                min-width: 35px;
+            }
+
+            .period-controls .range-input {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            /* Range Label with Indicator */
+            .range-label-with-indicator {
+                position: relative;
+                margin-bottom: 0.3em;
+            }
+
+            .range-label-with-indicator .range-label {
+                margin-bottom: 0;
+            }
+
+            .periods-indicator {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.08);
+                color: rgba(255, 255, 255, 0.6);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 3px;
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.15s ease;
+                z-index: 1001;
+            }
+
+            .periods-indicator:hover {
+                background: #6bb6ff;
+                color: white;
+                border-color: #6bb6ff;
+            }
+
+            .periods-indicator.active {
+                background: #6bb6ff;
+                color: white;
+                border-color: #6bb6ff;
+            }
+
+            .periods-indicator.has-periods {
+                background: #6bb6ff !important;
+                color: white !important;
+                border-color: #6bb6ff !important;
+                font-weight: bold !important;
+            }
+
+            /* Periods Dropdown */
+            .periods-dropdown {
+                position: absolute;
+                top: 100%;
+                left: -50px;
+                right: -50px;
+                background: rgba(24, 31, 46, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 6px;
+                margin-top: 0.5em;
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                min-width: 280px;
+            }
+
+            .dropdown-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5em 0.7em;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .dropdown-title {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.8em;
+                font-weight: 600;
+            }
+
+            .add-period-btn {
+                background: #6bb6ff;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.15s ease;
+            }
+
+            .add-period-btn:hover {
+                background: rgba(61, 90, 122, 0.8);
+                transform: scale(1.05);
+            }
+
+            .dropdown-content {
+                max-height: 200px;
+                overflow-y: auto;
+                padding: 0.3em;
+            }
+
+            .micro-period {
+                display: flex;
+                gap: 0.4em;
+                padding: 0.3em;
+                background: rgba(255, 255, 255, 0.02);
+                border-radius: 4px;
+                margin-bottom: 0.25em;
+                align-items: center;
+            }
+
+            .period-range {
+                display: flex;
+                gap: 0.2em;
+                align-items: center;
+                flex: 1;
+            }
+
+            .period-range-input {
+                width: 35px;
+                background: rgba(16, 22, 36, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 3px;
+                padding: 0.2em 0.25em;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 0.75em;
+                text-align: center;
+            }
+
+            .range-separator {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 0.8em;
+                margin: 0 0.1em;
+            }
+
+            .period-value {
+                flex: 1;
+                display: flex;
+                gap: 0.3em;
+                align-items: center;
+            }
+
+            .period-value .range-input {
+                flex: 1;
+                margin: 0;
+            }
+
+            .period-value-display {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.75em;
+                min-width: 35px;
+                text-align: right;
+            }
+
+            .remove-micro-period {
+                background: rgba(214, 101, 101, 0.3);
+                color: white;
+                border: none;
+                border-radius: 3px;
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .remove-micro-period:hover {
+                background: rgba(214, 101, 101, 0.6);
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Adjust page content for demo banner -->
+        <style>
+            .beacon-page-content {
+                padding-top: 0.5em !important;
+                /* Minimal space after demo banner */
+            }
+        </style>
+
+        <!-- Global Demo Mode Configuration -->
+        <script>
+            // Demo mode detection - globally accessible
+            const IS_DEMO_MODE = true; // Set to true for demo deployment
+
+            // Initialize critical global variables first to prevent undefined errors
+            window.productPercentages = window.productPercentages || new Map();
+            window.validationConfig = window.validationConfig || {
+                exchanges: {
+                    'NASDAQ': { name: 'NASDAQ', symbols: [] },
+                    'NYSE': { name: 'NYSE', symbols: [] },
+                    'CME': { name: 'CME', symbols: [] }
+                },
+                symbols: {},
+                sliderConfig: {
+                    priceRange: { min: 1, max: 1000, step: 1, default: 100 },
+                    quantityRange: { min: 1, max: 10000, step: 1, default: 1000 },
+                    timeframe: { min: 1, max: 24, step: 1, default: 1 }
+                }
+            };
+
+            // Define critical functions early
+            window.validatePercentageInput = function(input) {
+                if (!input || !input.closest) return false;
+
+                const card = input.closest('.datacard');
+                const symbol = card?.dataset?.symbol;
+                if (!symbol || !window.productPercentages) return false;
+
+                const value = Math.max(0, Math.min(100, parseInt(input.value) || 0));
+                input.value = value;
+
+                window.productPercentages.set(symbol, { percentage: value, isDirty: true });
+
+                if (typeof window.updateAllocationDisplay === 'function') {
+                    window.updateAllocationDisplay();
+                }
+                return true;
+            };
+
+            // Define markUnsavedChanges function
+            window.markUnsavedChanges = function() {
+                // Simple implementation for now
+                console.log('Changes marked as unsaved');
+            };
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const banner = document.getElementById('demo-banner');
+                    if (banner) {
+                        banner.style.display = 'block';
+                    }
+                });
+            }
+        </script>
+
+        <!-- Beacon Title Header -->
+        <header class="beacon-page-header">
+            <div class="container">
+                <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-main">Beacon.</a>
+                    <span class="beacon-brand-separator" style="color: #ff914d; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); font-weight: 600; margin: 0 1em;">|</span>
+                    <h1 class="beacon-page-title">Author.</h1>
+                </div>
+                <div class="beacon-nav-actions">
+                    <a href="/" class="beacon-nav-back">
+                        <span class="nav-arrow">←</span>
+                        <span>Home</span>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Demo Mode Banner -->
+        <div id="demo-banner" class="demo-banner" style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 1em; text-align: center; margin: 1em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+            <div class="demo-content">
+                <span class="demo-text">Interactive demo mode. No files will be created.</span>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <main class="beacon-page-content" id="app-container">
+
+            <!-- Two-Panel Layout -->
+            <div class="app-layout" role="application" aria-label="Dataset Generator">
+
+                <!-- Left Panel: Configuration -->
+                <section class="config-panel" aria-labelledby="config-panel-title">
+                    <!-- Configuration File Management -->
+                    <div class="config-section">
+                        <div class="form-group">
+                            <label for="configInput" class="input-label">Configuration</label>
+                            <div style="display: flex; gap: 0.5em; align-items: stretch;">
+                                <!-- Config Combobox -->
+                                <div style="display: flex; flex: 1; position: relative;">
+                                    <input type="text" id="configInput" placeholder="New configuration..."
+                                        style="width: 100% !important; font-size: 1em !important; padding: 0.75em !important; padding-right: 40px !important; border-radius: 8px !important; background: rgba(107, 182, 255, 0.1) !important; border: 1px solid rgba(107, 182, 255, 0.3) !important; color: #fff !important; box-sizing: border-box !important; appearance: none !important; background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27%3e%3cpolyline points=%276,9 12,15 18,9%27 stroke=%27%236bb6ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3e%3c/svg%3e') !important; background-position: right 12px center !important; background-repeat: no-repeat !important; background-size: 16px !important;">
+                                    <div id="configDropdownMenu" class="dropdown-menu"
+                                        style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(16, 22, 36, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); z-index: 1000; margin-top: 2px; max-height: 200px; overflow-y: auto;">
+                                        <!-- Config files will be populated here -->
+                                        <div
+                                            style="padding: 0.5em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">
+                                            No saved configurations
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Save Button -->
+                                <button type="button" id="saveConfigBtn"
+                                    style="padding: 0.1em !important; background: rgba(16, 22, 36, 0.8) !important; border: 1px solid var(--color-blue) !important; border-radius: 8px !important; color: var(--color-blue) !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; min-width: 60px !important; height: 44px !important; transition: all 0.2s ease !important;"
+                                    onmousedown="this.style.transform='scale(0.95)'; this.style.background='rgba(90, 159, 216, 0.15)'"
+                                    onmouseup="this.style.transform='scale(1)'; this.style.background='rgba(16, 22, 36, 0.8)'"
+                                    onmouseleave="this.style.transform='scale(1)'; this.style.background='rgba(16, 22, 36, 0.8)'">
+                                    <svg width="50" height="40" viewBox="0 0 56 56" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="18" y="19" width="20" height="18" rx="1" fill="none" stroke="#6bb6ff"
+                                            stroke-width="2" />
+                                        <rect x="18" y="19" width="20" height="6" rx="1" fill="#6bb6ff" />
+                                        <rect x="21" y="22" width="3" height="3" fill="#101624" />
+                                        <rect x="20" y="29" width="16" height="6" rx="1" fill="none" stroke="#6bb6ff"
+                                            stroke-width="1.5" />
+                                        <rect x="22" y="31" width="12" height="2" fill="#6bb6ff" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blue Separator -->
+                    <div class="section-separator"></div>
+
+                    <!-- Dataset Size -->
+                    <div class="config-section">
+                        <div class="form-group">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5em; position: relative;">
+                                <label for="messageCount" class="input-label">Message Count</label>
+                                <!-- Blue vertical separator -->
+                                <div
+                                    style="position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); width: 1px; height: 16px; background-color: var(--color-blue); opacity: 0.4;">
+                                </div>
+                                <div id="allocationDisplay" class="allocation-status-box"
+                                    style="background: rgba(255, 88, 88, 0.1); border: 1px solid #ff5858; border-radius: 4px; padding: 4px 8px; min-width: 100px; text-align: center; transition: all 0.3s ease;">
+                                    <span style="color: #ff5858; font-weight: 600; font-size: 0.9em;">
+                                        <span id="allocationPercentage">0%</span> Allocated
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="spinner-control" style="position: relative;">
+                                <input type="text" id="messageCount" class="spinner-input" value="1,000"
+                                    style="width: 100%; text-align: right; padding: 0.75em; padding-right: 40px; font-size: 1em; height: 44px; box-sizing: border-box;">
+                                <div
+                                    style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column;">
+                                    <button type="button" class="spinner-up"
+                                        style="border: none; background: transparent; color: var(--color-blue); padding: 2px; cursor: pointer; font-size: 12px; opacity: 0.7;">▲</button>
+                                    <button type="button" class="spinner-down"
+                                        style="border: none; background: transparent; color: #6bb6ff; padding: 2px; cursor: pointer; font-size: 12px;">▼</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blue Separator -->
+                    <div class="section-separator"></div>
+
+                    <!-- Exchange and Symbol Section -->
+                    <div class="config-section">
+                        <div class="form-group">
+                            <div style="display: flex; gap: 16px; align-items: flex-end;">
+                                <div style="flex: 0.9;">
+                                    <label for="exchangeSelect" class="input-label">Exchange</label>
+                                    <select id="exchangeSelect" class="form-select exchange-select"
+                                        style="font-size: 1em; padding: 0.75em; height: 44px;">
+                                        <option value="CME">CME</option>
+                                        <option value="NASDAQ">NSDQ</option>
+                                        <option value="NYSE">NYSE</option>
+                                    </select>
+                                </div>
+                                <div style="flex: 1.2;">
+                                    <label for="symbolInput" class="input-label">Symbol</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="symbolInput" class="symbol-input"
+                                            style="flex: 1; text-transform: uppercase; font-size: 1em; padding: 0.75em; height: 44px; box-sizing: border-box;">
+                                        <button type="button" id="addSymbol" class="btn btn-secondary"
+                                            style="padding: 0.75em; height: 44px; box-sizing: border-box;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blue Separator -->
+                    <div class="section-separator"></div>
+
+                    <!-- Global Defaults Section - COMMENTED OUT FOR REVIEW -->
+                    <!--
+                    <div class="config-section">
+                        <div class="form-group">
+                            <label class="input-label" style="margin-bottom: 1em; display: block;">Global Defaults</label>
+
+                            <!-- Spread & Volatility Row --
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75em;">
+                                <div>
+                                    <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Spread (%)</label>
+                                    <input type="number" id="globalSpread" class="form-input" value="0.5" min="0.1" max="10" step="0.1"
+                                           style="width: 100%; padding: 0.5em; font-size: 0.9em; text-align: center;">
+                                </div>
+                                <div>
+                                    <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Volatility (%)</label>
+                                    <input type="number" id="globalVolatility" class="form-input" value="25" min="0" max="100" step="5"
+                                           style="width: 100%; padding: 0.5em; font-size: 0.9em; text-align: center;">
+                                </div>
+                            </div>
+
+                            <!-- Trend Row --
+                            <div style="margin-bottom: 0.75em;">
+                                <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Market Trend</label>
+                                <select id="globalTrend" class="form-select" style="width: 100%; padding: 0.5em; font-size: 0.9em;">
+                                    <option value="-25">Strong Bearish (-25)</option>
+                                    <option value="-15">Bearish (-15)</option>
+                                    <option value="-5">Weak Bearish (-5)</option>
+                                    <option value="0">Neutral (0)</option>
+                                    <option value="5" selected>Weak Bullish (+5)</option>
+                                    <option value="15">Bullish (+15)</option>
+                                    <option value="25">Strong Bullish (+25)</option>
+                                </select>
+                            </div>
+
+                            <!-- Apply Button --
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" id="applyToAllBtn" class="btn btn-secondary" style="flex: 1; padding: 0.5em; font-size: 0.85em;">
+                                    Apply to All Symbols
+                                </button>
+                                <button type="button" id="resetDefaultsBtn" class="btn" style="padding: 0.5em; font-size: 0.85em; background: rgba(255,255,255,0.1);">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <!-- Blue Separator -->
+                    <div class="section-separator"></div>
+
+                    <!-- Config Panel Body -->
+                    <div class="panel-body">
+                        <div class="config-actions">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Panel: DataCards -->
+                <section class="datacards-panel" aria-labelledby="datacards-panel-title">
+                    <header class="panel-header"
+                        style="padding: 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
+
+                        <!-- Collection Status -->
+                        <div style="display: flex; justify-content: flex-end; align-items: center;">
+                            <!-- Empty for now - config controls moved to left panel -->
+                        </div>
+                    </header>
+                    <!-- Datacard container for dynamic datacards -->
+                    <div id="datacardContainer" class="datacard-container"
+                        style="margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 16px;">
+                        <!-- Empty container message - hidden when products are added -->
+                        <div id="emptyProductsMessage"
+                            style="grid-column: 1 / -1; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
+                            No products added yet. Use the "Add Product" section to get started.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Load Dataset Generator Application -->
+        <script type="module">
+            // Error handling for module loading
+            window.addEventListener('error', (e) => {
+                console.error('Script error:', e.error);
+                showErrorMessage('Failed to load application components');
+            });
+
+            window.addEventListener('unhandledrejection', (e) => {
+                console.error('Unhandled promise rejection:', e.reason);
+                showErrorMessage('Application initialization failed');
+            });
+
+            function showErrorMessage(message) {
+                const banner = document.getElementById('demo-banner');
+                if (banner) {
+                    banner.style.display = 'block';
+                    banner.querySelector('.demo-text').textContent = `⚠️ ${message}`;
+                    banner.style.background = 'rgba(255, 88, 88, 0.1)';
+                    banner.style.borderColor = 'rgba(255, 88, 88, 0.3)';
+                    banner.style.color = '#ff5858';
+                }
+            }
+
+            // Only load real application if not in demo mode
+            if (!IS_DEMO_MODE) {
+                // Dynamic import with fallback
+                import('./js/DatasetGeneratorApp.js')
+                    .then(({ DatasetGeneratorApp }) => {
+                        // Initialize app when DOM is ready
+                        document.addEventListener('DOMContentLoaded', async () => {
+                            try {
+                                console.log('🚀 Starting Dataset Generator Application...');
+                                const app = new DatasetGeneratorApp();
+
+                                // Add timeout to detect if initialization hangs
+                                const initTimeout = setTimeout(() => {
+                                    console.warn('⚠️ App initialization taking longer than expected');
+                                    showErrorMessage('Application loading is taking longer than expected. Please check console for details.');
+                                }, 5000);
+
+                                await app.initialize();
+                                clearTimeout(initTimeout);
+
+                                // Make app globally accessible for debugging
+                                window.datasetGeneratorApp = app;
+
+                                console.log('✅ Dataset Generator Application loaded successfully');
+                                console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(app)));
+
+                                // Hide demo banner if successful
+                                const banner = document.getElementById('demo-banner');
+                                if (banner && banner.style.display === 'block') {
+                                    banner.style.display = 'none';
+                                }
+
+                                // Test symbol manager
+                                if (app.symbolManager) {
+                                    console.log('✅ SymbolManager is available');
+                                    window.symbolManager = app.symbolManager;
+                                } else {
+                                    console.warn('⚠️ SymbolManager not found in app');
+                                }
+
+                            } catch (error) {
+                                console.error('❌ Failed to initialize Dataset Generator:', error);
+                                console.error('Error stack:', error.stack);
+                                showErrorMessage('Application initialization failed: ' + error.message);
+
+                                // Enable fallback functionality
+                                setupFallbackSymbolInput();
+                            }
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('❌ Failed to load Dataset Generator module:', error);
+                        console.error('Module loading error:', error.stack);
+                        showErrorMessage('Failed to load application module: ' + error.message);
+
+                        // Enable fallback functionality
+                        document.addEventListener('DOMContentLoaded', setupFallbackSymbolInput);
+                    });
+            } else {
+                // Demo mode - define missing functions first
+                window.setupConfigDropdown = function () {
+                    console.log('Config dropdown setup (demo mode)');
+                };
+
+                // Demo mode - only use fallback functionality
+                document.addEventListener('DOMContentLoaded', function () {
+                    setupFallbackSymbolInput();
+                    // setupDropdownFunctionality(); // Commented out - causing reference error
+                    setupConfigDropdown();
+
+                    // Delay initialization to ensure functions are loaded
+                    setTimeout(() => {
+                        if (typeof initializeDemoMode === 'function') {
+                            initializeDemoMode();
+                        }
+                    }, 50);
+
+                    // Initialize allocation display will be handled by percentage validation
+                    // updateAllocationDisplay(); // Commented out - handled elsewhere
+                });
+            }
+
+            // Create a detailed datacard with sliders (fallback) - Global scope
+            window.createDetailedDatacard = function createDetailedDatacard(symbol) {
+                const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
+                const card = document.createElement('div');
+                card.className = 'datacard';
+                card.dataset.symbol = symbol; // Set data-symbol attribute for duplicate checking
+
+                // Get slider configuration from validation config
+                const sliderConfig = window.validationConfig?.sliderConfig || {};
+
+                // Helper function to get slider attributes
+                function getSliderAttrs(configKey, fallbackMin = 1, fallbackMax = 100, fallbackStep = 1, fallbackDefault = 50) {
+                    const config = sliderConfig[configKey];
+                    if (config) {
+                        return {
+                            min: config.min,
+                            max: config.max,
+                            step: config.step,
+                            value: config.default
+                        };
+                    }
+                    return {
+                        min: fallbackMin,
+                        max: fallbackMax,
+                        step: fallbackStep,
+                        value: fallbackDefault
+                    };
+                }
+
+                const basePrice = getSliderAttrs('basePrice', 1, 1000, 10, 175);
+                const spread = getSliderAttrs('spread', 0.1, 10, 0.1, window.globalDefaults?.spread || 0.5);
+                const bidPrice = getSliderAttrs('bidPrice', 1, 1000, 1, 174);
+                const askPrice = getSliderAttrs('askPrice', 1, 1000, 1, 176);
+                const bidQuantity = getSliderAttrs('bidQuantity', 1, 10000, 50, 250);
+                const askQuantity = getSliderAttrs('askQuantity', 1, 10000, 50, 300);
+                const bidWeight = getSliderAttrs('bidWeight', 0, 100, 5, 45);
+                const askWeight = getSliderAttrs('askWeight', 0, 100, 5, 55);
+                const volatility = getSliderAttrs('volatility', 0, 100, 5, window.globalDefaults?.volatility || 25);
+                const trend = getSliderAttrs('trend', -50, 50, 5, window.globalDefaults?.trend || 5);
+                const percentage = getSliderAttrs('percentage', 0, 100, 1, 0);
+
+                card.innerHTML = `
+                <div class="datacard-header" onclick="toggleDatacardCollapse(this)">
+                    <div class="datacard-symbol-info">
+                        <span class="symbol-display">
+                            <span class="exchange-prefix">${exchange}:</span>
+                            <span class="symbol-name">${symbol}</span>
+                        </span>
+                    </div>
+                    <div class="datacard-controls">
+                        <button class="collapse-button" title="Collapse/Expand" onclick="event.stopPropagation(); toggleDatacardCollapse(this.closest('.datacard-header'));">▼</button>
+                        <input type="number" class="percentage-input" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}" placeholder="%" onclick="event.stopPropagation();">
+                        <button class="remove-symbol" aria-label="Remove ${symbol}" onclick="event.stopPropagation();">×</button>
+                    </div>
+                </div>
+
+                <div class="datacard-content">
+                    <!-- Price Controls with minimal toggle -->
+                    <div class="price-controls-section">
+                        <div class="advanced-toggle" onclick="toggleAdvancedMode(this)" title="Switch price ranges">⚙</div>
+
+                        <!-- Default: Spread-based controls -->
+                        <div class="pricing-mode-default">
+                            <!-- Base Price & Spread -->
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Base Price</div>
+                                    <input type="range" class="range-input" min="${basePrice.min}" max="${basePrice.max}" step="${basePrice.step}" value="${basePrice.value}">
+                                    <div class="range-value">$<span class="value">${basePrice.value}</span></div>
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Spread</div>
+                                    <input type="range" class="range-input" min="${spread.min}" max="${spread.max}" step="${spread.step}" value="${spread.value}">
+                                    <div class="range-value"><span class="value">${spread.value}</span>%</div>
+                                </div>
+                            </div>
+
+                            <!-- Bid/Ask Weights -->
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Bid Weight</div>
+                                    <input type="range" class="range-input" min="${bidWeight.min}" max="${bidWeight.max}" step="${bidWeight.step}" value="${bidWeight.value}">
+                                    <div class="range-value"><span class="value">${bidWeight.value}</span>%</div>
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Ask Weight</div>
+                                    <input type="range" class="range-input" min="${askWeight.min}" max="${askWeight.max}" step="${askWeight.step}" value="${askWeight.value}">
+                                    <div class="range-value"><span class="value">${askWeight.value}</span>%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced: Direct Price Input -->
+                        <div class="pricing-mode-advanced" style="display: none;">
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Bid Price</div>
+                                    <input type="number" class="precise-input" min="0.01" max="10000" step="0.01" value="${bidPrice.value}" placeholder="174.50">
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Ask Price</div>
+                                    <input type="number" class="precise-input" min="0.01" max="10000" step="0.01" value="${askPrice.value}" placeholder="175.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Controls (always visible) -->
+                    <div class="range-control-group">
+                        <div class="range-control half-width">
+                            <div class="range-label">Bid Quantity</div>
+                            <input type="range" class="range-input" min="${bidQuantity.min}" max="${bidQuantity.max}" step="${bidQuantity.step}" value="${bidQuantity.value}">
+                            <div class="range-value"><span class="value">${bidQuantity.value}</span></div>
+                        </div>
+                        <div class="range-control half-width">
+                            <div class="range-label">Ask Quantity</div>
+                            <input type="range" class="range-input" min="${askQuantity.min}" max="${askQuantity.max}" step="${askQuantity.step}" value="${askQuantity.value}">
+                            <div class="range-value"><span class="value">${askQuantity.value}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Volatility & Trend (with period indicators in labels) -->
+                    <div class="range-control-group">
+                        <div class="range-control half-width">
+                            <div class="range-label-with-indicator">
+                                <span class="range-label">Volatility</span>
+                                <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" title="Configure micro vol periods">0</button>
+                                <!-- Periods Dropdown -->
+                                <div class="periods-dropdown" style="display: none;">
+                                    <div class="dropdown-header">
+                                        <span class="dropdown-title">Volatility Periods</span>
+                                        <button class="add-period-btn" onclick="addMicroPeriod(this)">+</button>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <!-- Dynamic periods will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
+                            <div class="range-value"><span class="value">${volatility.value}</span>%</div>
+                        </div>
+
+                        <div class="range-control half-width">
+                            <div class="range-label-with-indicator">
+                                <span class="range-label">Trend</span>
+                                <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" title="Configure micro trend periods">0</button>
+                                <!-- Periods Dropdown -->
+                                <div class="periods-dropdown" style="display: none;">
+                                    <div class="dropdown-header">
+                                        <span class="dropdown-title">Trend Periods</span>
+                                        <button class="add-period-btn" onclick="addMicroPeriod(this)">+</button>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <!-- Dynamic periods will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
+                            <div class="range-value"><span class="value">${trend.value}</span> (${trend.value === 0 ? 'Neutral' : trend.value > 0 ? 'Bullish' : 'Bearish'})</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                // Add event listeners
+                const removeBtn = card.querySelector('.remove-symbol');
+                removeBtn.addEventListener('click', () => {
+                    // Remove from percentage tracking
+                    window.productPercentages.delete(symbol);
+                    card.remove();
+
+                    // Redistribute percentages after removal
+                    if (typeof redistributeCleanPercentages === 'function') {
+                        redistributeCleanPercentages();
+                    }
+                    if (typeof window.updateAllocationDisplay === 'function') {
+                        window.updateAllocationDisplay();
+                    }
+                    updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
+                });
+
+                // Add percentage input validation
+                const percentageInput = card.querySelector('.percentage-input');
+                if (percentageInput) {
+                    // Initialize this product in our tracking
+                    const initialValue = parseInt(percentageInput.value) || 0;
+                    window.productPercentages.set(symbol, { percentage: initialValue, isDirty: false });
+
+                    // Filter out non-numeric characters on input
+                    percentageInput.addEventListener('input', (e) => {
+                        filterPercentageInput(e.target);
+                        validatePercentageInput(e.target);
+                    });
+
+                    // Additional validation on change
+                    percentageInput.addEventListener('change', (e) => {
+                        validatePercentageInput(e.target);
+                    });
+
+                    // Prevent non-numeric keypress
+                    percentageInput.addEventListener('keypress', (e) => {
+                        // Allow backspace, delete, tab, escape, enter, and arrow keys
+                        if ([8, 9, 27, 13, 46, 37, 38, 39, 40].indexOf(e.keyCode) !== -1 ||
+                            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                            (e.keyCode === 65 && e.ctrlKey === true) ||
+                            (e.keyCode === 67 && e.ctrlKey === true) ||
+                            (e.keyCode === 86 && e.ctrlKey === true) ||
+                            (e.keyCode === 88 && e.ctrlKey === true)) {
+                            return;
+                        }
+                        // Ensure that it is a number and stop the keypress
+                        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+
+                // Update range values
+                const ranges = card.querySelectorAll('.range-input');
+                ranges.forEach(range => {
+                    range.addEventListener('input', (e) => {
+                        const parent = e.target.closest('.range-control');
+                        const valueDisplay = parent.querySelector('.range-value');
+                        const value = e.target.value;
+
+                        if (valueDisplay) {
+                            const valueSpan = valueDisplay.querySelector('.value');
+                            if (valueSpan) {
+                                valueSpan.textContent = value;
+
+                                // Update trend description dynamically
+                                if (parent.querySelector('.range-label').textContent === 'Trend') {
+                                    const trendValue = parseInt(value);
+                                    const description = trendValue === 0 ? 'Neutral' : trendValue > 0 ? 'Bullish' : 'Bearish';
+                                    valueSpan.parentNode.innerHTML = `<span class="value">${value}</span> (${description})`;
+                                }
+                            }
+                        }
+                    });
+                });
+
+                return card;
+            }
+
+            // Toggle datacard collapse/expand
+            window.toggleDatacardCollapse = function (headerElement) {
+                const card = headerElement.closest('.datacard');
+                if (!card) return;
+
+                const isCurrentlyCollapsed = card.classList.contains('collapsed');
+                card.classList.toggle('collapsed');
+
+                // Update button text
+                const collapseButton = card.querySelector('.collapse-button');
+                if (collapseButton) {
+                    collapseButton.textContent = isCurrentlyCollapsed ? '▼' : '▲';
+                }
+
+                // Optional: Store collapse state for persistence
+                const symbol = card.querySelector('.symbol-name')?.textContent;
+                if (symbol) {
+                    const collapseStates = JSON.parse(localStorage.getItem('datacardCollapseStates') || '{}');
+                    collapseStates[symbol] = !isCurrentlyCollapsed;
+                    localStorage.setItem('datacardCollapseStates', JSON.stringify(collapseStates));
+                }
+            };
+
+            // Restore collapsed states from localStorage
+            window.restoreCollapsedStates = function () {
+                const collapseStates = JSON.parse(localStorage.getItem('datacardCollapseStates') || '{}');
+
+                Object.entries(collapseStates).forEach(([symbol, isCollapsed]) => {
+                    if (isCollapsed) {
+                        // Find by text content since :contains() isn't valid in native DOM
+                        const allSymbolElements = document.querySelectorAll('.symbol-name');
+                        for (let el of allSymbolElements) {
+                            if (el.textContent === symbol) {
+                                const card = el.closest('.datacard');
+                                if (card) {
+                                    card.classList.add('collapsed');
+                                    const collapseButton = card.querySelector('.collapse-button');
+                                    if (collapseButton) {
+                                        collapseButton.textContent = '▲';
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Bulk collapse/expand functionality
+            window.toggleAllDatacards = function (forceState = null) {
+                const datacards = document.querySelectorAll('.datacard');
+                const expandAll = forceState !== null ? !forceState :
+                    Array.from(datacards).some(card => card.classList.contains('collapsed'));
+
+                datacards.forEach(card => {
+                    const isCurrentlyCollapsed = card.classList.contains('collapsed');
+                    const shouldCollapse = expandAll ? false : true;
+
+                    if (isCurrentlyCollapsed !== shouldCollapse) {
+                        const collapseButton = card.querySelector('.collapse-button');
+                        if (collapseButton) {
+                            collapseButton.click();
+                        }
+                    }
+                });
+            };
+
+            // Add keyboard shortcuts for bulk operations
+            document.addEventListener('keydown', function (e) {
+                // Ctrl+Shift+C = Collapse all
+                if (e.ctrlKey && e.shiftKey && e.code === 'KeyC') {
+                    e.preventDefault();
+                    window.toggleAllDatacards(true);
+                }
+                // Ctrl+Shift+E = Expand all
+                if (e.ctrlKey && e.shiftKey && e.code === 'KeyE') {
+                    e.preventDefault();
+                    window.toggleAllDatacards(false);
+                }
+            });
+
+            // Add aliases for any missing function references
+            window.createSimpleDataCard = window.createDetailedDatacard;
+            window.createDataCard = window.createDetailedDatacard;
+
+            // =============================================================================
+            // VALIDATION RULES
+            // =============================================================================
+
+            // Rule 1: Duplicate Symbol Prevention
+            window.isDuplicateSymbol = function isDuplicateSymbol(symbol) {
+                return document.querySelector(`[data-symbol="${symbol}"]`) !== null;
+            }
+
+            // Show validation error messages
+            window.showValidationError = function showValidationError(message) {
+                // Create or get existing error container
+                let errorContainer = document.getElementById('symbolValidationError');
+                if (!errorContainer) {
+                    errorContainer = document.createElement('div');
+                    errorContainer.id = 'symbolValidationError';
+                    errorContainer.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: rgba(255, 88, 88, 0.95);
+                        color: white;
+                        padding: 12px 16px;
+                        border-radius: 8px;
+                        font-size: 0.9em;
+                        font-weight: 500;
+                        box-shadow: 0 4px 12px rgba(255, 88, 88, 0.3);
+                        z-index: 10000;
+                        max-width: 300px;
+                        word-wrap: break-word;
+                        border: 1px solid rgba(255, 88, 88, 0.8);
+                    `;
+                    document.body.appendChild(errorContainer);
+                }
+
+                // Set message and show
+                errorContainer.textContent = message;
+                errorContainer.style.display = 'block';
+
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    if (errorContainer) {
+                        errorContainer.style.display = 'none';
+                    }
+                }, 3000);
+            }
+
+            // Rule 2: Empty State Management
+            window.updateEmptyStateDisplay = function updateEmptyStateDisplay() {
+                const emptyMessage = document.getElementById('emptyProductsMessage');
+                const datacards = document.querySelectorAll('.datacard');
+
+                if (emptyMessage) {
+                    // Hide message if we have any products, show if we have none
+                    emptyMessage.style.display = datacards.length > 0 ? 'none' : 'block';
+                }
+            }
+
+            // Rule 3: Symbol Input Formatting
+            function capitalizeSymbolInput(input) {
+                const cursorPos = input.selectionStart;
+                const value = input.value.toUpperCase();
+                input.value = value;
+
+                // Preserve cursor position after transformation
+                input.setSelectionRange(cursorPos, cursorPos);
+            }
+
+            // Rule 4: Symbol Format Validation
+            window.validateSymbolFormat = function validateSymbolFormat(symbol) {
+                // Check length (max 12 characters)
+                if (symbol.length > 12) {
+                    return { valid: false, error: 'Symbol cannot exceed 12 characters' };
+                }
+
+                // Check for alphanumeric only (no special characters)
+                const alphanumericPattern = /^[A-Z0-9]+$/;
+                if (!alphanumericPattern.test(symbol)) {
+                    return { valid: false, error: 'Symbol can only contain letters and numbers' };
+                }
+
+                return { valid: true };
+            }
+
+            // Setup fallback symbol input functionality
+            function setupFallbackSymbolInput() {
+                // Select DOM elements for symbol input functionality
+                const symbolInput = document.getElementById('symbolInput');
+                const addSymbolBtn = document.getElementById('addSymbol');
+                const datacardContainer = document.getElementById('datacardContainer');
+
+                if (symbolInput && addSymbolBtn && datacardContainer) {
+                    // Remove any existing listeners
+                    const newAddBtn = addSymbolBtn.cloneNode(true);
+                    addSymbolBtn.parentNode.replaceChild(newAddBtn, addSymbolBtn);
+
+                    // Rule 5: Button State Management (inside scope)
+                window.validateSymbolInputRealTime = function validateSymbolInputRealTime(input, addButton) {
+                        const symbolValue = input.value.trim().toUpperCase();
+                        const isEmpty = symbolValue.length === 0;
+                        const isDuplicate = symbolValue.length > 0 && isDuplicateSymbol(symbolValue);
+
+                        // Clear previous validation classes
+                        input.classList.remove('duplicate-symbol', 'valid-symbol');
+
+                        if (isEmpty) {
+                            // Empty input - neutral state
+                            addButton.disabled = true;
+                            addButton.style.opacity = '0.5';
+                            addButton.style.cursor = 'not-allowed';
+                            input.style.borderColor = 'rgba(107, 182, 255, 0.3)';
+                            input.style.boxShadow = '';
+                        } else if (isDuplicate) {
+                            // Duplicate detected - error state
+                            input.classList.add('duplicate-symbol');
+                            addButton.disabled = true;
+                            addButton.style.opacity = '0.5';
+                            addButton.style.cursor = 'not-allowed';
+                            input.style.borderColor = '#ff5858';
+                            input.style.boxShadow = '0 0 0 2px rgba(255, 88, 88, 0.2)';
+                        } else {
+                            // Valid new symbol - active state
+                            input.classList.add('valid-symbol');
+                            addButton.disabled = false;
+                            addButton.style.opacity = '1';
+                            addButton.style.cursor = 'pointer';
+                            input.style.borderColor = '#6bb6ff';
+                            input.style.boxShadow = '0 0 0 2px rgba(107, 182, 255, 0.2)';
+                        }
+                    }
+
+                    newAddBtn.addEventListener('click', () => {
+                        const symbol = symbolInput.value.trim().toUpperCase();
+
+                        // Rule 1: Check for empty symbol
+                        if (!symbol) {
+                            showValidationError('Please enter a symbol');
+                            return;
+                        }
+
+                        // Rule 1: Check for duplicate symbol
+                        if (isDuplicateSymbol(symbol)) {
+                            showValidationError(`Symbol "${symbol}" is already in the dataset`);
+                            symbolInput.value = ''; // Clear the input
+                            return;
+                        }
+
+                        // Rule 4: Validate symbol format
+                        const formatValidation = validateSymbolFormat(symbol);
+                        if (!formatValidation.valid) {
+                            showValidationError(formatValidation.error);
+                            return;
+                        }
+
+                        // Calculate auto-allocation percentage
+                        let autoPercentage = 0;
+                        if (typeof redistributeCleanPercentages === 'function') {
+                            autoPercentage = redistributeCleanPercentages();
+                        }
+
+                        // Create new datacard with auto-allocated percentage
+                        const newCard = createDetailedDatacard(symbol);
+                        const newPercentageInput = newCard.querySelector('.percentage-input');
+                        if (newPercentageInput) {
+                            newPercentageInput.value = autoPercentage;
+
+                            // Mark as clean since it's auto-allocated
+                            window.productPercentages.set(symbol, { percentage: autoPercentage, isDirty: false });
+
+                            // Manually trigger validation to update allocation display
+                            validatePercentageInput(newPercentageInput);
+                        }
+
+                        datacardContainer.appendChild(newCard);
+                        symbolInput.value = '';
+
+                        // Update display after adding
+                        if (typeof window.updateAllocationDisplay === 'function') {
+                            window.updateAllocationDisplay();
+                        }
+                        updateEmptyStateDisplay(); // Rule 2: Hide empty message when products exist
+                        validateSymbolInputRealTime(symbolInput, newAddBtn); // Rule 5: Reset validation state after clearing input
+                    });
+
+                    symbolInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            // Only proceed if symbol is not empty
+                            const symbol = symbolInput.value.trim();
+                            if (symbol.length > 0) {
+                                newAddBtn.click();
+                            }
+                        }
+                    });
+
+                    // Rule 3: Capitalize symbol input in real-time and validate for duplicates
+                    symbolInput.addEventListener('input', (e) => {
+                        capitalizeSymbolInput(e.target);
+                        validateSymbolInputRealTime(e.target, newAddBtn);
+                    });
+
+                    // Rule 5: Initialize validation state
+                    validateSymbolInputRealTime(symbolInput, newAddBtn);
+                }
+
+                // Set up global defaults event listeners
+                const globalSpread = document.getElementById('globalSpread');
+                const globalVolatility = document.getElementById('globalVolatility');
+                const globalTrend = document.getElementById('globalTrend');
+                const applyToAllBtn = document.getElementById('applyToAllBtn');
+                const resetDefaultsBtn = document.getElementById('resetDefaultsBtn');
+
+                if (globalSpread && globalVolatility && globalTrend && applyToAllBtn && resetDefaultsBtn) {
+                    // Update defaults when inputs change
+                    [globalSpread, globalVolatility, globalTrend].forEach(input => {
+                        input.addEventListener('input', window.updateGlobalDefaults);
+                        input.addEventListener('change', window.updateGlobalDefaults);
+                    });
+
+                    // Apply to all button
+                    applyToAllBtn.addEventListener('click', () => {
+                        window.updateGlobalDefaults(); // Ensure latest values
+                        window.applyToAllSymbols();
+
+                        // Visual feedback
+                        applyToAllBtn.textContent = 'Applied!';
+                        applyToAllBtn.style.background = 'rgba(107, 182, 255, 0.2)';
+                        setTimeout(() => {
+                            applyToAllBtn.textContent = 'Apply to All Symbols';
+                            applyToAllBtn.style.background = '';
+                        }, 1500);
+                    });
+
+                    // Reset defaults button
+                    resetDefaultsBtn.addEventListener('click', () => {
+                        window.resetGlobalDefaults();
+
+                        // Visual feedback
+                        resetDefaultsBtn.textContent = 'Reset!';
+                        setTimeout(() => {
+                            resetDefaultsBtn.textContent = 'Reset';
+                        }, 1000);
+                    });
+
+                    // Initialize global defaults
+                    window.updateGlobalDefaults();
+                    console.log('✅ Global defaults functionality initialized');
+                } else {
+                    console.warn('⚠️ Global defaults elements not found');
+                }
+            }
+
+            // =============================================================================
+            // ADVANCED MODE TOGGLE FUNCTIONALITY
+            // =============================================================================
+            function toggleAdvancedMode(toggleElement) {
+                try {
+                    console.log('🔄 Toggling advanced mode...');
+
+                    const card = toggleElement.closest('.datacard');
+                    if (!card) {
+                        console.error('❌ Could not find parent datacard');
+                        return;
+                    }
+
+                    const defaultMode = card.querySelector('.pricing-mode-default');
+                    const advancedMode = card.querySelector('.pricing-mode-advanced');
+
+                    if (!defaultMode || !advancedMode) {
+                        console.error('❌ Could not find pricing mode elements');
+                        console.log('Default mode:', defaultMode);
+                        console.log('Advanced mode:', advancedMode);
+                        return;
+                    }
+
+                    const isAdvanced = advancedMode.style.display === 'block';
+                    console.log('Current state - isAdvanced:', isAdvanced);
+
+                    if (isAdvanced) {
+                        // Switch to default mode
+                        advancedMode.style.display = 'none';
+                        defaultMode.style.display = 'block';
+                        toggleElement.classList.remove('expanded');
+                        console.log('✅ Switched to default mode');
+                    } else {
+                        // Switch to advanced mode
+                        defaultMode.style.display = 'none';
+                        advancedMode.style.display = 'block';
+                        toggleElement.classList.add('expanded');
+                        console.log('✅ Switched to advanced mode');
+                    }
+                } catch (error) {
+                    console.error('❌ Error toggling advanced mode:', error);
+                }
+            }
+
+            // Make function globally accessible for onclick handlers
+            window.toggleAdvancedMode = toggleAdvancedMode;
+
+            // =============================================================================
+            // GLOBAL DEFAULTS FUNCTIONALITY
+            // =============================================================================
+
+            // Global default values
+            window.globalDefaults = {
+                spread: 0.5,
+                volatility: 25,
+                trend: 5
+            };
+
+            // Apply global defaults to a single datacard
+            window.applyDefaultsToDatacard = function (card) {
+                if (!card) return;
+
+                // Apply spread (if in spread mode)
+                const spreadInput = card.querySelector('.pricing-mode-default .range-input[min="0.1"]');
+                if (spreadInput) {
+                    spreadInput.value = window.globalDefaults.spread;
+                    const valueSpan = spreadInput.parentElement.querySelector('.range-value .value');
+                    if (valueSpan) valueSpan.textContent = window.globalDefaults.spread;
+                }
+
+                // Apply volatility
+                const volatilityInput = card.querySelector('.range-input[min="0"][max="100"]');
+                if (volatilityInput) {
+                    volatilityInput.value = window.globalDefaults.volatility;
+                    const valueSpan = volatilityInput.parentElement.querySelector('.range-value .value');
+                    if (valueSpan) valueSpan.textContent = window.globalDefaults.volatility;
+                }
+
+                // Apply trend
+                const trendInput = card.querySelector('[min="-50"][max="50"]');
+                if (trendInput) {
+                    trendInput.value = window.globalDefaults.trend;
+                    const valueSpan = trendInput.parentElement.querySelector('.range-value .value');
+                    if (valueSpan) {
+                        valueSpan.textContent = window.globalDefaults.trend;
+                        // Update trend description
+                        const trendValue = window.globalDefaults.trend;
+                        const description = trendValue === 0 ? 'Neutral' : trendValue > 0 ? 'Bullish' : 'Bearish';
+                        valueSpan.parentNode.innerHTML = `<span class="value">${trendValue}</span> (${description})`;
+                    }
+                }
+            };
+
+            // Apply global defaults to all existing datacards
+            window.applyToAllSymbols = function () {
+                console.log('Applying global defaults to all symbols...');
+                const cards = document.querySelectorAll('.datacard');
+                cards.forEach(card => {
+                    window.applyDefaultsToDatacard(card);
+                });
+                console.log(`✅ Applied defaults to ${cards.length} symbols`);
+            };
+
+            // Reset global defaults to initial values
+            window.resetGlobalDefaults = function () {
+                document.getElementById('globalSpread').value = 0.5;
+                document.getElementById('globalVolatility').value = 25;
+                document.getElementById('globalTrend').value = 5;
+
+                // Update the global defaults object
+                window.globalDefaults = {
+                    spread: 0.5,
+                    volatility: 25,
+                    trend: 5
+                };
+
+                console.log('✅ Global defaults reset');
+            };
+
+            // Update global defaults when inputs change
+            window.updateGlobalDefaults = function () {
+                window.globalDefaults.spread = parseFloat(document.getElementById('globalSpread').value) || 0.5;
+                window.globalDefaults.volatility = parseInt(document.getElementById('globalVolatility').value) || 25;
+                window.globalDefaults.trend = parseInt(document.getElementById('globalTrend').value) || 5;
+
+                console.log('Global defaults updated:', window.globalDefaults);
+            };
+
+            // =============================================================================
+            // CLICK-TO-EDIT RANGE VALUES
+            // =============================================================================
+            function makeRangeValueEditable(rangeValueElement) {
+                const valueSpan = rangeValueElement.querySelector('.value');
+                if (!valueSpan) return;
+
+                const rangeInput = rangeValueElement.parentElement.querySelector('.range-input');
+                if (!rangeInput) return;
+
+                rangeValueElement.style.cursor = 'pointer';
+
+                rangeValueElement.addEventListener('click', () => {
+                    if (rangeValueElement.classList.contains('editing')) return;
+
+                    // Extract just the numeric value (ignore text like "(Bullish)")
+                    const currentText = valueSpan.textContent;
+                    const numericValue = parseFloat(currentText.replace(/[^\d.-]/g, '')) || parseFloat(rangeInput.value);
+
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.min = rangeInput.min;
+                    input.max = rangeInput.max;
+                    input.step = rangeInput.step;
+                    input.value = numericValue;
+                    input.style.width = '60px';
+                    input.style.background = 'transparent';
+                    input.style.border = 'none';
+                    input.style.color = 'inherit';
+                    input.style.font = 'inherit';
+                    input.style.textAlign = 'center';
+                    input.style.outline = 'none';
+                    input.style.padding = '0';
+
+                    rangeValueElement.classList.add('editing');
+                    valueSpan.style.display = 'none';
+                    rangeValueElement.appendChild(input);
+                    input.focus();
+                    input.select();
+
+                    const finishEditing = () => {
+                        // Prevent multiple calls
+                        if (rangeValueElement.classList.contains('editing-finished')) {
+                            return;
+                        }
+                        rangeValueElement.classList.add('editing-finished');
+
+                        const newValue = parseFloat(input.value);
+                        if (!isNaN(newValue) && newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
+                            rangeInput.value = newValue;
+
+                            // Check if this is a trend value that needs bullish/bearish text
+                            const labelElement = rangeValueElement.parentElement.querySelector('.range-label');
+                            if (labelElement && labelElement.textContent.toLowerCase().includes('trend')) {
+                                const description = newValue === 0 ? 'Neutral' : newValue > 0 ? 'Bullish' : 'Bearish';
+                                valueSpan.textContent = newValue;
+                                // Update the full text including the description
+                                const fullText = valueSpan.parentElement.textContent;
+                                if (fullText.includes('(')) {
+                                    rangeValueElement.innerHTML = rangeValueElement.innerHTML.replace(
+                                        /\([^)]*\)/,
+                                        `(${description})`
+                                    );
+                                }
+                            } else {
+                                valueSpan.textContent = newValue;
+                            }
+
+                            rangeInput.dispatchEvent(new Event('input'));
+                        }
+
+                        // Safe removal check
+                        if (input.parentNode === rangeValueElement) {
+                            rangeValueElement.removeChild(input);
+                        }
+                        valueSpan.style.display = '';
+                        rangeValueElement.classList.remove('editing', 'editing-finished');
+                    };
+
+                    input.addEventListener('blur', finishEditing);
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            finishEditing();
+                        }
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            input.value = numericValue;
+                            finishEditing();
+                        }
+                    });
+                });
+            }
+
+            // Initialize click-to-edit for all range values
+            function initializeClickToEdit() {
+                document.querySelectorAll('.range-value').forEach(makeRangeValueEditable);
+            }
+
+            // Make functions globally accessible
+            window.makeRangeValueEditable = makeRangeValueEditable;
+            window.initializeClickToEdit = initializeClickToEdit;
+
+            // =============================================================================
+            // MICRO PERIODS FUNCTIONALITY
+            // =============================================================================
+            function togglePeriodsDropdown(indicator) {
+                const datacard = indicator.closest('.datacard');
+                const dropdown = datacard.querySelector('.periods-dropdown');
+                const type = indicator.getAttribute('data-type');
+
+                // Close all other dropdowns first
+                document.querySelectorAll('.periods-dropdown').forEach(d => {
+                    if (d !== dropdown) {
+                        d.style.display = 'none';
+                        d.parentElement.querySelectorAll('.periods-indicator').forEach(ind => {
+                            ind.classList.remove('active');
+                        });
+                    }
+                });
+
+                if (dropdown.style.display === 'none' || !dropdown.style.display) {
+                    dropdown.style.display = 'block';
+                    dropdown.setAttribute('data-type', type);
+                    indicator.classList.add('active');
+
+                    // Update dropdown title
+                    const title = dropdown.querySelector('.dropdown-title');
+                    title.textContent = type === 'volatility' ? 'Volatility Periods' : 'Trend Periods';
+
+                    // Load periods for this type
+                    loadPeriodsForType(dropdown, type);
+                } else {
+                    // Store current periods before closing
+                    if (dropdown.currentType) {
+                        storePeriods(dropdown, dropdown.currentType);
+                    }
+                    dropdown.style.display = 'none';
+                    indicator.classList.remove('active');
+                }
+            }
+
+            function loadPeriodsForType(dropdown, type) {
+                // Store current periods before switching
+                if (dropdown.currentType && dropdown.currentType !== type) {
+                    storePeriods(dropdown, dropdown.currentType);
+                }
+
+                // Clear content
+                const content = dropdown.querySelector('.dropdown-content');
+                content.innerHTML = '';
+
+                // Load stored periods for this type
+                const datacard = dropdown.closest('.datacard');
+                const storageKey = `${type}Periods`;
+                if (!datacard[storageKey]) {
+                    datacard[storageKey] = [];
+                }
+
+                datacard[storageKey].forEach(periodData => {
+                    createPeriodFromData(dropdown, type, periodData);
+                });
+
+                dropdown.currentType = type;
+
+                // Update count for this specific type only
+                const currentTypeIndicator = datacard.querySelector(`.periods-indicator[data-type="${type}"]`);
+                if (currentTypeIndicator) {
+                    const currentCount = dropdown.querySelectorAll('.micro-period:not(.invalid-range)').length;
+                    currentTypeIndicator.textContent = currentCount;
+
+                    // Update indicator styling
+                    if (currentCount > 0) {
+                        currentTypeIndicator.classList.add('has-periods');
+                    } else {
+                        currentTypeIndicator.classList.remove('has-periods');
+                    }
+                }
+
+                updateDatacardBackground(datacard);
+            }
+
+            function storePeriods(dropdown, type) {
+                const datacard = dropdown.closest('.datacard');
+                const storageKey = `${type}Periods`;
+                const periods = [];
+
+                dropdown.querySelectorAll('.micro-period:not(.invalid-range)').forEach(period => {
+                    const inputs = period.querySelectorAll('.period-range-input');
+                    const slider = period.querySelector('.range-input');
+                    const start = parseInt(inputs[0].value);
+                    const end = parseInt(inputs[1].value);
+                    const value = parseInt(slider.value);
+
+                    if (start > 0 && end > 0 && start <= end) {
+                        periods.push({ start, end, value });
+                    }
+                });
+
+                datacard[storageKey] = periods;
+            }
+
+            function createPeriodFromData(dropdown, type, data) {
+                const content = dropdown.querySelector('.dropdown-content');
+                const periodRow = document.createElement('div');
+                periodRow.className = 'micro-period';
+
+                const isVolatility = type === 'volatility';
+                const valueLabel = isVolatility ? '%' : '';
+                const minVal = isVolatility ? '1' : '-50';
+                const maxVal = isVolatility ? '100' : '50';
+                const displayValue = isVolatility ? `${data.value}%` :
+                    `${data.value} (${data.value === 0 ? 'Neutral' : data.value > 0 ? 'Bullish' : 'Bearish'})`;
+
+                periodRow.innerHTML = `
+                    <div class="period-range">
+                        <input type="number" class="period-range-input" min="1" max="100" value="${data.start}" placeholder="1">
+                        <span class="range-separator">-</span>
+                        <input type="number" class="period-range-input" min="1" max="100" value="${data.end}" placeholder="10">
+                    </div>
+                    <div class="period-value">
+                        <input type="range" class="range-input" min="${minVal}" max="${maxVal}" value="${data.value}">
+                        <span class="period-value-display">${displayValue}</span>
+                    </div>
+                    <button class="remove-micro-period" onclick="removeMicroPeriod(this)">×</button>
+                `;
+
+                content.appendChild(periodRow);
+                setupPeriodEventListeners(periodRow, dropdown, isVolatility);
+            }
+
+            function validatePeriodRanges(dropdown) {
+                const periods = dropdown.querySelectorAll('.micro-period');
+                const ranges = [];
+                const invalidPeriods = [];
+
+                periods.forEach(period => {
+                    const inputs = period.querySelectorAll('.period-range-input');
+                    const start = parseInt(inputs[0].value) || 0;
+                    const end = parseInt(inputs[1].value) || 0;
+
+                    if (start > 0 && end > 0 && start <= end) {
+                        ranges.push({ start, end, element: period });
+                    }
+                });
+
+                // Check for overlaps and mark invalid periods
+                ranges.forEach((range, i) => {
+                    range.element.style.background = 'rgba(255, 255, 255, 0.02)';
+                    range.element.style.border = 'none';
+                    range.element.classList.remove('invalid-range');
+
+                    for (let j = i + 1; j < ranges.length; j++) {
+                        const other = ranges[j];
+                        if ((range.start <= other.end && range.end >= other.start)) {
+                            // Mark both as invalid
+                            if (!invalidPeriods.includes(range.element)) {
+                                invalidPeriods.push(range.element);
+                            }
+                            if (!invalidPeriods.includes(other.element)) {
+                                invalidPeriods.push(other.element);
+                            }
+                        }
+                    }
+                });
+
+                // Remove invalid periods after 2 seconds
+                if (invalidPeriods.length > 0) {
+                    invalidPeriods.forEach(period => {
+                        period.style.background = 'rgba(255, 80, 80, 0.2)';
+                        period.style.border = '1px solid rgba(255, 120, 120, 0.6)';
+                        period.classList.add('invalid-range');
+                    });
+
+                    setTimeout(() => {
+                        invalidPeriods.forEach(period => {
+                            if (period.parentNode) {
+                                period.remove();
+                            }
+                        });
+                        updatePeriodsCount(dropdown);
+                    }, 2000);
+
+                    dropdown.dataset.hasInvalidRanges = 'true';
+                    return false;
+                } else {
+                    dropdown.dataset.hasInvalidRanges = 'false';
+                    return true;
+                }
+            }
+
+            function getNextValidRange(dropdown) {
+                const periods = dropdown.querySelectorAll('.micro-period:not(.invalid-range)');
+                const usedRanges = [];
+
+                periods.forEach(period => {
+                    const inputs = period.querySelectorAll('.period-range-input');
+                    const start = parseInt(inputs[0].value);
+                    const end = parseInt(inputs[1].value);
+                    if (start > 0 && end > 0 && start <= end) {
+                        usedRanges.push({ start, end });
+                    }
+                });
+
+                // Sort ranges by start position
+                usedRanges.sort((a, b) => a.start - b.start);
+
+                // Find next available range
+                let nextStart = 1;
+                for (const range of usedRanges) {
+                    if (nextStart < range.start) {
+                        // Found gap before this range
+                        const gapEnd = range.start - 1;
+                        if (gapEnd >= nextStart + 9) { // Need at least 10 messages
+                            return { start: nextStart, end: nextStart + 9 };
+                        }
+                    }
+                    nextStart = Math.max(nextStart, range.end + 1);
+                }
+
+                // No gaps found, start after last range
+                return { start: nextStart, end: nextStart + 9 };
+            }
+
+            function addMicroPeriod(button) {
+                const dropdown = button.closest('.periods-dropdown');
+                const content = dropdown.querySelector('.dropdown-content');
+                const type = dropdown.getAttribute('data-type');
+
+                const periodRow = document.createElement('div');
+                periodRow.className = 'micro-period';
+
+                const isVolatility = type === 'volatility';
+                const valueLabel = isVolatility ? '%' : '';
+                const minVal = isVolatility ? '1' : '-50';
+                const maxVal = isVolatility ? '100' : '50';
+                const defaultVal = isVolatility ? '50' : '0';
+                const defaultDisplay = isVolatility ? '50%' : '0 (Neutral)';
+
+                // Get smart range suggestion
+                const suggestedRange = getNextValidRange(dropdown);
+
+                periodRow.innerHTML = `
+                    <div class="period-range">
+                        <input type="number" class="period-range-input" min="1" max="100" value="${suggestedRange.start}" placeholder="1">
+                        <span class="range-separator">-</span>
+                        <input type="number" class="period-range-input" min="1" max="100" value="${suggestedRange.end}" placeholder="10">
+                    </div>
+                    <div class="period-value">
+                        <input type="range" class="range-input" min="${minVal}" max="${maxVal}" value="${defaultVal}">
+                        <span class="period-value-display">${defaultDisplay}</span>
+                    </div>
+                    <button class="remove-micro-period" onclick="removeMicroPeriod(this)">×</button>
+                `;
+
+                content.appendChild(periodRow);
+                setupPeriodEventListeners(periodRow, dropdown, isVolatility);
+
+                // Update the count and validate ranges
+                setTimeout(() => {
+                    validatePeriodRanges(dropdown);
+                    updatePeriodsCount(dropdown);
+                }, 50);
+            }
+
+            function setupPeriodEventListeners(periodRow, dropdown, isVolatility) {
+                const slider = periodRow.querySelector('.range-input');
+                const valueDisplay = periodRow.querySelector('.period-value-display');
+                const rangeInputs = periodRow.querySelectorAll('.period-range-input');
+
+                // Validate ranges on input with debounce
+                rangeInputs.forEach(input => {
+                    let timeout;
+                    input.addEventListener('input', () => {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            const startInput = rangeInputs[0];
+                            const endInput = rangeInputs[1];
+                            const start = parseInt(startInput.value);
+                            const end = parseInt(endInput.value);
+
+                            // Fix invalid ranges
+                            if (start > end && end > 0) {
+                                endInput.value = start;
+                            }
+
+                            validatePeriodRanges(dropdown);
+                            updatePeriodsCount(dropdown);
+
+                            // Store updated periods after a brief delay
+                            setTimeout(() => {
+                                if (dropdown.currentType) {
+                                    storePeriods(dropdown, dropdown.currentType);
+                                }
+                            }, 100);
+                        }, 150);
+                    });
+                });
+
+                slider.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (isVolatility) {
+                        valueDisplay.textContent = val + '%';
+                    } else {
+                        const desc = val == 0 ? 'Neutral' : (val > 0 ? 'Bullish' : 'Bearish');
+                        valueDisplay.textContent = `${val} (${desc})`;
+                    }
+
+                    // Store updated periods when slider value changes
+                    if (dropdown.currentType) {
+                        storePeriods(dropdown, dropdown.currentType);
+                    }
+                });
+            }
+
+            function removeMicroPeriod(button) {
+                const dropdown = button.closest('.periods-dropdown');
+                const datacard = dropdown.closest('.datacard');
+                button.closest('.micro-period').remove();
+                validatePeriodRanges(dropdown);
+                updatePeriodsCount(dropdown);
+
+                // Store updated periods and update background
+                if (dropdown.currentType) {
+                    storePeriods(dropdown, dropdown.currentType);
+                }
+                updateDatacardBackground(datacard);
+            }
+
+            function getValidPeriods(datacard, type) {
+                const dropdown = datacard.querySelector('.periods-dropdown');
+                if (dropdown.dataset.hasInvalidRanges === 'true') {
+                    console.warn(`⚠️ Cannot extract ${type} periods - overlapping ranges detected`);
+                    return [];
+                }
+
+                const validPeriods = [];
+                const periods = dropdown.querySelectorAll('.micro-period:not(.invalid-range)');
+
+                periods.forEach(period => {
+                    const inputs = period.querySelectorAll('.period-range-input');
+                    const slider = period.querySelector('.range-input');
+                    const start = parseInt(inputs[0].value);
+                    const end = parseInt(inputs[1].value);
+                    const value = parseInt(slider.value);
+
+                    if (start > 0 && end > 0 && start <= end) {
+                        validPeriods.push({ start, end, value });
+                    }
+                });
+
+                return validPeriods;
+            }
+
+            function updateDatacardBackground(datacard) {
+                const volIndicator = datacard.querySelector('.periods-indicator[data-type="volatility"]');
+                const trendIndicator = datacard.querySelector('.periods-indicator[data-type="trend"]');
+
+                const volCount = parseInt(volIndicator?.textContent || '0');
+                const trendCount = parseInt(trendIndicator?.textContent || '0');
+
+                if (volCount > 0 || trendCount > 0) {
+                    datacard.classList.add('has-micro-periods');
+                } else {
+                    datacard.classList.remove('has-micro-periods');
+                }
+            }
+
+            function updatePeriodsCount(dropdown) {
+                const datacard = dropdown.closest('.datacard');
+                const type = dropdown.getAttribute('data-type') || dropdown.currentType;
+                if (!type) return;
+
+                const indicator = datacard.querySelector(`.periods-indicator[data-type="${type}"]`);
+                if (!indicator) return;
+
+                const count = dropdown.querySelectorAll('.micro-period:not(.invalid-range)').length;
+                const hasInvalid = dropdown.dataset.hasInvalidRanges === 'true';
+
+                indicator.textContent = count;
+
+                // Visual indication of invalid state
+                if (hasInvalid && count > 0) {
+                    indicator.style.background = 'rgba(255, 80, 80, 0.3)';
+                    indicator.style.borderColor = 'rgba(255, 120, 120, 0.8)';
+                    indicator.style.color = 'rgba(255, 200, 200, 0.9)';
+                    indicator.classList.remove('has-periods');
+                } else {
+                    // Reset to default styles
+                    indicator.style.background = '';
+                    indicator.style.borderColor = '';
+                    indicator.style.color = '';
+
+                    // Add has-periods class if count > 0
+                    if (count > 0) {
+                        indicator.classList.add('has-periods');
+                    } else {
+                        indicator.classList.remove('has-periods');
+                    }
+                }
+
+                // Update datacard background based on all indicators
+                updateDatacardBackground(datacard);
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.periods-dropdown') && !e.target.closest('.periods-indicator')) {
+                    document.querySelectorAll('.periods-dropdown').forEach(dropdown => {
+                        // Store current periods before closing
+                        if (dropdown.currentType && dropdown.style.display !== 'none') {
+                            storePeriods(dropdown, dropdown.currentType);
+                            // Update background after storing
+                            const datacard = dropdown.closest('.datacard');
+                            if (datacard) {
+                                updateDatacardBackground(datacard);
+                            }
+                        }
+                        dropdown.style.display = 'none';
+                    });
+                    document.querySelectorAll('.periods-indicator').forEach(indicator => {
+                        indicator.classList.remove('active');
+                    });
+                }
+            });
+
+            // Make functions globally accessible
+            window.togglePeriodsDropdown = togglePeriodsDropdown;
+            window.addMicroPeriod = addMicroPeriod;
+            window.removeMicroPeriod = removeMicroPeriod;
+            window.getValidPeriods = getValidPeriods;
+            window.addMicroPeriod = addMicroPeriod;
+            window.removeMicroPeriod = removeMicroPeriod;
+
+        </script>
+
+        <!-- Core Application Logic -->
+        <script>
+            // Global state for unsaved changes tracking
+            let hasUnsavedChanges = false;
+            let currentFileName = '';
+            let configFilesPath = ''; // Will be set when user provides path
+
+            // Percentage allocation state was moved to top of file for early access
+
+            // Redistribution function (defined early for global access)
+            window.redistributeCleanPercentages = function redistributeCleanPercentages() {
+                const datacards = document.querySelectorAll('.datacard');
+                const cleanProducts = [];
+                const dirtyProducts = [];
+                let dirtyTotal = 0;
+
+                // Categorize products as clean or dirty
+                datacards.forEach(card => {
+                    const symbol = card.dataset.symbol;
+                    const input = card.querySelector('.percentage-input');
+                    const trackingData = window.productPercentages.get(symbol);
+
+                    if (trackingData && trackingData.isDirty) {
+                        dirtyProducts.push({ symbol, percentage: trackingData.percentage });
+                        dirtyTotal += trackingData.percentage;
+                    } else {
+                        cleanProducts.push(symbol);
+                    }
+                });
+
+                // If we have clean products and some percentage points to distribute
+                if (cleanProducts.length > 0) {
+                    const remainingPercentage = Math.max(0, 100 - dirtyTotal);
+                    const redistributedPercentage = Math.floor(remainingPercentage / cleanProducts.length);
+
+                    // Update clean products
+                    cleanProducts.forEach(symbol => {
+                        const card = document.querySelector(`.datacard[data-symbol="${symbol}"]`);
+                        const input = card?.querySelector('.percentage-input');
+
+                        if (input) {
+                            input.value = redistributedPercentage;
+                            window.productPercentages.set(symbol, { percentage: redistributedPercentage, isDirty: false });
+                        }
+                    });
+
+                    return redistributedPercentage;
+                }
+
+                return 0;
+            }
+
+            // Percentage validation and management functions
+            window.updateAllocationDisplay = function updateAllocationDisplay() {
+                const allocationDisplay = document.getElementById('allocationDisplay');
+                const allocationPercentage = document.getElementById('allocationPercentage');
+
+                if (!allocationDisplay || !allocationPercentage) return;
+
+                const total = window.calculateTotalPercentage();
+
+                allocationPercentage.textContent = `${total}%`;
+
+                // Update styling based on validation
+                allocationDisplay.classList.remove('over-allocated', 'under-allocated', 'perfectly-allocated', 'invalid');
+                if (total === 100 && !window.hasZeroPercentProducts()) {
+                    allocationDisplay.classList.add('perfectly-allocated');
+                } else if (total > 100) {
+                    allocationDisplay.classList.add('over-allocated');
+                } else {
+                    allocationDisplay.classList.add('under-allocated');
+                }
+
+                window.updateGenerateButtonState();
+                return total;
+            };
+
+            window.calculateTotalPercentage = function() {
+                let total = 0;
+                document.querySelectorAll('.percentage-input').forEach(input => {
+                    const value = parseInt(input.value) || 0;
+                    total += value;
+                });
+                return total;
+            };
+
+            window.hasZeroPercentProducts = function() {
+                return Array.from(document.querySelectorAll('.percentage-input')).some(input => {
+                    return (parseInt(input.value) || 0) === 0;
+                });
+            };
+
+            window.updateGenerateButtonState = function() {
+                const generateBtn = document.getElementById('generateDataset');
+                if (!generateBtn) return;
+
+                const total = window.calculateTotalPercentage();
+                const hasZeros = window.hasZeroPercentProducts();
+
+                // Enable when total is exactly 100% AND no products have 0% (demo mode allows visual feedback)
+                generateBtn.disabled = (total !== 100) || hasZeros;
+
+                // In demo mode, style differently but keep enabled for feedback
+                if (IS_DEMO_MODE && !generateBtn.disabled) {
+                    generateBtn.style.background = 'linear-gradient(135deg, #ff914d, #ff7b3d)';
+                    generateBtn.title = 'Demo Mode - Click to see generation preview';
+                } else if (IS_DEMO_MODE) {
+                    generateBtn.title = 'Fix percentages to preview generation';
+                }
+            };
+
+            // Filter percentage input to only allow integers
+            window.filterPercentageInput = function filterPercentageInput(input) {
+                let value = input.value;
+
+                // Remove any non-numeric characters
+                value = value.replace(/[^0-9]/g, '');
+
+                // Convert to integer and ensure it's within valid range (0-100)
+                let numValue = parseInt(value) || 0;
+                if (numValue > 100) {
+                    numValue = 100;
+                }
+
+                // Update the input value if it was changed
+                const newValue = numValue.toString();
+                if (input.value !== newValue) {
+                    // Preserve cursor position
+                    const cursorPos = input.selectionStart;
+                    input.value = newValue;
+
+                    // Restore cursor position, accounting for removed characters
+                    const newPos = Math.min(cursorPos, newValue.length);
+                    input.setSelectionRange(newPos, newPos);
+                }
+            };
+
+            window.validatePercentageInput = function validatePercentageInput(input) {
+                const value = parseInt(input.value) || 0;
+                const symbol = input.closest('.datacard').dataset.symbol;
+
+                // Clear previous validation state
+                input.classList.remove('invalid');
+
+                // Check for 0% (always invalid)
+                if (value === 0) {
+                    input.classList.add('invalid');
+                    if (typeof window.updateAllocationDisplay === 'function') {
+                        window.updateAllocationDisplay();
+                    }
+                    return false;
+                }
+
+                // Mark this product as dirty
+                if (window.productPercentages) {
+                    window.productPercentages.set(symbol, { percentage: value, isDirty: true });
+                }
+
+                // Check for overallocation - highlight the input that caused it
+                const total = window.calculateTotalPercentage();
+                if (total > 100) {
+                    input.classList.add('invalid');
+                }
+
+                if (typeof window.updateAllocationDisplay === 'function') {
+                    window.updateAllocationDisplay();
+                }
+                return total <= 100 && value > 0;
+            };
+
+                // Load validation configuration
+                async function loadValidationConfig() {
+                    // In demo mode, use fallback config directly
+                    if (IS_DEMO_MODE) {
+                        validationConfig = {
+                            fileSystem: {
+                                exchangeDirectories: {
+                                    "CME": "./datasets/cme",
+                                    "NYSE": "./datasets/nyse",
+                                    "NASDAQ": "./datasets/nsdq"
+                                },
+                                fileExtensions: {
+                                    "CME": ".cme",
+                                    "NYSE": ".nyse",
+                                    "NASDAQ": ".nsdq"
+                                }
+                            },
+                            sliderConfig: {
+                                basePrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.50,
+                                    default: 195.50
+                                },
+                                spread: {
+                                    min: 0.01,
+                                    max: 5.0,
+                                    step: 0.01,
+                                    default: 0.12
+                                },
+                                bidPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.44
+                                },
+                                askPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.56
+                                },
+                                bidQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1500
+                                },
+                                askQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1200
+                                },
+                                bidWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 48
+                                },
+                                askWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 52
+                                },
+                                volatility: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 18
+                                },
+                                trend: {
+                                    min: -50,
+                                    max: 50,
+                                    step: 1,
+                                    default: 3
+                                },
+                                percentage: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 0
+                                }
+                            }
+                        };
+                        console.log('✅ Demo validation config loaded');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/apps/author/config/validation-rules.json');
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        validationConfig = await response.json();
+                        console.log('✅ Validation config loaded:', validationConfig);
+                    } catch (error) {
+                        console.warn('⚠️ Failed to load validation config, using fallback:', error.message);
+                        // Fallback config
+                        validationConfig = {
+                            fileSystem: {
+                                exchangeDirectories: {
+                                    "CME": "./datasets/cme",
+                                    "NYSE": "./datasets/nyse",
+                                    "NASDAQ": "./datasets/nsdq"
+                                },
+                                fileExtensions: {
+                                    "CME": ".cme",
+                                    "NYSE": ".nyse",
+                                    "NASDAQ": ".nsdq"
+                                }
+                            },
+                            sliderConfig: {
+                                basePrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.50,
+                                    default: 195.50
+                                },
+                                spread: {
+                                    min: 0.01,
+                                    max: 5.0,
+                                    step: 0.01,
+                                    default: 0.12
+                                },
+                                bidPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.44
+                                },
+                                askPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.56
+                                },
+                                bidQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1500
+                                },
+                                askQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1200
+                                },
+                                bidWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 48
+                                },
+                                askWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 52
+                                },
+                                volatility: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 18
+                                },
+                                trend: {
+                                    min: -50,
+                                    max: 50,
+                                    step: 1,
+                                    default: 3
+                                },
+                                percentage: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 0
+                                }
+                            }
+                        };
+                    }
+                }
+
+                // Populate file dropdown based on selected exchange
+                async function populateFileDropdown(exchange) {
+                    const fileDropdownMenu = document.getElementById('fileDropdownMenu');
+                    if (!fileDropdownMenu || !validationConfig) {
+                        console.warn('File dropdown or config not available');
+                        return;
+                    }
+
+                    const fileExtension = validationConfig.fileSystem.fileExtensions[exchange];
+                    const directory = validationConfig.fileSystem.exchangeDirectories[exchange];
+
+                    if (!fileExtension || !directory) {
+                        console.warn(`No configuration found for exchange: ${exchange}`);
+                        return;
+                    }
+
+                    try {
+                        // In demo mode, show mock files
+                        if (IS_DEMO_MODE) {
+                            const mockFiles = [
+                                `sample_strategy${fileExtension}`,
+                                `backtest_data${fileExtension}`,
+                                `live_test${fileExtension}`,
+                                `momentum_algo${fileExtension}`
+                            ];
+
+                            fileDropdownMenu.innerHTML = '';
+
+                            if (mockFiles.length === 0) {
+                                fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">No files available</div>';
+                                return;
+                            }
+
+                            mockFiles.forEach(fileName => {
+                                const fileItem = document.createElement('div');
+                                fileItem.style.cssText = `
+                            padding: 0.75em 1em;
+                            cursor: pointer;
+                            border-bottom: 1px solid rgba(255,255,255,0.1);
+                            transition: background 0.2s ease;
+                            color: rgba(255,255,255,0.9);
+                        `;
+                                fileItem.textContent = fileName;
+
+                                fileItem.addEventListener('mouseenter', () => {
+                                    fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
+                                });
+                                fileItem.addEventListener('mouseleave', () => {
+                                    fileItem.style.background = 'none';
+                                });
+
+                                fileItem.addEventListener('click', () => {
+                                    const fileDropdownText = document.getElementById('fileDropdownText');
+                                    if (fileDropdownText) {
+                                        fileDropdownText.textContent = fileName.replace(fileExtension, '');
+                                    }
+                                    fileDropdownMenu.style.display = 'none';
+                                });
+
+                                fileDropdownMenu.appendChild(fileItem);
+                            });
+                        } else {
+                            // In production mode, this would fetch real files from the server
+                            // For now, show placeholder
+                            fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">File loading not implemented in current version</div>';
+                        }
+
+                    } catch (error) {
+                        console.error('Error loading files:', error);
+                        fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: #ff5858; font-style: italic;">Error loading files</div>';
+                    }
+                }
+
+                // Handle exchange change to update file dropdown
+                function handleExchangeChange() {
+                    const exchangeSelect = document.getElementById('exchangeSelect');
+                    if (exchangeSelect && validationConfig) {
+                        const selectedExchange = exchangeSelect.value;
+                        populateFileDropdown(selectedExchange);
+
+                        // Reset file dropdown text
+                        const fileDropdownText = document.getElementById('fileDropdownText');
+                        if (fileDropdownText) {
+                            fileDropdownText.textContent = 'Select File';
+                        }
+                    }
+                }
+
+                // Demo mode initialization
+                function initializeDemoMode() {
+                    if (IS_DEMO_MODE) {
+                        // Show demo banner
+                        const banner = document.getElementById('demo-banner');
+                        if (banner) {
+                            banner.style.display = 'block';
+                        }
+
+                        // Create multiple sample datacards for layout testing
+                        setTimeout(() => {
+                            createMultipleSampleCards();
+                            // Initialize click-to-edit after cards are created
+                            setTimeout(() => {
+                                initializeClickToEdit();
+                                restoreCollapsedStates(); // Restore any saved collapse states
+                                console.log('✅ Click-to-edit initialized');
+                            }, 200);
+                            // Re-initialize click-to-edit for new cards
+                            setTimeout(() => initializeClickToEdit(), 500);
+                        }, 100);
+
+                        // Setup generate button for demo interaction
+                        const generateBtn = document.getElementById('generateDataset');
+                        if (generateBtn) {
+                            // Remove existing click handlers
+                            const newBtn = generateBtn.cloneNode(true);
+                            generateBtn.parentNode.replaceChild(newBtn, generateBtn);
+
+                            // Add demo click handler
+                            newBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                const total = window.calculateTotalPercentage();
+                                if (total === 100 && !window.hasZeroPercentProducts()) {
+                                    // Show realistic demo preview
+                                    alert('🎯 Demo Preview\n\nYour dataset configuration is valid!\n\nIn production mode, this would:\n• Generate ' + document.querySelectorAll('.datacard').length + ' product dataset\n• Export in CME/NYSE/NASDAQ format\n• Create ~' + (Math.floor(Math.random() * 50000) + 10000) + ' market data messages\n\nDemo mode prevents actual file generation.');
+                                } else {
+                                    alert('⚠️ Configuration incomplete\n\nPlease ensure:\n• All percentages total exactly 100%\n• No products have 0% allocation\n\nThen try generation again.');
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // Create a sample datacard to demonstrate functionality
+                function createSampleDatacard() {
+                    console.log('🔄 Creating sample datacard...');
+
+                    const datacardContainer = document.getElementById('datacardContainer');
+                    if (!datacardContainer) {
+                        console.error('❌ Datacard container not found');
+                        return;
+                    }
+
+                    // Check if createDetailedDatacard function exists
+                    if (typeof createDetailedDatacard !== 'function') {
+                        console.error('❌ createDetailedDatacard function not found');
+                        return;
+                    }
+
+                    try {
+                        // Create sample AAPL datacard with realistic trading parameters
+                        console.log('🔄 Calling createDetailedDatacard...');
+                        const sampleCard = createDetailedDatacard('AAPL');
+
+                        if (sampleCard) {
+                            datacardContainer.appendChild(sampleCard);
+                            console.log('✅ Sample card created and appended');
+
+                            // Ensure card starts in default (spread-based) mode
+                            const defaultMode = sampleCard.querySelector('.pricing-mode-default');
+                            const advancedMode = sampleCard.querySelector('.pricing-mode-advanced');
+                            const advancedToggle = sampleCard.querySelector('.advanced-toggle');
+
+                            if (defaultMode && advancedMode && advancedToggle) {
+                                defaultMode.style.display = 'block';
+                                advancedMode.style.display = 'none';
+                                advancedToggle.classList.remove('expanded');
+                                console.log('✅ Sample card set to default (spread-based) mode');
+                            }
+
+                            // Set realistic values for AAPL
+                            const ranges = sampleCard.querySelectorAll('.range-input');
+                            const values = {
+                                basePrice: 175,      // ~$175 for AAPL
+                                spread: 0.5,         // 0.5% spread
+                                bidWeight: 45,       // Slightly bid-heavy
+                                askWeight: 55,       // Slightly ask-heavy
+                                bidQuantity: 250,    // 250 shares
+                                askQuantity: 300,    // 300 shares
+                                volatility: 25,      // 25% volatility
+                                trend: 5             // Slight upward trend
+                            };
+
+                            // Apply values to the sample card
+                            const controls = sampleCard.querySelectorAll('.range-control');
+                            controls.forEach(control => {
+                                const label = control.querySelector('.range-label')?.textContent;
+                                const input = control.querySelector('.range-input');
+                                const valueSpan = control.querySelector('.value');
+
+                                let newValue;
+                                switch (label) {
+                                    case 'Base Price': newValue = values.basePrice; break;
+                                    case 'Spread': newValue = values.spread; break;
+                                    case 'Bid Weight': newValue = values.bidWeight; break;
+                                    case 'Ask Weight': newValue = values.askWeight; break;
+                                    case 'Bid Quantity': newValue = values.bidQuantity; break;
+                                    case 'Ask Quantity': newValue = values.askQuantity; break;
+                                    case 'Volatility': newValue = values.volatility; break;
+                                    case 'Trend': newValue = values.trend; break;
+                                }
+
+                                if (newValue !== undefined && input && valueSpan) {
+                                    input.value = newValue;
+                                    valueSpan.textContent = newValue;
+                                }
+                            });
+
+                            console.log('✅ Sample AAPL datacard created with realistic trading parameters');
+                        } else {
+                            console.error('❌ createDetailedDatacard returned null/undefined');
+                        }
+                    } catch (error) {
+                        console.error('❌ Error creating sample datacard:', error);
+                    }
+                }
+
+                // Create multiple sample datacards for layout testing
+                function createMultipleSampleCards() {
+                    console.log('🔄 Creating multiple sample datacards for layout testing...');
+
+                    const datacardContainer = document.getElementById('datacardContainer');
+                    if (!datacardContainer) {
+                        console.error('❌ Datacard container not found');
+                        return;
+                    }
+
+                    // Clear container first
+                    datacardContainer.innerHTML = '';
+
+                    const symbols = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'META'];
+                    const basePercentage = Math.floor(100 / symbols.length);
+                    const remainder = 100 % symbols.length;
+
+                    symbols.forEach((symbol, index) => {
+                        try {
+                            const card = createDetailedDatacard(symbol);
+                            if (card) {
+                                // Distribute integer percentages that sum to 100%
+                                const percentage = basePercentage + (index < remainder ? 1 : 0);
+                                const percentInput = card.querySelector('.percentage-input');
+                                if (percentInput) {
+                                    percentInput.value = percentage;
+                                }
+
+                                datacardContainer.appendChild(card);
+                                // Initialize click-to-edit for this card
+                                setTimeout(() => {
+                                    card.querySelectorAll('.range-value').forEach(makeRangeValueEditable);
+                                }, 50);
+                                console.log(`✅ Created ${symbol} datacard`);
+                            }
+                        } catch (error) {
+                            console.error(`❌ Error creating ${symbol} datacard:`, error);
+                        }
+                    });
+                    console.log('✅ All sample datacards created');
+                }
+
+                // Mark changes as unsaved
+                function markUnsavedChanges() {
+                    hasUnsavedChanges = true;
+                }
+
+                // Mark changes as saved
+                function markChangesSaved() {
+                    hasUnsavedChanges = false;
+                }
+
+                // Show unsaved changes warning
+                function showUnsavedChangesWarning(callback) {
+                    if (hasUnsavedChanges) {
+                        const confirmed = confirm(
+                            `You have unsaved changes that will be lost.\\n\\nDo you want to continue?`
+                        );
+                        if (confirmed) {
+                            callback();
+                        }
+                        return confirmed;
+                    } else {
+                        callback();
+                        return true;
+                    }
+                }
+
+                // Load configuration files from Flask API
+                async function loadConfigurationFiles() {
+                    console.log('Loading configuration files from Flask API...');
+
+                    const dropdown = document.getElementById('configDropdownMenu');
+
+                    try {
+                        // Show loading state
+                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">Loading configurations...</div>';
+
+                        // Call Flask API
+                        const response = await fetch('http://localhost:5000/api/config-files', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const data = await response.json();
+
+                        if (!data.success) {
+                            throw new Error(data.error || 'Unknown error');
+                        }
+
+                        // Clear loading state
+                        dropdown.innerHTML = '';
+
+                        if (data.config_files.length === 0) {
+                            dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">No saved configurations</div>';
+                            return;
+                        }
+
+                        // Populate dropdown with config files
+                        data.config_files.forEach(file => {
+                            const fileItem = document.createElement('button');
+                            fileItem.className = 'file-item dropdown-item';
+                            fileItem.style.cssText = 'width: 100%; border: none; background: none; color: #fff; padding: 0.6em 1em; text-align: left; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: space-between;';
+
+                            fileItem.innerHTML = `
+                            <span style="display: flex; align-items: center; gap: 0.5em;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14,2 14,8 20,8"></polyline>
+                                </svg>
+                                ${file.display_name}
+                            </span>
+                        `;
+
+                            fileItem.addEventListener('mouseenter', () => {
+                                fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
+                            });
+                            fileItem.addEventListener('mouseleave', () => {
+                                fileItem.style.background = 'none';
+                            });
+
+                            fileItem.addEventListener('click', () => {
+                                showUnsavedChangesWarning(() => {
+                                    loadConfiguration(file.name);
+                                });
+                            });
+
+                            dropdown.appendChild(fileItem);
+                        });
+
+                        console.log(`✅ Loaded ${data.config_files.length} configuration files`);
+
+                    } catch (error) {
+                        console.error('Error loading configuration files:', error);
+                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: #ff5858; font-style: italic; text-align: center;">Server connection failed</div>';
+                    }
+                }
+
+                // Setup config dropdown functionality
+                function setupConfigDropdown() {
+                    const configInput = document.getElementById('configInput');
+                    const configDropdown = document.getElementById('configDropdownMenu');
+
+                    if (!configInput || !configDropdown) {
+                        console.warn('Config dropdown elements not found');
+                        return;
+                    }
+
+                    // Show dropdown on input focus or arrow click
+                    configInput.addEventListener('click', () => {
+                        const isVisible = configDropdown.style.display === 'block';
+                        configDropdown.style.display = isVisible ? 'none' : 'block';
+
+                        if (!isVisible) {
+                            loadConfigurationFiles();
+                        }
+                    });
+
+                    // Hide dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('#configInput') && !e.target.closest('#configDropdownMenu')) {
+                            configDropdown.style.display = 'none';
+                        }
+                    });
+
+                    console.log('✅ Config dropdown functionality ready');
+                }
+
+                // Load a specific configuration
+                function loadConfiguration(fileName) {
+                    console.log(`Loading configuration: ${fileName}`);
+                    currentFileName = fileName;
+
+                    // Update file dropdown text
+                    const fileDropdownText = document.getElementById('fileDropdownText');
+                    if (fileDropdownText) {
+                        fileDropdownText.textContent = fileName.replace('.json', '');
+                    }
+
+                    // Mark as saved since we just loaded
+                    markChangesSaved();
+
+                    // TODO: Actual file loading logic will go here
+                    console.log(`✅ Configuration "${fileName}" loaded`);
+                }
+
+                // Save configuration
+                function saveConfiguration() {
+                    // Since this is now just a dropdown, we'll need a different way to get the filename
+                    // For now, we'll use a prompt until we implement proper save functionality
+                    const fileName = prompt('Enter configuration name:');
+
+                    if (!fileName || !fileName.trim()) {
+                        alert('Please enter a valid file name');
+                        return;
+                    }
+
+                    const fullFileName = fileName.trim().endsWith('.json') ? fileName.trim() : fileName.trim() + '.json';
+
+                    console.log(`Saving configuration as: ${fullFileName}`);
+
+                    // TODO: Actual save logic will go here
+                    currentFileName = fullFileName;
+                    markChangesSaved();
+
+                    // Update dropdown text to show loaded file
+                    const fileDropdownText = document.getElementById('fileDropdownText');
+                    if (fileDropdownText) {
+                        fileDropdownText.textContent = fileName.trim().replace('.json', '');
+                    }
+
+                    console.log(`✅ Configuration saved as "${fullFileName}"`);
+                }
+
+                // Setup dropdown functionality
+                async function setupDropdownFunctionality() {
+                    // Load validation config first
+                    await loadValidationConfig();
+
+                    const dropdownBtn = document.getElementById('fileDropdownBtn');
+                    const dropdownMenu = document.getElementById('fileDropdownMenu');
+                    const exchangeSelect = document.getElementById('exchangeSelect');
+
+                    if (dropdownBtn && dropdownMenu) {
+                        dropdownBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isVisible = dropdownMenu.style.display === 'block';
+                            dropdownMenu.style.display = isVisible ? 'none' : 'block';
+
+                            // Populate dropdown when opened
+                            if (!isVisible && exchangeSelect) {
+                                populateFileDropdown(exchangeSelect.value);
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                            if (!e.target.closest('.dropdown-container')) {
+                                dropdownMenu.style.display = 'none';
+                            }
+                        });
+
+                        console.log('✅ File dropdown functionality ready');
+                    }
+
+                    // Set up exchange change listener
+                    if (exchangeSelect) {
+                        exchangeSelect.addEventListener('change', handleExchangeChange);
+
+                        // Initial population
+                        populateFileDropdown(exchangeSelect.value);
+                    }
+
+                    // Initialize DOM-dependent functionality
+                    function initializeDOMFunctionality() {
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Track changes on form inputs to mark unsaved changes
+                            const inputs = document.querySelectorAll('#messageCount, #symbolInput, #exchangeSelect');
+                            inputs.forEach(input => {
+                                input.addEventListener('input', markUnsavedChanges);
+                                input.addEventListener('change', markUnsavedChanges);
+                            });
+
+                            // Setup utility icon dropdowns (info and search)
+                            if (typeof window.setupUtilityDropdowns === 'function') {
+                                window.setupUtilityDropdowns();
+                            }
+
+                            // Track datacard changes (will work with both real app and fallback)
+                            const observer = new MutationObserver((mutations) => {
+                                mutations.forEach((mutation) => {
+                                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                        // New datacards added - mark as changed
+                                        if (typeof window.markUnsavedChanges === 'function') {
+                                            window.markUnsavedChanges();
+                                        }
+                                    }
+                                });
+                            });
+
+                            const datacardContainer = document.getElementById('datacardContainer');
+                            if (datacardContainer) {
+                                observer.observe(datacardContainer, { childList: true, subtree: true });
+                            }
+                        }); // Close DOMContentLoaded function
+                    } // Close initializeDOMFunctionality function
+
+                    // Call the initialization function
+                    initializeDOMFunctionality();
+        </script>
+
+        <!-- Setup Utility Dropdowns -->
+        <script>
+                // Setup utility icon dropdown functionality
+                window.setupUtilityDropdowns = function setupUtilityDropdowns() {
+                    // Info dropdown
+                    const infoIcon = document.getElementById('infoIcon');
+                    const infoDropdown = document.getElementById('infoDropdown');
+
+                    if (infoIcon && infoDropdown) {
+                        infoIcon.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isVisible = infoDropdown.style.display === 'block';
+
+                            // Close search dropdown if open
+                            const searchDropdown = document.getElementById('searchDropdown');
+                            if (searchDropdown) {
+                                searchDropdown.style.display = 'none';
+                            }
+
+                            infoDropdown.style.display = isVisible ? 'none' : 'block';
+                        });
+                    }
+
+                    // Close utility dropdowns when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.utility-icon')) {
+                            // Close info dropdown
+                            if (infoDropdown) {
+                                infoDropdown.style.display = 'none';
+                            }
+                        }
+                    });
+                } // Close setupUtilityDropdowns function
+        </script>
+        </script>
+
+        <!-- Info Dropdown Script -->
+        <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Info dropdown functionality
+                    var infoBtn = document.getElementById('infoIconBtn');
+                    var dropdown = document.getElementById('infoDropdown');
+                    if (infoBtn && dropdown) {
+                        infoBtn.addEventListener('click', function (e) {
+                            e.stopPropagation();
+                            dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                        });
+
+                        document.addEventListener('click', function (e) {
+                            if (!infoBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                                dropdown.style.display = 'none';
+                            }
+                        });
+
+                        infoBtn.addEventListener('keydown', function (e) {
+                            if (e.key === 'Escape') dropdown.style.display = 'none';
+                        });
+                    }
+
+                    // Basic spinner functionality fallback
+                    const messageCountInput = document.getElementById('messageCount');
+                    const spinnerUp = document.querySelector('.spinner-up');
+                    const spinnerDown = document.querySelector('.spinner-down');
+
+                    // Comma formatting function
+                    function formatWithCommas(num) {
+                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    }
+
+                    // Remove commas and get numeric value
+                    function parseNumericValue(value) {
+                        return parseInt(value.replace(/,/g, '')) || 0;
+                    }
+
+                    // Validation function for message count with comma support
+                    function validateMessageCount(value) {
+                        const messageCount = parseNumericValue(value);
+                        const spinnerControl = messageCountInput.closest('.spinner-control');
+
+                        if (spinnerControl) {
+                            // Remove existing adorner
+                            spinnerControl.removeAttribute('data-adorner');
+
+                            // Apply adorner based on validation (must be > 0 and >= 1000)
+                            if (messageCount <= 0) {
+                                spinnerControl.setAttribute('data-adorner', 'red');
+                            } else if (messageCount < 1000) {
+                                spinnerControl.setAttribute('data-adorner', 'red');
+                            } else {
+                                spinnerControl.setAttribute('data-adorner', 'green');
+                            }
+                        }
+
+                        // Update spinner button states
+                        if (spinnerDown) {
+                            spinnerDown.disabled = messageCount <= 1000;
+                        }
+
+                        // In demo mode, generate button stays disabled regardless of validation
+                        const generateBtn = document.getElementById('generateDataset');
+                        if (generateBtn && !IS_DEMO_MODE) {
+                            // Only enable generate button if not in demo mode and validation passes
+                            generateBtn.disabled = messageCount < 1000;
+                        }
+
+                        return messageCount > 0 && messageCount >= 1000;
+                    }
+
+                    if (messageCountInput && spinnerUp && spinnerDown) {
+                        // Set default value with comma formatting
+                        messageCountInput.value = '1,000';
+                        validateMessageCount('1,000');
+
+                        // Add input event listeners for typing and pasting
+                        messageCountInput.addEventListener('input', (e) => {
+                            let value = e.target.value;
+
+                            // Remove non-numeric characters except commas
+                            value = value.replace(/[^0-9,]/g, '');
+
+                            // Parse numeric value for validation
+                            const numericValue = parseNumericValue(value);
+
+                            // Ensure it's positive
+                            if (numericValue > 0) {
+                                // Reformat with commas
+                                e.target.value = formatWithCommas(numericValue);
+                                validateMessageCount(e.target.value);
+                            } else {
+                                // If 0 or negative, clear and mark invalid
+                                e.target.value = '';
+                                validateMessageCount('0');
+                            }
+                        });
+
+                        messageCountInput.addEventListener('paste', (e) => {
+                            // Use timeout to get the value after paste
+                            setTimeout(() => {
+                                let value = messageCountInput.value;
+                                value = value.replace(/[^0-9,]/g, '');
+                                const numericValue = parseNumericValue(value);
+
+                                if (numericValue > 0) {
+                                    messageCountInput.value = formatWithCommas(numericValue);
+                                    validateMessageCount(messageCountInput.value);
+                                } else {
+                                    messageCountInput.value = '';
+                                    validateMessageCount('0');
+                                }
+                            }, 0);
+                        });
+
+                        spinnerUp.addEventListener('click', () => {
+                            const current = parseNumericValue(messageCountInput.value);
+                            const newValue = current + 500;
+                            messageCountInput.value = formatWithCommas(newValue);
+                            validateMessageCount(messageCountInput.value);
+                        });
+
+                        spinnerDown.addEventListener('click', () => {
+                            const current = parseNumericValue(messageCountInput.value);
+                            const newValue = Math.max(1000, current - 500);  // Don't go below 1000
+                            messageCountInput.value = formatWithCommas(newValue);
+                            validateMessageCount(messageCountInput.value);
+                        });
+                    }
+
+                    // Don't setup fallback symbol functionality - let the real app handle it
+                    console.log('Basic UI controls initialized. Waiting for full application to load...');
+
+                    // Initialize percentage validation for existing datacards with a small delay
+                    setTimeout(() => {
+                        if (typeof window.initializePercentageValidation === 'function') {
+                            window.initializePercentageValidation();
+                        }
+                    }, 100);
+                });
+        </script>
+
+        <!-- Percentage Validation Script -->
+        <script>
+                // Initialize percentage validation for existing datacards
+                window.initializePercentageValidation = function initializePercentageValidation() {
+                    const datacards = document.querySelectorAll('.datacard');
+
+                    datacards.forEach(card => {
+                        const symbol = card.dataset.symbol;
+                        const percentageInput = card.querySelector('.percentage-input');
+
+                        if (percentageInput && symbol) {
+                            // Initialize tracking state
+                            const initialValue = parseInt(percentageInput.value) || 0;
+                            window.productPercentages.set(symbol, { percentage: initialValue, isDirty: false });
+
+                            // Add event listeners with input filtering
+                            percentageInput.addEventListener('input', (e) => {
+                                filterPercentageInput(e.target);
+                                validatePercentageInput(e.target);
+                            });
+
+                            percentageInput.addEventListener('change', (e) => {
+                                validatePercentageInput(e.target);
+                            });
+
+                            // Trigger initial validation to set up allocation display
+                            validatePercentageInput(percentageInput);
+
+                            // Prevent non-numeric keypress
+                            percentageInput.addEventListener('keypress', (e) => {
+                                // Allow backspace, delete, tab, escape, enter, and arrow keys
+                                if ([8, 9, 27, 13, 46, 37, 38, 39, 40].indexOf(e.keyCode) !== -1 ||
+                                    // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                                    (e.keyCode === 88 && e.ctrlKey === true)) {
+                                    return;
+                                }
+                                // Ensure that it is a number and stop the keypress
+                                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                                    e.preventDefault();
+                                }
+                            });
+
+                            // Add remove button functionality
+                            const removeBtn = card.querySelector('.remove-symbol');
+                            if (removeBtn) {
+                                removeBtn.addEventListener('click', () => {
+                                    window.productPercentages.delete(symbol);
+                                    card.remove();
+                                    if (typeof redistributeCleanPercentages === 'function') {
+                                        redistributeCleanPercentages();
+                                    }
+                                    if (typeof window.updateAllocationDisplay === 'function') {
+                                        window.updateAllocationDisplay();
+                                    }
+                                    updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
+                                });
+                            }
+                        }
+                    });
+
+                    // Update allocation display after initialization
+                    if (typeof window.updateAllocationDisplay === 'function') {
+                        window.updateAllocationDisplay();
+                    } else {
+                        console.log('updateAllocationDisplay function not yet loaded');
+                    }
+                }; // Close initializePercentageValidation function
+
+        </script>
+    </body>
+
+</html>

@@ -4,5 +4,9 @@
   // Project-specific overrides go here if needed
   "emmet.syntaxProfiles": {
     "html": "html"
-  }
+  },
+  "html.format.enable": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false
 }
