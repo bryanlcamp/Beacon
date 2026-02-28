@@ -62,11 +62,12 @@
 
             body {
                 font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-                background: #0a0a15;
                 color: rgba(255, 255, 255, 0.75);
                 margin: 0;
                 padding: 0;
                 min-height: 100vh;
+                /* Override navy-page-gradient.css overflow setting for scrollable pages */
+                overflow-y: auto !important;
             }
 
             .beacon-page-header {
@@ -90,11 +91,39 @@
                 gap: 1em;
             }
 
+            .beacon-brand-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                padding: 4px;
+            }
+
+            .beacon-brand-icon:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(61, 90, 122, 0.3);
+                background: rgba(61, 90, 122, 0.1);
+            }
+
+            .beacon-brand-icon svg {
+                width: 100%;
+                height: 100%;
+                transition: all 0.3s ease;
+            }
+
             .beacon-brand-main {
-                color: var(--color-blue);
+                color: #6bb6ff;
                 text-decoration: none;
                 font-size: 1.5em;
                 font-weight: 900;
+            }
+
+            .beacon-brand-main:visited {
+                color: #6bb6ff;
             }
 
             .beacon-brand-separator {
@@ -102,7 +131,7 @@
             }
 
             .beacon-page-title {
-                color: rgba(255, 255, 255, 0.9);
+                color: rgba(255, 255, 255, 0.75);
                 font-size: 1.5em;
                 font-weight: 700;
                 margin: 0;
@@ -115,7 +144,7 @@
             }
 
             .beacon-nav-back {
-                color: rgba(255, 255, 255, 0.85);
+                color: rgba(255, 255, 255, 0.7);
                 text-decoration: none;
                 display: flex;
                 align-items: center;
@@ -125,8 +154,8 @@
             }
 
             .beacon-nav-back:hover {
-                color: rgba(255, 255, 255, 1);
-                text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+                color: #6bb6ff;
+                text-shadow: 0 0 6px rgba(107, 182, 255, 0.3);
             }
 
             .beacon-page-content {
@@ -1134,8 +1163,11 @@
         <header class="beacon-page-header">
             <div class="beacon-page-nav">
                 <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-icon" title="Beacon Trading Technologies">
+                        <img src="/assets/images/beacon-original-fixed.svg" alt="Beacon" style="width: 100%; height: 100%; object-fit: contain;">
+                    </a>
                     <a href="/" class="beacon-brand-main">Beacon.</a>
-                    <span class="beacon-brand-separator" style="color: #ff914d; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); font-weight: 600; margin: 0 1em;">|</span>
+                    <span class="beacon-brand-separator" style="color: #d97841; text-shadow: 0 0 6px rgba(217, 120, 65, 0.3); font-weight: 600; margin: 0 1em;">|</span>
                     <h1 class="beacon-page-title">Author.</h1>
                 </div>
                 <div class="beacon-nav-actions">
@@ -1226,7 +1258,17 @@
                 <!-- Right Panel: DataCards -->
                 <section class="datacards-panel" aria-labelledby="datacards-panel-title">
                     <header class="panel-header"
-                        style="padding: 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
+                        style="padding: 0.5em 1em 1em 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
+
+                        <!-- Page Purpose Title -->
+                        <div style="text-align: center; margin-bottom: 0.4em; display: flex; align-items: baseline; justify-content: center; gap: 0.5em;">
+                            <h2 style="color: rgba(255, 255, 255, 0.85); font-size: 2.8em; font-weight: 900; margin: 0; letter-spacing: -0.03em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
+                                Author.
+                            </h2>
+                            <div style="color: rgba(255, 255, 255, 0.6); font-size: 1.2em; font-weight: 500; margin: 0; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
+                                Create Datasets.
+                            </div>
+                        </div>
 
                         <!-- Collection Status -->
                         <div style="display: flex; justify-content: flex-end; align-items: center;">
@@ -1235,7 +1277,7 @@
                     </header>
                     <!-- Datacard container for dynamic datacards -->
                     <div id="datacardContainer" class="datacard-container"
-                        style="margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 320px)); gap: 16px; padding: 16px; justify-content: start;">
+                        style="margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, 320px); gap: 16px; padding: 16px; justify-content: start;">
                         <!-- Empty container message - hidden when products are added -->
                         <div id="emptyProductsMessage"
                             style="grid-column: 1 / -1; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
