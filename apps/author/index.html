@@ -46,7 +46,14 @@
                 --spacing-lg: 1.5em;
                 --spacing-xl: 2em;
             }
+        </style>
 
+        <!-- Modular JavaScript imports -->
+        <script type="module" src="js/validation.js"></script>
+        <script type="module" src="js/datacard-factory.js"></script>
+        <script type="module" src="js/microstructure-controls.js"></script>
+
+        <style>
             html,
             body {
                 overflow-y: auto;
@@ -108,16 +115,18 @@
             }
 
             .beacon-nav-back {
-                color: var(--color-blue);
+                color: rgba(255, 255, 255, 0.85);
                 text-decoration: none;
                 display: flex;
                 align-items: center;
                 gap: 0.5em;
-                transition: color 0.3s ease;
+                transition: all 0.3s ease;
+                font-weight: 500;
             }
 
             .beacon-nav-back:hover {
-                color: rgba(255, 255, 255, 0.9);
+                color: rgba(255, 255, 255, 1);
+                text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
             }
 
             .beacon-page-content {
@@ -128,8 +137,8 @@
 
             .app-layout {
                 display: grid;
-                grid-template-columns: 320px 1fr;
-                gap: 2em;
+                grid-template-columns: 240px 1fr;
+                gap: 1.5em;
                 min-height: 600px;
             }
 
@@ -241,7 +250,7 @@
 
             .datacard-container {
                 display: grid;
-                gap: 1em;
+                gap: 2em;
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
 
@@ -401,8 +410,8 @@
                 background: rgba(24, 31, 46, 0.9);
                 border: 1px solid rgba(107, 182, 255, 0.2);
                 border-radius: 8px;
-                padding: 0.6em;
-                margin-bottom: 0.5em;
+                padding: 0.6em 0.8em;
+                margin-bottom: 0.8em;
                 transition: all 0.3s ease;
             }
 
@@ -480,8 +489,8 @@
                 border-color: #ff5858;
             }
 
-            /* Responsive */
-            @media (max-width: 1024px) {
+            /* Responsive - Mobile Only */
+            @media (max-width: 768px) {
                 .app-layout {
                     grid-template-columns: 1fr;
                 }
@@ -496,8 +505,8 @@
                 background: rgba(24, 31, 46, 0.9);
                 border: 1px solid rgba(107, 182, 255, 0.2);
                 border-radius: 8px;
-                padding: 0.6em;
-                margin-bottom: 0.5em;
+                padding: 0.6em 0.8em;
+                margin-bottom: 0.8em;
                 transition: all 0.3s ease;
             }
 
@@ -705,6 +714,38 @@
                 outline: none;
                 cursor: pointer;
             }
+
+            /* Commented out for cleaner UI
+            .range-input-group {
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                margin-bottom: 0.25em;
+            }
+
+            .range-input-group .range-input {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            .range-number-input {
+                width: 60px;
+                background: rgba(24, 31, 46, 0.9);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 4px;
+                padding: 0.3em 0.5em;
+                color: rgba(255, 255, 255, 0.85);
+                font-family: inherit;
+                font-size: 0.8em;
+                text-align: center;
+            }
+
+            .range-number-input:focus {
+                outline: none;
+                border-color: var(--color-blue);
+                box-shadow: 0 0 0 1px var(--border-blue-active);
+            }
+            */
 
             .range-input::-webkit-slider-track {
                 height: 4px;
@@ -1085,29 +1126,16 @@
             }
         </style>
 
-        <!-- Global Demo Mode Configuration -->
-        <script>
-            // Demo mode detection - globally accessible
-            const IS_DEMO_MODE = true; // Set to true for demo deployment
+        <!-- Application will load after HTML structure is complete -->
 
-            // Show demo banner immediately if in demo mode
-            if (IS_DEMO_MODE) {
-                document.addEventListener('DOMContentLoaded', function () {
-                    const banner = document.getElementById('demo-banner');
-                    if (banner) {
-                        banner.style.display = 'block';
-                    }
-                });
-            }
-        </script>
+
 
         <!-- Beacon Title Header -->
         <header class="beacon-page-header">
-            <nav class="beacon-page-nav">
+            <div class="beacon-page-nav">
                 <div class="beacon-brand-header">
                     <a href="/" class="beacon-brand-main">Beacon.</a>
-                    <span class="beacon-brand-separator"
-                        style="color: #ff914d; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); font-weight: 600; margin: 0 1em;">|</span>
+                    <span class="beacon-brand-separator" style="color: #ff914d; text-shadow: 0 0 8px rgba(255, 145, 77, 0.4); font-weight: 600; margin: 0 1em;">|</span>
                     <h1 class="beacon-page-title">Author.</h1>
                 </div>
                 <div class="beacon-nav-actions">
@@ -1116,12 +1144,11 @@
                         <span>Home</span>
                     </a>
                 </div>
-            </nav>
+            </div>
         </header>
 
         <!-- Demo Mode Banner -->
-        <div id="demo-banner" class="demo-banner"
-            style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 1em; text-align: center; margin: 1em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+        <div id="demo-banner" class="demo-banner" style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 1em; text-align: center; margin: 1em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
             <div class="demo-content">
                 <span class="demo-text">Interactive demo mode. No files will be created.</span>
             </div>
@@ -1133,49 +1160,8 @@
             <!-- Two-Panel Layout -->
             <div class="app-layout" role="application" aria-label="Dataset Generator">
 
-                <!-- Left Panel: Configuration -->
+                <!-- Left Panel: Controls -->
                 <section class="config-panel" aria-labelledby="config-panel-title">
-                    <!-- Configuration File Management -->
-                    <div class="config-section">
-                        <div class="form-group">
-                            <label for="configInput" class="input-label">Configuration</label>
-                            <div style="display: flex; gap: 0.5em; align-items: stretch;">
-                                <!-- Config Combobox -->
-                                <div style="display: flex; flex: 1; position: relative;">
-                                    <input type="text" id="configInput" placeholder="New configuration..."
-                                        style="width: 100% !important; font-size: 1em !important; padding: 0.75em !important; padding-right: 40px !important; border-radius: 8px !important; background: rgba(107, 182, 255, 0.1) !important; border: 1px solid rgba(107, 182, 255, 0.3) !important; color: #fff !important; box-sizing: border-box !important; appearance: none !important; background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27%3e%3cpolyline points=%276,9 12,15 18,9%27 stroke=%27%236bb6ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3e%3c/svg%3e') !important; background-position: right 12px center !important; background-repeat: no-repeat !important; background-size: 16px !important;">
-                                    <div id="configDropdownMenu" class="dropdown-menu"
-                                        style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(16, 22, 36, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); z-index: 1000; margin-top: 2px; max-height: 200px; overflow-y: auto;">
-                                        <!-- Config files will be populated here -->
-                                        <div
-                                            style="padding: 0.5em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">
-                                            No saved configurations
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Save Button -->
-                                <button type="button" id="saveConfigBtn"
-                                    style="padding: 0.1em !important; background: rgba(16, 22, 36, 0.8) !important; border: 1px solid var(--color-blue) !important; border-radius: 8px !important; color: var(--color-blue) !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; min-width: 60px !important; height: 44px !important; transition: all 0.2s ease !important;"
-                                    onmousedown="this.style.transform='scale(0.95)'; this.style.background='rgba(90, 159, 216, 0.15)'"
-                                    onmouseup="this.style.transform='scale(1)'; this.style.background='rgba(16, 22, 36, 0.8)'"
-                                    onmouseleave="this.style.transform='scale(1)'; this.style.background='rgba(16, 22, 36, 0.8)'">
-                                    <svg width="50" height="40" viewBox="0 0 56 56" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="18" y="19" width="20" height="18" rx="1" fill="none" stroke="#6bb6ff"
-                                            stroke-width="2" />
-                                        <rect x="18" y="19" width="20" height="6" rx="1" fill="#6bb6ff" />
-                                        <rect x="21" y="22" width="3" height="3" fill="#101624" />
-                                        <rect x="20" y="29" width="16" height="6" rx="1" fill="none" stroke="#6bb6ff"
-                                            stroke-width="1.5" />
-                                        <rect x="22" y="31" width="12" height="2" fill="#6bb6ff" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Blue Separator -->
-                    <div class="section-separator"></div>
 
                     <!-- Dataset Size -->
                     <div class="config-section">
@@ -1211,96 +1197,30 @@
                     <!-- Blue Separator -->
                     <div class="section-separator"></div>
 
-                    <!-- Exchange and Symbol Section -->
+                    <!-- Add Product Section -->
                     <div class="config-section">
                         <div class="form-group">
-                            <div style="display: flex; gap: 16px; align-items: flex-end;">
-                                <div style="flex: 0.9;">
-                                    <label for="exchangeSelect" class="input-label">Exchange</label>
-                                    <select id="exchangeSelect" class="form-select exchange-select"
-                                        style="font-size: 1em; padding: 0.75em; height: 44px;">
-                                        <option value="CME">CME</option>
-                                        <option value="NASDAQ">NSDQ</option>
-                                        <option value="NYSE">NYSE</option>
-                                    </select>
-                                </div>
-                                <div style="flex: 1.2;">
-                                    <label for="symbolInput" class="input-label">Symbol</label>
-                                    <div style="display: flex; gap: 8px;">
-                                        <input type="text" id="symbolInput" class="symbol-input"
-                                            style="flex: 1; text-transform: uppercase; font-size: 1em; padding: 0.75em; height: 44px; box-sizing: border-box;">
-                                        <button type="button" id="addSymbol" class="btn btn-secondary"
-                                            style="padding: 0.75em; height: 44px; box-sizing: border-box;">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Blue Separator -->
-                    <div class="section-separator"></div>
-
-                    <!-- Global Defaults Section - COMMENTED OUT FOR REVIEW -->
-                    <!--
-                    <div class="config-section">
-                        <div class="form-group">
-                            <label class="input-label" style="margin-bottom: 1em; display: block;">Global Defaults</label>
-
-                            <!-- Spread & Volatility Row --
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75em;">
-                                <div>
-                                    <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Spread (%)</label>
-                                    <input type="number" id="globalSpread" class="form-input" value="0.5" min="0.1" max="10" step="0.1"
-                                           style="width: 100%; padding: 0.5em; font-size: 0.9em; text-align: center;">
-                                </div>
-                                <div>
-                                    <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Volatility (%)</label>
-                                    <input type="number" id="globalVolatility" class="form-input" value="25" min="0" max="100" step="5"
-                                           style="width: 100%; padding: 0.5em; font-size: 0.9em; text-align: center;">
-                                </div>
-                            </div>
-
-                            <!-- Trend Row --
-                            <div style="margin-bottom: 0.75em;">
-                                <label class="input-label" style="font-size: 0.85em; margin-bottom: 0.25em;">Market Trend</label>
-                                <select id="globalTrend" class="form-select" style="width: 100%; padding: 0.5em; font-size: 0.9em;">
-                                    <option value="-25">Strong Bearish (-25)</option>
-                                    <option value="-15">Bearish (-15)</option>
-                                    <option value="-5">Weak Bearish (-5)</option>
-                                    <option value="0">Neutral (0)</option>
-                                    <option value="5" selected>Weak Bullish (+5)</option>
-                                    <option value="15">Bullish (+15)</option>
-                                    <option value="25">Strong Bullish (+25)</option>
+                            <label class="input-label">Add Product</label>
+                            <div style="display: flex; gap: 8px; margin-bottom: 1em;">
+                                <select id="exchangeSelect" class="form-select" style="flex: 1; padding: 0.5em; font-size: 0.9em;">
+                                    <option value="CME">CME</option>
+                                    <option value="NASDAQ">NSDQ</option>
+                                    <option value="NYSE">NYSE</option>
                                 </select>
                             </div>
-
-                            <!-- Apply Button --
                             <div style="display: flex; gap: 8px;">
-                                <button type="button" id="applyToAllBtn" class="btn btn-secondary" style="flex: 1; padding: 0.5em; font-size: 0.85em;">
-                                    Apply to All Symbols
-                                </button>
-                                <button type="button" id="resetDefaultsBtn" class="btn" style="padding: 0.5em; font-size: 0.85em; background: rgba(255,255,255,0.1);">
-                                    Reset
+                                <input type="text" id="symbolInput" class="symbol-input" placeholder="Symbol"
+                                    style="flex: 1; text-transform: uppercase; padding: 0.5em; font-size: 0.9em;">
+                                <button type="button" id="addSymbol" class="btn btn-secondary" style="padding: 0.5em;">
+                                    Add
                                 </button>
                             </div>
                         </div>
                     </div>
-                    -->
 
                     <!-- Blue Separator -->
                     <div class="section-separator"></div>
 
-                    <!-- Config Panel Body -->
-                    <div class="panel-body">
-                        <div class="config-actions">
-                        </div>
-                    </div>
                 </section>
 
                 <!-- Right Panel: DataCards -->
@@ -1315,7 +1235,7 @@
                     </header>
                     <!-- Datacard container for dynamic datacards -->
                     <div id="datacardContainer" class="datacard-container"
-                        style="margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 16px;">
+                        style="margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 320px)); gap: 16px; padding: 16px; justify-content: start;">
                         <!-- Empty container message - hidden when products are added -->
                         <div id="emptyProductsMessage"
                             style="grid-column: 1 / -1; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
@@ -1326,284 +1246,231 @@
             </div>
         </main>
 
-        <!-- Load Dataset Generator Application -->
-        <script type="module">
-            // Error handling for module loading
-            window.addEventListener('error', (e) => {
-                console.error('Script error:', e.error);
-                showErrorMessage('Failed to load application components');
-            });
+        <script>
+            'use strict';
 
-            window.addEventListener('unhandledrejection', (e) => {
-                console.error('Unhandled promise rejection:', e.reason);
-                showErrorMessage('Application initialization failed');
-            });
+            // ============================================================================
+            // SIMPLE WORKING AUTHOR APPLICATION
+            // ============================================================================
 
-            function showErrorMessage(message) {
-                const banner = document.getElementById('demo-banner');
-                if (banner) {
-                    banner.style.display = 'block';
-                    banner.querySelector('.demo-text').textContent = `⚠️ ${message}`;
-                    banner.style.background = 'rgba(255, 88, 88, 0.1)';
-                    banner.style.borderColor = 'rgba(255, 88, 88, 0.3)';
-                    banner.style.color = '#ff5858';
-                }
+            // Initialize basic functionality
+            function initializeAuthor() {
+                setupSymbolInput();
+                setupMessageCount();
+                console.log('Author interface initialized successfully');
             }
 
-            // Only load real application if not in demo mode
-            if (!IS_DEMO_MODE) {
-                // Dynamic import with fallback
-                import('./js/DatasetGeneratorApp.js')
-                    .then(({ DatasetGeneratorApp }) => {
-                        // Initialize app when DOM is ready
-                        document.addEventListener('DOMContentLoaded', async () => {
-                            try {
-                                console.log('🚀 Starting Dataset Generator Application...');
-                                const app = new DatasetGeneratorApp();
+            // Symbol input functionality
+            function setupSymbolInput() {
+                const symbolInput = document.getElementById('symbolInput');
+                const addBtn = document.getElementById('addSymbol');
+                const exchangeSelect = document.getElementById('exchangeSelect');
+                const datacardContainer = document.getElementById('datacardContainer');
 
-                                // Add timeout to detect if initialization hangs
-                                const initTimeout = setTimeout(() => {
-                                    console.warn('⚠️ App initialization taking longer than expected');
-                                    showErrorMessage('Application loading is taking longer than expected. Please check console for details.');
-                                }, 5000);
+                if (!symbolInput || !addBtn || !datacardContainer) return;
 
-                                await app.initialize();
-                                clearTimeout(initTimeout);
+                addBtn.addEventListener('click', () => {
+                    const symbol = symbolInput.value.trim().toUpperCase();
+                    const exchange = exchangeSelect.value || 'CME';
 
-                                // Make app globally accessible for debugging
-                                window.datasetGeneratorApp = app;
+                    if (!symbol) {
+                        alert('Please enter a symbol');
+                        return;
+                    }
 
-                                console.log('✅ Dataset Generator Application loaded successfully');
-                                console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(app)));
+                    // Check for duplicates
+                    const existing = document.querySelector(`[data-symbol="${symbol}"]`);
+                    if (existing) {
+                        alert(`Symbol ${symbol} already exists`);
+                        return;
+                    }
 
-                                // Hide demo banner if successful
-                                const banner = document.getElementById('demo-banner');
-                                if (banner && banner.style.display === 'block') {
-                                    banner.style.display = 'none';
-                                }
+                    // Create datacard using full detailed version with microstructure controls
+                    const card = createDetailedDatacard(symbol);
 
-                                // Test symbol manager
-                                if (app.symbolManager) {
-                                    console.log('✅ SymbolManager is available');
-                                    window.symbolManager = app.symbolManager;
-                                } else {
-                                    console.warn('⚠️ SymbolManager not found in app');
-                                }
+                    // Set proper percentage allocation and add listeners
+                    const percentageInput = card.querySelector('.percentage-input');
+                    if (percentageInput) {
+                        percentageInput.value = 20; // Default to 20% instead of 0%
 
-                            } catch (error) {
-                                console.error('❌ Failed to initialize Dataset Generator:', error);
-                                console.error('Error stack:', error.stack);
-                                showErrorMessage('Application initialization failed: ' + error.message);
+                        // Initialize percentage tracking
+                        if (window.productPercentages) {
+                            window.productPercentages.set(symbol, { percentage: 20, isDirty: false });
+                        }
+                    }
+                    datacardContainer.appendChild(card);
 
-                                // Enable fallback functionality
-                                setupFallbackSymbolInput();
-                            }
+                    // Add percentage input listeners for new card
+                    if (percentageInput && window.ValidationManager) {
+                        percentageInput.addEventListener('input', (e) => {
+                            window.ValidationManager.filterPercentageInput(e.target);
+                            window.ValidationManager.validatePercentageInput(e.target);
                         });
-                    })
-                    .catch((error) => {
-                        console.error('❌ Failed to load Dataset Generator module:', error);
-                        console.error('Module loading error:', error.stack);
-                        showErrorMessage('Failed to load application module: ' + error.message);
 
-                        // Enable fallback functionality
-                        document.addEventListener('DOMContentLoaded', setupFallbackSymbolInput);
-                    });
-            } else {
-                // Demo mode - only use fallback functionality
-                document.addEventListener('DOMContentLoaded', function () {
-                    setupFallbackSymbolInput();
-                    setupDropdownFunctionality();
-                    setupConfigDropdown();
-                    initializeDemoMode();
+                        percentageInput.addEventListener('change', (e) => {
+                            window.ValidationManager.validatePercentageInput(e.target);
+                        });
+                    }
 
-                    // Initialize allocation display
-                    updateAllocationDisplay();
+                    symbolInput.value = '';
+
+                    // Update allocation display if function exists
+                    if (typeof window.updateAllocationDisplay === 'function') {
+                        window.updateAllocationDisplay();
+                    }
+                    updateEmptyState();
+                });
+
+                symbolInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addBtn.click();
+                    }
                 });
             }
 
-            // Create a detailed datacard with sliders (fallback) - Global scope
-            window.createDetailedDatacard = function createDetailedDatacard(symbol) {
-                const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
+            // TODO: Remove this simple function - now using detailed version for all cards
+            // Create simple datacard
+            function createDatacard(symbol, exchange) {
                 const card = document.createElement('div');
                 card.className = 'datacard';
-                card.dataset.symbol = symbol; // Set data-symbol attribute for duplicate checking
-
-                // Get slider configuration from validation config
-                const sliderConfig = validationConfig?.sliderConfig || {};
-
-                // Helper function to get slider attributes
-                function getSliderAttrs(configKey, fallbackMin = 1, fallbackMax = 100, fallbackStep = 1, fallbackDefault = 50) {
-                    const config = sliderConfig[configKey];
-                    if (config) {
-                        return {
-                            min: config.min,
-                            max: config.max,
-                            step: config.step,
-                            value: config.default
-                        };
-                    }
-                    return {
-                        min: fallbackMin,
-                        max: fallbackMax,
-                        step: fallbackStep,
-                        value: fallbackDefault
-                    };
-                }
-
-                const basePrice = getSliderAttrs('basePrice', 1, 1000, 10, 175);
-                const spread = getSliderAttrs('spread', 0.1, 10, 0.1, window.globalDefaults?.spread || 0.5);
-                const bidPrice = getSliderAttrs('bidPrice', 1, 1000, 1, 174);
-                const askPrice = getSliderAttrs('askPrice', 1, 1000, 1, 176);
-                const bidQuantity = getSliderAttrs('bidQuantity', 1, 10000, 50, 250);
-                const askQuantity = getSliderAttrs('askQuantity', 1, 10000, 50, 300);
-                const bidWeight = getSliderAttrs('bidWeight', 0, 100, 5, 45);
-                const askWeight = getSliderAttrs('askWeight', 0, 100, 5, 55);
-                const volatility = getSliderAttrs('volatility', 0, 100, 5, window.globalDefaults?.volatility || 25);
-                const trend = getSliderAttrs('trend', -50, 50, 5, window.globalDefaults?.trend || 5);
-                const percentage = getSliderAttrs('percentage', 0, 100, 1, 0);
+                card.dataset.symbol = symbol;
 
                 card.innerHTML = `
-                <div class="datacard-header" onclick="toggleDatacardCollapse(this)">
-                    <div class="datacard-symbol-info">
-                        <span class="symbol-display">
-                            <span class="exchange-prefix">${exchange}:</span>
-                            <span class="symbol-name">${symbol}</span>
-                        </span>
+                    <div class="datacard-header">
+                        <div class="datacard-symbol-info">
+                            <span class="symbol-display">
+                                <span class="exchange-prefix">${exchange}:</span>
+                                <span class="symbol-name">${symbol}</span>
+                            </span>
+                        </div>
+                        <div class="datacard-controls">
+                            <input type="number" class="percentage-input" min="0" max="100" value="0" placeholder="%">
+                            <button class="remove-symbol" onclick="removeDatacard(this)">×</button>
+                        </div>
                     </div>
-                    <div class="datacard-controls">
-                        <button class="collapse-button" title="Collapse/Expand" onclick="event.stopPropagation(); toggleDatacardCollapse(this.closest('.datacard-header'));">▼</button>
-                        <input type="number" class="percentage-input" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}" placeholder="%" onclick="event.stopPropagation();">
-                        <button class="remove-symbol" aria-label="Remove ${symbol}" onclick="event.stopPropagation();">×</button>
-                    </div>
-                </div>
-
-                <div class="datacard-content">
-                    <!-- Price Controls with minimal toggle -->
-                    <div class="price-controls-section">
-                        <div class="advanced-toggle" onclick="toggleAdvancedMode(this)" title="Switch price ranges">⚙</div>
-
-                        <!-- Default: Spread-based controls -->
-                        <div class="pricing-mode-default">
-                            <!-- Base Price & Spread -->
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Base Price</div>
-                                    <input type="range" class="range-input" min="${basePrice.min}" max="${basePrice.max}" step="${basePrice.step}" value="${basePrice.value}">
-                                    <div class="range-value">$<span class="value">${basePrice.value}</span></div>
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Spread</div>
-                                    <input type="range" class="range-input" min="${spread.min}" max="${spread.max}" step="${spread.step}" value="${spread.value}">
-                                    <div class="range-value"><span class="value">${spread.value}</span>%</div>
-                                </div>
+                    <div class="datacard-content">
+                        <div class="range-control-group">
+                            <div class="range-control half-width">
+                                <div class="range-label">Base Price</div>
+                                <input type="range" class="range-input" min="1" max="1000" step="10" value="175">
+                                <div class="range-value">$<span class="value">175</span></div>
                             </div>
-
-                            <!-- Bid/Ask Weights -->
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Bid Weight</div>
-                                    <input type="range" class="range-input" min="${bidWeight.min}" max="${bidWeight.max}" step="${bidWeight.step}" value="${bidWeight.value}">
-                                    <div class="range-value"><span class="value">${bidWeight.value}</span>%</div>
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Ask Weight</div>
-                                    <input type="range" class="range-input" min="${askWeight.min}" max="${askWeight.max}" step="${askWeight.step}" value="${askWeight.value}">
-                                    <div class="range-value"><span class="value">${askWeight.value}</span>%</div>
-                                </div>
+                            <div class="range-control half-width">
+                                <div class="range-label">Spread</div>
+                                <input type="range" class="range-input" min="0.1" max="10" step="0.1" value="0.5">
+                                <div class="range-value"><span class="value">0.5</span>%</div>
                             </div>
                         </div>
-
-                        <!-- Advanced: Direct Price Input -->
-                        <div class="pricing-mode-advanced" style="display: none;">
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Bid Price</div>
-                                    <input type="number" class="precise-input" min="0.01" max="10000" step="0.01" value="${bidPrice.value}" placeholder="174.50">
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Ask Price</div>
-                                    <input type="number" class="precise-input" min="0.01" max="10000" step="0.01" value="${askPrice.value}" placeholder="175.00">
-                                </div>
+                        <div class="range-control-group">
+                            <div class="range-control half-width">
+                                <div class="range-label">Volatility</div>
+                                <input type="range" class="range-input" min="0" max="100" step="5" value="25">
+                                <div class="range-value"><span class="value">25</span>%</div>
+                            </div>
+                            <div class="range-control half-width">
+                                <div class="range-label">Trend</div>
+                                <input type="range" class="range-input" min="-50" max="50" step="5" value="5">
+                                <div class="range-value"><span class="value">5</span> (Bullish)</div>
                             </div>
                         </div>
                     </div>
+                `;
 
-                    <!-- Quantity Controls (always visible) -->
-                    <div class="range-control-group">
-                        <div class="range-control half-width">
-                            <div class="range-label">Bid Quantity</div>
-                            <input type="range" class="range-input" min="${bidQuantity.min}" max="${bidQuantity.max}" step="${bidQuantity.step}" value="${bidQuantity.value}">
-                            <div class="range-value"><span class="value">${bidQuantity.value}</span></div>
-                        </div>
-                        <div class="range-control half-width">
-                            <div class="range-label">Ask Quantity</div>
-                            <input type="range" class="range-input" min="${askQuantity.min}" max="${askQuantity.max}" step="${askQuantity.step}" value="${askQuantity.value}">
-                            <div class="range-value"><span class="value">${askQuantity.value}</span></div>
-                        </div>
-                    </div>
+                // Add range slider listeners
+                const ranges = card.querySelectorAll('.range-input');
+                ranges.forEach(range => {
+                    range.addEventListener('input', (e) => {
+                        const parent = e.target.closest('.range-control');
+                        const valueDisplay = parent.querySelector('.range-value .value');
+                        const value = e.target.value;
 
-                    <!-- Volatility & Trend (with period indicators in labels) -->
-                    <div class="range-control-group">
-                        <div class="range-control half-width">
-                            <div class="range-label-with-indicator">
-                                <span class="range-label">Volatility</span>
-                                <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" title="Configure micro vol periods">0</button>
-                                <!-- Periods Dropdown -->
-                                <div class="periods-dropdown" style="display: none;">
-                                    <div class="dropdown-header">
-                                        <span class="dropdown-title">Volatility Periods</span>
-                                        <button class="add-period-btn" onclick="addMicroPeriod(this)">+</button>
-                                    </div>
-                                    <div class="dropdown-content">
-                                        <!-- Dynamic periods will be added here -->
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
-                            <div class="range-value"><span class="value">${volatility.value}</span>%</div>
-                        </div>
+                        if (valueDisplay) {
+                            valueDisplay.textContent = value;
 
-                        <div class="range-control half-width">
-                            <div class="range-label-with-indicator">
-                                <span class="range-label">Trend</span>
-                                <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" title="Configure micro trend periods">0</button>
-                                <!-- Periods Dropdown -->
-                                <div class="periods-dropdown" style="display: none;">
-                                    <div class="dropdown-header">
-                                        <span class="dropdown-title">Trend Periods</span>
-                                        <button class="add-period-btn" onclick="addMicroPeriod(this)">+</button>
-                                    </div>
-                                    <div class="dropdown-content">
-                                        <!-- Dynamic periods will be added here -->
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
-                            <div class="range-value"><span class="value">${trend.value}</span> (${trend.value === 0 ? 'Neutral' : trend.value > 0 ? 'Bullish' : 'Bearish'})</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-                // Add event listeners
-                const removeBtn = card.querySelector('.remove-symbol');
-                removeBtn.addEventListener('click', () => {
-                    // Remove from percentage tracking
-                    productPercentages.delete(symbol);
-                    card.remove();
-
-                    // Redistribute percentages after removal
-                    redistributeCleanPercentages();
-                    updateAllocationDisplay();
-                    updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
+                            // Update trend description
+                            if (parent.querySelector('.range-label').textContent === 'Trend') {
+                                const trendValue = parseInt(value);
+                                const description = trendValue === 0 ? 'Neutral' : trendValue > 0 ? 'Bullish' : 'Bearish';
+                                valueDisplay.parentNode.innerHTML = `<span class="value">${value}</span> (${description})`;
+                            }
+                        }
+                    });
                 });
 
+                return card;
+            }
+
+            // Remove datacard
+            function removeDatacard(button) {
+                const card = button.closest('.datacard');
+                card.remove();
+                updateEmptyState();
+            }
+
+            // Update empty state message
+            function updateEmptyState() {
+                const container = document.getElementById('datacardContainer');
+                const emptyMsg = document.getElementById('emptyProductsMessage');
+                const hasCards = container.querySelector('.datacard');
+
+                if (emptyMsg) {
+                    emptyMsg.style.display = hasCards ? 'none' : 'block';
+                }
+            }
+
+            // Message count functionality
+            function setupMessageCount() {
+                const messageCountInput = document.getElementById('messageCount');
+                const spinnerUp = document.querySelector('.spinner-up');
+                const spinnerDown = document.querySelector('.spinner-down');
+
+                if (!messageCountInput) return;
+
+                function formatNumber(num) {
+                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                }
+
+                function parseNumber(str) {
+                    return parseInt(str.replace(/,/g, '')) || 0;
+                }
+
+                if (spinnerUp) {
+                    spinnerUp.addEventListener('click', () => {
+                        const current = parseNumber(messageCountInput.value);
+                        messageCountInput.value = formatNumber(current + 500);
+                    });
+                }
+
+                if (spinnerDown) {
+                    spinnerDown.addEventListener('click', () => {
+                        const current = parseNumber(messageCountInput.value);
+                        const newValue = Math.max(1000, current - 500);
+                        messageCountInput.value = formatNumber(newValue);
+                    });
+                }
+            }
+
+            // Global functions for compatibility
+            window.removeDatacard = removeDatacard;
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeAuthor);
+            } else {
+                initializeAuthor();
+            }
+
+            // Additional datacard functionality - moved from loose code to proper script context
+            function addDatacardListeners(card) {
                 // Add percentage input validation
                 const percentageInput = card.querySelector('.percentage-input');
                 if (percentageInput) {
+                    // Get symbol from card data attribute
+                    const symbol = card.dataset.symbol;
+
                     // Initialize this product in our tracking
                     const initialValue = parseInt(percentageInput.value) || 0;
-                    productPercentages.set(symbol, { percentage: initialValue, isDirty: false });
+                    window.productPercentages.set(symbol, { percentage: initialValue, isDirty: false });
 
                     // Filter out non-numeric characters on input
                     percentageInput.addEventListener('input', (e) => {
@@ -1660,7 +1527,9 @@
 
                 return card;
             }
+        </script>
 
+        <script>
             // Toggle datacard collapse/expand
             window.toggleDatacardCollapse = function (headerElement) {
                 const card = headerElement.closest('.datacard');
@@ -1742,6 +1611,222 @@
                 }
             });
 
+            // Global wrapper functions for BeaconAuthor modules
+            window.redistributeCleanPercentages = function() {
+                if (window.BeaconAuthor && window.BeaconAuthor.modules && window.BeaconAuthor.modules.PercentageManager) {
+                    return window.BeaconAuthor.modules.PercentageManager.redistributeCleanPercentages();
+                }
+                return 0; // fallback
+            };
+
+            window.updateAllocationDisplay = function() {
+                if (window.BeaconAuthor && window.BeaconAuthor.modules && window.BeaconAuthor.modules.PercentageManager) {
+                    window.BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
+                }
+            };
+
+            // Global reference to productPercentages
+            window.productPercentages = new Map();
+
+            window.calculateTotalPercentage = function() {
+                if (window.BeaconAuthor && window.BeaconAuthor.modules && window.BeaconAuthor.modules.PercentageManager) {
+                    return window.BeaconAuthor.modules.PercentageManager.calculateTotal();
+                }
+                return 0; // fallback
+            };
+
+            // TODO: Remove this function - now in datacard-factory.js module
+            // Create a detailed datacard with sliders - Global scope
+            window.createDetailedDatacard = function createDetailedDatacard(symbol) {
+                const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
+                const card = document.createElement('div');
+                card.className = 'datacard';
+                card.dataset.symbol = symbol;
+
+                // Get slider configuration from validation config (fallback to defaults)
+                const sliderConfig = window.validationConfig?.sliderConfig || {};
+
+                // Helper function to get slider attributes
+                function getSliderAttrs(configKey, fallbackMin = 1, fallbackMax = 100, fallbackStep = 1, fallbackDefault = 50) {
+                    const config = sliderConfig[configKey];
+                    if (config) {
+                        return {
+                            min: config.min,
+                            max: config.max,
+                            step: config.step,
+                            value: config.default
+                        };
+                    }
+                    return {
+                        min: fallbackMin,
+                        max: fallbackMax,
+                        step: fallbackStep,
+                        value: fallbackDefault
+                    };
+                }
+
+                const basePrice = getSliderAttrs('basePrice', 1, 1000, 10, 175);
+                const spread = getSliderAttrs('spread', 0.1, 10, 0.1, 0.5);
+                const bidPrice = getSliderAttrs('bidPrice', 1, 1000, 1, 174);
+                const askPrice = getSliderAttrs('askPrice', 1, 1000, 1, 176);
+                const bidQuantity = getSliderAttrs('bidQuantity', 1, 10000, 50, 250);
+                const askQuantity = getSliderAttrs('askQuantity', 1, 10000, 50, 300);
+                const bidWeight = getSliderAttrs('bidWeight', 0, 100, 5, 45);
+                const askWeight = getSliderAttrs('askWeight', 0, 100, 5, 55);
+                const volatility = getSliderAttrs('volatility', 0, 100, 5, 25);
+                const trend = getSliderAttrs('trend', -50, 50, 5, 5);
+                const percentage = getSliderAttrs('percentage', 0, 100, 1, 20);
+
+                card.innerHTML = `
+                    <div class="datacard-header">
+                        <div class="datacard-symbol-info">
+                            <span class="symbol-display">
+                                <span class="exchange-prefix">${exchange}:</span>
+                                <span class="symbol-name">${symbol}</span>
+                            </span>
+                        </div>
+                        <div class="datacard-controls">
+                            <input type="number" class="percentage-input" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}" placeholder="%">
+                            <button class="remove-symbol" aria-label="Remove ${symbol}">×</button>
+                        </div>
+                    </div>
+
+                    <div class="datacard-content">
+                        <!-- Pricing Mode Toggle -->
+                        <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                            <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
+                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v20M2 12h20"></path>
+                                </svg>
+                                <span class="mode-text">Spread</span>
+                            </button>
+                        </div>
+
+                        <!-- Default: Spread-based controls -->
+                        <div class="pricing-mode-default">
+                            <!-- Base Price & Spread -->
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Base Price</div>
+                                    <input type="range" class="range-input" min="${basePrice.min}" max="${basePrice.max}" step="${basePrice.step}" value="${basePrice.value}">
+                                    <div class="range-value">$<span class="value">${basePrice.value}</span></div>
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Spread</div>
+                                    <input type="range" class="range-input" min="${spread.min}" max="${spread.max}" step="${spread.step}" value="${spread.value}">
+                                    <div class="range-value"><span class="value">${spread.value}</span>%</div>
+                                </div>
+                            </div>
+
+                            <!-- Bid/Ask Weights -->
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Bid Weight</div>
+                                    <input type="range" class="range-input" min="${bidWeight.min}" max="${bidWeight.max}" step="${bidWeight.step}" value="${bidWeight.value}">
+                                    <div class="range-value"><span class="value">${bidWeight.value}</span>%</div>
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Ask Weight</div>
+                                    <input type="range" class="range-input" min="${askWeight.min}" max="${askWeight.max}" step="${askWeight.step}" value="${askWeight.value}">
+                                    <div class="range-value"><span class="value">${askWeight.value}</span>%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced: Independent Price Controls (Hidden by default) -->
+                        <div class="pricing-mode-advanced" style="display: none;">
+                            <!-- Bid/Ask Price -->
+                            <div class="range-control-group">
+                                <div class="range-control half-width">
+                                    <div class="range-label">Bid Price</div>
+                                    <input type="range" class="range-input" min="${bidPrice.min}" max="${bidPrice.max}" step="${bidPrice.step}" value="${bidPrice.value}">
+                                    <div class="range-value">$<span class="value">${bidPrice.value}</span></div>
+                                </div>
+                                <div class="range-control half-width">
+                                    <div class="range-label">Ask Price</div>
+                                    <input type="range" class="range-input" min="${askPrice.min}" max="${askPrice.max}" step="${askPrice.step}" value="${askPrice.value}">
+                                    <div class="range-value">$<span class="value">${askPrice.value}</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bid/Ask Quantity -->
+                        <div class="range-control-group">
+                            <div class="range-control half-width">
+                                <div class="range-label">Bid Quantity</div>
+                                <input type="range" class="range-input" min="${bidQuantity.min}" max="${bidQuantity.max}" step="${bidQuantity.step}" value="${bidQuantity.value}">
+                                <div class="range-value"><span class="value">${bidQuantity.value}</span></div>
+                            </div>
+                            <div class="range-control half-width">
+                                <div class="range-label">Ask Quantity</div>
+                                <input type="range" class="range-input" min="${askQuantity.min}" max="${askQuantity.max}" step="${askQuantity.step}" value="${askQuantity.value}">
+                                <div class="range-value"><span class="value">${askQuantity.value}</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Volatility & Trend with Micro Buttons -->
+                        <div class="range-control-group">
+                            <div class="range-control half-width">
+                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Volatility</span>
+                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                </div>
+                                <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
+                                <div class="range-value"><span class="value">${volatility.value}</span>%</div>
+                            </div>
+                            <div class="range-control half-width">
+                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Trend</span>
+                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                </div>
+                                <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
+                                <div class="range-value"><span class="value">${trend.value}</span> (Neutral)</div>
+                            </div>
+                        </div>
+
+                        <!-- Micro Periods Dropdown -->
+                        <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px; max-height: 200px; overflow-y: auto;">
+                            <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
+                                <span class="dropdown-title" style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
+                                <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">+</button>
+                            </div>
+                            <div class="dropdown-content" style="padding: 8px;"></div>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listeners
+                const removeBtn = card.querySelector('.remove-symbol');
+                removeBtn.addEventListener('click', () => card.remove());
+
+                // Update range values
+                const ranges = card.querySelectorAll('.range-input');
+                ranges.forEach(range => {
+                    range.addEventListener('input', (e) => {
+                        const parent = e.target.closest('.range-control');
+                        const valueDisplay = parent.querySelector('.range-value');
+                        const value = e.target.value;
+
+                        if (valueDisplay) {
+                            const valueSpan = valueDisplay.querySelector('.value');
+                            if (valueSpan) {
+                                valueSpan.textContent = value;
+
+                                // Update trend description dynamically
+                                if (parent.querySelector('.range-label').textContent === 'Trend') {
+                                    const trendValue = parseInt(value);
+                                    const description = trendValue === 0 ? 'Neutral' : trendValue > 0 ? 'Bullish' : 'Bearish';
+                                    valueSpan.parentNode.innerHTML = `<span class="value">${value}</span> (${description})`;
+                                }
+                            }
+                        }
+                    });
+                });
+
+                return card;
+            };
+
             // Add aliases for any missing function references
             window.createSimpleDataCard = window.createDetailedDatacard;
             window.createDataCard = window.createDetailedDatacard;
@@ -1749,86 +1834,6 @@
             // =============================================================================
             // VALIDATION RULES
             // =============================================================================
-
-            // Rule 1: Duplicate Symbol Prevention
-            function isDuplicateSymbol(symbol) {
-                return document.querySelector(`[data-symbol="${symbol}"]`) !== null;
-            }
-
-            // Show validation error messages
-            function showValidationError(message) {
-                // Create or get existing error container
-                let errorContainer = document.getElementById('symbolValidationError');
-                if (!errorContainer) {
-                    errorContainer = document.createElement('div');
-                    errorContainer.id = 'symbolValidationError';
-                    errorContainer.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background: rgba(255, 88, 88, 0.95);
-                        color: white;
-                        padding: 12px 16px;
-                        border-radius: 8px;
-                        font-size: 0.9em;
-                        font-weight: 500;
-                        box-shadow: 0 4px 12px rgba(255, 88, 88, 0.3);
-                        z-index: 10000;
-                        max-width: 300px;
-                        word-wrap: break-word;
-                        border: 1px solid rgba(255, 88, 88, 0.8);
-                    `;
-                    document.body.appendChild(errorContainer);
-                }
-
-                // Set message and show
-                errorContainer.textContent = message;
-                errorContainer.style.display = 'block';
-
-                // Auto-hide after 3 seconds
-                setTimeout(() => {
-                    if (errorContainer) {
-                        errorContainer.style.display = 'none';
-                    }
-                }, 3000);
-            }
-
-            // Rule 2: Empty State Management
-            function updateEmptyStateDisplay() {
-                const emptyMessage = document.getElementById('emptyProductsMessage');
-                const datacards = document.querySelectorAll('.datacard');
-
-                if (emptyMessage) {
-                    // Hide message if we have any products, show if we have none
-                    emptyMessage.style.display = datacards.length > 0 ? 'none' : 'block';
-                }
-            }
-
-            // Rule 3: Symbol Input Formatting
-            function capitalizeSymbolInput(input) {
-                const cursorPos = input.selectionStart;
-                const value = input.value.toUpperCase();
-                input.value = value;
-
-                // Preserve cursor position after transformation
-                input.setSelectionRange(cursorPos, cursorPos);
-            }
-
-            // Rule 4: Symbol Format Validation
-            function validateSymbolFormat(symbol) {
-                // Check length (max 12 characters)
-                if (symbol.length > 12) {
-                    return { valid: false, error: 'Symbol cannot exceed 12 characters' };
-                }
-
-                // Check for alphanumeric only (no special characters)
-                const alphanumericPattern = /^[A-Z0-9]+$/;
-                if (!alphanumericPattern.test(symbol)) {
-                    return { valid: false, error: 'Symbol can only contain letters and numbers' };
-                }
-
-                return { valid: true };
-            }
 
             // Setup fallback symbol input functionality
             function setupFallbackSymbolInput() {
@@ -1843,7 +1848,7 @@
                     addSymbolBtn.parentNode.replaceChild(newAddBtn, addSymbolBtn);
 
                     // Rule 5: Button State Management (inside scope)
-                    function validateSymbolInputRealTime(input, addButton) {
+                window.validateSymbolInputRealTime = function validateSymbolInputRealTime(input, addButton) {
                         const symbolValue = input.value.trim().toUpperCase();
                         const isEmpty = symbolValue.length === 0;
                         const isDuplicate = symbolValue.length > 0 && isDuplicateSymbol(symbolValue);
@@ -1901,23 +1906,33 @@
                         }
 
                         // Calculate auto-allocation percentage
-                        const autoPercentage = redistributeCleanPercentages();
+                        let autoPercentage = 0;
+                        if (typeof redistributeCleanPercentages === 'function') {
+                            autoPercentage = redistributeCleanPercentages();
+                        }
 
                         // Create new datacard with auto-allocated percentage
                         const newCard = createDetailedDatacard(symbol);
                         const newPercentageInput = newCard.querySelector('.percentage-input');
                         if (newPercentageInput) {
-                            newPercentageInput.value = autoPercentage;
+                            // Use either auto-calculated percentage or default to 20%
+                            const finalPercentage = autoPercentage > 0 ? autoPercentage : 20;
+                            newPercentageInput.value = finalPercentage;
 
                             // Mark as clean since it's auto-allocated
-                            productPercentages.set(symbol, { percentage: autoPercentage, isDirty: false });
+                            window.productPercentages.set(symbol, { percentage: finalPercentage, isDirty: false });
+
+                            // Manually trigger validation to update allocation display
+                            validatePercentageInput(newPercentageInput);
                         }
 
                         datacardContainer.appendChild(newCard);
                         symbolInput.value = '';
 
                         // Update display after adding
-                        updateAllocationDisplay();
+                        if (typeof window.updateAllocationDisplay === 'function') {
+                            window.updateAllocationDisplay();
+                        }
                         updateEmptyStateDisplay(); // Rule 2: Hide empty message when products exist
                         validateSymbolInputRealTime(symbolInput, newAddBtn); // Rule 5: Reset validation state after clearing input
                     });
@@ -2036,31 +2051,41 @@
             // Make function globally accessible for onclick handlers
             window.toggleAdvancedMode = toggleAdvancedMode;
 
-            // =============================================================================
-            // GLOBAL DEFAULTS FUNCTIONALITY
-            // =============================================================================
+// Remove duplicate function definitions - keep only the window global assignments
+            // Ensure microstructure functions are available globally
+            window.togglePricingMode = function(button) {
+                const card = button.closest('.datacard');
+                const defaultMode = card.querySelector('.pricing-mode-default');
+                const advancedMode = card.querySelector('.pricing-mode-advanced');
+                const modeText = button.querySelector('.mode-text');
 
-            // Global default values
-            window.globalDefaults = {
-                spread: 0.5,
-                volatility: 25,
-                trend: 5
+                const isSpreadMode = defaultMode.style.display !== 'none';
+
+                if (isSpreadMode) {
+                    // Switch to direct price mode
+                    defaultMode.style.display = 'none';
+                    advancedMode.style.display = 'block';
+                    modeText.textContent = 'Direct';
+                    button.style.background = 'rgba(255,165,88,0.1)';
+                    button.style.borderColor = 'rgba(255,165,88,0.3)';
+                    button.style.color = '#ffa558';
+                } else {
+                    // Switch to spread mode
+                    advancedMode.style.display = 'none';
+                    defaultMode.style.display = 'block';
+                    modeText.textContent = 'Spread';
+                    button.style.background = 'rgba(107,182,255,0.1)';
+                    button.style.borderColor = 'rgba(107,182,255,0.3)';
+                    button.style.color = '#6bb6ff';
+                }
             };
 
-            // Apply global defaults to a single datacard
-            window.applyDefaultsToDatacard = function (card) {
-                if (!card) return;
-
-                // Apply spread (if in spread mode)
-                const spreadInput = card.querySelector('.pricing-mode-default .range-input[min="0.1"]');
-                if (spreadInput) {
-                    spreadInput.value = window.globalDefaults.spread;
-                    const valueSpan = spreadInput.parentElement.querySelector('.range-value .value');
-                    if (valueSpan) valueSpan.textContent = window.globalDefaults.spread;
-                }
+            // Apply default values to datacard inputs
+            function applyDefaultValues(card) {
+                if (!window.globalDefaults) return;
 
                 // Apply volatility
-                const volatilityInput = card.querySelector('.range-input[min="0"][max="100"]');
+                const volatilityInput = card.querySelector('[min="0"][max="100"]');
                 if (volatilityInput) {
                     volatilityInput.value = window.globalDefaults.volatility;
                     const valueSpan = volatilityInput.parentElement.querySelector('.range-value .value');
@@ -2221,9 +2246,7 @@
             window.makeRangeValueEditable = makeRangeValueEditable;
             window.initializeClickToEdit = initializeClickToEdit;
 
-            // =============================================================================
-            // MICRO PERIODS FUNCTIONALITY
-            // =============================================================================
+            // TODO: Remove comprehensive microstructure section - now in microstructure-controls.js module
             function togglePeriodsDropdown(indicator) {
                 const datacard = indicator.closest('.datacard');
                 const dropdown = datacard.querySelector('.periods-dropdown');
@@ -2644,109 +2667,8 @@
                 }
             });
 
-            // Make functions globally accessible
-            window.togglePeriodsDropdown = togglePeriodsDropdown;
-            window.addMicroPeriod = addMicroPeriod;
-            window.removeMicroPeriod = removeMicroPeriod;
-            window.getValidPeriods = getValidPeriods;
-            window.addMicroPeriod = addMicroPeriod;
-            window.removeMicroPeriod = removeMicroPeriod;
-
-        </script>
-
-        <!-- Core Application Logic -->
-        <script>
-            // Global state for unsaved changes tracking
-            let hasUnsavedChanges = false;
-            let currentFileName = '';
-            let configFilesPath = ''; // Will be set when user provides path
-            let validationConfig = null; // Will store loaded config
-
-            // Percentage allocation state
-            let productPercentages = new Map(); // symbol -> {percentage, isDirty}
-
-            // Percentage validation and management functions
-            function updateAllocationDisplay() {
-                const allocationDisplay = document.getElementById('allocationDisplay');
-                const allocationPercentage = document.getElementById('allocationPercentage');
-
-                if (!allocationDisplay || !allocationPercentage) return;
-
-                const total = calculateTotalPercentage();
-
-                allocationPercentage.textContent = `${total}%`;
-
-                // Update styling based on validation
-                if (total === 100 && !hasZeroPercentProducts()) {
-                    allocationDisplay.classList.remove('invalid');
-                } else {
-                    allocationDisplay.classList.add('invalid');
-                }
-
-                updateGenerateButtonState();
-            }
-
-            function calculateTotalPercentage() {
-                let total = 0;
-                document.querySelectorAll('.percentage-input').forEach(input => {
-                    const value = parseInt(input.value) || 0;
-                    total += value;
-                });
-                return total;
-            }
-
-            function hasZeroPercentProducts() {
-                return Array.from(document.querySelectorAll('.percentage-input')).some(input => {
-                    return (parseInt(input.value) || 0) === 0;
-                });
-            }
-
-            function updateGenerateButtonState() {
-                const generateBtn = document.getElementById('generateDataset');
-                if (!generateBtn) return;
-
-                const total = calculateTotalPercentage();
-                const hasZeros = hasZeroPercentProducts();
-
-                // Enable when total is exactly 100% AND no products have 0% (demo mode allows visual feedback)
-                generateBtn.disabled = (total !== 100) || hasZeros;
-
-                // In demo mode, style differently but keep enabled for feedback
-                if (IS_DEMO_MODE && !generateBtn.disabled) {
-                    generateBtn.style.background = 'linear-gradient(135deg, #ff914d, #ff7b3d)';
-                    generateBtn.title = 'Demo Mode - Click to see generation preview';
-                } else if (IS_DEMO_MODE) {
-                    generateBtn.title = 'Fix percentages to preview generation';
-                }
-            }
-
-            // Filter percentage input to only allow integers
-            function filterPercentageInput(input) {
-                let value = input.value;
-
-                // Remove any non-numeric characters
-                value = value.replace(/[^0-9]/g, '');
-
-                // Convert to integer and ensure it's within valid range (0-100)
-                let numValue = parseInt(value) || 0;
-                if (numValue > 100) {
-                    numValue = 100;
-                }
-
-                // Update the input value if it was changed
-                const newValue = numValue.toString();
-                if (input.value !== newValue) {
-                    // Preserve cursor position
-                    const cursorPos = input.selectionStart;
-                    input.value = newValue;
-
-                    // Restore cursor position, accounting for removed characters
-                    const newPos = Math.min(cursorPos, newValue.length);
-                    input.setSelectionRange(newPos, newPos);
-                }
-            }
-
-            function validatePercentageInput(input) {
+            // TODO: Remove this function - now in validation.js module
+            window.validatePercentageInput = function validatePercentageInput(input) {
                 const value = parseInt(input.value) || 0;
                 const symbol = input.closest('.datacard').dataset.symbol;
 
@@ -2756,588 +2678,543 @@
                 // Check for 0% (always invalid)
                 if (value === 0) {
                     input.classList.add('invalid');
-                    updateAllocationDisplay();
+                    if (typeof window.updateAllocationDisplay === 'function') {
+                        window.updateAllocationDisplay();
+                    }
                     return false;
                 }
 
                 // Mark this product as dirty
-                productPercentages.set(symbol, { percentage: value, isDirty: true });
+                if (window.productPercentages) {
+                    window.productPercentages.set(symbol, { percentage: value, isDirty: true });
+                }
 
                 // Check for overallocation - highlight the input that caused it
-                const total = calculateTotalPercentage();
+                const total = window.calculateTotalPercentage();
                 if (total > 100) {
                     input.classList.add('invalid');
                 }
 
-                updateAllocationDisplay();
+                if (typeof window.updateAllocationDisplay === 'function') {
+                    window.updateAllocationDisplay();
+                }
                 return total <= 100 && value > 0;
-            }
+            };
 
-            function redistributeCleanPercentages() {
-                const datacards = document.querySelectorAll('.datacard');
-                const cleanProducts = [];
-                const dirtyProducts = [];
-                let dirtyTotal = 0;
-
-                // Categorize products as clean or dirty
-                datacards.forEach(card => {
-                    const symbol = card.dataset.symbol;
-                    const input = card.querySelector('.percentage-input');
-                    const percentage = parseInt(input.value) || 0;
-
-                    const productState = productPercentages.get(symbol);
-
-                    if (productState && productState.isDirty) {
-                        dirtyProducts.push({ symbol, input, percentage });
-                        dirtyTotal += percentage;
-                    } else {
-                        cleanProducts.push({ symbol, input, percentage });
-                    }
-                });
-
-                const remainingPercent = 100 - dirtyTotal;
-
-                if (cleanProducts.length > 0 && remainingPercent > 0) {
-                    // Redistribute evenly among clean products
-                    const evenSplit = Math.floor(remainingPercent / cleanProducts.length);
-                    const remainder = remainingPercent % cleanProducts.length;
-
-                    cleanProducts.forEach((product, index) => {
-                        // Give first few products an extra percent if there's a remainder
-                        const newPercentage = evenSplit + (index < remainder ? 1 : 0);
-                        product.input.value = newPercentage;
-
-                        // Update state but keep as clean
-                        productPercentages.set(product.symbol, { percentage: newPercentage, isDirty: false });
-                    });
-
-                    // Return percentage for new product when all existing are redistributed
-                    const newProductCount = cleanProducts.length + 1;
-                    const newEvenSplit = Math.floor(remainingPercent / newProductCount);
-                    return newEvenSplit;
-                } else if (remainingPercent > 0) {
-                    // No clean products, new product gets all remaining percentage
-                    return remainingPercent;
-                } else {
-                    // All dirty products account for 100% or more, new product gets 0%
-                    return 0;
-                }
-            }
-
-            // Load validation configuration
-            async function loadValidationConfig() {
-                // In demo mode, use fallback config directly
-                if (IS_DEMO_MODE) {
-                    validationConfig = {
-                        fileSystem: {
-                            exchangeDirectories: {
-                                "CME": "./datasets/cme",
-                                "NYSE": "./datasets/nyse",
-                                "NASDAQ": "./datasets/nsdq"
-                            },
-                            fileExtensions: {
-                                "CME": ".cme",
-                                "NYSE": ".nyse",
-                                "NASDAQ": ".nsdq"
-                            }
-                        },
-                        sliderConfig: {
-                            basePrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.50,
-                                default: 195.50
-                            },
-                            spread: {
-                                min: 0.01,
-                                max: 5.0,
-                                step: 0.01,
-                                default: 0.12
-                            },
-                            bidPrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.01,
-                                default: 195.44
-                            },
-                            askPrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.01,
-                                default: 195.56
-                            },
-                            bidQuantity: {
-                                min: 100,
-                                max: 50000,
-                                step: 100,
-                                default: 1500
-                            },
-                            askQuantity: {
-                                min: 100,
-                                max: 50000,
-                                step: 100,
-                                default: 1200
-                            },
-                            bidWeight: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 48
-                            },
-                            askWeight: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 52
-                            },
-                            volatility: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 18
-                            },
-                            trend: {
-                                min: -50,
-                                max: 50,
-                                step: 1,
-                                default: 3
-                            },
-                            percentage: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 0
-                            }
-                        }
-                    };
-                    console.log('✅ Demo validation config loaded');
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/apps/author/config/validation-rules.json');
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    validationConfig = await response.json();
-                    console.log('✅ Validation config loaded:', validationConfig);
-                } catch (error) {
-                    console.warn('⚠️ Failed to load validation config, using fallback:', error.message);
-                    // Fallback config
-                    validationConfig = {
-                        fileSystem: {
-                            exchangeDirectories: {
-                                "CME": "./datasets/cme",
-                                "NYSE": "./datasets/nyse",
-                                "NASDAQ": "./datasets/nsdq"
-                            },
-                            fileExtensions: {
-                                "CME": ".cme",
-                                "NYSE": ".nyse",
-                                "NASDAQ": ".nsdq"
-                            }
-                        },
-                        sliderConfig: {
-                            basePrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.50,
-                                default: 195.50
-                            },
-                            spread: {
-                                min: 0.01,
-                                max: 5.0,
-                                step: 0.01,
-                                default: 0.12
-                            },
-                            bidPrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.01,
-                                default: 195.44
-                            },
-                            askPrice: {
-                                min: 1,
-                                max: 500,
-                                step: 0.01,
-                                default: 195.56
-                            },
-                            bidQuantity: {
-                                min: 100,
-                                max: 50000,
-                                step: 100,
-                                default: 1500
-                            },
-                            askQuantity: {
-                                min: 100,
-                                max: 50000,
-                                step: 100,
-                                default: 1200
-                            },
-                            bidWeight: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 48
-                            },
-                            askWeight: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 52
-                            },
-                            volatility: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 18
-                            },
-                            trend: {
-                                min: -50,
-                                max: 50,
-                                step: 1,
-                                default: 3
-                            },
-                            percentage: {
-                                min: 0,
-                                max: 100,
-                                step: 1,
-                                default: 0
-                            }
-                        }
-                    };
-                }
-            }
-
-            // Populate file dropdown based on selected exchange
-            async function populateFileDropdown(exchange) {
-                const fileDropdownMenu = document.getElementById('fileDropdownMenu');
-                if (!fileDropdownMenu || !validationConfig) {
-                    console.warn('File dropdown or config not available');
-                    return;
-                }
-
-                const fileExtension = validationConfig.fileSystem.fileExtensions[exchange];
-                const directory = validationConfig.fileSystem.exchangeDirectories[exchange];
-
-                if (!fileExtension || !directory) {
-                    console.warn(`No configuration found for exchange: ${exchange}`);
-                    return;
-                }
-
-                try {
-                    // In demo mode, show mock files
+                // Load validation configuration
+                async function loadValidationConfig() {
+                    // In demo mode, use fallback config directly
                     if (IS_DEMO_MODE) {
-                        const mockFiles = [
-                            `sample_strategy${fileExtension}`,
-                            `backtest_data${fileExtension}`,
-                            `live_test${fileExtension}`,
-                            `momentum_algo${fileExtension}`
-                        ];
+                        validationConfig = {
+                            fileSystem: {
+                                exchangeDirectories: {
+                                    "CME": "./datasets/cme",
+                                    "NYSE": "./datasets/nyse",
+                                    "NASDAQ": "./datasets/nsdq"
+                                },
+                                fileExtensions: {
+                                    "CME": ".cme",
+                                    "NYSE": ".nyse",
+                                    "NASDAQ": ".nsdq"
+                                }
+                            },
+                            sliderConfig: {
+                                basePrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.50,
+                                    default: 195.50
+                                },
+                                spread: {
+                                    min: 0.01,
+                                    max: 5.0,
+                                    step: 0.01,
+                                    default: 0.12
+                                },
+                                bidPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.44
+                                },
+                                askPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.56
+                                },
+                                bidQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1500
+                                },
+                                askQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1200
+                                },
+                                bidWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 48
+                                },
+                                askWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 52
+                                },
+                                volatility: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 18
+                                },
+                                trend: {
+                                    min: -50,
+                                    max: 50,
+                                    step: 1,
+                                    default: 3
+                                },
+                                percentage: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 0
+                                }
+                            }
+                        };
+                        console.log('✅ Demo validation config loaded');
+                        return;
+                    }
 
-                        fileDropdownMenu.innerHTML = '';
-
-                        if (mockFiles.length === 0) {
-                            fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">No files available</div>';
-                            return;
+                    try {
+                        const response = await fetch('/apps/author/config/validation-rules.json');
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                         }
+                        validationConfig = await response.json();
+                        console.log('✅ Validation config loaded:', validationConfig);
+                    } catch (error) {
+                        console.warn('⚠️ Failed to load validation config, using fallback:', error.message);
+                        // Fallback config
+                        validationConfig = {
+                            fileSystem: {
+                                exchangeDirectories: {
+                                    "CME": "./datasets/cme",
+                                    "NYSE": "./datasets/nyse",
+                                    "NASDAQ": "./datasets/nsdq"
+                                },
+                                fileExtensions: {
+                                    "CME": ".cme",
+                                    "NYSE": ".nyse",
+                                    "NASDAQ": ".nsdq"
+                                }
+                            },
+                            sliderConfig: {
+                                basePrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.50,
+                                    default: 195.50
+                                },
+                                spread: {
+                                    min: 0.01,
+                                    max: 5.0,
+                                    step: 0.01,
+                                    default: 0.12
+                                },
+                                bidPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.44
+                                },
+                                askPrice: {
+                                    min: 1,
+                                    max: 500,
+                                    step: 0.01,
+                                    default: 195.56
+                                },
+                                bidQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1500
+                                },
+                                askQuantity: {
+                                    min: 100,
+                                    max: 50000,
+                                    step: 100,
+                                    default: 1200
+                                },
+                                bidWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 48
+                                },
+                                askWeight: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 52
+                                },
+                                volatility: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 18
+                                },
+                                trend: {
+                                    min: -50,
+                                    max: 50,
+                                    step: 1,
+                                    default: 3
+                                },
+                                percentage: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 1,
+                                    default: 0
+                                }
+                            }
+                        };
+                    }
+                }
 
-                        mockFiles.forEach(fileName => {
-                            const fileItem = document.createElement('div');
-                            fileItem.style.cssText = `
+                // Populate file dropdown based on selected exchange
+                async function populateFileDropdown(exchange) {
+                    const fileDropdownMenu = document.getElementById('fileDropdownMenu');
+                    if (!fileDropdownMenu || !validationConfig) {
+                        console.warn('File dropdown or config not available');
+                        return;
+                    }
+
+                    const fileExtension = validationConfig.fileSystem.fileExtensions[exchange];
+                    const directory = validationConfig.fileSystem.exchangeDirectories[exchange];
+
+                    if (!fileExtension || !directory) {
+                        console.warn(`No configuration found for exchange: ${exchange}`);
+                        return;
+                    }
+
+                    try {
+                        // In demo mode, show mock files
+                        if (IS_DEMO_MODE) {
+                            const mockFiles = [
+                                `sample_strategy${fileExtension}`,
+                                `backtest_data${fileExtension}`,
+                                `live_test${fileExtension}`,
+                                `momentum_algo${fileExtension}`
+                            ];
+
+                            fileDropdownMenu.innerHTML = '';
+
+                            if (mockFiles.length === 0) {
+                                fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">No files available</div>';
+                                return;
+                            }
+
+                            mockFiles.forEach(fileName => {
+                                const fileItem = document.createElement('div');
+                                fileItem.style.cssText = `
                             padding: 0.75em 1em;
                             cursor: pointer;
                             border-bottom: 1px solid rgba(255,255,255,0.1);
                             transition: background 0.2s ease;
                             color: rgba(255,255,255,0.9);
                         `;
-                            fileItem.textContent = fileName;
+                                fileItem.textContent = fileName;
 
-                            fileItem.addEventListener('mouseenter', () => {
-                                fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
+                                fileItem.addEventListener('mouseenter', () => {
+                                    fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
+                                });
+                                fileItem.addEventListener('mouseleave', () => {
+                                    fileItem.style.background = 'none';
+                                });
+
+                                fileItem.addEventListener('click', () => {
+                                    const fileDropdownText = document.getElementById('fileDropdownText');
+                                    if (fileDropdownText) {
+                                        fileDropdownText.textContent = fileName.replace(fileExtension, '');
+                                    }
+                                    fileDropdownMenu.style.display = 'none';
+                                });
+
+                                fileDropdownMenu.appendChild(fileItem);
                             });
-                            fileItem.addEventListener('mouseleave', () => {
-                                fileItem.style.background = 'none';
-                            });
-
-                            fileItem.addEventListener('click', () => {
-                                const fileDropdownText = document.getElementById('fileDropdownText');
-                                if (fileDropdownText) {
-                                    fileDropdownText.textContent = fileName.replace(fileExtension, '');
-                                }
-                                fileDropdownMenu.style.display = 'none';
-                            });
-
-                            fileDropdownMenu.appendChild(fileItem);
-                        });
-                    } else {
-                        // In production mode, this would fetch real files from the server
-                        // For now, show placeholder
-                        fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">File loading not implemented in current version</div>';
-                    }
-
-                } catch (error) {
-                    console.error('Error loading files:', error);
-                    fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: #ff5858; font-style: italic;">Error loading files</div>';
-                }
-            }
-
-            // Handle exchange change to update file dropdown
-            function handleExchangeChange() {
-                const exchangeSelect = document.getElementById('exchangeSelect');
-                if (exchangeSelect && validationConfig) {
-                    const selectedExchange = exchangeSelect.value;
-                    populateFileDropdown(selectedExchange);
-
-                    // Reset file dropdown text
-                    const fileDropdownText = document.getElementById('fileDropdownText');
-                    if (fileDropdownText) {
-                        fileDropdownText.textContent = 'Select File';
-                    }
-                }
-            }
-
-            // Demo mode initialization
-            function initializeDemoMode() {
-                if (IS_DEMO_MODE) {
-                    // Show demo banner
-                    const banner = document.getElementById('demo-banner');
-                    if (banner) {
-                        banner.style.display = 'block';
-                    }
-
-                    // Create multiple sample datacards for layout testing
-                    setTimeout(() => {
-                        createMultipleSampleCards();
-                        // Initialize click-to-edit after cards are created
-                        setTimeout(() => {
-                            initializeClickToEdit();
-                            restoreCollapsedStates(); // Restore any saved collapse states
-                            console.log('✅ Click-to-edit initialized');
-                        }, 200);
-                        // Re-initialize click-to-edit for new cards
-                        setTimeout(() => initializeClickToEdit(), 500);
-                    }, 100);
-
-                    // Setup generate button for demo interaction
-                    const generateBtn = document.getElementById('generateDataset');
-                    if (generateBtn) {
-                        // Remove existing click handlers
-                        const newBtn = generateBtn.cloneNode(true);
-                        generateBtn.parentNode.replaceChild(newBtn, generateBtn);
-
-                        // Add demo click handler
-                        newBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            const total = calculateTotalPercentage();
-                            if (total === 100 && !hasZeroPercentProducts()) {
-                                // Show realistic demo preview
-                                alert('🎯 Demo Preview\n\nYour dataset configuration is valid!\n\nIn production mode, this would:\n• Generate ' + document.querySelectorAll('.datacard').length + ' product dataset\n• Export in CME/NYSE/NASDAQ format\n• Create ~' + (Math.floor(Math.random() * 50000) + 10000) + ' market data messages\n\nDemo mode prevents actual file generation.');
-                            } else {
-                                alert('⚠️ Configuration incomplete\n\nPlease ensure:\n• All percentages total exactly 100%\n• No products have 0% allocation\n\nThen try generation again.');
-                            }
-                        });
-                    }
-                }
-            }
-
-            // Create a sample datacard to demonstrate functionality
-            function createSampleDatacard() {
-                console.log('🔄 Creating sample datacard...');
-
-                const datacardContainer = document.getElementById('datacardContainer');
-                if (!datacardContainer) {
-                    console.error('❌ Datacard container not found');
-                    return;
-                }
-
-                // Check if createDetailedDatacard function exists
-                if (typeof createDetailedDatacard !== 'function') {
-                    console.error('❌ createDetailedDatacard function not found');
-                    return;
-                }
-
-                try {
-                    // Create sample AAPL datacard with realistic trading parameters
-                    console.log('🔄 Calling createDetailedDatacard...');
-                    const sampleCard = createDetailedDatacard('AAPL');
-
-                    if (sampleCard) {
-                        datacardContainer.appendChild(sampleCard);
-                        console.log('✅ Sample card created and appended');
-
-                        // Ensure card starts in default (spread-based) mode
-                        const defaultMode = sampleCard.querySelector('.pricing-mode-default');
-                        const advancedMode = sampleCard.querySelector('.pricing-mode-advanced');
-                        const advancedToggle = sampleCard.querySelector('.advanced-toggle');
-
-                        if (defaultMode && advancedMode && advancedToggle) {
-                            defaultMode.style.display = 'block';
-                            advancedMode.style.display = 'none';
-                            advancedToggle.classList.remove('expanded');
-                            console.log('✅ Sample card set to default (spread-based) mode');
+                        } else {
+                            // In production mode, this would fetch real files from the server
+                            // For now, show placeholder
+                            fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">File loading not implemented in current version</div>';
                         }
 
-                        // Set realistic values for AAPL
-                        const ranges = sampleCard.querySelectorAll('.range-input');
-                        const values = {
-                            basePrice: 175,      // ~$175 for AAPL
-                            spread: 0.5,         // 0.5% spread
-                            bidWeight: 45,       // Slightly bid-heavy
-                            askWeight: 55,       // Slightly ask-heavy
-                            bidQuantity: 250,    // 250 shares
-                            askQuantity: 300,    // 300 shares
-                            volatility: 25,      // 25% volatility
-                            trend: 5             // Slight upward trend
-                        };
-
-                        // Apply values to the sample card
-                        const controls = sampleCard.querySelectorAll('.range-control');
-                        controls.forEach(control => {
-                            const label = control.querySelector('.range-label')?.textContent;
-                            const input = control.querySelector('.range-input');
-                            const valueSpan = control.querySelector('.value');
-
-                            let newValue;
-                            switch (label) {
-                                case 'Base Price': newValue = values.basePrice; break;
-                                case 'Spread': newValue = values.spread; break;
-                                case 'Bid Weight': newValue = values.bidWeight; break;
-                                case 'Ask Weight': newValue = values.askWeight; break;
-                                case 'Bid Quantity': newValue = values.bidQuantity; break;
-                                case 'Ask Quantity': newValue = values.askQuantity; break;
-                                case 'Volatility': newValue = values.volatility; break;
-                                case 'Trend': newValue = values.trend; break;
-                            }
-
-                            if (newValue !== undefined && input && valueSpan) {
-                                input.value = newValue;
-                                valueSpan.textContent = newValue;
-                            }
-                        });
-
-                        console.log('✅ Sample AAPL datacard created with realistic trading parameters');
-                    } else {
-                        console.error('❌ createDetailedDatacard returned null/undefined');
-                    }
-                } catch (error) {
-                    console.error('❌ Error creating sample datacard:', error);
-                }
-            }
-
-            // Create multiple sample datacards for layout testing
-            function createMultipleSampleCards() {
-                console.log('🔄 Creating multiple sample datacards for layout testing...');
-
-                const datacardContainer = document.getElementById('datacardContainer');
-                if (!datacardContainer) {
-                    console.error('❌ Datacard container not found');
-                    return;
-                }
-
-                // Clear container first
-                datacardContainer.innerHTML = '';
-
-                const symbols = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'META'];
-                const basePercentage = Math.floor(100 / symbols.length);
-                const remainder = 100 % symbols.length;
-
-                symbols.forEach((symbol, index) => {
-                    try {
-                        const card = createDetailedDatacard(symbol);
-                        if (card) {
-                            // Distribute integer percentages that sum to 100%
-                            const percentage = basePercentage + (index < remainder ? 1 : 0);
-                            const percentInput = card.querySelector('.percentage-input');
-                            if (percentInput) {
-                                percentInput.value = percentage;
-                            }
-
-                            datacardContainer.appendChild(card);
-                            // Initialize click-to-edit for this card
-                            setTimeout(() => {
-                                card.querySelectorAll('.range-value').forEach(makeRangeValueEditable);
-                            }, 50);
-                            console.log(`✅ Created ${symbol} datacard`);
-                        }
                     } catch (error) {
-                        console.error(`❌ Error creating ${symbol} datacard:`, error);
+                        console.error('Error loading files:', error);
+                        fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: #ff5858; font-style: italic;">Error loading files</div>';
                     }
-                });
-                console.log('✅ All sample datacards created');
-            }
-
-            // Mark changes as unsaved
-            function markUnsavedChanges() {
-                hasUnsavedChanges = true;
-            }
-
-            // Mark changes as saved
-            function markChangesSaved() {
-                hasUnsavedChanges = false;
-            }
-
-            // Show unsaved changes warning
-            function showUnsavedChangesWarning(callback) {
-                if (hasUnsavedChanges) {
-                    const confirmed = confirm(
-                        `You have unsaved changes that will be lost.\\n\\nDo you want to continue?`
-                    );
-                    if (confirmed) {
-                        callback();
-                    }
-                    return confirmed;
-                } else {
-                    callback();
-                    return true;
                 }
-            }
 
-            // Load configuration files from Flask API
-            async function loadConfigurationFiles() {
-                console.log('Loading configuration files from Flask API...');
+                // Handle exchange change to update file dropdown
+                function handleExchangeChange() {
+                    const exchangeSelect = document.getElementById('exchangeSelect');
+                    if (exchangeSelect && validationConfig) {
+                        const selectedExchange = exchangeSelect.value;
+                        populateFileDropdown(selectedExchange);
 
-                const dropdown = document.getElementById('configDropdownMenu');
-
-                try {
-                    // Show loading state
-                    dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">Loading configurations...</div>';
-
-                    // Call Flask API
-                    const response = await fetch('http://localhost:5000/api/config-files', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        // Reset file dropdown text
+                        const fileDropdownText = document.getElementById('fileDropdownText');
+                        if (fileDropdownText) {
+                            fileDropdownText.textContent = 'Select File';
+                        }
                     }
+                }
 
-                    const data = await response.json();
+                // Demo mode initialization
+                function initializeDemoMode() {
+                    if (IS_DEMO_MODE) {
+                        // Show demo banner
+                        const banner = document.getElementById('demo-banner');
+                        if (banner) {
+                            banner.style.display = 'block';
+                        }
 
-                    if (!data.success) {
-                        throw new Error(data.error || 'Unknown error');
+                        // Create multiple sample datacards for layout testing
+                        setTimeout(() => {
+                            createMultipleSampleCards();
+                            // Initialize click-to-edit after cards are created
+                            setTimeout(() => {
+                                initializeClickToEdit();
+                                restoreCollapsedStates(); // Restore any saved collapse states
+                                console.log('✅ Click-to-edit initialized');
+                            }, 200);
+                            // Re-initialize click-to-edit for new cards
+                            setTimeout(() => initializeClickToEdit(), 500);
+                        }, 100);
+
+                        // Setup generate button for demo interaction
+                        const generateBtn = document.getElementById('generateDataset');
+                        if (generateBtn) {
+                            // Remove existing click handlers
+                            const newBtn = generateBtn.cloneNode(true);
+                            generateBtn.parentNode.replaceChild(newBtn, generateBtn);
+
+                            // Add demo click handler
+                            newBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                const total = window.calculateTotalPercentage();
+                                if (total === 100 && !window.hasZeroPercentProducts()) {
+                                    // Show realistic demo preview
+                                    alert('🎯 Demo Preview\n\nYour dataset configuration is valid!\n\nIn production mode, this would:\n• Generate ' + document.querySelectorAll('.datacard').length + ' product dataset\n• Export in CME/NYSE/NASDAQ format\n• Create ~' + (Math.floor(Math.random() * 50000) + 10000) + ' market data messages\n\nDemo mode prevents actual file generation.');
+                                } else {
+                                    alert('⚠️ Configuration incomplete\n\nPlease ensure:\n• All percentages total exactly 100%\n• No products have 0% allocation\n\nThen try generation again.');
+                                }
+                            });
+                        }
                     }
+                }
 
-                    // Clear loading state
-                    dropdown.innerHTML = '';
+                // Create a sample datacard to demonstrate functionality
+                function createSampleDatacard() {
+                    console.log('🔄 Creating sample datacard...');
 
-                    if (data.config_files.length === 0) {
-                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">No saved configurations</div>';
+                    const datacardContainer = document.getElementById('datacardContainer');
+                    if (!datacardContainer) {
+                        console.error('❌ Datacard container not found');
                         return;
                     }
 
-                    // Populate dropdown with config files
-                    data.config_files.forEach(file => {
-                        const fileItem = document.createElement('button');
-                        fileItem.className = 'file-item dropdown-item';
-                        fileItem.style.cssText = 'width: 100%; border: none; background: none; color: #fff; padding: 0.6em 1em; text-align: left; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: space-between;';
+                    // Check if createDetailedDatacard function exists
+                    if (typeof createDetailedDatacard !== 'function') {
+                        console.error('❌ createDetailedDatacard function not found');
+                        return;
+                    }
 
-                        fileItem.innerHTML = `
+                    try {
+                        // Create sample AAPL datacard with realistic trading parameters
+                        console.log('🔄 Calling createDetailedDatacard...');
+                        const sampleCard = createDetailedDatacard('AAPL');
+
+                        if (sampleCard) {
+                            datacardContainer.appendChild(sampleCard);
+                            console.log('✅ Sample card created and appended');
+
+                            // Ensure card starts in default (spread-based) mode
+                            const defaultMode = sampleCard.querySelector('.pricing-mode-default');
+                            const advancedMode = sampleCard.querySelector('.pricing-mode-advanced');
+                            const advancedToggle = sampleCard.querySelector('.advanced-toggle');
+
+                            if (defaultMode && advancedMode && advancedToggle) {
+                                defaultMode.style.display = 'block';
+                                advancedMode.style.display = 'none';
+                                advancedToggle.classList.remove('expanded');
+                                console.log('✅ Sample card set to default (spread-based) mode');
+                            }
+
+                            // Set realistic values for AAPL
+                            const ranges = sampleCard.querySelectorAll('.range-input');
+                            const values = {
+                                basePrice: 175,      // ~$175 for AAPL
+                                spread: 0.5,         // 0.5% spread
+                                bidWeight: 45,       // Slightly bid-heavy
+                                askWeight: 55,       // Slightly ask-heavy
+                                bidQuantity: 250,    // 250 shares
+                                askQuantity: 300,    // 300 shares
+                                volatility: 25,      // 25% volatility
+                                trend: 5             // Slight upward trend
+                            };
+
+                            // Apply values to the sample card
+                            const controls = sampleCard.querySelectorAll('.range-control');
+                            controls.forEach(control => {
+                                const label = control.querySelector('.range-label')?.textContent;
+                                const input = control.querySelector('.range-input');
+                                const valueSpan = control.querySelector('.value');
+
+                                let newValue;
+                                switch (label) {
+                                    case 'Base Price': newValue = values.basePrice; break;
+                                    case 'Spread': newValue = values.spread; break;
+                                    case 'Bid Weight': newValue = values.bidWeight; break;
+                                    case 'Ask Weight': newValue = values.askWeight; break;
+                                    case 'Bid Quantity': newValue = values.bidQuantity; break;
+                                    case 'Ask Quantity': newValue = values.askQuantity; break;
+                                    case 'Volatility': newValue = values.volatility; break;
+                                    case 'Trend': newValue = values.trend; break;
+                                }
+
+                                if (newValue !== undefined && input && valueSpan) {
+                                    input.value = newValue;
+                                    valueSpan.textContent = newValue;
+                                }
+                            });
+
+                            console.log('✅ Sample AAPL datacard created with realistic trading parameters');
+                        } else {
+                            console.error('❌ createDetailedDatacard returned null/undefined');
+                        }
+                    } catch (error) {
+                        console.error('❌ Error creating sample datacard:', error);
+                    }
+                }
+
+                // Create multiple sample datacards for layout testing
+                function createMultipleSampleCards() {
+                    console.log('🔄 Creating multiple sample datacards for layout testing...');
+
+                    const datacardContainer = document.getElementById('datacardContainer');
+                    if (!datacardContainer) {
+                        console.error('❌ Datacard container not found');
+                        return;
+                    }
+
+                    // Clear container first
+                    datacardContainer.innerHTML = '';
+
+                    const symbols = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'META'];
+                    const basePercentage = Math.floor(100 / symbols.length);
+                    const remainder = 100 % symbols.length;
+
+                    symbols.forEach((symbol, index) => {
+                        try {
+                            const card = createDetailedDatacard(symbol);
+                            if (card) {
+                                // Distribute integer percentages that sum to 100%
+                                const percentage = basePercentage + (index < remainder ? 1 : 0);
+                                const percentInput = card.querySelector('.percentage-input');
+                                if (percentInput) {
+                                    percentInput.value = percentage;
+                                }
+
+                                datacardContainer.appendChild(card);
+                                // Initialize click-to-edit for this card
+                                setTimeout(() => {
+                                    card.querySelectorAll('.range-value').forEach(makeRangeValueEditable);
+                                }, 50);
+                                console.log(`✅ Created ${symbol} datacard`);
+                            }
+                        } catch (error) {
+                            console.error(`❌ Error creating ${symbol} datacard:`, error);
+                        }
+                    });
+                    console.log('✅ All sample datacards created');
+                }
+
+                // Mark changes as unsaved
+                function markUnsavedChanges() {
+                    hasUnsavedChanges = true;
+                }
+
+                // Mark changes as saved
+                function markChangesSaved() {
+                    hasUnsavedChanges = false;
+                }
+
+                // Show unsaved changes warning
+                function showUnsavedChangesWarning(callback) {
+                    if (hasUnsavedChanges) {
+                        const confirmed = confirm(
+                            `You have unsaved changes that will be lost.\\n\\nDo you want to continue?`
+                        );
+                        if (confirmed) {
+                            callback();
+                        }
+                        return confirmed;
+                    } else {
+                        callback();
+                        return true;
+                    }
+                }
+
+                // Load configuration files from Flask API
+                async function loadConfigurationFiles() {
+                    console.log('Loading configuration files from Flask API...');
+
+                    const dropdown = document.getElementById('configDropdownMenu');
+
+                    try {
+                        // Show loading state
+                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">Loading configurations...</div>';
+
+                        // Call Flask API
+                        const response = await fetch('http://localhost:5000/api/config-files', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const data = await response.json();
+
+                        if (!data.success) {
+                            throw new Error(data.error || 'Unknown error');
+                        }
+
+                        // Clear loading state
+                        dropdown.innerHTML = '';
+
+                        if (data.config_files.length === 0) {
+                            dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">No saved configurations</div>';
+                            return;
+                        }
+
+                        // Populate dropdown with config files
+                        data.config_files.forEach(file => {
+                            const fileItem = document.createElement('button');
+                            fileItem.className = 'file-item dropdown-item';
+                            fileItem.style.cssText = 'width: 100%; border: none; background: none; color: #fff; padding: 0.6em 1em; text-align: left; cursor: pointer; transition: background 0.3s; display: flex; align-items: center; justify-content: space-between;';
+
+                            fileItem.innerHTML = `
                             <span style="display: flex; align-items: center; gap: 0.5em;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -3347,399 +3224,795 @@
                             </span>
                         `;
 
-                        fileItem.addEventListener('mouseenter', () => {
-                            fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
-                        });
-                        fileItem.addEventListener('mouseleave', () => {
-                            fileItem.style.background = 'none';
-                        });
-
-                        fileItem.addEventListener('click', () => {
-                            showUnsavedChangesWarning(() => {
-                                loadConfiguration(file.name);
+                            fileItem.addEventListener('mouseenter', () => {
+                                fileItem.style.background = 'rgba(107, 182, 255, 0.1)';
                             });
+                            fileItem.addEventListener('mouseleave', () => {
+                                fileItem.style.background = 'none';
+                            });
+
+                            fileItem.addEventListener('click', () => {
+                                showUnsavedChangesWarning(() => {
+                                    loadConfiguration(file.name);
+                                });
+                            });
+
+                            dropdown.appendChild(fileItem);
                         });
 
-                        dropdown.appendChild(fileItem);
-                    });
+                        console.log(`✅ Loaded ${data.config_files.length} configuration files`);
 
-                    console.log(`✅ Loaded ${data.config_files.length} configuration files`);
-
-                } catch (error) {
-                    console.error('Error loading configuration files:', error);
-                    dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: #ff5858; font-style: italic; text-align: center;">Server connection failed</div>';
-                }
-            }
-
-            // Setup config dropdown functionality
-            function setupConfigDropdown() {
-                const configInput = document.getElementById('configInput');
-                const configDropdown = document.getElementById('configDropdownMenu');
-
-                if (!configInput || !configDropdown) {
-                    console.warn('Config dropdown elements not found');
-                    return;
-                }
-
-                // Show dropdown on input focus or arrow click
-                configInput.addEventListener('click', () => {
-                    const isVisible = configDropdown.style.display === 'block';
-                    configDropdown.style.display = isVisible ? 'none' : 'block';
-
-                    if (!isVisible) {
-                        loadConfigurationFiles();
+                    } catch (error) {
+                        console.error('Error loading configuration files:', error);
+                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: #ff5858; font-style: italic; text-align: center;">Server connection failed</div>';
                     }
-                });
+                }
 
-                // Hide dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('#configInput') && !e.target.closest('#configDropdownMenu')) {
-                        configDropdown.style.display = 'none';
+                // Setup config dropdown functionality
+                function setupConfigDropdown() {
+                    const configInput = document.getElementById('configInput');
+                    const configDropdown = document.getElementById('configDropdownMenu');
+
+                    if (!configInput || !configDropdown) {
+                        console.warn('Config dropdown elements not found');
+                        return;
                     }
-                });
 
-                console.log('✅ Config dropdown functionality ready');
-            }
+                    // Show dropdown on input focus or arrow click
+                    configInput.addEventListener('click', () => {
+                        const isVisible = configDropdown.style.display === 'block';
+                        configDropdown.style.display = isVisible ? 'none' : 'block';
 
-            // Load a specific configuration
-            function loadConfiguration(fileName) {
-                console.log(`Loading configuration: ${fileName}`);
-                currentFileName = fileName;
-
-                // Update file dropdown text
-                const fileDropdownText = document.getElementById('fileDropdownText');
-                if (fileDropdownText) {
-                    fileDropdownText.textContent = fileName.replace('.json', '');
-                }
-
-                // Mark as saved since we just loaded
-                markChangesSaved();
-
-                // TODO: Actual file loading logic will go here
-                console.log(`✅ Configuration "${fileName}" loaded`);
-            }
-
-            // Save configuration
-            function saveConfiguration() {
-                // Since this is now just a dropdown, we'll need a different way to get the filename
-                // For now, we'll use a prompt until we implement proper save functionality
-                const fileName = prompt('Enter configuration name:');
-
-                if (!fileName || !fileName.trim()) {
-                    alert('Please enter a valid file name');
-                    return;
-                }
-
-                const fullFileName = fileName.trim().endsWith('.json') ? fileName.trim() : fileName.trim() + '.json';
-
-                console.log(`Saving configuration as: ${fullFileName}`);
-
-                // TODO: Actual save logic will go here
-                currentFileName = fullFileName;
-                markChangesSaved();
-
-                // Update dropdown text to show loaded file
-                const fileDropdownText = document.getElementById('fileDropdownText');
-                if (fileDropdownText) {
-                    fileDropdownText.textContent = fileName.trim().replace('.json', '');
-                }
-
-                console.log(`✅ Configuration saved as "${fullFileName}"`);
-            }
-
-            // Setup dropdown functionality
-            async function setupDropdownFunctionality() {
-                // Load validation config first
-                await loadValidationConfig();
-
-                const dropdownBtn = document.getElementById('fileDropdownBtn');
-                const dropdownMenu = document.getElementById('fileDropdownMenu');
-                const exchangeSelect = document.getElementById('exchangeSelect');
-
-                if (dropdownBtn && dropdownMenu) {
-                    dropdownBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const isVisible = dropdownMenu.style.display === 'block';
-                        dropdownMenu.style.display = isVisible ? 'none' : 'block';
-
-                        // Populate dropdown when opened
-                        if (!isVisible && exchangeSelect) {
-                            populateFileDropdown(exchangeSelect.value);
+                        if (!isVisible) {
+                            loadConfigurationFiles();
                         }
                     });
 
-                    // Close dropdown when clicking outside
+                    // Hide dropdown when clicking outside
                     document.addEventListener('click', (e) => {
-                        if (!e.target.closest('.dropdown-container')) {
-                            dropdownMenu.style.display = 'none';
+                        if (!e.target.closest('#configInput') && !e.target.closest('#configDropdownMenu')) {
+                            configDropdown.style.display = 'none';
                         }
                     });
 
-                    console.log('✅ File dropdown functionality ready');
+                    console.log('✅ Config dropdown functionality ready');
                 }
 
-                // Set up exchange change listener
-                if (exchangeSelect) {
-                    exchangeSelect.addEventListener('change', handleExchangeChange);
+                // Load a specific configuration
+                function loadConfiguration(fileName) {
+                    console.log(`Loading configuration: ${fileName}`);
+                    currentFileName = fileName;
 
-                    // Initial population
-                    populateFileDropdown(exchangeSelect.value);
+                    // Update file dropdown text
+                    const fileDropdownText = document.getElementById('fileDropdownText');
+                    if (fileDropdownText) {
+                        fileDropdownText.textContent = fileName.replace('.json', '');
+                    }
+
+                    // Mark as saved since we just loaded
+                    markChangesSaved();
+
+                    // TODO: Actual file loading logic will go here
+                    console.log(`✅ Configuration "${fileName}" loaded`);
                 }
 
-                // Track changes on form inputs to mark unsaved changes
-                const inputs = document.querySelectorAll('#messageCount, #symbolInput, #exchangeSelect');
-                inputs.forEach(input => {
-                    input.addEventListener('input', markUnsavedChanges);
-                    input.addEventListener('change', markUnsavedChanges);
-                });
+                // Save configuration
+                function saveConfiguration() {
+                    // Since this is now just a dropdown, we'll need a different way to get the filename
+                    // For now, we'll use a prompt until we implement proper save functionality
+                    const fileName = prompt('Enter configuration name:');
 
-                // Setup utility icon dropdowns (info and search)
-                setupUtilityDropdowns();
-            }
+                    if (!fileName || !fileName.trim()) {
+                        alert('Please enter a valid file name');
+                        return;
+                    }
 
-            // Setup utility icon dropdown functionality
-            function setupUtilityDropdowns() {
-                // Info dropdown
-                const infoIcon = document.getElementById('infoIcon');
-                const infoDropdown = document.getElementById('infoDropdown');
+                    const fullFileName = fileName.trim().endsWith('.json') ? fileName.trim() : fileName.trim() + '.json';
 
-                if (infoIcon && infoDropdown) {
-                    infoIcon.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const isVisible = infoDropdown.style.display === 'block';
+                    console.log(`Saving configuration as: ${fullFileName}`);
 
-                        // Close search dropdown if open
-                        const searchDropdown = document.getElementById('searchDropdown');
-                        if (searchDropdown) {
-                            searchDropdown.style.display = 'none';
+                    // TODO: Actual save logic will go here
+                    currentFileName = fullFileName;
+                    markChangesSaved();
+
+                    // Update dropdown text to show loaded file
+                    const fileDropdownText = document.getElementById('fileDropdownText');
+                    if (fileDropdownText) {
+                        fileDropdownText.textContent = fileName.trim().replace('.json', '');
+                    }
+
+                    console.log(`✅ Configuration saved as "${fullFileName}"`);
+                }
+
+                // Setup dropdown functionality
+                async function setupDropdownFunctionality() {
+                    // Load validation config first
+                    await loadValidationConfig();
+
+                    const dropdownBtn = document.getElementById('fileDropdownBtn');
+                    const dropdownMenu = document.getElementById('fileDropdownMenu');
+                    const exchangeSelect = document.getElementById('exchangeSelect');
+
+                    if (dropdownBtn && dropdownMenu) {
+                        dropdownBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isVisible = dropdownMenu.style.display === 'block';
+                            dropdownMenu.style.display = isVisible ? 'none' : 'block';
+
+                            // Populate dropdown when opened
+                            if (!isVisible && exchangeSelect) {
+                                populateFileDropdown(exchangeSelect.value);
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                            if (!e.target.closest('.dropdown-container')) {
+                                dropdownMenu.style.display = 'none';
+                            }
+                        });
+
+                        console.log('✅ File dropdown functionality ready');
+                    }
+
+                    // Set up exchange change listener
+                    if (exchangeSelect) {
+                        exchangeSelect.addEventListener('change', handleExchangeChange);
+
+                        // Initial population
+                        populateFileDropdown(exchangeSelect.value);
+                    }
+
+                    // Initialize DOM-dependent functionality
+                    function initializeDOMFunctionality() {
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Track changes on form inputs to mark unsaved changes
+                            const inputs = document.querySelectorAll('#messageCount, #symbolInput, #exchangeSelect');
+                            inputs.forEach(input => {
+                                input.addEventListener('input', markUnsavedChanges);
+                                input.addEventListener('change', markUnsavedChanges);
+                            });
+
+                            // Setup utility icon dropdowns (info and search)
+                            if (typeof window.setupUtilityDropdowns === 'function') {
+                                window.setupUtilityDropdowns();
+                            }
+
+                            // Track datacard changes (will work with both real app and fallback)
+                            const observer = new MutationObserver((mutations) => {
+                                mutations.forEach((mutation) => {
+                                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                        // New datacards added - mark as changed
+                                        if (typeof window.markUnsavedChanges === 'function') {
+                                            window.markUnsavedChanges();
+                                        }
+                                    }
+                                });
+                            });
+
+                            const datacardContainer = document.getElementById('datacardContainer');
+                            if (datacardContainer) {
+                                observer.observe(datacardContainer, { childList: true, subtree: true });
+                            }
+                        }); // Close DOMContentLoaded function
+                    } // Close initializeDOMFunctionality function
+
+                    // Call the initialization function
+                    initializeDOMFunctionality();
+
+                    // Setup utility icon dropdown functionality
+                    window.setupUtilityDropdowns = function setupUtilityDropdowns() {
+                        // Info dropdown
+                        const infoIcon = document.getElementById('infoIcon');
+                        const infoDropdown = document.getElementById('infoDropdown');
+
+                        if (infoIcon && infoDropdown) {
+                            infoIcon.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const isVisible = infoDropdown.style.display === 'block';
+
+                                // Close search dropdown if open
+                                const searchDropdown = document.getElementById('searchDropdown');
+                                if (searchDropdown) {
+                                    searchDropdown.style.display = 'none';
+                                }
+
+                                infoDropdown.style.display = isVisible ? 'none' : 'block';
+                            });
                         }
 
-                        infoDropdown.style.display = isVisible ? 'none' : 'block';
-                    });
-                }
-
-                // Close utility dropdowns when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.utility-icon')) {
-                        // Close info dropdown
-                        if (infoDropdown) {
-                            infoDropdown.style.display = 'none';
-                        }
-                    }
-                });
-            }
-
-            // Track datacard changes (will work with both real app and fallback)
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        // New datacards added - mark as changed
-                        markUnsavedChanges();
-                    }
-                });
-            });
-
-            const datacardContainer = document.getElementById('datacardContainer');
-            if (datacardContainer) {
-                observer.observe(datacardContainer, { childList: true, subtree: true });
-            }
+                        // Close utility dropdowns when clicking outside
+                        document.addEventListener('click', (e) => {
+                            if (!e.target.closest('.utility-icon')) {
+                                // Close info dropdown
+                                if (infoDropdown) {
+                                    infoDropdown.style.display = 'none';
+                                }
+                            }
+                        });
+                    }; // Close setupUtilityDropdowns function
+                } // Close if document.readyState check
         </script>
 
-        <!-- Info Dropdown Script -->
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Info dropdown functionality
-                var infoBtn = document.getElementById('infoIconBtn');
-                var dropdown = document.getElementById('infoDropdown');
-                if (infoBtn && dropdown) {
-                    infoBtn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-                    });
+            'use strict';
 
-                    document.addEventListener('click', function (e) {
-                        if (!infoBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                            dropdown.style.display = 'none';
+            // ============================================================================
+            // CORE APPLICATION ARCHITECTURE
+            // ============================================================================
+
+            /**
+             * Main Application State
+             * Centralized state management for the entire Author application
+             */
+            const BeaconAuthor = {
+                // Application configuration
+                config: {
+                    IS_DEMO_MODE: true,
+                    version: '2.0.0'
+                },
+
+                // Application state
+                state: {
+                    productPercentages: new Map(),
+                    hasUnsavedChanges: false,
+                    currentFileName: '',
+                    validationConfig: null
+                },
+
+                // Module registry
+                modules: {}
+            };
+
+            // ============================================================================
+            // DEMO CONFIGURATION MODULE
+            // ============================================================================
+
+            BeaconAuthor.modules.DemoConfig = {
+                init() {
+                    if (BeaconAuthor.config.IS_DEMO_MODE) {
+                        this.showDemoBanner();
+                        this.setupDemoData();
+                    }
+                },
+
+                showDemoBanner() {
+                    const banner = document.getElementById('demo-banner');
+                    if (banner) {
+                        banner.style.display = 'block';
+                    }
+                },
+
+                setupDemoData() {
+                    // Setup validation config for demo mode
+                    BeaconAuthor.state.validationConfig = {
+                        fileSystem: {
+                            exchangeDirectories: {
+                                "CME": "./datasets/cme",
+                                "NYSE": "./datasets/nyse",
+                                "NASDAQ": "./datasets/nsdq"
+                            },
+                            fileExtensions: {
+                                "CME": ".cme",
+                                "NYSE": ".nyse",
+                                "NASDAQ": ".nsdq"
+                            }
+                        },
+                        sliderConfig: {
+                            basePrice: { min: 1, max: 500, step: 0.50, default: 195.50 },
+                            spread: { min: 0.01, max: 5.0, step: 0.01, default: 0.12 },
+                            bidPrice: { min: 1, max: 500, step: 0.01, default: 195.44 },
+                            askPrice: { min: 1, max: 500, step: 0.01, default: 195.56 },
+                            bidQuantity: { min: 100, max: 50000, step: 100, default: 1500 },
+                            askQuantity: { min: 100, max: 50000, step: 100, default: 1200 },
+                            bidWeight: { min: 0, max: 100, step: 1, default: 48 },
+                            askWeight: { min: 0, max: 100, step: 1, default: 52 },
+                            volatility: { min: 0, max: 100, step: 1, default: 18 },
+                            trend: { min: -50, max: 50, step: 1, default: 3 },
+                            percentage: { min: 0, max: 100, step: 1, default: 0 }
+                        }
+                    };
+                }
+            };
+
+            // ============================================================================
+            // PERCENTAGE ALLOCATION MANAGER - THE CORE BUSINESS LOGIC
+            // ============================================================================
+
+            BeaconAuthor.modules.PercentageManager = {
+
+                /**
+                 * Initialize a product percentage allocation
+                 */
+                initializeProduct(symbol, percentage = 0) {
+                    BeaconAuthor.state.productPercentages.set(symbol, {
+                        percentage: percentage,
+                        isDirty: false
+                    });
+                },
+
+                /**
+                 * Update percentage for a product and mark as dirty
+                 */
+                updatePercentage(symbol, percentage) {
+                    const sanitizedValue = Math.max(0, Math.min(100, parseInt(percentage) || 0));
+                    BeaconAuthor.state.productPercentages.set(symbol, {
+                        percentage: sanitizedValue,
+                        isDirty: true
+                    });
+                    return sanitizedValue;
+                },
+
+                /**
+                 * Calculate total percentage across all products
+                 */
+                calculateTotal() {
+                    let total = 0;
+                    document.querySelectorAll('.percentage-input').forEach(input => {
+                        total += parseInt(input.value) || 0;
+                    });
+                    return total;
+                },
+
+                /**
+                 * Check if any products have 0% allocation
+                 */
+                hasZeroPercentProducts() {
+                    return Array.from(document.querySelectorAll('.percentage-input')).some(input => {
+                        return (parseInt(input.value) || 0) === 0;
+                    });
+                },
+
+                /**
+                 * Redistribute percentages for clean (non-dirty) products
+                 */
+                redistributeCleanPercentages() {
+                    const datacards = document.querySelectorAll('.datacard');
+                    const cleanProducts = [];
+                    const dirtyProducts = [];
+                    let dirtyTotal = 0;
+
+                    // Categorize products as clean or dirty
+                    datacards.forEach(card => {
+                        const symbol = card.dataset.symbol;
+                        const trackingData = BeaconAuthor.state.productPercentages.get(symbol);
+
+                        if (trackingData && trackingData.isDirty) {
+                            dirtyProducts.push({ symbol, percentage: trackingData.percentage });
+                            dirtyTotal += trackingData.percentage;
+                        } else {
+                            cleanProducts.push(symbol);
                         }
                     });
 
-                    infoBtn.addEventListener('keydown', function (e) {
-                        if (e.key === 'Escape') dropdown.style.display = 'none';
+                    // Redistribute remaining percentage to clean products
+                    if (cleanProducts.length > 0) {
+                        const remainingPercentage = Math.max(0, 100 - dirtyTotal);
+                        const redistributedPercentage = Math.floor(remainingPercentage / cleanProducts.length);
+
+                        cleanProducts.forEach(symbol => {
+                            const card = document.querySelector(`.datacard[data-symbol="${symbol}"]`);
+                            const input = card?.querySelector('.percentage-input');
+
+                            if (input) {
+                                input.value = redistributedPercentage;
+                                BeaconAuthor.state.productPercentages.set(symbol, {
+                                    percentage: redistributedPercentage,
+                                    isDirty: false
+                                });
+                            }
+                        });
+
+                        return redistributedPercentage;
+                    }
+                    return 0;
+                },
+
+                /**
+                 * Update allocation display with proper styling
+                 */
+                updateAllocationDisplay() {
+                    const allocationDisplay = document.getElementById('allocationDisplay');
+                    const allocationPercentage = document.getElementById('allocationPercentage');
+
+                    if (!allocationDisplay || !allocationPercentage) return 0;
+
+                    const total = this.calculateTotal();
+                    allocationPercentage.textContent = `${total}%`;
+
+                    // Clear previous styling
+                    allocationDisplay.classList.remove('over-allocated', 'under-allocated', 'perfectly-allocated', 'invalid');
+
+                    // Apply appropriate styling
+                    if (total === 100 && !this.hasZeroPercentProducts()) {
+                        allocationDisplay.classList.add('perfectly-allocated');
+                        allocationDisplay.style.background = 'rgba(88, 166, 88, 0.1)';
+                        allocationDisplay.style.borderColor = '#58a658';
+                        allocationDisplay.querySelector('span').style.color = '#58a658';
+                    } else if (total > 100) {
+                        allocationDisplay.classList.add('over-allocated');
+                        allocationDisplay.style.background = 'rgba(255, 88, 88, 0.1)';
+                        allocationDisplay.style.borderColor = '#ff5858';
+                        allocationDisplay.querySelector('span').style.color = '#ff5858';
+                    } else {
+                        allocationDisplay.classList.add('under-allocated');
+                        allocationDisplay.style.background = 'rgba(255, 165, 88, 0.1)';
+                        allocationDisplay.style.borderColor = '#ffa558';
+                        allocationDisplay.querySelector('span').style.color = '#ffa558';
+                    }
+
+                    // Update generate button state
+                    BeaconAuthor.modules.UIManager.updateGenerateButtonState();
+                    return total;
+                }
+            };
+
+            // ============================================================================
+            // INPUT VALIDATION MANAGER
+            // ============================================================================
+
+            BeaconAuthor.modules.ValidationManager = {
+
+                /**
+                 * Filter percentage input to only allow valid integers
+                 */
+                filterPercentageInput(input) {
+                    let value = input.value;
+
+                    // Remove non-numeric characters
+                    value = value.replace(/[^0-9]/g, '');
+
+                    // Convert to integer and clamp to 0-100
+                    let numValue = parseInt(value) || 0;
+                    if (numValue > 100) numValue = 100;
+
+                    // Update input if changed
+                    const newValue = numValue.toString();
+                    if (input.value !== newValue) {
+                        const cursorPos = input.selectionStart;
+                        input.value = newValue;
+                        input.setSelectionRange(Math.min(cursorPos, newValue.length), Math.min(cursorPos, newValue.length));
+                    }
+                },
+
+                /**
+                 * Validate percentage input and update allocation
+                 */
+                validatePercentageInput(input) {
+                    if (!input || !input.closest) return false;
+
+                    const card = input.closest('.datacard');
+                    const symbol = card?.dataset?.symbol;
+                    if (!symbol) return false;
+
+                    const value = parseInt(input.value) || 0;
+
+                    // Clear previous validation styling
+                    input.classList.remove('invalid');
+
+                    // Validate 0% (always invalid)
+                    if (value === 0) {
+                        input.classList.add('invalid');
+                        BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
+                        return false;
+                    }
+
+                    // Update percentage in state
+                    BeaconAuthor.modules.PercentageManager.updatePercentage(symbol, value);
+
+                    // Check for over-allocation
+                    const total = BeaconAuthor.modules.PercentageManager.calculateTotal();
+                    if (total > 100) {
+                        input.classList.add('invalid');
+                    }
+
+                    // Update allocation display
+                    BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
+                    return total <= 100 && value > 0;
+                },
+
+                /**
+                 * Setup input validation for a percentage input
+                 */
+                setupPercentageValidation(input, symbol) {
+                    // Initialize in state
+                    const initialValue = parseInt(input.value) || 0;
+                    BeaconAuthor.modules.PercentageManager.initializeProduct(symbol, initialValue);
+
+                    // Add event listeners
+                    input.addEventListener('input', (e) => {
+                        this.filterPercentageInput(e.target);
+                        this.validatePercentageInput(e.target);
                     });
-                }
 
-                // Basic spinner functionality fallback
-                const messageCountInput = document.getElementById('messageCount');
-                const spinnerUp = document.querySelector('.spinner-up');
-                const spinnerDown = document.querySelector('.spinner-down');
+                    input.addEventListener('change', (e) => {
+                        this.validatePercentageInput(e.target);
+                    });
 
-                // Comma formatting function
-                function formatWithCommas(num) {
-                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                }
+                    // Prevent non-numeric keypress
+                    input.addEventListener('keypress', (e) => {
+                        // Allow special keys
+                        if ([8, 9, 27, 13, 46, 37, 38, 39, 40].indexOf(e.keyCode) !== -1 ||
+                            (e.ctrlKey && [65, 67, 86, 88].indexOf(e.keyCode) !== -1)) {
+                            return;
+                        }
+                        // Block non-numeric keys
+                        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                            e.preventDefault();
+                        }
+                    });
 
-                // Remove commas and get numeric value
-                function parseNumericValue(value) {
-                    return parseInt(value.replace(/,/g, '')) || 0;
-                }
+                    // Trigger initial validation
+                    this.validatePercentageInput(input);
+                },
 
-                // Validation function for message count with comma support
-                function validateMessageCount(value) {
-                    const messageCount = parseNumericValue(value);
-                    const spinnerControl = messageCountInput.closest('.spinner-control');
+                /**
+                 * Validate message count field
+                 */
+                validateMessageCount(value) {
+                    const messageCount = parseInt(value.replace(/,/g, '')) || 0;
+                    const messageCountInput = document.getElementById('messageCount');
+                    const spinnerControl = messageCountInput?.closest('.spinner-control');
 
                     if (spinnerControl) {
-                        // Remove existing adorner
                         spinnerControl.removeAttribute('data-adorner');
 
-                        // Apply adorner based on validation (must be > 0 and >= 1000)
-                        if (messageCount <= 0) {
-                            spinnerControl.setAttribute('data-adorner', 'red');
-                        } else if (messageCount < 1000) {
+                        if (messageCount <= 0 || messageCount < 1000) {
                             spinnerControl.setAttribute('data-adorner', 'red');
                         } else {
                             spinnerControl.setAttribute('data-adorner', 'green');
                         }
                     }
-
-                    // Update spinner button states
-                    if (spinnerDown) {
-                        spinnerDown.disabled = messageCount <= 1000;
-                    }
-
-                    // In demo mode, generate button stays disabled regardless of validation
-                    const generateBtn = document.getElementById('generateDataset');
-                    if (generateBtn && !IS_DEMO_MODE) {
-                        // Only enable generate button if not in demo mode and validation passes
-                        generateBtn.disabled = messageCount < 1000;
-                    }
-
-                    return messageCount > 0 && messageCount >= 1000;
                 }
+            };
 
-                if (messageCountInput && spinnerUp && spinnerDown) {
-                    // Set default value with comma formatting
-                    messageCountInput.value = '1,000';
-                    validateMessageCount('1,000');
+            // ============================================================================
+            // UI INTERACTION MANAGER
+            // ============================================================================
 
-                    // Add input event listeners for typing and pasting
-                    messageCountInput.addEventListener('input', (e) => {
-                        let value = e.target.value;
+            BeaconAuthor.modules.UIManager = {
 
-                        // Remove non-numeric characters except commas
-                        value = value.replace(/[^0-9,]/g, '');
+                /**
+                 * Update generate button state based on validation
+                 */
+                updateGenerateButtonState() {
+                    const generateBtn = document.getElementById('generateDataset');
+                    if (!generateBtn) return;
 
-                        // Parse numeric value for validation
-                        const numericValue = parseNumericValue(value);
+                    const total = BeaconAuthor.modules.PercentageManager.calculateTotal();
+                    const hasZeros = BeaconAuthor.modules.PercentageManager.hasZeroPercentProducts();
 
-                        // Ensure it's positive
-                        if (numericValue > 0) {
-                            // Reformat with commas
-                            e.target.value = formatWithCommas(numericValue);
-                            validateMessageCount(e.target.value);
-                        } else {
-                            // If 0 or negative, clear and mark invalid
-                            e.target.value = '';
-                            validateMessageCount('0');
+                    generateBtn.disabled = (total !== 100) || hasZeros;
+
+                    if (BeaconAuthor.config.IS_DEMO_MODE && !generateBtn.disabled) {
+                        generateBtn.style.background = 'linear-gradient(135deg, #ff914d, #ff7b3d)';
+                        generateBtn.title = 'Demo Mode - Click to see generation preview';
+                    } else if (BeaconAuthor.config.IS_DEMO_MODE) {
+                        generateBtn.title = 'Fix percentages to preview generation';
+                    }
+                },
+
+                /**
+                 * Setup utility dropdown functionality
+                 */
+                setupUtilityDropdowns() {
+                    const infoIcon = document.getElementById('infoIcon');
+                    const infoDropdown = document.getElementById('infoDropdown');
+
+                    if (infoIcon && infoDropdown) {
+                        infoIcon.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isVisible = infoDropdown.style.display === 'block';
+                            infoDropdown.style.display = isVisible ? 'none' : 'block';
+                        });
+                    }
+
+                    // Close dropdowns when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.utility-icon') && infoDropdown) {
+                            infoDropdown.style.display = 'none';
+                        }
+                    });
+                },
+
+                /**
+                 * Setup spinner functionality for message count
+                 */
+                setupSpinnerFunctionality() {
+                    const messageCountInput = document.getElementById('messageCount');
+                    const spinnerUp = document.querySelector('.spinner-up');
+                    const spinnerDown = document.querySelector('.spinner-down');
+
+                    if (!messageCountInput) return;
+
+                    // Format with commas
+                    const formatWithCommas = (num) => {
+                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    };
+
+                    // Parse numeric value
+                    const parseNumericValue = (value) => {
+                        return parseInt(value.replace(/,/g, '')) || 0;
+                    };
+
+                    // Spinner up
+                    if (spinnerUp) {
+                        spinnerUp.addEventListener('click', () => {
+                            const current = parseNumericValue(messageCountInput.value);
+                            const newValue = current + 1000;
+                            messageCountInput.value = formatWithCommas(newValue);
+                            BeaconAuthor.modules.ValidationManager.validateMessageCount(messageCountInput.value);
+                        });
+                    }
+
+                    // Spinner down
+                    if (spinnerDown) {
+                        spinnerDown.addEventListener('click', () => {
+                            const current = parseNumericValue(messageCountInput.value);
+                            const newValue = Math.max(1000, current - 1000);
+                            messageCountInput.value = formatWithCommas(newValue);
+                            BeaconAuthor.modules.ValidationManager.validateMessageCount(messageCountInput.value);
+                        });
+                    }
+
+                    // Input validation
+                    messageCountInput.addEventListener('input', () => {
+                        BeaconAuthor.modules.ValidationManager.validateMessageCount(messageCountInput.value);
+                    });
+                }
+            };
+
+            // ============================================================================
+            // DATACARD MANAGEMENT
+            // ============================================================================
+
+            BeaconAuthor.modules.DatacardManager = {
+
+                /**
+                 * Initialize percentage validation for all existing datacards
+                 */
+                initializeAllDatacards() {
+                    const datacards = document.querySelectorAll('.datacard');
+
+                    datacards.forEach(card => {
+                        const symbol = card.dataset.symbol;
+                        const percentageInput = card.querySelector('.percentage-input');
+
+                        if (percentageInput && symbol) {
+                            // Setup validation for this input
+                            BeaconAuthor.modules.ValidationManager.setupPercentageValidation(percentageInput, symbol);
+
+                            // Setup remove button
+                            const removeBtn = card.querySelector('.remove-symbol');
+                            if (removeBtn) {
+                                removeBtn.addEventListener('click', () => {
+                                    BeaconAuthor.state.productPercentages.delete(symbol);
+                                    card.remove();
+                                    BeaconAuthor.modules.PercentageManager.redistributeCleanPercentages();
+                                    BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
+                                    this.updateEmptyStateDisplay();
+                                });
+                            }
                         }
                     });
 
-                    messageCountInput.addEventListener('paste', (e) => {
-                        // Use timeout to get the value after paste
-                        setTimeout(() => {
-                            let value = messageCountInput.value;
-                            value = value.replace(/[^0-9,]/g, '');
-                            const numericValue = parseNumericValue(value);
+                    // Update allocation display after initialization
+                    BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
+                },
 
-                            if (numericValue > 0) {
-                                messageCountInput.value = formatWithCommas(numericValue);
-                                validateMessageCount(messageCountInput.value);
-                            } else {
-                                messageCountInput.value = '';
-                                validateMessageCount('0');
+                /**
+                 * Update empty state display
+                 */
+                updateEmptyStateDisplay() {
+                    const emptyMessage = document.getElementById('emptyProductsMessage');
+                    const datacards = document.querySelectorAll('.datacard');
+
+                    if (emptyMessage) {
+                        emptyMessage.style.display = datacards.length === 0 ? 'block' : 'none';
+                    }
+                },
+
+                /**
+                 * Create sample datacards for demo mode
+                 */
+                createDemoDatacards() {
+                    const datacardContainer = document.getElementById('datacardContainer');
+                    if (!datacardContainer || typeof createDetailedDatacard !== 'function') {
+                        return;
+                    }
+
+                    const symbols = ['AAPL', 'MSFT', 'GOOGL', 'TSLA'];
+                    const basePercentage = Math.floor(100 / symbols.length);
+                    const remainder = 100 % symbols.length;
+
+                    // Clear container
+                    datacardContainer.innerHTML = '';
+
+                    symbols.forEach((symbol, index) => {
+                        try {
+                            const card = createDetailedDatacard(symbol);
+                            if (card) {
+                                // Set percentage that sums to 100%
+                                const percentage = basePercentage + (index < remainder ? 1 : 0);
+                                const percentInput = card.querySelector('.percentage-input');
+                                if (percentInput) {
+                                    percentInput.value = percentage;
+                                }
+
+                                datacardContainer.appendChild(card);
                             }
-                        }, 0);
+                        } catch (error) {
+                            console.error(`Error creating ${symbol} datacard:`, error);
+                        }
                     });
 
-                    spinnerUp.addEventListener('click', () => {
-                        const current = parseNumericValue(messageCountInput.value);
-                        const newValue = current + 500;
-                        messageCountInput.value = formatWithCommas(newValue);
-                        validateMessageCount(messageCountInput.value);
-                    });
-
-                    spinnerDown.addEventListener('click', () => {
-                        const current = parseNumericValue(messageCountInput.value);
-                        const newValue = Math.max(1000, current - 500);  // Don't go below 1000
-                        messageCountInput.value = formatWithCommas(newValue);
-                        validateMessageCount(messageCountInput.value);
-                    });
+                    // Initialize validation for new cards
+                    setTimeout(() => this.initializeAllDatacards(), 100);
                 }
+            };
 
-                // Don't setup fallback symbol functionality - let the real app handle it
-                console.log('Basic UI controls initialized. Waiting for full application to load...');
+            // ============================================================================
+            // APPLICATION INITIALIZATION
+            // ============================================================================
 
-                // Initialize percentage validation for existing datacards
-                initializePercentageValidation();
-            });
+            BeaconAuthor.init = function() {
+                console.log('🚀 Initializing Beacon Author Application v' + this.config.version);
 
-            // Initialize percentage validation for existing datacards
-            function initializePercentageValidation() {
-                const datacards = document.querySelectorAll('.datacard');
+                // Initialize modules in proper order
+                this.modules.DemoConfig.init();
 
-                datacards.forEach(card => {
-                    const symbol = card.dataset.symbol;
-                    const percentageInput = card.querySelector('.percentage-input');
+                // Setup UI components
+                this.modules.UIManager.setupUtilityDropdowns();
+                this.modules.UIManager.setupSpinnerFunctionality();
 
-                    if (percentageInput && symbol) {
-                        // Initialize tracking state
-                        const initialValue = parseInt(percentageInput.value) || 0;
-                        productPercentages.set(symbol, { percentage: initialValue, isDirty: false });
+                // Initialize existing datacards
+                this.modules.DatacardManager.initializeAllDatacards();
 
-                        // Add event listeners with input filtering
-                        percentageInput.addEventListener('input', (e) => {
-                            filterPercentageInput(e.target);
-                            validatePercentageInput(e.target);
-                        });
+                // Demo mode specific initialization
+                if (this.config.IS_DEMO_MODE) {
+                    setTimeout(() => {
+                        this.modules.DatacardManager.createDemoDatacards();
 
-                        percentageInput.addEventListener('change', (e) => {
-                            validatePercentageInput(e.target);
-                        });
+                        // Setup demo generate button
+                        const generateBtn = document.getElementById('generateDataset');
+                        if (generateBtn) {
+                            // Remove existing handlers
+                            const newBtn = generateBtn.cloneNode(true);
+                            generateBtn.parentNode.replaceChild(newBtn, generateBtn);
 
-                        // Prevent non-numeric keypress
-                        percentageInput.addEventListener('keypress', (e) => {
-                            // Allow backspace, delete, tab, escape, enter, and arrow keys
-                            if ([8, 9, 27, 13, 46, 37, 38, 39, 40].indexOf(e.keyCode) !== -1 ||
-                                // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-                                (e.keyCode === 65 && e.ctrlKey === true) ||
-                                (e.keyCode === 67 && e.ctrlKey === true) ||
-                                (e.keyCode === 86 && e.ctrlKey === true) ||
-                                (e.keyCode === 88 && e.ctrlKey === true)) {
-                                return;
-                            }
-                            // Ensure that it is a number and stop the keypress
-                            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                            // Add demo handler
+                            newBtn.addEventListener('click', (e) => {
                                 e.preventDefault();
-                            }
-                        });
 
-                        // Add remove button functionality
-                        const removeBtn = card.querySelector('.remove-symbol');
-                        if (removeBtn) {
-                            removeBtn.addEventListener('click', () => {
-                                productPercentages.delete(symbol);
-                                card.remove();
-                                redistributeCleanPercentages();
-                                updateAllocationDisplay();
-                                updateEmptyStateDisplay(); // Rule 2: Show empty message if no products remain
+                                const total = this.modules.PercentageManager.calculateTotal();
+                                const hasZeros = this.modules.PercentageManager.hasZeroPercentProducts();
+
+                                if (total === 100 && !hasZeros) {
+                                    alert('🎯 Demo Preview\n\nDataset configuration is valid!\n\nIn production mode, this would generate real market data files.\n\nCurrent allocation: ' + total + '%');
+                                } else {
+                                    alert('⚠️ Configuration incomplete\n\nTotal allocation: ' + total + '%\nZero allocations: ' + (hasZeros ? 'Yes' : 'No') + '\n\nPlease fix allocation percentages.');
+                                }
                             });
                         }
-                    }
-                });
+                    }, 200);
+                }
 
-                // Update allocation display after initialization
-                updateAllocationDisplay();
+                console.log('✅ Beacon Author Application initialized successfully');
+            };
+
+            // ============================================================================
+            // APPLICATION STARTUP
+            // ============================================================================
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => BeaconAuthor.init());
+            } else {
+                BeaconAuthor.init();
             }
+
+            // Expose BeaconAuthor globally for debugging
+            window.BeaconAuthor = BeaconAuthor;
 
         </script>
     </body>
