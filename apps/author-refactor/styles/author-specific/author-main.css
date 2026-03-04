@@ -1,2 +1,304 @@
 /* Author-Specific Custom Styles */
-/* This file will contain extracted inline styles and Author-specific customizations */
+
+/* ========== LAYOUT UTILITIES ========== */
+.flex-1 {
+    flex: 1 !important;
+}
+
+.flex-row {
+    display: flex !important;
+    gap: 8px !important;
+}
+
+.flex-row-mb {
+    display: flex !important;
+    gap: 8px !important;
+    margin-bottom: 1em !important;
+}
+
+.flex-row-wide {
+    display: flex !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+}
+
+.flex-center {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.flex-center-gap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+    padding: 8px !important;
+    background: rgba(255,255,255,0.03) !important;
+    border-radius: 6px !important;
+}
+
+/* ========== FORM CONTROLS ========== */
+.form-control-standard {
+    flex: 1 !important;
+    padding: 0.75em !important;
+    font-size: 0.9em !important;
+    height: 2.8em !important;
+    box-sizing: border-box !important;
+}
+
+.form-select-white {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.form-option-white {
+    color: white !important;
+}
+
+/* ========== BUTTON STYLES ========== */
+.btn-control {
+    flex: 1 !important;
+    padding: 0.75em !important;
+    font-size: 0.9em !important;
+    height: 2.8em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    box-sizing: border-box !important;
+}
+
+.btn-disabled {
+    opacity: 0.5 !important;
+}
+
+.btn-mini {
+    background: rgba(107,182,255,0.1) !important;
+    border: 1px solid rgba(107,182,255,0.3) !important;
+    border-radius: 3px !important;
+    color: #6bb6ff !important;
+    width: 20px !important;
+    height: 16px !important;
+    font-size: 10px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.btn-tag {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 4px 8px !important;
+    background: rgba(107,182,255,0.1) !important;
+    border: 1px solid rgba(107,182,255,0.3) !important;
+    border-radius: 4px !important;
+    color: #6bb6ff !important;
+    font-size: 0.8em !important;
+    cursor: pointer !important;
+}
+
+/* ========== TYPOGRAPHY ========== */
+.text-label {
+    font-size: 0.75em !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+    font-weight: 500 !important;
+}
+
+.text-small {
+    font-size: 0.85em !important;
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.text-small-blue {
+    font-size: 0.85em !important;
+    color: #6bb6ff !important;
+}
+
+.text-orange {
+    color: #ff9500 !important;
+    font-weight: 600 !important;
+}
+
+.text-tiny {
+    font-size: 0.65em !important;
+    opacity: 0.8 !important;
+    margin-bottom: 1px !important;
+}
+
+.text-spacing-small {
+    margin-bottom: 0.25em !important;
+}
+
+/* ========== PANELS AND CONTAINERS ========== */
+.panel-header {
+    padding: 0.2em 1em 0.8em 1em;
+    border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+}
+
+.panel-section {
+    padding: 8px;
+}
+
+.panel-section-border {
+    padding: 8px;
+    border-bottom: 1px solid rgba(107,182,255,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.empty-state {
+    padding: 1em;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+}
+
+.empty-state-compact {
+    padding: 0.6em 1em;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    text-align: center;
+}
+
+/* ========== STATE UTILITIES ========== */
+.hidden {
+    display: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: relative;
+    background: rgba(16,22,36,0.95);
+    border: 1px solid rgba(107,182,255,0.3);
+    border-radius: 6px;
+    margin-top: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* ========== LAYOUT SPECIFIC ========== */
+.main-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.app-layout-container {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 800px !important;
+    display: block !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0px !important;
+    overflow: visible !important;
+}
+
+.datacards-panel-main {
+    position: absolute !important;
+    left: 0px !important;
+    top: 10px !important;
+    right: 0px !important;
+    min-height: 600px !important;
+    background: var(--glass-panel) !important;
+    border: 1px solid var(--border-blue) !important;
+    border-radius: 12px !important;
+    padding: 1.5em !important;
+    box-sizing: border-box !important;
+    backdrop-filter: blur(10px) !important;
+    overflow-y: auto !important;
+    z-index: 1 !important;
+}
+
+.content-layout {
+    display: flex !important;
+    gap: 2.5em !important;
+    margin-top: 18px !important;
+    min-height: 400px !important;
+    max-width: 3000px !important;
+    margin: 18px auto 0 auto !important;
+    padding: 0 1em !important;
+    box-sizing: border-box !important;
+}
+
+.portfolio-sidebar {
+    flex: 0 0 280px !important;
+    position: relative !important;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+    padding: 2em !important;
+    overflow: visible !important;
+}
+
+.title-header-flex {
+    text-align: center !important;
+    margin-bottom: 0.4em !important;
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: center !important;
+    gap: 0.5em !important;
+}
+
+.main-title {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 2.8em !important;
+    font-weight: 900 !important;
+    margin: 0 !important;
+    letter-spacing: -0.03em !important;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+}
+
+.portfolio-title {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600 !important;
+    font-size: 1.1em !important;
+    margin: 0 0 1.5em 0 !important;
+    padding-bottom: 0.75em !important;
+    border-bottom: 1px solid rgba(107, 182, 255, 0.3) !important;
+}
+
+.panel-header {
+    padding: 0.2em 1em 0.8em 1em !important;
+    border-bottom: 1px solid rgba(107, 182, 255, 0.2) !important;
+}
+
+/* ========== DEMO BANNER ========== */
+#demo-banner.demo-banner {
+    display: block !important;
+    background: linear-gradient(90deg, #6bb6ff, #3a7afe) !important;
+    border: 2px solid rgba(58, 122, 254, 0.4) !important;
+    color: white !important;
+    padding: 0.6em !important;
+    text-align: center !important;
+    margin: 0.5em 2em !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+/* ========== BRAND ELEMENTS ========== */
+.beacon-brand-icon .brand-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.brand-separator {
+    color: #d97841 !important;
+    text-shadow: 0 0 6px rgba(217, 120, 65, 0.3) !important;
+    font-weight: 600 !important;
+    margin: 0 1em !important;
+}
+
+.brand-subtitle {
+    color: lightgray !important;
+}

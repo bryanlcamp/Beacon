@@ -7,36 +7,21 @@
         <title>Author - Beacon Financial Technologies</title>
 
         <!-- Author-Specific CSS -->
-        <link rel="stylesheet" href="styles/author-specific/base/navy-page-gradient.css">
-        <link rel="stylesheet" href="styles/author-specific/base/inter-local.css">
-        <link rel="stylesheet" href="styles/author-specific/components/glass-panels.css">
-        <link rel="stylesheet" href="styles/author-specific/components/interactive-icons.css">
-        <link rel="stylesheet" href="styles/author-specific/components/typography.css">
-        <link rel="stylesheet" href="styles/author-specific/components/dropdowns.css">
-        <link rel="stylesheet" href="styles/author-specific/animations/core-animations.css">
-        <link rel="stylesheet" href="styles/author-specific/pages/command-center-utilities.css">
-        <link rel="stylesheet" href="styles/author-specific/pages/command-center-base.css">
-        <link rel="stylesheet" href="styles/author-specific/author-main.css">
+        <link rel="stylesheet" href="styles/author-specific/base/navy-page-gradient.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/base/inter-local.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/components/glass-panels.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/components/interactive-icons.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/components/typography.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/components/dropdowns.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/animations/core-animations.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/pages/command-center-utilities.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/pages/command-center-base.css?v=202603042240">
+        <link rel="stylesheet" href="styles/author-specific/author-main.css?v=202603042240">
 
         <!-- Author app specific styles -->
         <style>
-            /* FORCE PANEL GRID BEHAVIOR */
-            main#app-container.beacon-page-content div.app-layout section.config-panel {
-                background: var(--glass-panel) !important;
-                border: 1px solid var(--border-blue) !important;
-                border-radius: 12px !important;
-                padding: 1.5em !important;
-                box-sizing: border-box !important;
-                backdrop-filter: blur(10px) !important;
-                min-height: fit-content !important;
-                float: none !important;
-                position: relative !important;
-                display: block !important;
-                width: auto !important;
-                margin: 0 !important;
-            }
-
-            main#app-container.beacon-page-content div.app-layout section.datacards-panel {
+            /* Clean main content styling */
+            #main-content {
                 background: var(--glass-panel) !important;
                 border: 1px solid var(--border-blue) !important;
                 border-radius: 12px !important;
@@ -45,28 +30,6 @@
                 backdrop-filter: blur(10px) !important;
                 min-height: fit-content !important;
                 overflow: visible !important;
-                float: none !important;
-                position: relative !important;
-                display: block !important;
-                width: auto !important;
-                margin: 0 !important;
-            }
-
-            /* Clean datacards panel styling */
-            #datacards-panel-debug {
-                background: var(--glass-panel) !important;
-                border: 1px solid var(--border-blue) !important;
-                border-radius: 12px !important;
-                padding: 1.5em !important;
-                box-sizing: border-box !important;
-                backdrop-filter: blur(10px) !important;
-                min-height: fit-content !important;
-                overflow: visible !important;
-            }
-
-            /* Force override any external CSS */
-            * {
-                box-sizing: border-box !important;
             }
 
             /* Reset any conflicting container styles */
@@ -101,33 +64,24 @@
                 --spacing-lg: 1.5em;
                 --spacing-xl: 2em;
             }
-        </style>
 
-        <!-- Modular JavaScript imports - TEMPORARILY DISABLED FOR DEMO -->
-        <!-- <script type="module" src="js/validation.js"></script> -->
-        <!-- <script type="module" src="js/datacard-factory.js"></script> -->
-        <!-- <script type="module" src="js/microstructure-controls.js"></script> -->
+        /* ========== GLOBAL PAGE BEHAVIOR ========== */
+        html, body {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            pointer-events: auto !important;
+        }
 
-        <style>
-            html,
-            body {
-                overflow-y: auto;
-                scroll-behavior: smooth;
-            }
+        * {
+            pointer-events: auto !important;
+        }
 
-            /* Emergency fix for interaction blocking */
-            body, html {
-                pointer-events: auto !important;
-            }
+        .main-container, main {
+            pointer-events: auto !important;
+            z-index: auto !important;
+        }
 
-            * {
-                pointer-events: auto !important;
-            }
-
-            .main-container, main {
-                pointer-events: auto !important;
-                z-index: auto !important;
-            }
+        /* ========== BASE TYPOGRAPHY & LAYOUT ========== */
 
             body {
                 font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -138,6 +92,8 @@
                 /* Override navy-page-gradient.css overflow setting for scrollable pages */
                 overflow-y: auto !important;
             }
+
+            /* ========== HEADER & NAVIGATION ========== */
 
             .beacon-page-header {
                 background: rgba(16, 22, 36, 0.9);
@@ -250,14 +206,15 @@
                 flex: none !important;
             }
 
-            main#app-container .config-panel,
-            main#app-container .datacards-panel {
+            .main-content {
                 background: rgba(16, 22, 36, 0.8);
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(107, 182, 255, 0.2);
                 border-radius: 12px;
                 padding: 1.5em;
             }
+
+            /* ========== FORM CONTROLS & INPUTS ========== */
 
             .form-group {
                 margin-bottom: 1.5em;
@@ -359,16 +316,6 @@
                 gap: 0.75em;
             }
 
-            .demo-banner {
-                background: rgba(255, 145, 77, 0.1);
-                border: 1px solid rgba(255, 145, 77, 0.3);
-                color: #ff914d;
-                padding: 0.75em;
-                text-align: center;
-                margin: 1em 2em;
-                border-radius: 8px;
-            }
-
             /* FORCE DATACARD CONTAINER GRID */
             main#app-container.beacon-page-content .datacard-container {
                 display: grid !important;
@@ -452,19 +399,6 @@
                 margin-bottom: 0.5em;
             }
 
-            /* All allocation display boxes removed - using simple text only */
-
-            /* Red Adorner for Invalid Percentage Inputs - DISABLED */
-            .percentage-input.invalid {
-                /* border-color: #ff5858 !important;
-                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.2) !important; */
-            }
-
-            .percentage-input.invalid:focus {
-                /* border-color: #ff5858 !important;
-                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.3) !important; */
-            }
-
             /* Real-time Symbol Input Validation States */
             .symbol-input.duplicate-symbol {
                 border-color: #ff5858 !important;
@@ -494,7 +428,9 @@
                 color: rgba(255, 255, 255, 0.5) !important;
             }
 
-            /* Datacard styling fallback */
+            /* ========== DATACARD COMPONENTS ========== */
+
+            /* Datacard Base Styling */
             .datacard {
                 background: rgba(24, 31, 46, 0.9);
                 border: 1px solid rgba(107, 182, 255, 0.2);
@@ -510,6 +446,23 @@
                 background: rgba(107, 182, 255, 0.08) !important;
                 border-color: rgba(107, 182, 255, 0.3) !important;
                 box-shadow: 0 0 15px rgba(107, 182, 255, 0.1) !important;
+            }
+
+            .datacard.collapsed .datacard-content {
+                max-height: 0 !important;
+                overflow: hidden !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                opacity: 0 !important;
+                transition: all 0.4s ease;
+            }
+
+            .datacard:not(.collapsed) .datacard-content {
+                max-height: 1000px;
+                opacity: 1;
+                transition: all 0.4s ease;
             }
 
             .datacard-header {
@@ -591,7 +544,7 @@
                 border-color: #ff5858;
             }
 
-            /* Responsive - Mobile Phones Only */
+            /* Mobile Responsive */
             @media (max-width: 480px) {
                 .app-layout {
                     grid-template-columns: 1fr;
@@ -600,145 +553,6 @@
                 .config-actions {
                     justify-content: center;
                 }
-            }
-
-            /* Datacard styling fallback */
-            .datacard {
-                background: rgba(24, 31, 46, 0.9);
-                border: 1px solid rgba(107, 182, 255, 0.2);
-                border-radius: 8px;
-                padding: 0.5em 0.6em;
-                margin-bottom: 0.6em;
-                transition: all 0.3s ease;
-                max-width: 320px;
-                box-sizing: border-box;
-            }
-
-            .datacard-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 0.5em;
-                padding-bottom: 0.3em;
-                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-                cursor: pointer;
-                transition: all 0.2s ease;
-            }
-
-            .datacard-center {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex: 0 0 auto;
-            }
-
-            .datacard-center {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex: 0 0 auto;
-            }
-
-            .datacard.collapsed .datacard-content {
-                max-height: 0;
-                overflow: hidden;
-                padding-top: 0;
-                padding-bottom: 0;
-                margin-top: 0;
-                opacity: 0;
-            }
-
-            .datacard-content {
-                max-height: 1000px;
-                overflow: visible;
-                transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
-                opacity: 1;
-            }
-
-            .collapse-button {
-                background: none;
-                border: none;
-                color: rgba(255, 255, 255, 0.6);
-                font-size: 16px;
-                cursor: pointer;
-                padding: 4px;
-                border-radius: 4px;
-                transition: all 0.2s ease;
-                transform-origin: center;
-            }
-
-            .collapse-button:hover {
-                color: #6bb6ff;
-                background: rgba(107, 182, 255, 0.1);
-            }
-
-            .datacard.collapsed .collapse-button {
-                transform: rotate(-90deg);
-            }
-
-            .datacard.collapsed {
-                min-height: auto;
-            }
-
-            .datacard.collapsed .datacard-content {
-                max-height: 0 !important;
-                overflow: hidden !important;
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
-                opacity: 0 !important;
-                transition: all 0.4s ease;
-            }
-
-            .datacard:not(.collapsed) .datacard-content {
-                max-height: 1000px;
-                opacity: 1;
-                transition: all 0.4s ease;
-            }
-
-            .symbol-display {
-                font-weight: 600;
-                color: rgba(255, 255, 255, 0.75);
-                font-size: 1.1em;
-                letter-spacing: 0.01em;
-                line-height: 1.0;
-                margin: 0;
-                white-space: nowrap;
-            }
-
-            .exchange-prefix {
-                color: #6bb6ff;
-                margin-right: 0.25em;
-                font-weight: 700;
-            }
-
-            .symbol-name {
-                color: rgba(255, 255, 255, 0.75);
-                font-weight: 800;
-            }
-
-            .datacard-controls {
-                display: flex;
-                align-items: center;
-                gap: 0.3em;
-            }
-
-            .percentage-input {
-                width: 40px;
-                background: rgba(16, 22, 36, 0.8);
-                border: 1px solid rgba(107, 182, 255, 0.3);
-                border-radius: 4px;
-                padding: 0.3em 0.4em;
-                color: rgba(255, 255, 255, 0.75);
-                font-size: 0.85em;
-                text-align: right;
-            }
-
-            /* Make placeholder text visible */
-            .percentage-input::placeholder {
-                color: #6bb6ff;
-                opacity: 0.8;
             }
 
             /* Hide number input spinners */
@@ -907,37 +721,7 @@
                 cursor: pointer;
             }
 
-            /* Commented out range-input-group horizontal layout for cleaner UI
-            .range-input-group {
-                display: flex;
-                align-items: center;
-                gap: 0.5em;
-                margin-bottom: 0.25em;
-            }
-
-            .range-input-group .range-input {
-                flex: 1;
-                margin-bottom: 0;
-            }
-
-            .range-number-input {
-                width: 60px;
-                background: rgba(24, 31, 46, 0.9);
-                border: 1px solid rgba(107, 182, 255, 0.2);
-                border-radius: 4px;
-                padding: 0.3em 0.5em;
-                color: rgba(255, 255, 255, 0.85);
-                font-family: inherit;
-                font-size: 0.8em;
-                text-align: center;
-            }
-
-            .range-number-input:focus {
-                outline: none;
-                border-color: var(--color-blue);
-                box-shadow: 0 0 0 1px var(--border-blue-active);
-            }
-            */
+            /* Range Input Group - Vertical Layout */
 
             .range-input-group {
                 display: flex !important;
@@ -1071,7 +855,6 @@
                 border: 2px solid rgba(255, 255, 255, 0.3);
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            }
                 transition: all 0.15s ease;
             }
 
@@ -1714,6 +1497,54 @@
                 cursor: pointer !important;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
             }
+
+            /* ========== AUTHOR REFACTOR OVERRIDES ========== */
+            #demo-banner.demo-banner {
+                display: block !important;
+                background: linear-gradient(90deg, #6bb6ff, #3a7afe) !important;
+                border: 2px solid rgba(58, 122, 254, 0.4) !important;
+                color: white !important;
+                padding: 0.6em !important;
+                text-align: center !important;
+                margin: 0.5em 2em !important;
+                border-radius: 8px !important;
+                font-weight: 600 !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+            }
+
+            .flex-row { display: flex !important; gap: 8px !important; }
+            .flex-row-mb { display: flex !important; gap: 8px !important; margin-bottom: 1em !important; }
+            .flex-row-wide { display: flex !important; gap: 16px !important; margin-bottom: 24px !important; }
+            .flex-center { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+            .flex-1 { flex: 1 !important; }
+
+            .form-control-standard {
+                flex: 1 !important;
+                padding: 0.75em !important;
+                font-size: 0.9em !important;
+                height: 2.8em !important;
+                box-sizing: border-box !important;
+            }
+
+            .btn-control {
+                flex: 1 !important;
+                padding: 0.75em !important;
+                font-size: 0.9em !important;
+                height: 2.8em !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                color: white !important;
+                box-sizing: border-box !important;
+            }
+
+            .btn-disabled { opacity: 0.5 !important; }
+
+            .beacon-brand-icon .brand-image {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;
+            }
         </style>
     </head>
 
@@ -1739,12 +1570,12 @@
             <div class="beacon-page-nav">
                 <div class="beacon-brand-header">
                     <a href="/" class="beacon-brand-icon" title="Beacon Financial Technologies">
-                        <img src="/assets/images/beacon-brand-large.svg" alt="Beacon" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="/assets/images/beacon-brand-large.svg" alt="Beacon" class="brand-image">
                     </a>
                     <a href="/" class="beacon-brand-main">Beacon.</a>
-                    <span class="beacon-brand-separator" style="color: #d97841; text-shadow: 0 0 6px rgba(217, 120, 65, 0.3); font-weight: 600; margin: 0 1em;">|</span>
+                    <span class="beacon-brand-separator brand-separator">|</span>
                     <h1 class="beacon-page-title">Author.</h1>
-                    <h3 style="color: lightgray;">Create Synthetic Datasets. </h3>
+                    <h3 class="brand-subtitle">Create Synthetic Datasets. </h3>
                 </div>
                 <div class="beacon-nav-actions">
                     <a href="/" class="beacon-nav-back">
@@ -1756,55 +1587,40 @@
         </header>
 
         <!-- Demo Mode Banner -->
-        <div id="demo-banner" class="demo-banner" style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 0.6em; text-align: center; margin: 0.5em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"
+        <div id="demo-banner" class="demo-banner"
             <div class="demo-content">
                 <span class="demo-text">Interactive demo mode. No datasets will be created.</span>
             </div>
         </div>
 
         <!-- Main Application -->
-        <main class="beacon-page-content" id="app-container"
-            style="display: block !important; width: 100% !important; max-width: none !important; position: relative !important; overflow: visible !important;">
+        <main class="beacon-page-content main-container" id="app-container">
 
             <!-- Two-Panel Layout -->
-            <div class="app-layout" role="application" aria-label="Dataset Generator"
-                style="position: relative !important; width: 100% !important; height: auto !important; min-height: 800px !important; display: block !important; max-width: 1600px !important; margin: 0 auto !important; padding: 0px !important; overflow: visible !important;">
+            <div class="app-layout app-layout-container" role="application" aria-label="Dataset Generator">
 
-                <!-- Combined Panel: Global Controls and Data Cards -->
-                <section id="datacards-panel-debug" class="datacards-panel" aria-labelledby="datacards-panel-title"
-                    style="position: absolute !important; left: 0px !important; top: 10px !important; right: 0px !important; min-height: 600px !important; background: var(--glass-panel); border: 1px solid var(--border-blue); border-radius: 12px; padding: 1.5em; box-sizing: border-box; backdrop-filter: blur(10px); overflow-y: auto !important; z-index: 1 !important;">
-                    <header class="panel-header"
-                        style="padding: 0.2em 1em 0.8em 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
-
-                        <!-- Page Purpose Title -->
-                        <div style="text-align: center; margin-bottom: 0.4em; display: flex; align-items: baseline; justify-content: center; gap: 0.5em;">
-                            <h2 style="color: rgba(255, 255, 255, 0.85); font-size: 2.8em; font-weight: 900; margin: 0; letter-spacing: -0.03em; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
-                                Author.
-                            </h2>
-                        </div>
-                    </header>
-
+                <!-- Main Content Section -->
+                <section id="main-content" class="main-content" aria-labelledby="main-title">
                     <!-- Main Content: Controls and Data Cards Side by Side -->
-                    <div style="display: flex; gap: 2.5em; margin-top: 18px; min-height: 400px; max-width: 3000px; margin: 18px auto 0 auto; padding: 0 1em; box-sizing: border-box;">
+                    <div class="content-layout">
 
                         <!-- Left Side: Portfolio Controls -->
-                        <div style="flex: 0 0 280px; position: relative; z-index: 10; pointer-events: auto; padding: 2em; overflow: visible;">
-                            <h2 style="color: rgba(255, 255, 255, 0.9); font-weight: 600; font-size: 1.1em; margin: 0 0 1.5em 0; padding-bottom: 0.75em; border-bottom: 1px solid rgba(107, 182, 255, 0.3);">Portfolio</h2>
+                        <div class="portfolio-sidebar">
+                            <h2 class="portfolio-title">Portfolio</h2>
 
                             <!-- Add Product Section -->
                             <div class="config-section">
                                 <div class="form-group">
-                                    <div style="display: flex; gap: 8px; margin-bottom: 1em;">
-                                        <input type="text" id="symbolInput" class="symbol-input" placeholder="Enter Symbol"
-                                            style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; box-sizing: border-box;" >
+                                    <div class="flex-row-mb">
+                                        <input type="text" id="symbolInput" class="symbol-input form-control-standard" placeholder="Enter Symbol" >
                                     </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <select id="exchangeSelect" class="form-select" style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; box-sizing: border-box; color: white; font-weight: bold;">
-                                            <option value="CME" style="color: white;">CME</option>
-                                            <option value="NASDAQ" style="color: white">NSDQ</option>
-                                            <option value="NYSE" style="color: white">NYSE</option>
+                                    <div class="flex-row">
+                                        <select id="exchangeSelect" class="form-select form-control-standard form-select-white">
+                                            <option value="CME" class="form-option-white">CME</option>
+                                            <option value="NASDAQ" class="form-option-white">NSDQ</option>
+                                            <option value="NYSE" class="form-option-white">NYSE</option>
                                         </select>
-                                        <button type="button" id="addSymbol" class="btn btn-secondary" disabled style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: center; color: white; opacity: 0.5;">
+                                        <button type="button" id="addSymbol" class="btn btn-secondary btn-control btn-disabled" disabled>
                                             Add
                                         </button>
                                     </div>
@@ -1830,9 +1646,9 @@
                             <!-- File Size & Allocation -->
                             <div class="config-section">
                                 <div class="form-group">
-                                    <div style="display: flex; gap: 8px;">
+                                    <div class="flex-row">
                                         <div class="tooltip-container" style="flex: 1; padding: 0.6em; font-size: 0.85em; height: 44px; box-sizing: border-box; background: rgba(217, 120, 65, 0.1); border: 1px solid rgba(217, 120, 65, 0.3); border-radius: 4px; color: #d97841; font-weight: 600; display: flex; flex-direction: column; justify-content: center; cursor: help;">
-                                            <div style="font-size: 0.65em; opacity: 0.8; margin-bottom: 1px;">File Size</div>
+                                            <div class="text-tiny">File Size</div>
                                             <span id="detailFileSize">~128 KB</span>
                                             <div class="tooltip">
                                                 <h4>Dataset File Size</h4>
@@ -1841,7 +1657,7 @@
                                             </div>
                                         </div>
                                         <div id="allocationStatusBox" class="tooltip-container" style="flex: 1; padding: 0.6em; font-size: 0.85em; height: 44px; box-sizing: border-box; background: rgba(255, 88, 88, 0.1); border: 1px solid rgba(255, 88, 88, 0.3); border-radius: 4px; color: #ff5858; font-weight: 600; display: flex; flex-direction: column; justify-content: center; cursor: help;">
-                                            <div style="font-size: 0.65em; opacity: 0.8; margin-bottom: 1px;">Allocated</div>
+                                            <div class="text-tiny">Allocated</div>
                                             <span id="allocationStatus">0%</span>
                                             <div class="tooltip">
                                                 <h4>Message Allocation</h4>
@@ -1859,7 +1675,7 @@
                             <!-- Update Portfolio Controls -->
                             <div class="config-section">
                                 <div class="form-group">
-                                    <div style="display: flex; gap: 8px;">
+                                    <div class="flex-row">
                                         <button type="button" id="togglePortfolioParams" class="btn btn-secondary"
                                             style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: space-between; color: white;">
                                             <span style="font-weight: 600;">Update Portfolio</span>
@@ -1869,16 +1685,16 @@
 
                                     <div id="portfolioParamsContainer" style="display: none; margin-top: 8px; padding: 1em; background: rgba(24, 31, 46, 0.8); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 6px; position: absolute; left: 0; right: 0; z-index: 30;">
                                         <!-- Spread & Vol -->
-                                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Spread%</label>
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Spread%</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalSpreadPercent" value="0.25" min="0.05" max="2.00" step="0.05" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="0.25" min="0.05" max="2.00" step="0.05">
                                                 </div>
                                             </div>
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Vol</label>
+                                            <div class="flex-1">
+                                                <label class="text-label">Vol</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalVolatility" value="2" min="1" max="4" step="1" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="2" min="1" max="4" step="1">
@@ -1887,16 +1703,16 @@
                                         </div>
 
                                         <!-- Bid Qty & Weight -->
-                                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Bid Qty</label>
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Bid Qty</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalBidQty" value="100" min="10" max="1000" step="10" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="100" min="10" max="1000" step="10">
                                                 </div>
                                             </div>
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Bid Weight</label>
+                                            <div class="flex-1">
+                                                <label class="text-label">Bid Weight</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalBidWeight" value="0.50" min="0.10" max="1.00" step="0.05" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="0.50" min="0.10" max="1.00" step="0.05">
@@ -1905,16 +1721,16 @@
                                         </div>
 
                                         <!-- Ask Qty & Weight -->
-                                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Ask Qty</label>
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Ask Qty</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalAskQty" value="100" min="10" max="1000" step="10" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="100" min="10" max="1000" step="10">
                                                 </div>
                                             </div>
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Ask Weight</label>
+                                            <div class="flex-1">
+                                                <label class="text-label">Ask Weight</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalAskWeight" value="0.50" min="0.10" max="1.00" step="0.05" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="0.50" min="0.10" max="1.00" step="0.05">
@@ -1924,8 +1740,8 @@
 
                                         <!-- Trend -->
                                         <div style="display: flex; gap: 16px;">
-                                            <div style="flex: 1;">
-                                                <label style="font-size: 0.75em; color: rgba(255, 255, 255, 0.7); margin-bottom: 8px; display: block; font-weight: 500;">Trend</label>
+                                            <div class="flex-1">
+                                                <label class="text-label">Trend</label>
                                                 <div class="range-input-group">
                                                     <input type="range" id="globalTrend" value="0" min="-1" max="1" step="1" class="thin-slider">
                                                     <input type="number" class="range-number-input" value="0" min="-1" max="1" step="1">
@@ -1937,16 +1753,25 @@
                             </div>
                         </div>
 
-                        <!-- Subtle Separator -->
-                        <div style="width: 1px; background: linear-gradient(to bottom, transparent 10%, rgba(107, 182, 255, 0.4) 20%, rgba(107, 182, 255, 0.4) 80%, transparent 90%); margin: 1em 0; align-self: stretch;"></div>
+                        <!-- Vertical Separator -->
+                        <div style="width: 1px !important; background: linear-gradient(to bottom, rgba(107, 182, 255, 0.25) 0%, rgba(107, 182, 255, 0.25) 10%, rgba(107, 182, 255, 0.5) 30%, rgba(107, 182, 255, 0.5) 70%, rgba(107, 182, 255, 0.25) 90%, rgba(107, 182, 255, 0.25) 100%) !important; margin: 7em 0 0 -1em !important; height: 320px !important; flex: 0 0 1px !important; display: block !important;"></div>
 
                         <!-- Right Side: Data Cards -->
-                        <div style="flex: 1; padding: 2em 2em 2em 0;">
-                            <div id="datacardContainer" class="datacard-container"
-                                style="margin-top: 0; position: relative !important; min-height: 400px !important;">
-                                <!-- Empty container message - hidden when products are added -->
-                                <div id="emptyProductsMessage"
-                                    style="grid-column: 1 / -1; width: 100%; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
+                        <div style="flex: 1; padding: 2em 2em 2em 0; position: relative; min-height: 400px;">
+                            <!-- Page Purpose Title -->
+                            <div class="title-header-flex" style="margin-bottom: 2em;">
+                                <h2 class="main-title">
+                                    Author.
+                                </h2>
+                            </div>
+
+                            <!-- Products container -->
+                            <div style="position: relative; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                                <!-- Products will be added here dynamically -->
+                                <div id="datacardContainer" style="width: 100%; height: 100%;"></div>
+
+                                <!-- Empty state message -->
+                                <div id="emptyProductsMessage" style="position: absolute; text-align: center; color: rgba(255, 255, 255, 0.5); font-style: italic;">
                                     No products added yet. Use the "Add Product" section to get started.
                                 </div>
                             </div>
@@ -1957,13 +1782,13 @@
             </div>
         </main>
 
-        <!-- COMPREHENSIVE EMERGENCY FIXES FOR ALL THREE FEATURES -->
+        <!-- Author App Core Functionality -->
         <script>
         (function() {
-            console.log('🚨 COMPREHENSIVE EMERGENCY FIXES LOADING...');
+            console.log('📊 Author App Loading...');
 
             function fixEverything() {
-                console.log('🚨 fixEverything() DISABLED - using emergency script instead');
+                console.log('⚠️ Legacy fix function disabled - using modern implementation');
                 return; // EXIT EARLY TO PREVENT INTERFERENCE
 
                 console.log('🚨 Starting comprehensive fixes...');
@@ -2276,9 +2101,9 @@
                     </div>
 
                     <div class="datacard-content">
-                        <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                            <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
-                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
+                        <div class="pricing-mode-toggle" class="flex-center-gap">
+                            <span class="text-small">Price Mode:</span>
+                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" class="btn-tag">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M12 2v20M2 12h20"></path>
                                 </svg>
@@ -2324,7 +2149,7 @@
                         </div>
 
                         <!-- Advanced: Independent Price Controls (Hidden by default) -->
-                        <div class="pricing-mode-advanced" style="display: none;">
+                        <div class="pricing-mode-advanced" class="hidden">
                             <!-- Bid/Ask Price -->
                             <div class="range-control-group">
                                 <div class="range-control half-width">
@@ -2365,9 +2190,9 @@
                         <!-- Volatility & Trend with Micro Buttons -->
                         <div class="range-control-group">
                             <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="range-label" class="flex-center">
                                     <span>Volatility</span>
-                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" class="btn-mini">0</button>
                                 </div>
                                 <div class="range-input-group">
                                     <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
@@ -2375,9 +2200,9 @@
                                 </div>
                             </div>
                             <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="range-label" class="flex-center">
                                     <span>Trend</span>
-                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" class="btn-mini">0</button>
                                 </div>
                                 <div class="range-input-group">
                                     <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
@@ -2387,12 +2212,12 @@
                         </div>
 
                         <!-- Micro Periods Dropdown -->
-                        <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px; max-height: 200px; overflow-y: auto;">
-                            <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
-                                <span class="dropdown-title" style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
+                        <div class="periods-dropdown" class="hidden dropdown-content">
+                            <div class="dropdown-header" class="panel-section-border">
+                                <span class="dropdown-title" class="text-small-blue">Micro Periods</span>
                                 <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">+</button>
                             </div>
-                            <div class="dropdown-content" style="padding: 8px;"></div>
+                            <div class="dropdown-content" class="panel-section"></div>
                         </div>
                     </div>
                 `;
@@ -2658,9 +2483,9 @@
                                     </div>
                                 </div>
                                 <div class="datacard-content">
-                                    <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                                        <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
-                                        <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
+                                    <div class="pricing-mode-toggle" class="flex-center-gap">
+                                        <span class="text-small">Price Mode:</span>
+                                        <button class="mode-toggle-btn" onclick="togglePricingMode(this)" class="btn-tag">
                                             <span class="mode-text">Spread</span>
                                         </button>
                                     </div>
@@ -2698,7 +2523,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="pricing-mode-advanced" style="display: none;">
+                                    <div class="pricing-mode-advanced" class="hidden">
                                         <div class="range-control-group">
                                             <div class="range-control half-width">
                                                 <div class="range-label">Bid Price</div>
@@ -2750,7 +2575,7 @@
                                     </div>
                                     <div class="range-control-group">
                                         <div class="range-control half-width">
-                                            <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div class="range-label" class="flex-center">
                                                 <span>Volatility</span>
                                                 <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer;">0</button>
                                             </div>
@@ -2760,7 +2585,7 @@
                                             </div>
                                         </div>
                                         <div class="range-control half-width">
-                                            <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div class="range-label" class="flex-center">
                                                 <span>Trend</span>
                                                 <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer;">0</button>
                                             </div>
@@ -2771,11 +2596,11 @@
                                         </div>
                                     </div>
                                     <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px;">
-                                        <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
-                                            <span style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
+                                        <div class="dropdown-header" class="panel-section-border">
+                                            <span class="text-small-blue">Micro Periods</span>
                                             <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer;">+</button>
                                         </div>
-                                        <div class="dropdown-content" style="padding: 8px;"></div>
+                                        <div class="dropdown-content" class="panel-section"></div>
                                     </div>
                                 </div>
                             `;
@@ -3307,9 +3132,9 @@
                     symbolDistribution.innerHTML = '<div style="font-style: italic; opacity: 0.6; color: rgba(255, 255, 255, 0.5);">Add symbols to see distribution</div>';
                 } else {
                     symbolDistribution.innerHTML =
-                        `<div style="margin-bottom: 0.25em;">Symbols: <span style="color: #ff9500; font-weight: 600;">${symbolCount}</span></div>` +
-                        `<div style="margin-bottom: 0.25em;">Messages per symbol: <span style="color: #ff9500; font-weight: 600;">${messagesPerSymbol.toLocaleString()}</span></div>` +
-                        `<div>Total messages: <span style="color: #ff9500; font-weight: 600;">${(messagesPerSymbol * symbolCount).toLocaleString()}</span></div>`;
+                        `<div class="text-spacing-small">Symbols: <span class="text-orange">${symbolCount}</span></div>` +
+                        `<div class="text-spacing-small">Messages per symbol: <span class="text-orange">${messagesPerSymbol.toLocaleString()}</span></div>` +
+                        `<div>Total messages: <span class="text-orange">${(messagesPerSymbol * symbolCount).toLocaleString()}</span></div>`;
                 }
             }
 
@@ -5146,9 +4971,9 @@
                     </div>
 
                     <div class="datacard-content">
-                        <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                            <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
-                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
+                        <div class="pricing-mode-toggle" class="flex-center-gap">
+                            <span class="text-small">Price Mode:</span>
+                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" class="btn-tag">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M12 2v20M2 12h20"></path>
                                 </svg>
@@ -5194,7 +5019,7 @@
                         </div>
 
                         <!-- Advanced: Independent Price Controls (Hidden by default) -->
-                        <div class="pricing-mode-advanced" style="display: none;">
+                        <div class="pricing-mode-advanced" class="hidden">
                             <!-- Bid/Ask Price -->
                             <div class="range-control-group">
                                 <div class="range-control half-width">
@@ -5235,9 +5060,9 @@
                         <!-- Volatility & Trend with Micro Buttons -->
                         <div class="range-control-group">
                             <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="range-label" class="flex-center">
                                     <span>Volatility</span>
-                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" class="btn-mini">0</button>
                                 </div>
                                 <div class="range-input-group">
                                     <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
@@ -5245,9 +5070,9 @@
                                 </div>
                             </div>
                             <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="range-label" class="flex-center">
                                     <span>Trend</span>
-                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
+                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" class="btn-mini">0</button>
                                 </div>
                                 <div class="range-input-group">
                                     <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
@@ -5257,12 +5082,12 @@
                         </div>
 
                         <!-- Micro Periods Dropdown -->
-                        <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px; max-height: 200px; overflow-y: auto;">
-                            <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
-                                <span class="dropdown-title" style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
+                        <div class="periods-dropdown" class="hidden dropdown-content">
+                            <div class="dropdown-header" class="panel-section-border">
+                                <span class="dropdown-title" class="text-small-blue">Micro Periods</span>
                                 <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">+</button>
                             </div>
-                            <div class="dropdown-content" style="padding: 8px;"></div>
+                            <div class="dropdown-content" class="panel-section"></div>
                         </div>
                     </div>
                 `;
@@ -6573,7 +6398,7 @@
                             fileDropdownMenu.innerHTML = '';
 
                             if (mockFiles.length === 0) {
-                                fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">No files available</div>';
+                                fileDropdownMenu.innerHTML = '<div class="empty-state">No files available</div>';
                                 return;
                             }
 
@@ -6608,7 +6433,7 @@
                         } else {
                             // In production mode, this would fetch real files from the server
                             // For now, show placeholder
-                            fileDropdownMenu.innerHTML = '<div style="padding: 1em; text-align: center; color: rgba(255,255,255,0.5); font-style: italic;">File loading not implemented in current version</div>';
+                            fileDropdownMenu.innerHTML = '<div class="empty-state">File loading not implemented in current version</div>';
                         }
 
                     } catch (error) {
@@ -6838,7 +6663,7 @@
 
                     try {
                         // Show loading state
-                        dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">Loading configurations...</div>';
+                        dropdown.innerHTML = '<div class="empty-state-compact">Loading configurations...</div>';
 
                         // Call Flask API
                         const response = await fetch('http://localhost:5000/api/config-files', {
@@ -6862,7 +6687,7 @@
                         dropdown.innerHTML = '';
 
                         if (data.config_files.length === 0) {
-                            dropdown.innerHTML = '<div style="padding: 0.6em 1em; color: rgba(255,255,255,0.5); font-style: italic; text-align: center;">No saved configurations</div>';
+                            dropdown.innerHTML = '<div class="empty-state-compact">No saved configurations</div>';
                             return;
                         }
 
