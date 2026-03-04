@@ -145,7 +145,7 @@
             .beacon-page-header {
                 background: rgba(16, 22, 36, 0.9);
                 backdrop-filter: blur(10px);
-                padding: 0.5em 2em;
+                padding: 1em 2em;
                 border-bottom: 1px solid rgba(107, 182, 255, 0.2);
             }
 
@@ -314,11 +314,8 @@
 
             /* Make placeholder text italic, but keep user input normal */
             .symbol-input::placeholder {
-                font-style: italic !important;
-                opacity: 0.7 !important;
-                font-weight: normal !important;
-                text-transform: none !important;
-                color: rgba(255, 255, 255, 0.5) !important;
+                font-style: italic;
+                opacity: 0.7;
             }
 
             .symbol-input {
@@ -457,15 +454,15 @@
 
             /* All allocation display boxes removed - using simple text only */
 
-            /* Red Adorner for Invalid Percentage Inputs - DISABLED */
+            /* Red Adorner for Invalid Percentage Inputs */
             .percentage-input.invalid {
-                /* border-color: #ff5858 !important;
-                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.2) !important; */
+                border-color: #ff5858 !important;
+                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.2) !important;
             }
 
             .percentage-input.invalid:focus {
-                /* border-color: #ff5858 !important;
-                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.3) !important; */
+                border-color: #ff5858 !important;
+                box-shadow: 0 0 0 2px rgba(255, 88, 88, 0.3) !important;
             }
 
             /* Real-time Symbol Input Validation States */
@@ -475,26 +472,10 @@
                 background: rgba(255, 88, 88, 0.05) !important;
             }
 
-            .symbol-input.duplicate-symbol::placeholder {
-                font-style: italic !important;
-                opacity: 0.7 !important;
-                font-weight: normal !important;
-                text-transform: none !important;
-                color: rgba(255, 255, 255, 0.5) !important;
-            }
-
             .symbol-input.valid-symbol {
                 border-color: #6bb6ff !important;
                 box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2) !important;
                 background: rgba(107, 182, 255, 0.05) !important;
-            }
-
-            .symbol-input.valid-symbol::placeholder {
-                font-style: italic !important;
-                opacity: 0.7 !important;
-                font-weight: normal !important;
-                text-transform: none !important;
-                color: rgba(255, 255, 255, 0.5) !important;
             }
 
             /* Datacard styling fallback */
@@ -505,8 +486,6 @@
                 padding: 0.5em 0.6em;
                 margin-bottom: 0.6em;
                 transition: all 0.3s ease;
-                max-width: 320px;
-                box-sizing: border-box;
             }
 
             .datacard.has-micro-periods {
@@ -522,17 +501,6 @@
                 margin-bottom: 0.5em;
                 padding-bottom: 0.3em;
                 border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-            }
-
-            .datacard-symbol-info {
-                flex: 0 0 auto;
-            }
-
-            .datacard-controls {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                flex: 0 0 auto;
             }
 
             .symbol-display {
@@ -613,8 +581,6 @@
                 padding: 0.5em 0.6em;
                 margin-bottom: 0.6em;
                 transition: all 0.3s ease;
-                max-width: 320px;
-                box-sizing: border-box;
             }
 
             .datacard-header {
@@ -668,6 +634,7 @@
                 border-radius: 4px;
                 transition: all 0.2s ease;
                 transform-origin: center;
+                margin-right: 8px;
             }
 
             .collapse-button:hover {
@@ -728,99 +695,25 @@
             }
 
             .percentage-input {
-                width: 40px;
+                width: 60px;
                 background: rgba(16, 22, 36, 0.8);
                 border: 1px solid rgba(107, 182, 255, 0.3);
                 border-radius: 4px;
-                padding: 0.3em 0.4em;
+                padding: 0.25em 0.5em;
                 color: rgba(255, 255, 255, 0.75);
                 font-size: 0.85em;
-                text-align: right;
             }
 
-            /* Make placeholder text visible */
-            .percentage-input::placeholder {
-                color: #6bb6ff;
-                opacity: 0.8;
-            }
-
-            /* Hide number input spinners */
-            .percentage-input::-webkit-outer-spin-button,
-            .percentage-input::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            /* Firefox */
-            .percentage-input[type=number] {
-                -moz-appearance: textfield;
+            .remove-symbol {
+                background: transparent;
+                border: none;
+                color: #ff5858;
+                font-size: 1.2em;
+                font-weight: bold;
                 cursor: pointer;
                 padding: 0.25em 0.5em;
                 border-radius: 4px;
                 transition: background 0.2s;
-            }
-
-            /* New centered percentage control styling */
-            .datacard-percentage-center {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex: 1;
-            }
-
-            .percentage-control-wrapper {
-                position: relative;
-                display: inline-block;
-            }
-
-            .percentage-input-styled {
-                width: 45px;
-                background: rgba(16, 22, 36, 0.9);
-                border: 1px solid rgba(107, 182, 255, 0.4);
-                border-radius: 6px;
-                padding: 0.4em 0.6em;
-                color: rgba(255, 255, 255, 0.85);
-                font-size: 0.9em;
-                font-weight: 500;
-                text-align: center;
-                transition: all 0.2s ease;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            }
-
-            .percentage-input-styled:focus {
-                outline: none;
-                border-color: #6bb6ff;
-                box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2);
-                background: rgba(16, 22, 36, 1);
-            }
-
-            .percentage-input-styled::placeholder {
-                color: rgba(107, 182, 255, 0.6);
-                font-weight: normal;
-            }
-
-            /* Hide spinners for the new percentage input */
-            .percentage-input-styled::-webkit-outer-spin-button,
-            .percentage-input-styled::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            .percentage-input-styled[type=number] {
-                -moz-appearance: textfield;
-            }
-
-            /* Add % symbol after the input using pseudo-element */
-            .percentage-control-wrapper::after {
-                content: '%';
-                position: absolute;
-                right: -12px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #6bb6ff;
-                font-size: 0.85em;
-                font-weight: 500;
-                pointer-events: none;
             }
 
             .remove-symbol:hover {
@@ -892,7 +785,6 @@
             .range-label {
                 color: rgba(255, 255, 255, 0.6);
                 font-size: 0.75em;
-                margin-top: 0.5em;
                 margin-bottom: 0.3em;
                 display: block;
                 font-weight: 500;
@@ -1759,7 +1651,7 @@
         </header>
 
         <!-- Demo Mode Banner -->
-        <div id="demo-banner" class="demo-banner" style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 0.6em; text-align: center; margin: 0.5em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"
+        <div id="demo-banner" class="demo-banner" style="display: block; background: linear-gradient(90deg, #6bb6ff, #3a7afe); border: 2px solid rgba(58, 122, 254, 0.4); color: white; padding: 1em; text-align: center; margin: 1em 2em; border-radius: 8px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
             <div class="demo-content">
                 <span class="demo-text">Interactive demo mode. No datasets will be created.</span>
             </div>
@@ -1775,9 +1667,9 @@
 
                 <!-- Combined Panel: Global Controls and Data Cards -->
                 <section id="datacards-panel-debug" class="datacards-panel" aria-labelledby="datacards-panel-title"
-                    style="position: absolute !important; left: 0px !important; top: 10px !important; right: 0px !important; min-height: 600px !important; background: var(--glass-panel); border: 1px solid var(--border-blue); border-radius: 12px; padding: 1.5em; box-sizing: border-box; backdrop-filter: blur(10px); overflow-y: auto !important; z-index: 1 !important;">
+                    style="position: absolute !important; left: 0px !important; top: 30px !important; right: 0px !important; min-height: 600px !important; background: var(--glass-panel); border: 1px solid var(--border-blue); border-radius: 12px; padding: 1.5em; box-sizing: border-box; backdrop-filter: blur(10px); overflow-y: auto !important; z-index: 1 !important;">
                     <header class="panel-header"
-                        style="padding: 0.2em 1em 0.8em 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
+                        style="padding: 0.5em 1em 1em 1em; border-bottom: 1px solid rgba(107, 182, 255, 0.2);">
 
                         <!-- Page Purpose Title -->
                         <div style="text-align: center; margin-bottom: 0.4em; display: flex; align-items: baseline; justify-content: center; gap: 0.5em;">
@@ -1791,7 +1683,7 @@
                     <div style="display: flex; gap: 2.5em; margin-top: 18px; min-height: 400px; max-width: 3000px; margin: 18px auto 0 auto; padding: 0 1em; box-sizing: border-box;">
 
                         <!-- Left Side: Portfolio Controls -->
-                        <div style="flex: 0 0 280px; position: relative; z-index: 10; pointer-events: auto; padding: 2em; overflow: visible;">
+                        <div style="flex: 0 0 350px; position: relative; z-index: 10; pointer-events: auto; padding: 2em; overflow: visible;">
                             <h2 style="color: rgba(255, 255, 255, 0.9); font-weight: 600; font-size: 1.1em; margin: 0 0 1.5em 0; padding-bottom: 0.75em; border-bottom: 1px solid rgba(107, 182, 255, 0.3);">Portfolio</h2>
 
                             <!-- Add Product Section -->
@@ -1807,7 +1699,7 @@
                                             <option value="NASDAQ" style="color: white">NSDQ</option>
                                             <option value="NYSE" style="color: white">NYSE</option>
                                         </select>
-                                        <button type="button" id="addSymbol" class="btn btn-secondary" disabled style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: center; color: white; opacity: 0.5;">
+                                        <button type="button" id="addSymbol" class="btn btn-secondary" disabled style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: center; color: white; opacity: 0.5; cursor: not-allowed;">
                                             Add
                                         </button>
                                     </div>
@@ -1821,10 +1713,13 @@
                             <div class="config-section">
                                 <div class="form-group">
                                     <div class="spinner-control" style="position: relative;">
-                                        <input type="text" id="durationPicker" class="spinner-input" value="00:30:00"
-                                            style="width: 100%; text-align: center; padding: 0.75em; padding-right: 95px; padding-left: 15px; font-size: 1em; height: 44px; box-sizing: border-box; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace; position: relative; z-index: 1;">
-                                        <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.7em; color: rgba(255, 255, 255, 0.75); pointer-events: none; z-index: 2; background: rgba(16, 22, 36, 0.8); padding: 2px 4px; border-radius: 2px;">
+                                        <input type="text" id="durationPicker" class="spinner-input" value="00:30:00" placeholder="HH:MM:SS"
+                                            style="width: 100%; text-align: center; padding: 0.75em; padding-right: 75px; padding-left: 95px; font-size: 1em; height: 44px; box-sizing: border-box; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace; position: relative; z-index: 1;">
+                                        <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.7em; color: rgba(255, 255, 255, 0.75); pointer-events: none; z-index: 0;">
                                             Trading Data
+                                        </div>
+                                        <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.7em; color: rgba(255, 255, 255, 0.75); pointer-events: none; z-index: 0;">
+                                            HH:MM:SS
                                         </div>
                                     </div>
                                 </div>
@@ -1946,7 +1841,7 @@
                         <!-- Right Side: Data Cards -->
                         <div style="flex: 1; padding: 2em 2em 2em 0;">
                             <div id="datacardContainer" class="datacard-container"
-                                style="margin-top: 0; position: relative !important; min-height: 400px !important;">
+                                style="margin-top: 0;">
                                 <!-- Empty container message - hidden when products are added -->
                                 <div id="emptyProductsMessage"
                                     style="grid-column: 1 / -1; width: 100%; text-align: center; padding: 2em; color: rgba(255, 255, 255, 0.5); font-style: italic;">
@@ -1960,212 +1855,6 @@
             </div>
         </main>
 
-        <!-- COMPREHENSIVE EMERGENCY FIXES FOR ALL THREE FEATURES -->
-        <script>
-        (function() {
-            console.log('🚨 COMPREHENSIVE EMERGENCY FIXES LOADING...');
-
-            function fixEverything() {
-                console.log('🚨 fixEverything() DISABLED - using emergency script instead');
-                return; // EXIT EARLY TO PREVENT INTERFERENCE
-
-                console.log('🚨 Starting comprehensive fixes...');
-
-                // === FIX 1: ADD SYMBOL BUTTON ===
-                const symbolInput = document.getElementById('symbolInput');
-                const addBtn = document.getElementById('addSymbol');
-                const datacardContainer = document.getElementById('datacardContainer');
-
-                if (symbolInput && addBtn && datacardContainer) {
-                    console.log('✅ Fixing Add Symbol...');
-
-                    // Function to check input and enable/disable button
-                    function checkInput() {
-                        const hasValue = symbolInput.value.trim().length > 0;
-                        if (hasValue) {
-                            addBtn.disabled = false;
-                            addBtn.style.cssText = 'opacity: 1 !important; background: #6bb6ff !important; cursor: pointer !important; color: white !important; font-weight: bold !important; flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: center;';
-                        } else {
-                            addBtn.disabled = true;
-                            addBtn.style.cssText = 'opacity: 0.5 !important; background: rgba(107, 182, 255, 0.3) !important; color: rgba(255,255,255,0.5) !important; font-weight: bold !important; flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: center;';
-                        }
-                    }
-
-                    // Initial check
-                    checkInput();
-
-                    // Watch for input changes
-                    symbolInput.oninput = checkInput;
-                    symbolInput.onkeyup = checkInput;
-                    symbolInput.onpaste = () => setTimeout(checkInput, 10);
-                    addBtn.onmousedown = null;
-                    addBtn.onmouseup = null;
-
-                    // SIMPLE WORKING ADD FUNCTION - NO COMPLICATED NONSENSE
-                    function doAddSymbol() {
-                        console.log('🚨 ADD SYMBOL BUTTON CLICKED!');
-                        const symbolInputElement = document.getElementById('symbolInput');
-                        const symbol = symbolInputElement ? symbolInputElement.value.trim().toUpperCase() : '';
-                        console.log('🚨 Symbol entered:', symbol, 'from element:', symbolInputElement);
-
-                        if (!symbol) {
-                            alert('Enter a symbol first!');
-                            return;
-                        }
-
-                        // Check duplicates - SIMPLE VERSION
-                        const existing = datacardContainer.querySelector(`[data-symbol="${symbol}"]`);
-                        if (existing) {
-                            alert(symbol + ' already exists!');
-                            return;
-                        }
-
-                        // CREATE SIMPLE CARD THAT WORKS
-                        const card = document.createElement('div');
-                        card.className = 'datacard';
-                        card.dataset.symbol = symbol;
-                        const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
-                        card.style.cssText = 'background: rgba(16, 22, 36, 0.95); border: 2px solid #6bb6ff; border-radius: 8px; padding: 1.5em; margin: 0.5em; color: white; min-height: 150px; width: 280px; display: block;';
-                        card.innerHTML = `
-                            <h3 style="color: #6bb6ff; margin: 0 0 1em 0;">${symbol}</h3>
-                            <div style="color: white; margin-bottom: 0.5em;">Exchange: ${exchange}</div>
-                            <div style="background: rgba(107, 182, 255, 0.2); padding: 1em; margin: 1em 0; border-radius: 4px;">✅ Card created successfully!</div>
-                        `;
-
-                        // Show and add - FORCE IT
-                        console.log('🚨 Adding card to container');
-                        datacardContainer.style.display = 'block';
-                        const empty = document.getElementById('emptyProductsMessage');
-                        if (empty) empty.style.display = 'none';
-                        datacardContainer.appendChild(card);
-                        symbolInput.value = '';
-
-                        console.log('✅ SYMBOL ADDED SUCCESSFULLY:', symbol);
-                    }
-
-                    // Set handlers IMMEDIATELY - NO DELAYS
-                    console.log('🚨 Setting button handlers NOW');
-
-                    // Remove any existing handlers first
-                    addBtn.onclick = null;
-                    addBtn.removeEventListener('click', doAddSymbol);
-                    symbolInput.onkeydown = null;
-
-                    // Set new handlers immediately
-                    addBtn.onclick = function(e) {
-                        console.log('🚨 BUTTON CLICKED VIA ONCLICK');
-                        e.preventDefault();
-                        doAddSymbol();
-                        return false;
-                    };
-
-                    symbolInput.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
-                            console.log('🚨 ENTER KEY PRESSED');
-                            e.preventDefault();
-                            doAddSymbol();
-                            return false;
-                        }
-                    });
-
-                    console.log('✅ HANDLERS SET - BUTTON SHOULD WORK NOW');
-
-                    console.log('✅ Add Symbol FIXED');
-                }
-
-                // === FIX 2: TIME FORMAT INPUT ===
-                const durationPicker = document.getElementById('durationPicker');
-                if (durationPicker) {
-                    console.log('✅ Fixing Time Format...');
-
-                    // Clear existing handlers
-                    durationPicker.onkeypress = null;
-                    durationPicker.oninput = null;
-                    durationPicker.onblur = null;
-
-                    // Block invalid chars
-                    durationPicker.addEventListener('keypress', (e) => {
-                        if (!/[0-9:]/.test(e.key) && e.key.length === 1) {
-                            e.preventDefault();
-                            console.log('🚨 Blocked:', e.key);
-                        }
-                    });
-
-                    // Clean as typing
-                    durationPicker.addEventListener('input', (e) => {
-                        const clean = e.target.value.replace(/[^0-9:]/g, '');
-                        if (e.target.value !== clean) {
-                            e.target.value = clean;
-                        }
-                    });
-
-                    // Format on blur
-                    durationPicker.addEventListener('blur', (e) => {
-                        let val = e.target.value;
-                        if (/^\d{1,2}$/.test(val)) val = `00:${val.padStart(2, '0')}:00`;
-                        else if (/^\d{1,2}:\d{1,2}$/.test(val)) val = `${val}:00`;
-
-                        const match = val.match(/^(\d{1,2}):(\d{1,2}):(\d{1,2})$/);
-                        if (match) {
-                            const h = Math.min(23, Math.max(0, parseInt(match[1]))).toString().padStart(2, '0');
-                            const m = Math.min(59, Math.max(0, parseInt(match[2]))).toString().padStart(2, '0');
-                            const s = Math.min(59, Math.max(0, parseInt(match[3]))).toString().padStart(2, '0');
-                            val = `${h}:${m}:${s}`;
-                        } else {
-                            val = '00:30:00';
-                        }
-                        e.target.value = val;
-                        console.log('✅ Time formatted:', val);
-                    });
-
-                    console.log('✅ Time Format FIXED');
-                }
-
-                // === FIX 3: UPDATE PORTFOLIO DROPDOWN ===
-                const portfolioToggle = document.getElementById('togglePortfolioParams');
-                const portfolioContainer = document.getElementById('portfolioParamsContainer');
-                const portfolioIcon = document.getElementById('portfolioToggleIcon');
-
-                if (portfolioToggle && portfolioContainer && portfolioIcon) {
-                    console.log('✅ Fixing Update Portfolio...');
-
-                    // Clear existing handlers
-                    portfolioToggle.onclick = null;
-
-                    // Simple toggle
-                    portfolioToggle.onclick = (e) => {
-                        e.preventDefault();
-                        const isHidden = portfolioContainer.style.display === 'none' || !portfolioContainer.style.display;
-
-                        if (isHidden) {
-                            portfolioContainer.style.display = 'block';
-                            portfolioIcon.textContent = '▲';
-                            console.log('✅ Portfolio opened');
-                        } else {
-                            portfolioContainer.style.display = 'none';
-                            portfolioIcon.textContent = '▼';
-                            console.log('✅ Portfolio closed');
-                        }
-                    };
-
-                    console.log('✅ Update Portfolio FIXED');
-                }
-
-                console.log('🚨 ALL THREE FEATURES FIXED! 🚨');
-            }
-
-            // Run fixes immediately and on DOM ready
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', fixEverything);
-            } else {
-                fixEverything();
-            }
-
-            // Also run after a short delay to be absolutely sure
-            setTimeout(fixEverything, 500);
-        })();
-        </script>
-
         <script>
             'use strict';
 
@@ -2173,778 +1862,20 @@
             // SIMPLE WORKING AUTHOR APPLICATION
             // ============================================================================
 
-            // Create a detailed datacard with sliders - MOVED TO TOP FOR EARLY AVAILABILITY
-            function createDetailedDatacard(symbol) {
-                const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
-                const card = document.createElement('div');
-                card.className = 'datacard';
-                card.dataset.symbol = symbol;
-
-                // Get asset-specific data from MarketDataUtils if available
-                let assetData = null;
-                if (window.MarketDataUtils) {
-                    assetData = window.MarketDataUtils.getSymbol(symbol);
-                    if (!assetData) {
-                        // Generate realistic data for unknown symbols
-                        assetData = window.MarketDataUtils.generateMarketData(symbol);
-                    }
-                }
-
-                // Get slider configuration from validation config (fallback to defaults or asset data)
-                const sliderConfig = window.validationConfig?.sliderConfig || {};
-
-                // Helper function to get slider attributes with asset-specific ranges
-                function getSliderAttrs(configKey, fallbackMin = 1, fallbackMax = 100, fallbackStep = 1, fallbackDefault = 50) {
-                    const config = sliderConfig[configKey];
-
-                    // Use asset-specific ranges if available
-                    if (assetData && configKey === 'basePrice') {
-                        const range = assetData.priceRange;
-                        return {
-                            min: range.min,
-                            max: range.max,
-                            step: Math.max(0.01, (range.max - range.min) / 1000),
-                            value: Math.round((range.min + range.max) / 2 * 100) / 100
-                        };
-                    }
-                    if (assetData && configKey === 'askQuantity') {
-                        const range = assetData.quantityRange;
-                        return {
-                            min: range.min,
-                            max: range.max,
-                            step: Math.max(1, Math.round((range.max - range.min) / 100)),
-                            value: Math.round((range.min + range.max) / 2)
-                        };
-                    }
-                    if (assetData && configKey === 'bidQuantity') {
-                        const range = assetData.quantityRange;
-                        return {
-                            min: range.min,
-                            max: range.max,
-                            step: Math.max(1, Math.round((range.max - range.min) / 100)),
-                            value: Math.round((range.min + range.max) / 2)
-                        };
-                    }
-                    if (assetData && configKey === 'spread') {
-                        const baseSpread = assetData.spreadPercent || 0.02;
-                        return {
-                            min: Math.max(0.001, baseSpread * 0.1),
-                            max: baseSpread * 10,
-                            step: 0.001,
-                            value: Math.round(baseSpread * 1000) / 1000
-                        };
-                    }
-
-                    if (config) {
-                        return {
-                            min: config.min,
-                            max: config.max,
-                            step: config.step,
-                            value: config.default
-                        };
-                    }
-                    return {
-                        min: fallbackMin,
-                        max: fallbackMax,
-                        step: fallbackStep,
-                        value: fallbackDefault
-                    };
-                }
-
-                const basePrice = getSliderAttrs('basePrice', 1, 1000, 10, 175);
-                const spread = getSliderAttrs('spread', 0.1, 10, 0.1, 0.5);
-                const bidPrice = getSliderAttrs('bidPrice', 1, 1000, 1, 174);
-                const askPrice = getSliderAttrs('askPrice', 1, 1000, 1, 176);
-                const bidQuantity = getSliderAttrs('bidQuantity', 1, 10000, 50, 250);
-                const askQuantity = getSliderAttrs('askQuantity', 1, 10000, 50, 300);
-                const bidWeight = getSliderAttrs('bidWeight', 0, 100, 5, 45);
-                const askWeight = getSliderAttrs('askWeight', 0, 100, 5, 55);
-                const volatility = getSliderAttrs('volatility', 0, 100, 5, 25);
-                const trend = getSliderAttrs('trend', -50, 50, 5, 5);
-                const percentage = getSliderAttrs('percentage', 1, 100, 1, 20);
-
-                card.innerHTML = `
-                    <div class="datacard-header">
-                        <div class="datacard-symbol-info">
-                            <span class="symbol-display">
-                                <span class="exchange-prefix">${exchange}:</span>
-                                <span class="symbol-name">${symbol}</span>
-                            </span>
-                        </div>
-                        <div class="datacard-controls">
-                            <button class="collapse-button" onclick="toggleDatacardCollapse(this)" title="Collapse/Expand">▼</button>
-                            <input type="number" class="percentage-input" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}" placeholder="%">
-                            <button class="remove-symbol" aria-label="Remove ${symbol}">×</button>
-                        </div>
-                    </div>
-
-                    <div class="datacard-content">
-                        <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                            <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
-                            <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2v20M2 12h20"></path>
-                                </svg>
-                                <span class="mode-text">Spread</span>
-                            </button>
-                        </div>
-
-                        <div class="pricing-mode-default">
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Base Price</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${basePrice.min}" max="${basePrice.max}" step="${basePrice.step}" value="${basePrice.value}">
-                                        <input type="number" class="range-number-input" min="${basePrice.min}" max="${basePrice.max}" step="${basePrice.step}" value="${basePrice.value}">
-                                    </div>
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Spread</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${spread.min}" max="${spread.max}" step="${spread.step}" value="${spread.value}">
-                                        <input type="number" class="range-number-input" min="${spread.min}" max="${spread.max}" step="${spread.step}" value="${spread.value}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bid/Ask Weights -->
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Bid Weight</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${bidWeight.min}" max="${bidWeight.max}" step="${bidWeight.step}" value="${bidWeight.value}">
-                                        <input type="number" class="range-number-input" min="${bidWeight.min}" max="${bidWeight.max}" step="${bidWeight.step}" value="${bidWeight.value}">
-                                    </div>
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Ask Weight</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${askWeight.min}" max="${askWeight.max}" step="${askWeight.step}" value="${askWeight.value}">
-                                        <input type="number" class="range-number-input" min="${askWeight.min}" max="${askWeight.max}" step="${askWeight.step}" value="${askWeight.value}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Advanced: Independent Price Controls (Hidden by default) -->
-                        <div class="pricing-mode-advanced" style="display: none;">
-                            <!-- Bid/Ask Price -->
-                            <div class="range-control-group">
-                                <div class="range-control half-width">
-                                    <div class="range-label">Bid Price</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${bidPrice.min}" max="${bidPrice.max}" step="${bidPrice.step}" value="${bidPrice.value}">
-                                        <input type="number" class="range-number-input" min="${bidPrice.min}" max="${bidPrice.max}" step="${bidPrice.step}" value="${bidPrice.value}">
-                                    </div>
-                                </div>
-                                <div class="range-control half-width">
-                                    <div class="range-label">Ask Price</div>
-                                    <div class="range-input-group">
-                                        <input type="range" class="range-input" min="${askPrice.min}" max="${askPrice.max}" step="${askPrice.step}" value="${askPrice.value}">
-                                        <input type="number" class="range-number-input" min="${askPrice.min}" max="${askPrice.max}" step="${askPrice.step}" value="${askPrice.value}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bid/Ask Quantity -->
-                        <div class="range-control-group">
-                            <div class="range-control half-width">
-                                <div class="range-label">Bid Quantity</div>
-                                <div class="range-input-group">
-                                    <input type="range" class="range-input" min="${bidQuantity.min}" max="${bidQuantity.max}" step="${bidQuantity.step}" value="${bidQuantity.value}">
-                                    <input type="number" class="range-number-input" min="${bidQuantity.min}" max="${bidQuantity.max}" step="${bidQuantity.step}" value="${bidQuantity.value}">
-                                </div>
-                            </div>
-                            <div class="range-control half-width">
-                                <div class="range-label">Ask Quantity</div>
-                                <div class="range-input-group">
-                                    <input type="range" class="range-input" min="${askQuantity.min}" max="${askQuantity.max}" step="${askQuantity.step}" value="${askQuantity.value}">
-                                    <input type="number" class="range-number-input" min="${askQuantity.min}" max="${askQuantity.max}" step="${askQuantity.step}" value="${askQuantity.value}">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Volatility & Trend with Micro Buttons -->
-                        <div class="range-control-group">
-                            <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span>Volatility</span>
-                                    <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
-                                </div>
-                                <div class="range-input-group">
-                                    <input type="range" class="range-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
-                                    <input type="number" class="range-number-input" min="${volatility.min}" max="${volatility.max}" step="${volatility.step}" value="${volatility.value}">
-                                </div>
-                            </div>
-                            <div class="range-control half-width">
-                                <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span>Trend</span>
-                                    <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">0</button>
-                                </div>
-                                <div class="range-input-group">
-                                    <input type="range" class="range-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
-                                    <input type="number" class="range-number-input" min="${trend.min}" max="${trend.max}" step="${trend.step}" value="${trend.value}">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Micro Periods Dropdown -->
-                        <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px; max-height: 200px; overflow-y: auto;">
-                            <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
-                                <span class="dropdown-title" style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
-                                <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">+</button>
-                            </div>
-                            <div class="dropdown-content" style="padding: 8px;"></div>
-                        </div>
-                    </div>
-                `;
-
-                // Add event listeners for remove button
-                const removeBtn = card.querySelector('.remove-symbol');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', () => {
-                        card.remove();
-                        if (typeof updateExchangeDropdownState === 'function') {
-                            updateExchangeDropdownState();
-                        }
-                    });
-                }
-
-                // Set up bidirectional sync for all range inputs
-                setTimeout(() => {
-                    const rangeInputGroups = card.querySelectorAll('.range-input-group');
-                    rangeInputGroups.forEach(group => {
-                        const slider = group.querySelector('.range-input');
-                        const numberInput = group.querySelector('.range-number-input');
-
-                        if (slider && numberInput) {
-                            slider.addEventListener('input', () => {
-                                numberInput.value = slider.value;
-                            });
-
-                            numberInput.addEventListener('input', () => {
-                                const value = parseFloat(numberInput.value);
-                                if (!isNaN(value)) {
-                                    const min = parseFloat(slider.min);
-                                    const max = parseFloat(slider.max);
-                                    const clampedValue = Math.max(min, Math.min(max, value));
-                                    slider.value = clampedValue;
-                                    numberInput.value = clampedValue;
-                                }
-                            });
-
-                            numberInput.addEventListener('keydown', (e) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    numberInput.blur();
-                                }
-                            });
-                        }
-                    });
-                }, 100);
-
-                console.log('✅ Restored original detailed datacard for:', symbol);
-                return card;  // Return the created card element
-            }
-
             // Initialize basic functionality
             function initializeAuthor() {
                 // Initialize global complexity factor
                 window.globalComplexityFactor = 1.0;
-
-                // Make createDetailedDatacard globally accessible for emergency scripts
-                window.createDetailedDatacard = createDetailedDatacard;
-
-                // Add missing function stubs so datacards work
-                if (!window.toggleDatacardCollapse) {
-                    window.toggleDatacardCollapse = function(button) {
-                        const card = button.closest('.datacard');
-                        if (card) {
-                            const isCollapsed = card.classList.contains('collapsed');
-                            card.classList.toggle('collapsed');
-                            button.textContent = isCollapsed ? '▼' : '▲';
-                        }
-                    };
-                }
-
-                if (!window.togglePricingMode) {
-                    window.togglePricingMode = function(button) {
-                        const card = button.closest('.datacard');
-                        const defaultMode = card.querySelector('.pricing-mode-default');
-                        const advancedMode = card.querySelector('.pricing-mode-advanced');
-                        const modeText = button.querySelector('.mode-text');
-
-                        if (defaultMode && advancedMode && modeText) {
-                            const isSpreadMode = defaultMode.style.display !== 'none';
-
-                            if (isSpreadMode) {
-                                // Switch to direct price mode
-                                defaultMode.style.display = 'none';
-                                advancedMode.style.display = 'block';
-                                modeText.textContent = 'Direct';
-                                button.style.background = 'rgba(255,165,88,0.1)';
-                                button.style.borderColor = 'rgba(255,165,88,0.3)';
-                                button.style.color = '#ffa558';
-                            } else {
-                                // Switch to spread mode
-                                advancedMode.style.display = 'none';
-                                defaultMode.style.display = 'block';
-                                modeText.textContent = 'Spread';
-                                button.style.background = 'rgba(107,182,255,0.1)';
-                                button.style.borderColor = 'rgba(107,182,255,0.3)';
-                                button.style.color = '#6bb6ff';
-                            }
-                        }
-                    };
-                }
-
-                if (!window.togglePeriodsDropdown) {
-                    window.togglePeriodsDropdown = function(button) {
-                        const dropdown = button.closest('.range-control').parentNode.nextElementSibling;
-                        if (dropdown && dropdown.classList.contains('periods-dropdown')) {
-                            const isVisible = dropdown.style.display !== 'none';
-                            dropdown.style.display = isVisible ? 'none' : 'block';
-                        }
-                    };
-                }
-
-                if (!window.addMicroPeriod) {
-                    window.addMicroPeriod = function(button) {
-                        console.log('Add micro period clicked');
-                        // Basic implementation - just increment the counter for now
-                        const indicator = button.closest('.periods-dropdown').previousElementSibling.querySelector('.periods-indicator');
-                        if (indicator) {
-                            const current = parseInt(indicator.textContent) || 0;
-                            indicator.textContent = current + 1;
-                        }
-                    };
-                }
-
-                // Make createDetailedDatacard globally available early
-                window.createDetailedDatacard = createDetailedDatacard;
 
                 // Emergency click test
                 document.body.onclick = function(e) {
                     console.log('Body clicked at:', e.target.tagName, e.target.id, e.target.className);
                 };
 
-                // setupSymbolInput(); // DISABLED - using emergency script instead
-
-                // EMERGENCY: Force working add button immediately
-                setTimeout(() => {
-                    const symbolInput = document.getElementById('symbolInput');
-                    const addBtn = document.getElementById('addSymbol');
-                    const datacardContainer = document.getElementById('datacardContainer');
-
-                    if (addBtn && datacardContainer && symbolInput) {
-                        console.log('🚑 EMERGENCY: Setting up guaranteed working add button');
-
-                        // FIX BUG #1: Add button state management first
-                        function updateButtonState() {
-                            const hasValue = symbolInput.value.trim().length > 0;
-                            console.log('🔧 updateButtonState called, hasValue:', hasValue, 'value:', '"' + symbolInput.value + '"');
-                            if (hasValue) {
-                                addBtn.disabled = false;
-                                addBtn.removeAttribute('disabled');
-                                addBtn.classList.remove('disabled');
-                                addBtn.style.opacity = '1';
-                                addBtn.style.background = 'rgba(107, 182, 255, 0.8)';
-                                console.log('✅ Button ENABLED');
-                            } else {
-                                addBtn.disabled = true;
-                                addBtn.style.opacity = '0.5';
-                                addBtn.style.background = 'rgba(107, 182, 255, 0.3)';
-                                // AGGRESSIVELY ENFORCE DISABLED STATE
-                                addBtn.setAttribute('disabled', 'true');
-                                addBtn.classList.add('disabled');
-                                console.log('🚫 Button DISABLED - disabled property:', addBtn.disabled);
-                            }
-                        }
-
-                        // FIX BUG #4: Enhanced symbol styling on input
-                        symbolInput.addEventListener('input', function() {
-                            updateButtonState();
-                            // Make symbol bold and white when typing, like Exchange
-                            if (this.value.trim().length > 0) {
-                                this.style.fontWeight = 'bold';
-                                this.style.color = '#ffffff';
-                                this.style.textTransform = 'uppercase';
-                            } else {
-                                this.style.fontWeight = 'normal';
-                                this.style.color = 'rgba(255, 255, 255, 0.7)';
-                                this.style.textTransform = 'none';
-                            }
-                        });
-
-                        symbolInput.addEventListener('keyup', function() {
-                            updateButtonState();
-                        });
-
-                        // FORCE INITIAL BUTTON STATE TO DISABLED
-                        updateButtonState();
-
-                        // AGGRESSIVE OVERRIDE - force disabled state multiple times
-                        setTimeout(() => {
-                            updateButtonState();
-                            console.log('🔧 Enforced button state after 50ms');
-                        }, 50);
-
-                        setTimeout(() => {
-                            updateButtonState();
-                            console.log('🔧 Final button state enforcement');
-                        }, 200);
-
-                        // MARK AS INITIALIZED TO PREVENT OTHER SCRIPTS FROM INTERFERING
-                        window.symbolInputInitialized = true;
-                        window.symbolInputSetupComplete = true;
-
-                        // FINAL NUCLEAR OPTION - Force correct button state after ALL other scripts
-                        setTimeout(() => {
-                            console.log('🔥 NUCLEAR OPTION: Final button state override');
-                            updateButtonState();
-                            // Also mark button to prevent any further interference
-                            addBtn.setAttribute('data-listener-attached', 'true');
-                        }, 1000);
-
-                        // GUARANTEED WORKING ADD BUTTON - CREATES DETAILED CARDS
-                        addBtn.onclick = function(e) {
-                            e.preventDefault();
-
-                            // ACTUALLY PREVENT CLICK WHEN DISABLED
-                            if (addBtn.disabled) {
-                                console.log('🚫 Button is disabled - click blocked');
-                                return false;
-                            }
-
-                            // DOUBLE CHECK - ensure symbol input has value
-                            const symbolValue = symbolInput.value.trim().toUpperCase();
-                            if (!symbolValue) {
-                                console.log('🚫 No symbol entered - click blocked');
-                                alert('Please enter a symbol first');
-                                return false;
-                            }
-
-                            console.log('🎯 GUARANTEED ADD CLICKED - symbolValue:', symbolValue);
-
-                            // Check duplicates
-                            const existingCards = datacardContainer.querySelectorAll('.datacard');
-                            for (let existing of existingCards) {
-                                if (existing.dataset.symbol === symbolValue) {
-                                    alert('Symbol already exists: ' + symbolValue);
-                                    return;
-                                }
-                            }
-
-                            // Create detailed card directly inline to guarantee it works
-                            const card = document.createElement('div');
-                            card.className = 'datacard';
-                            card.dataset.symbol = symbolValue;
-
-                            // EMBED THE FULL DETAILED CARD HTML DIRECTLY
-                            card.innerHTML = `
-                                <div class="datacard-header">
-                                    <div class="datacard-symbol-info">
-                                        <span class="symbol-display">
-                                            <span class="exchange-prefix">CME:</span>
-                                            <span class="symbol-name">${symbolValue}</span>
-                                        </span>
-                                    </div>
-                                    <div class="datacard-percentage-center">
-                                        <div class="percentage-control-wrapper">
-                                            <input type="number" class="percentage-input-styled" min="1" max="100" step="1" value="20" placeholder="20">
-                                        </div>
-                                    </div>
-                                    <div class="datacard-controls">
-                                        <button class="collapse-button" onclick="toggleDatacardCollapse(this)" title="Collapse/Expand">▼</button>
-                                        <button class="remove-symbol" onclick="removeCard(this)">×</button>
-                                    </div>
-                                </div>
-                                <div class="datacard-content">
-                                    <div class="pricing-mode-toggle" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                                        <span style="font-size: 0.85em; color: rgba(255,255,255,0.7);">Price Mode:</span>
-                                        <button class="mode-toggle-btn" onclick="togglePricingMode(this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 4px; color: #6bb6ff; font-size: 0.8em; cursor: pointer;">
-                                            <span class="mode-text">Spread</span>
-                                        </button>
-                                    </div>
-                                    <div class="pricing-mode-default">
-                                        <div class="range-control-group">
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Base Price</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="1" max="1000" step="10" value="175">
-                                                    <input type="number" class="range-number-input" min="1" max="1000" step="10" value="175">
-                                                </div>
-                                            </div>
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Spread</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="0.1" max="10" step="0.1" value="0.5">
-                                                    <input type="number" class="range-number-input" min="0.1" max="10" step="0.1" value="0.5">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="range-control-group">
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Bid Weight</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="0" max="100" step="5" value="45">
-                                                    <input type="number" class="range-number-input" min="0" max="100" step="5" value="45">
-                                                </div>
-                                            </div>
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Ask Weight</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="0" max="100" step="5" value="55">
-                                                    <input type="number" class="range-number-input" min="0" max="100" step="5" value="55">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pricing-mode-advanced" style="display: none;">
-                                        <div class="range-control-group">
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Bid Price</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="1" max="1000" step="10" value="174">
-                                                    <input type="number" class="range-number-input" min="1" max="1000" step="10" value="174">
-                                                </div>
-                                            </div>
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Ask Price</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="1" max="1000" step="10" value="176">
-                                                    <input type="number" class="range-number-input" min="1" max="1000" step="10" value="176">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="range-control-group">
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Bid Weight</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="0" max="100" step="5" value="45">
-                                                    <input type="number" class="range-number-input" min="0" max="100" step="5" value="45">
-                                                </div>
-                                            </div>
-                                            <div class="range-control half-width">
-                                                <div class="range-label">Ask Weight</div>
-                                                <div class="range-input-group">
-                                                    <input type="range" class="range-input" min="0" max="100" step="5" value="55">
-                                                    <input type="number" class="range-number-input" min="0" max="100" step="5" value="55">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="range-control-group">
-                                        <div class="range-control half-width">
-                                            <div class="range-label">Bid Qty</div>
-                                            <div class="range-input-group">
-                                                <input type="range" class="range-input" min="1" max="10000" step="50" value="250">
-                                                <input type="number" class="range-number-input" min="1" max="10000" step="50" value="250">
-                                            </div>
-                                        </div>
-                                        <div class="range-control half-width">
-                                            <div class="range-label">Ask Qty</div>
-                                            <div class="range-input-group">
-                                                <input type="range" class="range-input" min="1" max="10000" step="50" value="300">
-                                                <input type="number" class="range-number-input" min="1" max="10000" step="50" value="300">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="range-control-group">
-                                        <div class="range-control half-width">
-                                            <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
-                                                <span>Volatility</span>
-                                                <button class="periods-indicator" data-type="volatility" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer;">0</button>
-                                            </div>
-                                            <div class="range-input-group">
-                                                <input type="range" class="range-input" min="0" max="100" step="5" value="25">
-                                                <input type="number" class="range-number-input" min="0" max="100" step="5" value="25">
-                                            </div>
-                                        </div>
-                                        <div class="range-control half-width">
-                                            <div class="range-label" style="display: flex; justify-content: space-between; align-items: center;">
-                                                <span>Trend</span>
-                                                <button class="periods-indicator" data-type="trend" onclick="togglePeriodsDropdown(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 16px; font-size: 10px; cursor: pointer;">0</button>
-                                            </div>
-                                            <div class="range-input-group">
-                                                <input type="range" class="range-input" min="-50" max="50" step="5" value="5">
-                                                <input type="number" class="range-number-input" min="-50" max="50" step="5" value="5">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="periods-dropdown" style="display: none; position: relative; background: rgba(16,22,36,0.95); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; margin-top: 8px;">
-                                        <div class="dropdown-header" style="padding: 8px; border-bottom: 1px solid rgba(107,182,255,0.2); display: flex; justify-content: space-between; align-items: center;">
-                                            <span style="font-size: 0.85em; color: #6bb6ff;">Micro Periods</span>
-                                            <button onclick="addMicroPeriod(this)" style="background: rgba(107,182,255,0.1); border: 1px solid rgba(107,182,255,0.3); border-radius: 3px; color: #6bb6ff; width: 20px; height: 20px; cursor: pointer;">+</button>
-                                        </div>
-                                        <div class="dropdown-content" style="padding: 8px;"></div>
-                                    </div>
-                                </div>
-                            `;
-
-                            // Setup bidirectional sync for all sliders
-                            setTimeout(() => {
-                                const rangeGroups = card.querySelectorAll('.range-input-group');
-                                rangeGroups.forEach(group => {
-                                    const slider = group.querySelector('.range-input');
-                                    const numberInput = group.querySelector('.range-number-input');
-                                    if (slider && numberInput) {
-                                        slider.addEventListener('input', () => numberInput.value = slider.value);
-                                        numberInput.addEventListener('input', () => {
-                                            const value = parseFloat(numberInput.value);
-                                            if (!isNaN(value)) {
-                                                slider.value = Math.max(slider.min, Math.min(slider.max, value));
-                                            }
-                                        });
-                                    }
-                                });
-                            }, 100);
-
-                            // Initialize percentage allocation for the new card
-                            const percentageInput = card.querySelector('.percentage-input, .percentage-input-styled');
-                            if (percentageInput) {
-                                // Ensure percentage starts at 20%, not 0%
-                                percentageInput.value = 20;
-
-                                // Initialize percentage tracking
-                                if (window.productPercentages) {
-                                    window.productPercentages.set(symbolValue, { percentage: 20, isDirty: false });
-                                }
-
-                                // Add percentage input listeners
-                                percentageInput.addEventListener('input', (e) => {
-                                    if (window.ValidationManager) {
-                                        window.ValidationManager.filterPercentageInput(e.target);
-                                    }
-                                    updateAllocationStatus();
-                                });
-                            }
-
-                            // Hide empty message and add card
-                            const emptyMsg = document.getElementById('emptyProductsMessage');
-                            if (emptyMsg) emptyMsg.style.display = 'none';
-
-                            datacardContainer.appendChild(card);
-                            symbolInput.value = '';
-
-                            // FIX BUG #1: Ensure button gets disabled after adding card
-                            updateButtonState();
-
-                            // Update the total allocation percentage display - use setTimeout to ensure DOM is updated
-                            setTimeout(() => {
-                                updateAllocationStatus();
-                            }, 10);
-
-                            console.log('🎯 GUARANTEED: Full detailed card added for', symbolValue);
-                        };
-
-                        // Enter key handler for symbol input
-                        symbolInput.onkeypress = function(e) {
-                            if (e.key === 'Enter' || e.keyCode === 13) {
-                                e.preventDefault();
-                                addBtn.click();  // Trigger the same logic as button click
-                                return false;
-                            }
-                        };
-                    }
-                }, 100);
-
+                setupSymbolInput();
                 // setupMessageCount(); // Removed - now using time-based duration input
                 setupCalculations();
                 updateDurationCalculations();
-
-                // Emergency time input validation fix
-                setTimeout(() => {
-                    const durationPicker = document.getElementById('durationPicker');
-                    if (durationPicker) {
-                        console.log('🚑 Setting up emergency time validation');
-
-                        // Force time validation on keypress
-                        durationPicker.onkeypress = function(e) {
-                            const char = e.key;
-                            // Allow control keys and numbers/colons only
-                            if (e.ctrlKey || e.metaKey || char.length > 1) {
-                                return true;
-                            }
-                            if (!/[0-9:]/.test(char)) {
-                                console.log('🚑 Blocked invalid character:', char);
-                                e.preventDefault();
-                                return false;
-                            }
-                            // Prevent more than 2 colons
-                            if (char === ':' && (durationPicker.value.split(':').length >= 3)) {
-                                e.preventDefault();
-                                return false;
-                            }
-                            // Limit to 8 characters (HH:MM:SS)
-                            if (durationPicker.value.length >= 8 && durationPicker.selectionStart === durationPicker.selectionEnd) {
-                                e.preventDefault();
-                                return false;
-                            }
-                            return true;
-                        };
-
-                        // Remove any non-numeric/colon characters as they type
-                        durationPicker.oninput = function(e) {
-                            const oldValue = this.value;
-                            const newValue = oldValue.replace(/[^0-9:]/g, '');
-                            if (oldValue !== newValue) {
-                                console.log('🚑 Cleaned input from', oldValue, 'to', newValue);
-                                this.value = newValue;
-                            }
-                            updateDurationCalculations();
-                        };
-
-                        // Format on blur
-                        durationPicker.onblur = function() {
-                            validateTimeFormat();
-                        };
-
-                        console.log('✅ Emergency time validation active');
-                    }
-                }, 200);
-
-                // Emergency Portfolio toggle fix
-                setTimeout(() => {
-                    const portfolioToggle = document.getElementById('togglePortfolioParams');
-                    const portfolioContainer = document.getElementById('portfolioParamsContainer');
-                    const portfolioIcon = document.getElementById('portfolioToggleIcon');
-
-                    if (portfolioToggle && portfolioContainer && portfolioIcon) {
-                        console.log('🚑 Setting up emergency portfolio toggle');
-
-                        // Force working portfolio toggle
-                        portfolioToggle.onclick = function(e) {
-                            e.preventDefault();
-                            console.log('🚑 Portfolio toggle clicked!');
-
-                            const isHidden = portfolioContainer.style.display === 'none' || portfolioContainer.style.display === '';
-
-                            if (isHidden) {
-                                portfolioContainer.style.display = 'block';
-                                portfolioIcon.textContent = '▲';
-                                portfolioIcon.style.transform = 'rotate(180deg)';
-                                console.log('🚑 Portfolio opened');
-                            } else {
-                                portfolioContainer.style.display = 'none';
-                                portfolioIcon.textContent = '▼';
-                                portfolioIcon.style.transform = 'rotate(0deg)';
-                                console.log('🚑 Portfolio closed');
-                            }
-
-                            return false;
-                        };
-
-                        console.log('✅ Emergency portfolio toggle active');
-                    } else {
-                        console.log('❌ Portfolio elements not found:', {
-                            toggle: !!portfolioToggle,
-                            container: !!portfolioContainer,
-                            icon: !!portfolioIcon
-                        });
-                    }
-                }, 300);
 
                 // Restore any previously collapsed states
                 setTimeout(() => {
@@ -2954,18 +1885,6 @@
                 }, 100);
 
                 console.log('Author interface initialized successfully');
-
-                // Force enable the add button for testing - DISABLED
-                setTimeout(() => {
-                    console.log('🔧 Testing force-enable DISABLED - using emergency script instead');
-                    // const testAddBtn = document.getElementById('addSymbol');
-                    // if (testAddBtn) {
-                    //     testAddBtn.disabled = false;
-                    //     testAddBtn.style.opacity = '1';
-                    //     testAddBtn.style.background = 'rgba(107, 182, 255, 0.8)';
-                    //     console.log('🔧 FORCE ENABLED ADD BUTTON FOR TESTING');
-                    // }
-                }, 500);
             }
 
             // Simple toggle function for details dropdown
@@ -2997,9 +1916,6 @@
                 }
 
                 // Global parameter event listeners
-                // Setup event listeners for global parameter controls
-                // IMPORTANT: These are MASTER controls that update all datacards
-                // Individual datacard changes should NEVER update these global controls!
                 const globalParams = [
                     'globalSpreadPercent', 'globalVolatility', 'globalBidQty',
                     'globalBidWeight', 'globalAskQty', 'globalAskWeight', 'globalTrend'
@@ -3363,13 +2279,9 @@
 
                 // Calculate total allocation from all datacards
                 let totalAllocation = 0;
-                document.querySelectorAll('.percentage-input, .percentage-input-styled').forEach(input => {
-                    const value = parseInt(input.value) || 0;
-                    totalAllocation += value;
-                    console.log('Percentage input found:', input.value, 'parsed as:', value);
+                document.querySelectorAll('.percentage-input').forEach(input => {
+                    totalAllocation += parseInt(input.value) || 0;
                 });
-
-                console.log('Total allocation calculated:', totalAllocation);
 
                 // Update display text
                 allocationStatus.textContent = totalAllocation + '%';
@@ -3391,158 +2303,6 @@
                     allocationStatusBox.style.borderColor = 'rgba(255, 165, 88, 0.3)';
                     allocationStatusBox.style.color = '#ffa558';
                 }
-            }
-
-            // Setup global spread slider reference based on first symbol
-            function setupGlobalSpreadReference(firstCard, symbol) {
-                /*
-                 * CRITICAL: UNIDIRECTIONAL GLOBAL SPREAD CONTROL
-                 *
-                 * The global Spread% slider is a MASTER CONTROL that:
-                 * - Gets initialized ONLY by the first datacard (range + initial value)
-                 * - Controls all datacards (when user drags it)
-                 * - Is NEVER updated by individual datacard changes (strict unidirectional)
-                 *
-                 * GLOBAL SPREAD MAPPING LOGIC:
-                 * - Before any symbols: Global slider uses default 0.05-2.00 range
-                 * - After first symbol: Global slider range matches that symbol's spread range
-                 * - All symbols: Map proportionally from global range to each symbol's individual range
-                 *
-                 * IMPORTANT: Only user interaction with global slider should change its value!
-                 */
-                try {
-                    // Get asset data for the first symbol to determine its spread range
-                    let assetData = null;
-                    if (window.MarketDataUtils) {
-                        assetData = window.MarketDataUtils.getSymbol(symbol);
-                        if (!assetData) {
-                            assetData = window.MarketDataUtils.generateMarketData(symbol);
-                        }
-                    }
-
-                    // Calculate the spread range for this symbol (same logic as in createDetailedDatacard)
-                    let spreadRange;
-                    if (assetData && assetData.spreadPercent) {
-                        const baseSpread = assetData.spreadPercent;
-                        spreadRange = {
-                            min: Math.max(0.001, baseSpread * 0.1),
-                            max: baseSpread * 10,
-                            step: 0.001,
-                            value: Math.round(baseSpread * 1000) / 1000
-                        };
-                    } else {
-                        // If no asset data, get the actual spread range from the first card's DOM
-                        const spreadSlider = firstCard.querySelector('.range-control .range-label');
-                        let actualSpreadSlider = null;
-
-                        // Find the spread slider in this card
-                        const rangeControls = firstCard.querySelectorAll('.range-control');
-                        for (const control of rangeControls) {
-                            const label = control.querySelector('.range-label');
-                            if (label && label.textContent.includes('Spread')) {
-                                actualSpreadSlider = control.querySelector('.range-input');
-                                break;
-                            }
-                        }
-
-                        if (actualSpreadSlider) {
-                            spreadRange = {
-                                min: parseFloat(actualSpreadSlider.min) || 0.1,
-                                max: parseFloat(actualSpreadSlider.max) || 10,
-                                step: parseFloat(actualSpreadSlider.step) || 0.1,
-                                value: parseFloat(actualSpreadSlider.value) || 0.5
-                            };
-                        } else {
-                            // Final fallback to default spread range
-                            spreadRange = {
-                                min: 0.1,
-                                max: 10,
-                                step: 0.1,
-                                value: 0.5
-                            };
-                        }
-                    }
-
-                    // Store this as our global reference
-                    window.globalSpreadReferenceRange = spreadRange;
-
-                    // Update the global spread slider to match this range
-                    const globalSpreadSlider = document.getElementById('globalSpreadPercent');
-                    if (globalSpreadSlider) {
-                        globalSpreadSlider.min = spreadRange.min;
-                        globalSpreadSlider.max = spreadRange.max;
-                        globalSpreadSlider.step = spreadRange.step;
-                        globalSpreadSlider.value = spreadRange.value;
-
-                        // Also update the corresponding number input
-                        const globalSpreadNumber = globalSpreadSlider.parentElement.querySelector('.range-number-input');
-                        if (globalSpreadNumber) {
-                            globalSpreadNumber.min = spreadRange.min;
-                            globalSpreadNumber.max = spreadRange.max;
-                            globalSpreadNumber.step = spreadRange.step;
-                            globalSpreadNumber.value = spreadRange.value;
-                        }
-
-                        // Update the display value
-                        const spreadEl = document.getElementById('spreadValue');
-                        if (spreadEl) {
-                            spreadEl.textContent = spreadRange.value;
-                        }
-
-                        console.log('🎯 Global spread slider updated to match first symbol:', symbol, spreadRange);
-                    }
-                } catch (error) {
-                    console.warn('Error setting up global spread reference:', error);
-                }
-            }
-
-            function removeCard(button) {
-                const card = button.closest('.datacard');
-                const symbol = card.dataset.symbol;
-
-                // Remove from percentage tracking if it exists
-                if (window.productPercentages && symbol) {
-                    window.productPercentages.delete(symbol);
-                }
-
-                // Remove the card
-                card.remove();
-
-                // Check if this was the last symbol and reset global spread reference if needed
-                const datacardContainer = document.getElementById('datacardContainer');
-                if (datacardContainer && datacardContainer.children.length === 0) {
-                    // Reset global spread slider to default range
-                    window.globalSpreadReferenceRange = null;
-                    const globalSpreadSlider = document.getElementById('globalSpreadPercent');
-                    if (globalSpreadSlider) {
-                        globalSpreadSlider.min = '0.05';
-                        globalSpreadSlider.max = '2.00';
-                        globalSpreadSlider.step = '0.05';
-                        globalSpreadSlider.value = '0.25';
-
-                        // Also reset the corresponding number input
-                        const globalSpreadNumber = globalSpreadSlider.parentElement.querySelector('.range-number-input');
-                        if (globalSpreadNumber) {
-                            globalSpreadNumber.min = '0.05';
-                            globalSpreadNumber.max = '2.00';
-                            globalSpreadNumber.step = '0.05';
-                            globalSpreadNumber.value = '0.25';
-                        }
-
-                        // Update the display value
-                        const spreadEl = document.getElementById('spreadValue');
-                        if (spreadEl) {
-                            spreadEl.textContent = '0.25';
-                        }
-
-                        console.log('🔄 Global spread slider reset to default range (no symbols)');
-                    }
-                }
-
-                // Update allocation status after removal
-                setTimeout(() => {
-                    updateAllocationStatus();
-                }, 10);
             }
 
             function parseNumber(str) {
@@ -3636,17 +2396,11 @@
 
             // NEW: Apply global parameters to all individual product datacards
             function applyGlobalParametersToProducts(globalParams) {
-                /*
-                 * UNIDIRECTIONAL FLOW: Global controls → Individual datacards
-                 * This function applies global slider values TO all datacards.
-                 * Individual datacard changes should NEVER update global sliders!
-                 */
                 const datacards = document.querySelectorAll('.datacard');
-                console.log(`🎛️ Applying global spread ${globalParams.spreadPercent} to ${datacards.length} datacards...`);
 
                 datacards.forEach(card => {
                     // Update individual product sliders with global values
-                    // For Spread: use the reference range from first symbol for proportional mapping
+                    // Map global Spread% (0.05-2.00) to datacard Spread (0.1-10)
                     updateProductSlider(card, 'Spread', globalParams.spreadPercent, '%');
 
                     // Map global Volatility (1-4) to datacard Volatility (0-100)
@@ -3677,34 +2431,15 @@
                         const valueDisplay = control.querySelector('.range-value .value');
 
                         if (slider && valueDisplay) {
-                            // Special handling for Spread - ensure it maps to the symbol's actual range
-                            if (labelText === 'Spread' && window.globalSpreadReferenceRange) {
-                                // Global spread value should map proportionally to this card's spread range
-                                const globalRange = window.globalSpreadReferenceRange;
-                                const globalMin = parseFloat(document.getElementById('globalSpreadPercent').min);
-                                const globalMax = parseFloat(document.getElementById('globalSpreadPercent').max);
+                            // Update slider value
+                            slider.value = newValue;
 
-                                // Map the global value to this card's range proportionally
-                                const globalRatio = (newValue - globalMin) / (globalMax - globalMin);
-                                const cardMin = parseFloat(slider.min);
-                                const cardMax = parseFloat(slider.max);
-                                const cardValue = cardMin + (globalRatio * (cardMax - cardMin));
-
-                                slider.value = cardValue;
-                                valueDisplay.textContent = Math.round(cardValue * 1000) / 1000;
-
-                                console.log(`📊 Spread mapping: Global ${newValue} (${globalMin}-${globalMax}) → Card ${Math.round(cardValue * 1000) / 1000} (${cardMin}-${cardMax}) [ratio: ${globalRatio.toFixed(3)}]`);
+                            // Update display value
+                            if (isTrend) {
+                                const description = newValue === 0 ? 'Neutral' : newValue > 0 ? 'Bullish' : 'Bearish';
+                                valueDisplay.parentNode.innerHTML = `<span class="value">${newValue}</span> (${description})`;
                             } else {
-                                // Update slider value normally
-                                slider.value = newValue;
-
-                                // Update display value
-                                if (isTrend) {
-                                    const description = newValue === 0 ? 'Neutral' : newValue > 0 ? 'Bullish' : 'Bearish';
-                                    valueDisplay.parentNode.innerHTML = `<span class="value">${newValue}</span> (${description})`;
-                                } else {
-                                    valueDisplay.textContent = newValue;
-                                }
+                                valueDisplay.textContent = newValue;
                             }
 
                             // Trigger change event to update any dependent calculations
@@ -3746,6 +2481,7 @@
                 // Visual feedback
                 if (hasProducts) {
                     exchangeSelect.style.opacity = '0.5';
+                    exchangeSelect.style.cursor = 'not-allowed';
                 } else {
                     exchangeSelect.style.opacity = '1';
                     exchangeSelect.style.cursor = 'pointer';
@@ -3772,27 +2508,18 @@
 
                 // Function to update button state
                 function updateButtonState() {
-                    const symbolInputEl = symbolInput || document.getElementById('symbolInput');
-                    const addBtnEl = addBtn || document.getElementById('addSymbol');
-
-                    if (!symbolInputEl || !addBtnEl) {
-                        console.error('Elements not found in updateButtonState');
-                        return;
-                    }
-
-                    const hasValue = symbolInputEl.value.trim().length > 0;
-                    console.log('updateButtonState called:', symbolInputEl.value, 'hasValue:', hasValue);
+                    const hasValue = symbolInput.value.trim().length > 0;
+                    console.log('updateButtonState called:', symbolInput.value, 'hasValue:', hasValue);
                     if (hasValue) {
-                        addBtnEl.disabled = false;
-                        addBtnEl.style.opacity = '1';
-                        addBtnEl.style.cursor = 'pointer';
-                        addBtnEl.style.color = 'white';
-                        addBtnEl.style.background = 'rgba(107, 182, 255, 0.8)';
+                        addBtn.disabled = false;
+                        addBtn.style.opacity = '1';
+                        addBtn.style.cursor = 'pointer';
+                        addBtn.style.color = 'white';
                     } else {
-                        addBtnEl.disabled = true;
-                        addBtnEl.style.opacity = '0.5';
-                        addBtnEl.style.color = 'rgba(255, 255, 255, 0.5)';
-                        addBtnEl.style.background = '';
+                        addBtn.disabled = true;
+                        addBtn.style.opacity = '0.5';
+                        addBtn.style.cursor = 'not-allowed';
+                        addBtn.style.color = 'rgba(255, 255, 255, 0.5)';
                     }
                 }
 
@@ -3810,132 +2537,59 @@
                     setTimeout(updateButtonState, 10);
                 });
 
-                // Mark the setup as complete to prevent emergency fallback
-                window.symbolInputSetupComplete = true;
+                console.log('setupSymbolInput completed - Event listeners attached');
 
-                // Mark button to prevent duplicate listeners
-                addBtn.setAttribute('data-listener-attached', 'true');
-
-                // Add visual indicator that setup is complete
-                addBtn.style.border = '2px solid lime';
-                setTimeout(() => {
-                    addBtn.style.border = '';
-                }, 2000);
-
-                // Clear any existing event listeners by replacing the button
-                const newAddBtn = addBtn.cloneNode(true);
-                addBtn.parentNode.replaceChild(newAddBtn, addBtn);
-
-                // Force enable button again right before adding listener
-                newAddBtn.disabled = false;
-                newAddBtn.style.opacity = '1';
-                newAddBtn.style.background = 'rgba(107, 182, 255, 0.8)';
-                newAddBtn.style.cursor = 'pointer';
-
-                // Add single event listener to the new clean button
-                newAddBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('🚀 ADD BUTTON CLICKED!');
-
-                    const symbol = symbolInput.value.trim().toUpperCase() || 'AAPL';
+                addBtn.addEventListener('click', () => {
+                    const symbol = symbolInput.value.trim().toUpperCase();
                     const exchange = exchangeSelect.value || 'CME';
-
-                    console.log('Symbol:', symbol, 'Exchange:', exchange);
 
                     if (!symbol) {
                         alert('Please enter a symbol');
                         return;
                     }
 
-                    // Better duplicate check - look for existing cards with this symbol
-                    const existingCards = datacardContainer.querySelectorAll('.datacard');
-                    for (let card of existingCards) {
-                        if (card.dataset.symbol === symbol) {
-                            alert(`Symbol ${symbol} already exists`);
-                            return;
-                        }
+                    // Check for duplicates
+                    const existing = document.querySelector(`[data-symbol="${symbol}"]`);
+                    if (existing) {
+                        alert(`Symbol ${symbol} already exists`);
+                        return;
                     }
 
-                    console.log('🔧 About to call createDetailedDatacard with:', symbol);
-
                     // Create datacard using full detailed version with microstructure controls
-                    let card = null;  // Declare outside try block
-                    try {
-                        card = createDetailedDatacard(symbol);
-                        console.log('🔧 createDetailedDatacard returned:', card);
-                        console.log('🔧 Card type:', typeof card);
-                        console.log('🔧 Card is element?', card instanceof HTMLElement);
-
-                        if (!card) {
-                            alert('ERROR: Card creation failed - returned null!');
-                            return;
-                        }
-
-                        if (!(card instanceof HTMLElement)) {
-                            alert('ERROR: Card creation failed - not an HTML element!');
-                            return;
-                        }
-
-                        console.log('✅ Card created successfully, adding to container...');
-
-                        // Check if this is the first symbol being added
-                        const isFirstSymbol = datacardContainer.children.length === 0;
-
-                        datacardContainer.appendChild(card);
-                        console.log('✅ Card added to container!');
-
-                        // If this is the first symbol, capture its spread range for global slider reference
-                        // CRITICAL: This is the ONLY place where global slider gets initialized!
-                        if (isFirstSymbol) {
-                            setupGlobalSpreadReference(card, symbol);
-                            console.log('🎯 Global spread slider initialized from first symbol:', symbol);
-                        }
-
-                        // Clear the input
-                        symbolInput.value = '';
-                        updateButtonState();
-
-                        console.log('✅ Datacard creation complete for:', symbol);
-
-                    } catch (error) {
-                        console.error('❌ Error creating datacard:', error);
-                        alert('ERROR: Card creation failed - ' + error.message);
+                    const card = createDetailedDatacard(symbol);
+                    if (!card) {
+                        alert('ERROR: Card creation failed!');
                         return;
                     }
 
                     // Apply current global settings to the new product
-                    if (card) {
-                        applyGlobalParametersToNewProduct(card);
+                    applyGlobalParametersToNewProduct(card);
 
-                        // Set proper percentage allocation and add listeners
-                        const percentageInput = card.querySelector('.percentage-input, .percentage-input-styled');
-                        if (percentageInput) {
-                            percentageInput.value = 20; // Default to 20% instead of 0%
+                    // Set proper percentage allocation and add listeners
+                    const percentageInput = card.querySelector('.percentage-input');
+                    if (percentageInput) {
+                        percentageInput.value = 20; // Default to 20% instead of 0%
 
-                            // Initialize percentage tracking
-                            if (window.productPercentages) {
-                                window.productPercentages.set(symbol, { percentage: 20, isDirty: false });
-                            }
+                        // Initialize percentage tracking
+                        if (window.productPercentages) {
+                            window.productPercentages.set(symbol, { percentage: 20, isDirty: false });
                         }
+                    }
+                    datacardContainer.appendChild(card);
 
-                        // Lock exchange dropdown after first product is added
-                        updateExchangeDropdownState();
+                    // Lock exchange dropdown after first product is added
+                    updateExchangeDropdownState();
 
-                        // Add percentage input listeners for new card
-                        if (percentageInput) {
-                            percentageInput.addEventListener('input', (e) => {
-                                if (window.ValidationManager) {
-                                    window.ValidationManager.filterPercentageInput(e.target);
-                                    window.ValidationManager.validatePercentageInput(e.target);
-                                }
-                                updateAllocationStatus();
-                            });
+                    // Add percentage input listeners for new card
+                    if (percentageInput && window.ValidationManager) {
+                        percentageInput.addEventListener('input', (e) => {
+                            window.ValidationManager.filterPercentageInput(e.target);
+                            window.ValidationManager.validatePercentageInput(e.target);
+                        });
 
-                            percentageInput.addEventListener('change', (e) => {
-                                window.ValidationManager.validatePercentageInput(e.target);
-                            });
-                        }
+                        percentageInput.addEventListener('change', (e) => {
+                            window.ValidationManager.validatePercentageInput(e.target);
+                        });
                     }
 
                     symbolInput.value = '';
@@ -4031,9 +2685,7 @@
                             <button class="collapse-button" onclick="toggleDatacardCollapse(this)" title="Collapse/Expand">▼</button>
                         </div>
                         <div class="datacard-controls">
-                            <div class="percentage-container">
-                                <input type="number" class="percentage-input" min="1" max="100" value="20" placeholder="">
-                            </div>
+                            <input type="number" class="percentage-input" min="0" max="100" value="0" placeholder="%">
                             <button class="remove-symbol" onclick="removeDatacard(this)">×</button>
                         </div>
                     </div>
@@ -4797,7 +3449,7 @@
             setTimeout(() => {
                 if (!window.symbolInputInitialized) {
                     console.log('Forcing setupSymbolInput initialization...');
-                    // setupSymbolInput(); // DISABLED - using emergency script instead
+                    setupSymbolInput();
                     window.symbolInputInitialized = true;
                 }
             }, 100);
@@ -4810,7 +3462,7 @@
             // Additional datacard functionality - moved from loose code to proper script context
             function addDatacardListeners(card) {
                 // Add percentage input validation
-                const percentageInput = card.querySelector('.percentage-input, .percentage-input-styled');
+                const percentageInput = card.querySelector('.percentage-input');
                 if (percentageInput) {
                     // Get symbol from card data attribute
                     const symbol = card.dataset.symbol;
@@ -4823,7 +3475,6 @@
                     percentageInput.addEventListener('input', (e) => {
                         filterPercentageInput(e.target);
                         validatePercentageInput(e.target);
-                        updateAllocationStatus();
                     });
 
                     // Additional validation on change
@@ -5043,8 +3694,16 @@
             };
 
             // Create a detailed datacard with sliders - Global scope
-            // COMMENTED OUT - USING SIMPLER VERSION ABOVE
-            /* window.createDetailedDatacard = function createDetailedDatacard(symbol) {
+            window.createDetailedDatacard = function createDetailedDatacard(symbol) {
+
+                // IMMEDIATE FUNCTION CALL DEBUG - ADD TO TOP OF FUNCTION
+                const liveBanner = document.getElementById('debug-banner-live');
+                if (liveBanner) {
+                    liveBanner.innerHTML += `<br>🔥 createDetailedDatacard() CALLED for symbol: ${symbol}`;
+                    liveBanner.style.background = '#ff6600';
+                }
+                console.log('🔥 createDetailedDatacard() function called for:', symbol);
+
                 const exchange = document.getElementById('exchangeSelect')?.value || 'CME';
                 const card = document.createElement('div');
                 card.className = 'datacard';
@@ -5131,7 +3790,7 @@
                 const askWeight = getSliderAttrs('askWeight', 0, 100, 5, 55);
                 const volatility = getSliderAttrs('volatility', 0, 100, 5, 25);
                 const trend = getSliderAttrs('trend', -50, 50, 5, 5);
-                const percentage = getSliderAttrs('percentage', 1, 100, 1, 20);
+                const percentage = getSliderAttrs('percentage', 0, 100, 1, 20);
 
                 card.innerHTML = `
                     <div class="datacard-header">
@@ -5329,13 +3988,13 @@
                     rangeInputGroups.forEach(group => {
                         const slider = group.querySelector('.range-input');
                         const numberInput = group.querySelector('.range-number-input');
-
+                        
                         if (slider && numberInput) {
                             // Bidirectional sync
                             slider.addEventListener('input', () => {
                                 numberInput.value = slider.value;
                             });
-
+                            
                             numberInput.addEventListener('input', () => {
                                 const value = parseFloat(numberInput.value);
                                 if (!isNaN(value)) {
@@ -5346,7 +4005,7 @@
                                     numberInput.value = clampedValue;
                                 }
                             });
-
+                            
                             numberInput.addEventListener('keydown', (e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
@@ -5467,7 +4126,7 @@
                 }
 
                 return card;
-            }; */
+            };
 
             // Add aliases for any missing function references
             window.createSimpleDataCard = window.createDetailedDatacard;
@@ -5513,6 +4172,7 @@
                             // Empty input - neutral state
                             addButton.disabled = true;
                             addButton.style.opacity = '0.5';
+                            addButton.style.cursor = 'not-allowed';
                             input.style.borderColor = 'rgba(107, 182, 255, 0.3)';
                             input.style.boxShadow = '';
                         } else if (isDuplicate) {
@@ -5520,6 +4180,7 @@
                             input.classList.add('duplicate-symbol');
                             addButton.disabled = true;
                             addButton.style.opacity = '0.5';
+                            addButton.style.cursor = 'not-allowed';
                             input.style.borderColor = '#ff5858';
                             input.style.boxShadow = '0 0 0 2px rgba(255, 88, 88, 0.2)';
                         } else {
@@ -5564,7 +4225,7 @@
 
                         // Create new datacard with auto-allocated percentage
                         const newCard = createDetailedDatacard(symbol);
-                        const newPercentageInput = newCard.querySelector('.percentage-input, .percentage-input-styled');
+                        const newPercentageInput = newCard.querySelector('.percentage-input');
                         if (newPercentageInput) {
                             // Use either auto-calculated percentage or default to 20%
                             const finalPercentage = autoPercentage > 0 ? autoPercentage : 20;
@@ -5729,7 +4390,32 @@
 
 // Remove duplicate function definitions - keep only the window global assignments
             // Ensure microstructure functions are available globally
-            // togglePricingMode function defined earlier - removing duplicate
+            window.togglePricingMode = function(button) {
+                const card = button.closest('.datacard');
+                const defaultMode = card.querySelector('.pricing-mode-default');
+                const advancedMode = card.querySelector('.pricing-mode-advanced');
+                const modeText = button.querySelector('.mode-text');
+
+                const isSpreadMode = defaultMode.style.display !== 'none';
+
+                if (isSpreadMode) {
+                    // Switch to direct price mode
+                    defaultMode.style.display = 'none';
+                    advancedMode.style.display = 'block';
+                    modeText.textContent = 'Direct';
+                    button.style.background = 'rgba(255,165,88,0.1)';
+                    button.style.borderColor = 'rgba(255,165,88,0.3)';
+                    button.style.color = '#ffa558';
+                } else {
+                    // Switch to spread mode
+                    advancedMode.style.display = 'none';
+                    defaultMode.style.display = 'block';
+                    modeText.textContent = 'Spread';
+                    button.style.background = 'rgba(107,182,255,0.1)';
+                    button.style.borderColor = 'rgba(107,182,255,0.3)';
+                    button.style.color = '#6bb6ff';
+                }
+            };
 
             // Apply default values to datacard inputs
             function applyDefaultValues(card) {
@@ -6335,8 +5021,8 @@
                 // Clear previous validation state
                 input.classList.remove('invalid');
 
-                // Check for invalid range (must be 1-100)
-                if (value < 1 || value > 100) {
+                // Check for 0% (always invalid)
+                if (value === 0) {
                     input.classList.add('invalid');
                     if (typeof window.updateAllocationDisplay === 'function') {
                         window.updateAllocationDisplay();
@@ -6744,8 +5430,8 @@
                                     case 'Spread': newValue = values.spread; break;
                                     case 'Bid Weight': newValue = values.bidWeight; break;
                                     case 'Ask Weight': newValue = values.askWeight; break;
-                                    case 'Bid Qty': newValue = values.bidQuantity; break;
-                                    case 'Ask Qty': newValue = values.askQuantity; break;
+                                    case 'Bid Quantity': newValue = values.bidQuantity; break;
+                                    case 'Ask Quantity': newValue = values.askQuantity; break;
                                     case 'Volatility': newValue = values.volatility; break;
                                     case 'Trend': newValue = values.trend; break;
                                 }
@@ -6788,7 +5474,7 @@
                             if (card) {
                                 // Distribute integer percentages that sum to 100%
                                 const percentage = basePercentage + (index < remainder ? 1 : 0);
-                                const percentInput = card.querySelector('.percentage-input, .percentage-input-styled');
+                                const percentInput = card.querySelector('.percentage-input');
                                 if (percentInput) {
                                     percentInput.value = percentage;
                                 }
@@ -7185,7 +5871,7 @@
                 /**
                  * Initialize a product percentage allocation
                  */
-                initializeProduct(symbol, percentage = 20) {
+                initializeProduct(symbol, percentage = 0) {
                     BeaconAuthor.state.productPercentages.set(symbol, {
                         percentage: percentage,
                         isDirty: false
@@ -7253,7 +5939,7 @@
 
                         cleanProducts.forEach(symbol => {
                             const card = document.querySelector(`.datacard[data-symbol="${symbol}"]`);
-                            const input = card?.querySelector('.percentage-input, .percentage-input-styled');
+                            const input = card?.querySelector('.percentage-input');
 
                             if (input) {
                                 input.value = redistributedPercentage;
@@ -7351,8 +6037,8 @@
                     // Clear previous validation styling
                     input.classList.remove('invalid');
 
-                    // Validate range (must be 1-100)
-                    if (value < 1 || value > 100) {
+                    // Validate 0% (always invalid)
+                    if (value === 0) {
                         input.classList.add('invalid');
                         BeaconAuthor.modules.PercentageManager.updateAllocationDisplay();
                         return false;
@@ -7537,7 +6223,7 @@
 
                     datacards.forEach(card => {
                         const symbol = card.dataset.symbol;
-                        const percentageInput = card.querySelector('.percentage-input, .percentage-input-styled');
+                        const percentageInput = card.querySelector('.percentage-input');
 
                         if (percentageInput && symbol) {
                             // Setup validation for this input
@@ -7595,7 +6281,7 @@
                             if (card) {
                                 // Set percentage that sums to 100%
                                 const percentage = basePercentage + (index < remainder ? 1 : 0);
-                                const percentInput = card.querySelector('.percentage-input, .percentage-input-styled');
+                                const percentInput = card.querySelector('.percentage-input');
                                 if (percentInput) {
                                     percentInput.value = percentage;
                                 }
@@ -7625,61 +6311,6 @@
                 // Setup UI components
                 this.modules.UIManager.setupUtilityDropdowns();
                 this.modules.UIManager.setupSpinnerFunctionality();
-
-                // FIX BUG #3: Ensure initializeAuthor is accessible
-                window.initializeAuthor = initializeAuthor;
-
-                // Initialize basic author functionality (includes symbol input)
-                if (typeof initializeAuthor === 'function') {
-                    initializeAuthor();
-                } else {
-                    console.error('❌ initializeAuthor function not found!');
-                }
-
-                // Emergency fallback setup for add symbol functionality (disabled if regular setup worked)
-                setTimeout(() => {
-                    // Skip emergency fallback if regular setup completed
-                    if (window.symbolInputSetupComplete) {
-                        console.log('🚀 Regular setup completed successfully - skipping emergency fallback');
-                        return;
-                    }
-
-                    const symbolInput = document.getElementById('symbolInput');
-                    const addBtn = document.getElementById('addSymbol');
-                    const datacardContainer = document.getElementById('datacardContainer');
-
-                    if (symbolInput && addBtn && datacardContainer && !addBtn.hasAttribute('data-listener-attached')) {
-                        console.log('🚑 EMERGENCY FALLBACK: DISABLED - using main emergency script');
-                        return; // DISABLED - don't run this fallback
-
-                        console.log('🚑 EMERGENCY FALLBACK: Setting up add symbol manually');
-                        addBtn.disabled = false;
-                        addBtn.style.opacity = '1';
-                        addBtn.style.background = 'rgba(107, 182, 255, 0.8)';
-                        addBtn.style.cursor = 'pointer';
-
-                        // Add emergency click handler
-                        addBtn.addEventListener('click', () => {
-                            console.log('🚑 EMERGENCY ADD BUTTON CLICKED!');
-                            const symbol = symbolInput.value.trim().toUpperCase() || 'AAPL';
-
-                            if (typeof createDetailedDatacard === 'function') {
-                                const card = createDetailedDatacard(symbol);
-                                if (card) {
-                                    datacardContainer.appendChild(card);
-                                    symbolInput.value = '';
-                                    console.log('✅ Emergency datacard added:', symbol);
-                                } else {
-                                    console.error('❌ Emergency card creation failed');
-                                }
-                            } else {
-                                console.error('❌ createDetailedDatacard not available');
-                            }
-                        });
-
-                        addBtn.setAttribute('data-listener-attached', 'true');
-                    }
-                }, 1000);
 
                 // Don't initialize existing datacards - start with empty panel
                 // this.modules.DatacardManager.initializeAllDatacards();

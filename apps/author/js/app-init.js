@@ -14,13 +14,13 @@ BeaconAuthor.init = function() {
     this.modules.UIManager.setupUtilityDropdowns();
     this.modules.UIManager.setupSpinnerFunctionality();
 
-    // Initialize existing datacards
-    this.modules.DatacardManager.initializeAllDatacards();
+    // Don't initialize existing datacards - start with empty panel
+    // this.modules.DatacardManager.initializeAllDatacards();
 
     // Demo mode specific initialization
     if (this.config.IS_DEMO_MODE) {
         setTimeout(() => {
-            this.modules.DatacardManager.createDemoDatacards();
+            // Don't create demo datacards - user will add their own
 
             // Setup demo generate button
             const generateBtn = document.getElementById('generateDataset');

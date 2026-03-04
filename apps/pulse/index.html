@@ -4,18 +4,84 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pulse - Beacon HFT Platform</title>
+        <title>Pulse - Beacon Financial Technologies</title>
 
-        <link rel="stylesheet" href="/assets/css/main.css">
+        <!-- Import Beacon Design System -->
+        <link rel="stylesheet" href="/assets/css/common/page-gradients/navy-page-gradient.css">
+        <link rel="stylesheet" href="/assets/fonts/inter/inter-local.css">
+
+        <!-- Reusable Components -->
+        <link rel="stylesheet" href="/assets/css/components/glass-panels.css">
+        <link rel="stylesheet" href="/assets/css/components/interactive-icons.css">
+        <link rel="stylesheet" href="/assets/css/components/typography.css">
+        <link rel="stylesheet" href="/assets/css/components/dropdowns.css">
+        <link rel="stylesheet" href="/assets/css/animations/core-animations.css">
+
+        <!-- Page-specific styles for Pulse app -->
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-utilities.css">
+        <link rel="stylesheet" href="/assets/css/pages/command-center/command-center-base.css">
+
+        <!-- Pulse app specific styles -->
         <style>
+            :root {
+                /* Beacon color system - much darker, professional palette */
+                --color-orange: #d97841;
+                --color-blue: #3d5a7a;
+                --color-white: #fff;
+                --color-red: #d66565;
+
+                /* Glass panel backgrounds */
+                --glass-panel: rgba(16, 22, 36, 0.8);
+                --glass-input: rgba(24, 31, 46, 0.8);
+
+                /* Border colors - very subtle */
+                --border-blue: rgba(61, 90, 122, 0.1);
+                --border-blue-active: rgba(61, 90, 122, 0.25);
+                --border-red: rgba(214, 101, 101, 0.35);
+
+                /* Spacing */
+                --spacing-xs: 0.5em;
+                --spacing-sm: 0.75em;
+                --spacing-md: 1em;
+                --spacing-lg: 1.5em;
+                --spacing-xl: 2em;
+            }
+        </style>
+
+        <!-- Modular JavaScript imports - TEMPORARILY DISABLED FOR DEMO -->
+        <!-- <script type="module" src="js/validation.js"></script> -->
+        <!-- <script type="module" src="js/datacard-factory.js"></script> -->
+        <!-- <script type="module" src="js/microstructure-controls.js"></script> -->
+
+        <style>
+            html,
             body {
-                overflow-y: auto !important;
-                min-height: 100vh;
+                overflow-y: auto;
+                scroll-behavior: smooth;
+            }
+
+            /* Emergency fix for interaction blocking */
+            body, html {
+                pointer-events: auto !important;
+            }
+
+            * {
+                pointer-events: auto !important;
+            }
+
+            .main-container, main {
+                pointer-events: auto !important;
+                z-index: auto !important;
+            }
+
+            body {
                 font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-                background: #0a0a15;
-                color: #ffffff;
+                color: rgba(255, 255, 255, 0.75);
                 margin: 0;
                 padding: 0;
+                min-height: 100vh;
+                /* Override navy-page-gradient.css overflow setting for scrollable pages */
+                overflow-y: auto !important;
             }
 
             .beacon-page-header {
@@ -39,6 +105,30 @@
                 gap: 1em;
             }
 
+            .beacon-brand-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                padding: 4px;
+            }
+
+            .beacon-brand-icon:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(61, 90, 122, 0.3);
+                background: rgba(61, 90, 122, 0.1);
+            }
+
+            .beacon-brand-icon svg {
+                width: 100%;
+                height: 100%;
+                transition: all 0.3s ease;
+            }
+
             .beacon-brand-main {
                 color: #6bb6ff;
                 text-decoration: none;
@@ -46,12 +136,16 @@
                 font-weight: 900;
             }
 
+            .beacon-brand-main:visited {
+                color: #6bb6ff;
+            }
+
             .beacon-brand-separator {
                 color: rgba(255, 255, 255, 0.5);
             }
 
             .beacon-page-title {
-                color: #ffffff;
+                color: rgba(255, 255, 255, 0.75);
                 font-size: 1.5em;
                 font-weight: 700;
                 margin: 0;
@@ -64,18 +158,21 @@
             }
 
             .beacon-nav-back {
-                color: #6bb6ff;
+                color: rgba(255, 255, 255, 0.7);
                 text-decoration: none;
                 display: flex;
                 align-items: center;
                 gap: 0.5em;
-                transition: color 0.3s ease;
+                transition: all 0.3s ease;
+                font-weight: 500;
             }
 
             .beacon-nav-back:hover {
-                color: #ffffff;
+                color: #6bb6ff;
+                text-shadow: 0 0 6px rgba(107, 182, 255, 0.3);
             }
 
+            /* Utility Icon Styles and Dropdown Styles */
             .utility-icons {
                 display: flex;
                 gap: 0.75em;
@@ -85,95 +182,966 @@
             .utility-icon {
                 width: 32px;
                 height: 32px;
-                border-radius: 50%;
-                background: rgba(255, 145, 77, 0.1);
+                padding: 6px;
+                border-radius: 8px;
+                background: rgba(107, 182, 255, 0.15);
+                border: 1px solid rgba(107, 182, 255, 0.3);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 position: relative;
+
             }
 
             .utility-icon:hover {
-                background: rgba(255, 145, 77, 0.2);
+                background: rgba(107, 182, 255, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(107, 182, 255, 0.4);
+            }
+
+            .utility-icon img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) saturate(100%) invert(66%) sepia(43%) saturate(3348%) hue-rotate(195deg) brightness(103%) contrast(105%);
+                transition: filter 0.3s ease;
+            }
+
+            .utility-icon:hover img {
+                filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7482%) hue-rotate(340deg) brightness(105%) contrast(105%);
+            }
+
+            .info-dropdown,
+            .search-dropdown {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: rgba(16, 22, 36, 0.95);
+                backdrop-filter: blur(15px);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 8px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+                min-width: 200px;
+                z-index: 1000;
+                display: none;
+                margin-top: 8px;
+                padding: 12px 0;
+            }
+
+            .info-dropdown a {
+                display: block;
+                padding: 12px 20px;
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.1);
+                font-weight: 500;
+            }
+
+            .info-dropdown a:last-child {
+                border-bottom: none;
+            }
+
+            .info-dropdown a:hover {
+                background: rgba(107, 182, 255, 0.15);
+                color: #6bb6ff;
+                text-shadow: 0 0 8px rgba(107, 182, 255, 0.5);
+            }
+
+            .search-box {
+                padding: 12px 20px;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.1);
+                margin-bottom: 8px;
+            }
+
+            .search-box input {
+                width: 100%;
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 6px;
+                padding: 10px 12px;
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 0.95em;
+                transition: all 0.3s ease;
+            }
+
+            .search-box input:focus {
+                outline: none;
+                border-color: #6bb6ff;
+                box-shadow: 0 0 0 3px rgba(107, 182, 255, 0.15);
+            }
+
+            .search-box input::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .search-results {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .search-result-item {
+                padding: 10px 20px;
+                cursor: pointer;
+                color: rgba(255, 255, 255, 0.7);
+                transition: all 0.3s ease;
+                font-size: 0.9em;
+            }
+
+            .search-result-item:hover {
+                background: rgba(107, 182, 255, 0.15);
+                color: #6bb6ff;
+            }
+
+            /* Page layout and main content styling */
+            .main-container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2em 1.5em;
+                gap: 1.5em;
+                /* Stack sections vertically */
+            }
+
+            /* Hero section styling */
+            .hero-section {
+                text-align: center;
+                padding: 4em 0 3em 0;
+                background: linear-gradient(180deg, transparent 0%, rgba(107, 182, 255, 0.05) 100%);
+                border-radius: 20px;
+                margin-bottom: 3em;
+            }
+
+            .hero-title {
+                font-size: clamp(3rem, 8vw, 5rem);
+                /* Responsive sizing */
+                font-weight: 900;
+                color: rgba(255, 255, 255, 0.95);
+                margin: 0 0 0.5em 0;
+                letter-spacing: -0.02em;
+                text-shadow: 0 0 40px rgba(107, 182, 255, 0.3);
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1.25rem, 3vw, 1.75rem);
+                /* Responsive sizing */
+                color: rgba(255, 255, 255, 0.7);
+                font-weight: 400;
+                margin: 0;
+                line-height: 1.4;
+            }
+
+            /* Section header styling */
+            .section-header {
+                background: rgba(16, 22, 36, 0.7);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 12px;
+                padding: 1.5em 2em;
+                margin-bottom: 1.5em;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .section-title {
+                font-size: 1.75em;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.9);
+                margin: 0 0 0.5em 0;
+                text-shadow: 0 0 10px rgba(107, 182, 255, 0.3);
+            }
+
+            .section-description {
+                font-size: 1.1em;
+                color: rgba(255, 255, 255, 0.7);
+                margin: 0;
+                line-height: 1.5;
+            }
+
+            /* Portfolio configuration panel styling */
+            .portfolio-config-card {
+                background: rgba(16, 22, 36, 0.8);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(61, 90, 122, 0.25);
+                border-radius: 12px;
+                padding: 2em;
+                transition: all 0.4s ease;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .portfolio-config-card:hover {
+                border-color: rgba(107, 182, 255, 0.4);
+                box-shadow: 0 12px 35px rgba(107, 182, 255, 0.15);
+            }
+
+            /* Datacards panel - this is where tooltips were getting trapped */
+            .datacards-panel {
+                background: rgba(16, 22, 36, 0.8);
+                /* Removed backdrop-filter that was creating stacking context issues */
+                border: 1px solid rgba(61, 90, 122, 0.25);
+                border-radius: 12px;
+                padding: 2em;
+                margin-bottom: 2em;
+                transition: all 0.4s ease;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                /* Removed z-index and position to prevent stacking context issues */
+            }
+
+            .datacards-panel:hover {
+                border-color: rgba(107, 182, 255, 0.4);
+                box-shadow: 0 12px 35px rgba(107, 182, 255, 0.15);
+            }
+
+            /* Sub-panel styling for nested content */
+            .sub-panel {
+                background: rgba(24, 31, 46, 0.6);
+                border: 1px solid rgba(61, 90, 122, 0.2);
+                border-radius: 8px;
+                padding: 1.5em;
+                margin-top: 1em;
+            }
+
+            /* Form input styling */
+            .beacon-input,
+            .beacon-select,
+            .beacon-textarea {
+                width: 100%;
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 6px;
+                padding: 0.75em 1em;
+                color: rgba(255, 255, 255, 0.9);
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+                font-size: 0.95em;
+                transition: all 0.3s ease;
+                box-sizing: border-box;
+            }
+
+            .beacon-input:focus,
+            .beacon-select:focus,
+            .beacon-textarea:focus {
+                outline: none;
+                border-color: #6bb6ff;
+                background: rgba(24, 31, 46, 0.9);
+                box-shadow: 0 0 0 3px rgba(107, 182, 255, 0.15);
+            }
+
+            .beacon-input::placeholder,
+            .beacon-textarea::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            /* Form grid layout */
+            .form-grid {
+                display: grid;
+                gap: 1.5em;
+                margin-bottom: 2em;
+            }
+
+            .form-grid.two-column {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid.three-column {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5em;
+            }
+
+            .form-label {
+                color: #6bb6ff;
+                font-weight: 600;
+                font-size: 0.95em;
+                text-shadow: 0 0 8px rgba(107, 182, 255, 0.3);
+            }
+
+            /* Button styling */
+            .beacon-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75em;
+                padding: 1em 2em;
+                border: none;
+                border-radius: 8px;
+                font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+                font-weight: 600;
+                font-size: 1em;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .beacon-button.primary {
+                background: linear-gradient(135deg, #6bb6ff 0%, #4a90e2 100%);
+                color: #fff;
+                box-shadow: 0 4px 15px rgba(107, 182, 255, 0.3);
+            }
+
+            .beacon-button.primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(107, 182, 255, 0.4);
+            }
+
+            .beacon-button.secondary {
+                background: rgba(61, 90, 122, 0.3);
+                color: rgba(255, 255, 255, 0.9);
+                border: 1px solid rgba(107, 182, 255, 0.4);
+            }
+
+            .beacon-button.secondary:hover {
+                background: rgba(107, 182, 255, 0.2);
+                border-color: #6bb6ff;
                 transform: translateY(-1px);
             }
 
-            main.beacon-page-content {
-                padding-top: 100px;
-                max-width: 900px;
-                margin: 0 auto;
-                padding-left: 24px;
-                padding-right: 24px;
+            .beacon-button.danger {
+                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+                color: #fff;
+                box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
             }
+
+            .beacon-button.danger:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            }
+
+            /* Card grid layout for datacards */
+            .datacard-grid {
+                display: grid;
+                gap: 1.5em;
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                margin-top: 1.5em;
+            }
+
+            .datacard {
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(61, 90, 122, 0.4);
+                border-radius: 8px;
+                padding: 1.5em;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .datacard:hover {
+                border-color: rgba(107, 182, 255, 0.6);
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(107, 182, 255, 0.15);
+            }
+
+            .datacard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1em;
+            }
+
+            .datacard-title {
+                font-weight: 700;
+                font-size: 1.1em;
+                color: rgba(255, 255, 255, 0.9);
+                margin: 0;
+            }
+
+            .datacard-actions {
+                display: flex;
+                gap: 0.5em;
+            }
+
+            .datacard-action {
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+                padding: 0.25em;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                font-size: 1.2em;
+            }
+
+            .datacard-action:hover {
+                color: #6bb6ff;
+                background: rgba(107, 182, 255, 0.1);
+                transform: scale(1.1);
+            }
+
+            .datacard-content {
+                font-size: 0.95em;
+                line-height: 1.5;
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            /* Status messages and notifications */
+            .status-message {
+                padding: 1em 1.5em;
+                border-radius: 8px;
+                margin: 1em 0;
+                border-left: 4px solid;
+                font-weight: 500;
+            }
+
+            .status-message.success {
+                background: rgba(39, 174, 96, 0.15);
+                border-color: #27ae60;
+                color: #2ecc71;
+            }
+
+            .status-message.error {
+                background: rgba(231, 76, 60, 0.15);
+                border-color: #e74c3c;
+                color: #e74c3c;
+            }
+
+            .status-message.info {
+                background: rgba(107, 182, 255, 0.15);
+                border-color: #6bb6ff;
+                color: #6bb6ff;
+            }
+
+            .status-message.warning {
+                background: rgba(241, 196, 15, 0.15);
+                border-color: #f1c40f;
+                color: #f39c12;
+            }
+
+            /* Collapsible section styling */
+            .collapsible-section {
+                border: 1px solid rgba(61, 90, 122, 0.3);
+                border-radius: 8px;
+                margin-bottom: 1em;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .collapsible-header {
+                background: rgba(24, 31, 46, 0.8);
+                padding: 1em 1.5em;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid rgba(61, 90, 122, 0.2);
+            }
+
+            .collapsible-header:hover {
+                background: rgba(107, 182, 255, 0.1);
+            }
+
+            .collapsible-title {
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.9);
+                margin: 0;
+            }
+
+            .collapsible-toggle {
+                color: #6bb6ff;
+                font-size: 1.2em;
+                transition: transform 0.3s ease;
+            }
+
+            .collapsible-content {
+                background: rgba(16, 22, 36, 0.6);
+                padding: 1.5em;
+                display: none;
+            }
+
+            .collapsible-content.expanded {
+                display: block;
+                animation: slideDown 0.3s ease;
+            }
+
+            /* Responsive design */
+            @media (max-width: 768px) {
+
+                .form-grid.two-column,
+                .form-grid.three-column {
+                    grid-template-columns: 1fr;
+                }
+
+                .datacard-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .main-container {
+                    padding: 1em;
+                }
+
+                .section-header {
+                    padding: 1em 1.5em;
+                }
+
+                .portfolio-config-card,
+                .datacards-panel {
+                    padding: 1.5em;
+                }
+
+                .hero-title {
+                    font-size: 3rem;
+                }
+
+                .hero-subtitle {
+                    font-size: 1.25rem;
+                }
+            }
+
+            /* Animation keyframes */
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    max-height: 0;
+                }
+
+                to {
+                    opacity: 1;
+                    max-height: 1000px;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Tooltip styling - positioned to escape stacking contexts */
+            .tooltip {
+                position: fixed;
+                /* Changed from absolute to fixed to escape all stacking contexts */
+                background: rgba(16, 22, 36, 0.95);
+                backdrop-filter: blur(15px);
+                border: 1px solid rgba(107, 182, 255, 0.4);
+                border-radius: 6px;
+                padding: 0.75em 1em;
+                font-size: 0.9em;
+                color: rgba(255, 255, 255, 0.9);
+                z-index: 10000;
+                /* Very high z-index */
+                pointer-events: none;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+                max-width: 300px;
+                line-height: 1.4;
+                font-weight: 500;
+                text-shadow: 0 0 8px rgba(107, 182, 255, 0.3);
+            }
+
+            .tooltip.visible {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .tooltip::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border: 8px solid transparent;
+                border-bottom-color: rgba(16, 22, 36, 0.95);
+                filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.2));
+            }
+
+            /* Info icon styling for tooltips */
+            .info-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: rgba(107, 182, 255, 0.2);
+                color: #6bb6ff;
+                font-size: 0.8em;
+                font-weight: bold;
+                cursor: help;
+                margin-left: 0.5em;
+                transition: all 0.3s ease;
+            }
+
+            .info-icon:hover {
+                background: rgba(107, 182, 255, 0.3);
+                transform: scale(1.1);
         </style>
     </head>
 
     <body>
+        <!-- Navigation Header -->
         <header class="beacon-page-header">
-            <nav class="beacon-page-nav">
+            <div class="beacon-page-nav">
                 <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-icon" title="Beacon Financial Technologies">
+                        <img src="/assets/images/beacon-brand-large.svg" alt="Beacon" style="width: 100%; height: 100%; object-fit: contain;">
+                    </a>
                     <a href="/" class="beacon-brand-main">Beacon.</a>
-                    <span class="beacon-brand-separator">|</span>
+                    <span class="beacon-brand-separator" style="color: #d97841; text-shadow: 0 0 6px rgba(217, 120, 65, 0.3); font-weight: 600; margin: 0 1em;">|</span>
                     <h1 class="beacon-page-title">Pulse.</h1>
+                    <h3 style="color: lightgray;">Broadcast Market Datasets. </h3>
                 </div>
                 <div class="beacon-nav-actions">
                     <a href="/" class="beacon-nav-back">
                         <span class="nav-arrow">←</span>
                         <span>Home</span>
                     </a>
-                    <div class="utility-icons">
-                        <div class="utility-icon" id="infoIcon">
-                            <img src="/assets/images/icons/info-orange.svg" alt="Information" />
-                            <div class="info-dropdown" id="infoDropdown">
-                                <a href="mailto:contact@beaconhft.com">Contact</a>
-                                <a href="/">Home</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <div class="main-container">
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="hero-title">Pulse</h1>
+                <p class="hero-subtitle">Real-time dataset streaming and portfolio monitoring for high-performance trading.</p>
+            </section>
+
+            <!-- Portfolio Configuration Section -->
+            <section class="section-header">
+                <h2 class="section-title">Portfolio Configuration</h2>
+                <p class="section-description">Set up your trading portfolio parameters and dataset streaming preferences for optimal performance monitoring.</p>
+            </section>
+
+            <div class="portfolio-config-card">
+                <form id="pulsePortfolioForm">
+                    <div class="form-grid three-column">
+                        <div class="form-group">
+                            <label for="portfolioName" class="form-label">Portfolio Name
+                                <span class="info-icon" data-tooltip="Unique identifier for this portfolio configuration">?</span>
+                            </label>
+                            <input type="text" id="portfolioName" class="beacon-input" placeholder="e.g., Equity Alpha Strategy" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="portfolioType" class="form-label">Portfolio Type
+                                <span class="info-icon" data-tooltip="Select the type of portfolio for appropriate dataset streaming">?</span>
+                            </label>
+                            <select id="portfolioType" class="beacon-select" required>
+                                <option value="">Select Portfolio Type...</option>
+                                <option value="equity_intraday">Equity Intraday</option>
+                                <option value="futures_momentum">Futures Momentum</option>
+                                <option value="fx_scalping">FX Scalping</option>
+                                <option value="crypto_arbitrage">Crypto Arbitrage</option>
+                                <option value="multi_asset">Multi-Asset</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="riskProfile" class="form-label">Risk Profile
+                                <span class="info-icon" data-tooltip="Risk tolerance level affects streaming frequency and monitoring sensitivity">?</span>
+                            </label>
+                            <select id="riskProfile" class="beacon-select" required>
+                                <option value="">Select Risk Profile...</option>
+                                <option value="conservative">Conservative</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="aggressive">Aggressive</option>
+                                <option value="ultra_aggressive">Ultra Aggressive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid two-column">
+                        <div class="form-group">
+                            <label for="capitalBase" class="form-label">Capital Base
+                                <span class="info-icon" data-tooltip="Initial capital allocation for this portfolio">?</span>
+                            </label>
+                            <input type="number" id="capitalBase" class="beacon-input" placeholder="1000000" step="1000" min="10000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="maxDrawdown" class="form-label">Max Drawdown %
+                                <span class="info-icon" data-tooltip="Maximum acceptable portfolio drawdown before alerts trigger">?</span>
+                            </label>
+                            <input type="number" id="maxDrawdown" class="beacon-input" placeholder="5.0" step="0.1" min="0.1" max="50">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="form-label">Description
+                            <span class="info-icon" data-tooltip="Detailed description of portfolio strategy and monitoring requirements">?</span>
+                        </label>
+                        <textarea id="description" class="beacon-textarea" rows="4"
+                            placeholder="Describe the portfolio strategy, expected behavior, and specific monitoring requirements..."></textarea>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2em;">
+                        <button type="submit" class="beacon-button primary">
+                            <span>📊</span>
+                            <span>Configure Portfolio</span>
+                        </button>
+                        <button type="button" id="clearPortfolioForm" class="beacon-button secondary" style="margin-left: 1em;">
+                            <span>↻</span>
+                            <span>Reset Form</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Monitoring Setup Section -->
+            <section class="datacards-panel">
+                <div class="section-header">
+                    <h2 class="section-title">Monitoring Configuration</h2>
+                    <p class="section-description">Configure real-time monitoring parameters and dataset streaming settings.</p>
+                </div>
+
+                <!-- Collapsible sections for different monitoring aspects -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection('dataStream')">
+                        <h3 class="collapsible-title">Dataset Streaming Setup</h3>
+                        <span class="collapsible-toggle" id="dataStream-toggle">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="dataStream-content">
+                        <div class="sub-panel">
+                            <div class="form-grid two-column">
+                                <div class="form-group">
+                                    <label for="streamingSource" class="form-label">Data Source
+                                        <span class="info-icon" data-tooltip="Primary data source for portfolio monitoring">?</span>
+                                    </label>
+                                    <select id="streamingSource" class="beacon-select">
+                                        <option value="">Select Data Source...</option>
+                                        <option value="live_market">Live Market Data</option>
+                                        <option value="historical_replay">Historical Replay</option>
+                                        <option value="synthetic_data">Synthetic Data</option>
+                                        <option value="mixed_sources">Mixed Sources</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="updateFrequency" class="form-label">Update Frequency
+                                        <span class="info-icon" data-tooltip="How often to update portfolio monitoring data">?</span>
+                                    </label>
+                                    <select id="updateFrequency" class="beacon-select">
+                                        <option value="">Select Frequency...</option>
+                                        <option value="real_time">Real-time (ms)</option>
+                                        <option value="high_freq">High Frequency (100ms)</option>
+                                        <option value="standard">Standard (1s)</option>
+                                        <option value="low_freq">Low Frequency (5s)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-grid three-column">
+                                <div class="form-group">
+                                    <label for="bufferSize" class="form-label">Buffer Size (MB)
+                                        <span class="info-icon" data-tooltip="Memory buffer size for streaming data">?</span>
+                                    </label>
+                                    <input type="number" id="bufferSize" class="beacon-input" placeholder="256" min="64" max="2048" step="64">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="compressionLevel" class="form-label">Compression Level
+                                        <span class="info-icon" data-tooltip="Data compression level (higher = smaller size, more CPU)">?</span>
+                                    </label>
+                                    <select id="compressionLevel" class="beacon-select">
+                                        <option value="none">None</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="retentionDays" class="form-label">Data Retention (Days)
+                                        <span class="info-icon" data-tooltip="How long to keep historical monitoring data">?</span>
+                                    </label>
+                                    <input type="number" id="retentionDays" class="beacon-input" placeholder="30" min="1" max="365" step="1">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </nav>
-        </header>
-        </div>
-        </div>
-        </nav>
-        </header>
 
-        <!-- Large Title Overlay -->
-        <div style="position: relative; text-align: center; margin: 1em 0; z-index: 1000; pointer-events: none;">
-            <h1
-                style="font-size: 4rem; font-weight: 900; color: #ffffff; margin: 0; text-shadow: 0 0 20px rgba(107, 182, 255, 0.3); font-family: 'Inter', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.05em;">
-                Pulse.</h1>
-        </div>
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection('alertConfig')">
+                        <h3 class="collapsible-title">Alert Configuration</h3>
+                        <span class="collapsible-toggle" id="alertConfig-toggle">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="alertConfig-content">
+                        <div class="sub-panel">
+                            <div class="form-grid two-column">
+                                <div class="form-group">
+                                    <label for="alertThreshold" class="form-label">P&L Alert Threshold %
+                                        <span class="info-icon" data-tooltip="Trigger alerts when P&L moves beyond this threshold">?</span>
+                                    </label>
+                                    <input type="number" id="alertThreshold" class="beacon-input" placeholder="2.5" step="0.1" min="0.1" max="20">
+                                </div>
 
-        <main class="beacon-page-content">
-            <section class="doc-hero">
-                <h1>Dataset Playback & Monitoring.</h1>
-                <p>Stream your datasets to your strategies with real-time progress tracking.</p>
-            </section>
+                                <div class="form-group">
+                                    <label for="alertMethods" class="form-label">Alert Methods
+                                        <span class="info-icon" data-tooltip="How to deliver alerts for critical portfolio events">?</span>
+                                    </label>
+                                    <select id="alertMethods" class="beacon-select" multiple>
+                                        <option value="email">Email Notification</option>
+                                        <option value="sms">SMS Alert</option>
+                                        <option value="dashboard">Dashboard Popup</option>
+                                        <option value="api_webhook">API Webhook</option>
+                                    </select>
+                                </div>
+                            </div>
 
-            <!-- Progress Header -->
-            <div id="progressHeader"
-                style="background: rgba(107, 182, 255, 0.1); padding: 1.5em; border-radius: 8px; margin-bottom: 2em; border-left: 3px solid #6bb6ff; display: none;">
-                <h2 id="jobTitle">No active simulation</h2>
-                <p id="jobStatus">Configure and start dataset streaming</p>
-                <div style="width: 100%; height: 12px; background: #333; border-radius: 6px; margin: 1em 0;">
-                    <div id="progressFill"
-                        style="height: 100%; background: linear-gradient(90deg, #6bb6ff, #00ff88); border-radius: 6px; width: 0%; transition: width 0.5s ease;">
+                            <div class="form-grid three-column">
+                                <div class="form-group">
+                                    <label for="riskAlerts" class="form-label">Risk Monitor
+                                        <span class="info-icon" data-tooltip="Enable automated risk monitoring alerts">?</span>
+                                    </label>
+                                    <select id="riskAlerts" class="beacon-select">
+                                        <option value="enabled" selected>Enabled</option>
+                                        <option value="disabled">Disabled</option>
+                                        <option value="weekend_only">Weekends Only</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="performanceAlerts" class="form-label">Performance Monitor
+                                        <span class="info-icon" data-tooltip="Monitor performance metrics and trigger alerts">?</span>
+                                    </label>
+                                    <select id="performanceAlerts" class="beacon-select">
+                                        <option value="enabled" selected>Enabled</option>
+                                        <option value="disabled">Disabled</option>
+                                        <option value="trading_hours_only">Trading Hours Only</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="systemAlerts" class="form-label">System Monitor
+                                        <span class="info-icon" data-tooltip="Monitor system health and connectivity">?</span>
+                                    </label>
+                                    <select id="systemAlerts" class="beacon-select">
+                                        <option value="enabled" selected>Enabled</option>
+                                        <option value="disabled">Disabled</option>
+                                        <option value="critical_only">Critical Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p id="progressText">0% complete</p>
-            </div>
 
-            <!-- Dataset Configuration Panel -->
-            <section class="doc-content">
-                <h2>Configuration:</h2>
-                <div class="beacon-code-panel" style="margin-top:1.2em; padding: 1.5em;">
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5em; margin-bottom: 2em;">
-                        <div>
-                            <label
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection('displayConfig')">
+                        <h3 class="collapsible-title">Display Configuration</h3>
+                        <span class="collapsible-toggle" id="displayConfig-toggle">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="displayConfig-content">
+                        <div class="sub-panel">
+                            <div class="form-grid two-column">
+                                <div class="form-group">
+                                    <label for="refreshRate" class="form-label">Dashboard Refresh Rate
+                                        <span class="info-icon" data-tooltip="How often to refresh the monitoring dashboard">?</span>
+                                    </label>
+                                    <select id="refreshRate" class="beacon-select">
+                                        <option value="500ms">500ms (Real-time)</option>
+                                        <option value="1s" selected>1 second</option>
+                                        <option value="5s">5 seconds</option>
+                                        <option value="10s">10 seconds</option>
+                                        <option value="30s">30 seconds</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="chartTimeframe" class="form-label">Chart Timeframe
+                                        <span class="info-icon" data-tooltip="Default timeframe for performance charts">?</span>
+                                    </label>
+                                    <select id="chartTimeframe" class="beacon-select">
+                                        <option value="1m">1 Minute</option>
+                                        <option value="5m" selected>5 Minutes</option>
+                                        <option value="15m">15 Minutes</option>
+                                        <option value="1h">1 Hour</option>
+                                        <option value="1d">1 Day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-grid three-column">
+                                <div class="form-group">
+                                    <label for="showAdvanced" class="form-label">Advanced Metrics
+                                        <span class="info-icon" data-tooltip="Show advanced portfolio analytics and metrics">?</span>
+                                    </label>
+                                    <select id="showAdvanced" class="beacon-select">
+                                        <option value="true" selected>Show</option>
+                                        <option value="false">Hide</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="colorTheme" class="form-label">Color Theme
+                                        <span class="info-icon" data-tooltip="Visual theme for the monitoring interface">?</span>
+                                    </label>
+                                    <select id="colorTheme" class="beacon-select">
+                                        <option value="dark" selected>Dark (Default)</option>
+                                        <option value="high_contrast">High Contrast</option>
+                                        <option value="minimal">Minimal</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gridDensity" class="form-label">Grid Density
+                                        <span class="info-icon" data-tooltip="How densely to pack information in monitoring grids">?</span>
+                                    </label>
+                                    <select id="gridDensity" class="beacon-select">
+                                        <option value="compact">Compact</option>
+                                        <option value="standard" selected>Standard</option>
+                                        <option value="spacious">Spacious</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action buttons for monitoring configuration -->
+                <div style="text-align: center; margin-top: 2em; padding-top: 1.5em; border-top: 1px solid rgba(107, 182, 255, 0.2);">
+                    <button onclick="generateMonitoringConfig()" class="beacon-button primary">
+                        <span>⚙️</span>
+                        <span>Generate Monitoring Config</span>
+                    </button>
+                    <button onclick="resetMonitoringConfig()" class="beacon-button secondary" style="margin-left: 1em;">
+                        <span>↻</span>
+                        <span>Reset to Defaults</span>
+                    </button>
+                    <button onclick="previewConfiguration()" class="beacon-button secondary" style="margin-left: 1em;">
+                        <span>👁</span>
+                        <span>Preview Configuration</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Generated Monitoring Configurations Display -->
+            <section class="datacards-panel" id="monitoringConfigsSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Generated Monitoring Configurations</h2>
+                    <p class="section-description">Review and manage your portfolio monitoring configurations below.</p>
+                </div>
+
+                <div id="statusMessage" class="status-message info" style="display: none;">
+                    Ready to generate monitoring configurations. Configure your portfolio and monitoring settings above.
+                </div>
+
+                <div class="datacard-grid" id="monitoringConfigGrid">
+                    <!-- Generated monitoring configurations will appear here -->
+                </div>
+            </section>
+
+        </div>
                                 style="display: block; color: #6bb6ff; font-weight: 600; margin-bottom: 0.5em;">Messages:</label>
                             <select id="messageCount"
                                 style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(107,182,255,0.3); border-radius: 6px; padding: 0.75em; color: white; font-family: inherit;">
@@ -236,211 +1204,610 @@
                 </div>
             </section>
         </main>
+
+        <!-- JavaScript for all interactive functionality -->
         <script>
-            // Setup utility icon dropdown functionality
-            document.addEventListener('DOMContentLoaded', function () {
-                // Info dropdown
+            // Global state management for Pulse application
+            window.PulseApp = {
+                portfolioConfigs: [],
+                monitoringConfigs: [],
+                tooltips: new Map(),
+                currentTooltip: null
+            };
+
+            // Initialize application when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Pulse application initializing...');
+                initializeUtilityIcons();
+                initializeTooltips();
+                initializeFormHandlers();
+                initializeCollapsibleSections();
+                restoreFormState();
+
+                // Show status message
+                showStatusMessage('Pulse monitoring system ready. Configure your portfolio and monitoring settings to begin.', 'info');
+                console.log('Pulse application initialized successfully');
+            });
+
+            // Utility Icons and Dropdowns Management
+            function initializeUtilityIcons() {
+                const searchIcon = document.getElementById('searchIcon');
+                const searchDropdown = document.getElementById('searchDropdown');
                 const infoIcon = document.getElementById('infoIcon');
                 const infoDropdown = document.getElementById('infoDropdown');
+                const searchInput = document.getElementById('searchInput');
 
-                if (infoIcon && infoDropdown) {
-                    infoIcon.addEventListener('click', function (e) {
+                // Search dropdown functionality
+                if (searchIcon && searchDropdown) {
+                    searchIcon.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        const isVisible = infoDropdown.style.display === 'block';
-
-                        // Close search dropdown if open
-                        }
-
-                        infoDropdown.style.display = isVisible ? 'none' : 'block';
-                    });
-                }
-
-                // Search dropdown
-
-                        e.stopPropagation();
+                        const isVisible = searchDropdown.style.display === 'block';
 
                         // Close info dropdown if open
                         if (infoDropdown) {
                             infoDropdown.style.display = 'none';
                         }
 
-                        if (isVisible) {
-                        } else {
-                            // Focus on search input when opened
-                            }
+                        searchDropdown.style.display = isVisible ? 'none' : 'block';
+
+                        if (!isVisible && searchInput) {
+                            setTimeout(() => searchInput.focus(), 100);
                         }
                     });
                 }
 
-                // Close utility dropdowns when clicking outside
-                document.addEventListener('click', function (e) {
-                    if (!e.target.closest('.utility-icon')) {
-                        // Close info dropdown
-                        if (infoDropdown) {
-                            infoDropdown.style.display = 'none';
+                // Info dropdown functionality
+                if (infoIcon && infoDropdown) {
+                    infoIcon.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const isVisible = infoDropdown.style.display === 'block';
+
+                        // Close search dropdown if open
+                        if (searchDropdown) {
+                            searchDropdown.style.display = 'none';
                         }
-                        // Close search dropdown
-                        }
-                    }
-                });
-            });
-        </script>
 
-        <script>
-            // Pulse streaming functionality
-            let currentStreamId = null;
-            let streamInterval = null;
-
-            function startStream() {
-                const messageCount = parseInt(document.getElementById('messageCount').value);
-                const dataset = document.getElementById('dataset').value;
-
-                currentStreamId = 'stream-' + Date.now().toString().slice(-6);
-
-                // Update UI
-                document.getElementById('progressHeader').style.display = 'block';
-                document.getElementById('progressSection').style.display = 'block';
-                document.getElementById('jobTitle').textContent = `Streaming: ${currentStreamId}`;
-                document.getElementById('jobStatus').textContent = `Processing ${messageCount.toLocaleString()} ${dataset.toUpperCase()} messages...`;
-                document.getElementById('startBtn').disabled = true;
-                document.getElementById('stopBtn').disabled = false;
-                document.getElementById('stopBtn').style.opacity = '1';
-
-                // Start simulated streaming
-                simulateStream(messageCount, dataset);
-            }
-
-            function stopStream() {
-                if (streamInterval) {
-                    clearInterval(streamInterval);
-                    streamInterval = null;
+                        infoDropdown.style.display = isVisible ? 'none' : 'block';
+                    });
                 }
 
-                document.getElementById('jobStatus').textContent = 'Stream stopped by user';
-                document.getElementById('startBtn').disabled = false;
-                document.getElementById('stopBtn').disabled = true;
-                document.getElementById('stopBtn').style.opacity = '0.5';
+                // Search functionality
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        const query = this.value.toLowerCase();
+                        const results = document.getElementById('searchResults');
+                        if (results) {
+                            const items = results.querySelectorAll('.search-result-item');
+                            items.forEach(item => {
+                                const text = item.textContent.toLowerCase();
+                                item.style.display = text.includes(query) ? 'block' : 'none';
+                            });
+                        }
+                    });
+                }
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.utility-icon')) {
+                        if (infoDropdown) infoDropdown.style.display = 'none';
+                        if (searchDropdown) searchDropdown.style.display = 'none';
+                    }
+                });
             }
 
-            function simulateStream(totalMessages, dataset) {
-                let messagesProcessed = 0;
-                const bucketSize = 1000;
-                const totalBuckets = Math.ceil(totalMessages / bucketSize);
+            // Advanced tooltip system that escapes stacking contexts
+            function initializeTooltips() {
+                const tooltipElements = document.querySelectorAll('[data-tooltip]');
 
-                streamInterval = setInterval(() => {
-                    messagesProcessed += bucketSize * (0.8 + Math.random() * 0.4); // Vary processing speed
+                tooltipElements.forEach(element => {
+                    element.addEventListener('mouseenter', function() {
+                        showTooltip(this, this.getAttribute('data-tooltip'));
+                    });
 
-                    if (messagesProcessed >= totalMessages) {
-                        messagesProcessed = totalMessages;
-                        clearInterval(streamInterval);
-                        document.getElementById('jobStatus').textContent = 'Stream completed successfully!';
-                        document.getElementById('startBtn').disabled = false;
-                        document.getElementById('stopBtn').disabled = true;
-                        document.getElementById('stopBtn').style.opacity = '0.5';
+                    element.addEventListener('mouseleave', function() {
+                        hideTooltip();
+                    });
+
+                    // Handle tooltip positioning on mouse move for better UX
+                    element.addEventListener('mousemove', function(e) {
+                        if (window.PulseApp.currentTooltip) {
+                            updateTooltipPosition(e);
+                        }
+                    });
+                });
+            }
+
+            function showTooltip(element, text) {
+                hideTooltip(); // Hide any existing tooltip
+
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip visible';
+                tooltip.textContent = text;
+
+                // Append to body to avoid stacking context issues
+                document.body.appendChild(tooltip);
+
+                // Position tooltip
+                const rect = element.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+
+                let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                let top = rect.bottom + 10;
+
+                // Ensure tooltip stays within viewport bounds
+                const padding = 10;
+                if (left < padding) left = padding;
+                if (left + tooltipRect.width > window.innerWidth - padding) {
+                    left = window.innerWidth - tooltipRect.width - padding;
+                }
+                if (top + tooltipRect.height > window.innerHeight - padding) {
+                    top = rect.top - tooltipRect.height - 10;
+                }
+
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+
+                window.PulseApp.currentTooltip = tooltip;
+            }
+
+            function hideTooltip() {
+                if (window.PulseApp.currentTooltip) {
+                    document.body.removeChild(window.PulseApp.currentTooltip);
+                    window.PulseApp.currentTooltip = null;
+                }
+            }
+
+            function updateTooltipPosition(e) {
+                if (!window.PulseApp.currentTooltip) return;
+
+                const tooltip = window.PulseApp.currentTooltip;
+                const tooltipRect = tooltip.getBoundingClientRect();
+
+                let left = e.clientX - (tooltipRect.width / 2);
+                let top = e.clientY + 20;
+
+                // Ensure tooltip stays within viewport
+                const padding = 10;
+                if (left < padding) left = padding;
+                if (left + tooltipRect.width > window.innerWidth - padding) {
+                    left = window.innerWidth - tooltipRect.width - padding;
+                }
+                if (top + tooltipRect.height > window.innerHeight - padding) {
+                    top = e.clientY - tooltipRect.height - 10;
+                }
+
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+            }
+
+            // Collapsible sections management
+            function toggleSection(sectionId) {
+                const content = document.getElementById(sectionId + '-content');
+                const toggle = document.getElementById(sectionId + '-toggle');
+
+                if (content && toggle) {
+                    const isExpanded = content.classList.contains('expanded');
+
+                    if (isExpanded) {
+                        content.classList.remove('expanded');
+                        content.style.display = 'none';
+                        toggle.textContent = '▼';
+                    } else {
+                        content.classList.add('expanded');
+                        content.style.display = 'block';
+                        toggle.textContent = '▲';
                     }
 
-                    const currentBucket = Math.floor(messagesProcessed / bucketSize);
-                    const progressPercent = (messagesProcessed / totalMessages * 100).toFixed(1);
+                    // Save state
+                    localStorage.setItem('pulse_section_' + sectionId, isExpanded ? 'closed' : 'open');
+                }
+            }
 
-                    const streamData = {
-                        stream_id: currentStreamId,
-                        dataset: dataset,
-                        total_messages: totalMessages,
-                        messages_processed: Math.floor(messagesProcessed),
-                        bucket_size: bucketSize,
-                        current_bucket: currentBucket,
-                        total_buckets: totalBuckets,
-                        progress_percentage: progressPercent,
-                        performance_stats: {
-                            avg_latency: (2.3 + Math.random() * 1.0).toFixed(2) + 'μs',
-                            p99_latency: (2.8 + Math.random() * 0.7).toFixed(2) + 'μs',
-                            throughput: Math.floor(130 + Math.random() * 50) + 'k msg/sec',
-                            memory_usage: Math.floor(180 + Math.random() * 120) + 'MB',
-                            network_io: Math.floor(50 + Math.random() * 30) + 'MB/s'
-                        },
-                        stream_stats: {
-                            packets_sent: Math.floor(messagesProcessed / 10),
-                            retransmissions: Math.floor(Math.random() * 5),
-                            buffer_utilization: Math.floor(45 + Math.random() * 40) + '%'
-                        },
-                        last_updated: new Date().toISOString().slice(11, 19)
+            function initializeCollapsibleSections() {
+                // Restore section states from localStorage
+                ['dataStream', 'alertConfig', 'displayConfig'].forEach(sectionId => {
+                    const savedState = localStorage.getItem('pulse_section_' + sectionId);
+                    if (savedState === 'open') {
+                        toggleSection(sectionId);
+                    }
+                });
+            }
+
+            // Form handling and validation
+            function initializeFormHandlers() {
+                const portfolioForm = document.getElementById('pulsePortfolioForm');
+                const clearButton = document.getElementById('clearPortfolioForm');
+
+                if (portfolioForm) {
+                    portfolioForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        if (validatePortfolioForm()) {
+                            submitPortfolioConfiguration();
+                        }
+                    });
+                }
+
+                if (clearButton) {
+                    clearButton.addEventListener('click', function() {
+                        if (confirm('Are you sure you want to reset all portfolio configuration fields?')) {
+                            resetPortfolioForm();
+                        }
+                    });
+                }
+
+                // Auto-save form data as user types
+                const formInputs = document.querySelectorAll('#pulsePortfolioForm input, #pulsePortfolioForm select, #pulsePortfolioForm textarea');
+                formInputs.forEach(input => {
+                    input.addEventListener('change', saveFormState);
+                    input.addEventListener('input', debounce(saveFormState, 1000));
+                });
+            }
+
+            function validatePortfolioForm() {
+                const form = document.getElementById('pulsePortfolioForm');
+                const required = form.querySelectorAll('[required]');
+                let isValid = true;
+
+                required.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.style.borderColor = '#e74c3c';
+                        isValid = false;
+                        setTimeout(() => {
+                            field.style.borderColor = '';
+                        }, 3000);
+                    }
+                });
+
+                if (!isValid) {
+                    showStatusMessage('Please fill in all required fields.', 'error');
+                }
+
+                return isValid;
+            }
+
+            function submitPortfolioConfiguration() {
+                const formData = new FormData(document.getElementById('pulsePortfolioForm'));
+                const config = Object.fromEntries(formData.entries());
+
+                // Add timestamp and ID
+                config.id = 'pulse_' + Date.now();
+                config.created = new Date().toISOString();
+                config.type = 'portfolio';
+
+                // Store in application state
+                window.PulseApp.portfolioConfigs.push(config);
+
+                showStatusMessage('Portfolio configuration saved successfully!', 'success');
+                console.log('Portfolio configuration created:', config);
+
+                // Enable monitoring configuration section
+                document.getElementById('monitoringConfigsSection').style.display = 'block';
+            }
+
+            function resetPortfolioForm() {
+                document.getElementById('pulsePortfolioForm').reset();
+                clearFormState();
+                showStatusMessage('Portfolio form has been reset.', 'info');
+            }
+
+            // Monitoring configuration functions
+            function generateMonitoringConfig() {
+                if (window.PulseApp.portfolioConfigs.length === 0) {
+                    showStatusMessage('Please configure a portfolio first before generating monitoring configurations.', 'warning');
+                    return;
+                }
+
+                const monitoringData = collectMonitoringSettings();
+                const config = createMonitoringConfiguration(monitoringData);
+
+                window.PulseApp.monitoringConfigs.push(config);
+                displayMonitoringConfiguration(config);
+
+                showStatusMessage('Monitoring configuration generated successfully!', 'success');
+
+                // Show the configurations section
+                document.getElementById('monitoringConfigsSection').style.display = 'block';
+
+                // Scroll to show results
+                document.getElementById('monitoringConfigsSection').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+
+            function collectMonitoringSettings() {
+                return {
+                    dataStream: {
+                        source: document.getElementById('streamingSource')?.value || 'live_market',
+                        frequency: document.getElementById('updateFrequency')?.value || 'standard',
+                        bufferSize: parseInt(document.getElementById('bufferSize')?.value) || 256,
+                        compression: document.getElementById('compressionLevel')?.value || 'medium',
+                        retention: parseInt(document.getElementById('retentionDays')?.value) || 30
+                    },
+                    alerts: {
+                        threshold: parseFloat(document.getElementById('alertThreshold')?.value) || 2.5,
+                        methods: getSelectedOptions('alertMethods'),
+                        riskMonitor: document.getElementById('riskAlerts')?.value || 'enabled',
+                        performanceMonitor: document.getElementById('performanceAlerts')?.value || 'enabled',
+                        systemMonitor: document.getElementById('systemAlerts')?.value || 'enabled'
+                    },
+                    display: {
+                        refreshRate: document.getElementById('refreshRate')?.value || '1s',
+                        chartTimeframe: document.getElementById('chartTimeframe')?.value || '5m',
+                        showAdvanced: document.getElementById('showAdvanced')?.value === 'true',
+                        colorTheme: document.getElementById('colorTheme')?.value || 'dark',
+                        gridDensity: document.getElementById('gridDensity')?.value || 'standard'
+                    }
+                };
+            }
+
+            function createMonitoringConfiguration(settings) {
+                return {
+                    id: 'monitor_' + Date.now(),
+                    created: new Date().toISOString(),
+                    type: 'monitoring',
+                    portfolio: window.PulseApp.portfolioConfigs[window.PulseApp.portfolioConfigs.length - 1],
+                    settings: settings,
+                    status: 'configured',
+                    estimated_performance: calculateEstimatedPerformance(settings)
+                };
+            }
+
+            function calculateEstimatedPerformance(settings) {
+                // Simplified performance calculation
+                let score = 100;
+
+                // Data stream impact
+                if (settings.dataStream.frequency === 'real_time') score -= 20;
+                if (settings.dataStream.bufferSize > 512) score -= 10;
+                if (settings.dataStream.compression === 'none') score -= 15;
+
+                // Alert impact
+                if (settings.alerts.threshold < 1) score -= 5;
+                if (settings.alerts.methods.length > 3) score -= 10;
+
+                // Display impact
+                if (settings.display.refreshRate === '500ms') score -= 15;
+                if (settings.display.showAdvanced) score -= 5;
+
+                return Math.max(score, 20); // Minimum 20% efficiency
+            }
+
+            function displayMonitoringConfiguration(config) {
+                const grid = document.getElementById('monitoringConfigGrid');
+                const card = createMonitoringCard(config);
+                grid.appendChild(card);
+            }
+
+            function createMonitoringCard(config) {
+                const card = document.createElement('div');
+                card.className = 'datacard';
+
+                var cardHtml = '';
+                cardHtml += '<div class="datacard-header">';
+                cardHtml += '<h4 class="datacard-title">Monitoring Config: ' + (config.portfolio.portfolioName || 'Unnamed') + '</h4>';
+                cardHtml += '<div class="datacard-actions">';
+                cardHtml += '<button class="datacard-action" onclick="editMonitoringConfig(\'' + config.id + '\')" title="Edit Configuration">✏️</button>';
+                cardHtml += '<button class="datacard-action" onclick="duplicateMonitoringConfig(\'' + config.id + '\')" title="Duplicate Configuration">📋</button>';
+                cardHtml += '<button class="datacard-action" onclick="deleteMonitoringConfig(\'' + config.id + '\')" title="Delete Configuration">🗑️</button>';
+                cardHtml += '</div>';
+                cardHtml += '</div>';
+                cardHtml += '<div class="datacard-content">';
+                cardHtml += '<p><strong>Portfolio Type:</strong> ' + (config.portfolio.portfolioType || 'Not specified') + '</p>';
+                cardHtml += '<p><strong>Data Source:</strong> ' + config.settings.dataStream.source + '</p>';
+                cardHtml += '<p><strong>Update Frequency:</strong> ' + config.settings.dataStream.frequency + '</p>';
+                cardHtml += '<p><strong>Alert Threshold:</strong> ' + config.settings.alerts.threshold + '%</p>';
+                cardHtml += '<p><strong>Estimated Performance:</strong> ' + config.estimated_performance + '% efficiency</p>';
+                cardHtml += '<p><strong>Created:</strong> ' + new Date(config.created).toLocaleString() + '</p>';
+                cardHtml += '<div style="margin-top: 1em;">';
+                cardHtml += '<span style="display: inline-block; padding: 0.25em 0.5em; background: rgba(107, 182, 255, 0.2); border-radius: 4px; font-size: 0.85em;">';
+                cardHtml += config.status.toUpperCase();
+                cardHtml += '</span>';
+                cardHtml += '</div>';
+                cardHtml += '</div>';
+
+                card.innerHTML = cardHtml;
+                return card;
+            }
+
+            function resetMonitoringConfig() {
+                const forms = document.querySelectorAll('#dataStream-content input, #dataStream-content select, #alertConfig-content input, #alertConfig-content select, #displayConfig-content input, #displayConfig-content select');
+                forms.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                showStatusMessage('Monitoring configuration reset to defaults.', 'info');
+            }
+
+            function previewConfiguration() {
+                const settings = collectMonitoringSettings();
+                const preview = createConfigurationPreview(settings);
+                showConfigurationPreview(preview);
+            }
+
+            function createConfigurationPreview(settings) {
+                var previewHtml = '';
+                previewHtml += '<h3>Configuration Preview</h3>';
+                previewHtml += '<div style="font-family: monospace; background: rgba(24, 31, 46, 0.8); padding: 1em; border-radius: 6px; margin: 1em 0;">';
+                previewHtml += '<strong>Data Streaming:</strong><br>';
+                previewHtml += '• Source: ' + settings.dataStream.source + '<br>';
+                previewHtml += '• Frequency: ' + settings.dataStream.frequency + '<br>';
+                previewHtml += '• Buffer: ' + settings.dataStream.bufferSize + 'MB<br>';
+                previewHtml += '• Compression: ' + settings.dataStream.compression + '<br>';
+                previewHtml += '• Retention: ' + settings.dataStream.retention + ' days<br><br>';
+                previewHtml += '<strong>Alerts:</strong><br>';
+                previewHtml += '• P&L Threshold: ' + settings.alerts.threshold + '%<br>';
+                previewHtml += '• Methods: ' + (settings.alerts.methods.join(', ') || 'None selected') + '<br>';
+                previewHtml += '• Risk Monitor: ' + settings.alerts.riskMonitor + '<br>';
+                previewHtml += '• Performance Monitor: ' + settings.alerts.performanceMonitor + '<br>';
+                previewHtml += '• System Monitor: ' + settings.alerts.systemMonitor + '<br><br>';
+                previewHtml += '<strong>Display:</strong><br>';
+                previewHtml += '• Refresh Rate: ' + settings.display.refreshRate + '<br>';
+                previewHtml += '• Chart Timeframe: ' + settings.display.chartTimeframe + '<br>';
+                previewHtml += '• Advanced Metrics: ' + (settings.display.showAdvanced ? 'Enabled' : 'Disabled') + '<br>';
+                previewHtml += '• Theme: ' + settings.display.colorTheme + '<br>';
+                previewHtml += '• Grid Density: ' + settings.display.gridDensity;
+                previewHtml += '</div>';
+                return previewHtml;
+
+            function showConfigurationPreview(preview) {
+                const existingModal = document.getElementById('configPreviewModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+
+                const modal = document.createElement('div');
+                modal.id = 'configPreviewModal';
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);';
+
+                const content = document.createElement('div');
+                content.style.cssText = 'background: rgba(16, 22, 36, 0.95); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 12px; padding: 2em; max-width: 600px; max-height: 80vh; overflow-y: auto; color: rgba(255, 255, 255, 0.9);';
+
+                content.innerHTML = preview + '<div style="text-align: center; margin-top: 2em;"><button onclick="closeConfigPreview()" class="beacon-button secondary">Close Preview</button></div>';
+
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeConfigPreview();
+                    }
+                });
+            }
+
+            function closeConfigPreview() {
+                const modal = document.getElementById('configPreviewModal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+
+            // Monitoring config management functions
+            function editMonitoringConfig(configId) {
+                const config = window.PulseApp.monitoringConfigs.find(c => c.id === configId);
+                if (config) {
+                    // Populate form with existing values
+                    populateFormsWithConfig(config);
+                    showStatusMessage('Configuration loaded for editing.', 'info');
+                }
+            }
+
+            function duplicateMonitoringConfig(configId) {
+                const original = window.PulseApp.monitoringConfigs.find(c => c.id === configId);
+                if (original) {
+                    const duplicate = {
+                        ...original,
+                        id: 'monitor_' + Date.now(),
+                        created: new Date().toISOString()
                     };
-
-                    updateStreamDisplay(streamData);
-                }, 150);
+                    window.PulseApp.monitoringConfigs.push(duplicate);
+                    displayMonitoringConfiguration(duplicate);
+                    showStatusMessage('Configuration duplicated successfully.', 'success');
+                }
             }
 
-            function updateStreamDisplay(data) {
-                // Update progress bar
-                document.getElementById('progressFill').style.width = data.progress_percentage + '%';
-                document.getElementById('progressText').textContent =
-                    `${data.progress_percentage}% - ${data.messages_processed.toLocaleString()} / ${data.total_messages.toLocaleString()} messages`;
-
-                // Update metrics table
-                const metricsHtml = `
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Stream ID</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.stream_id}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Current streaming session</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Dataset</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.dataset.toUpperCase()}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Exchange protocol being streamed</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Messages Streamed</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.messages_processed.toLocaleString()}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Total messages processed and sent</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Current Bucket</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.current_bucket} / ${data.total_buckets}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Progress in ${data.bucket_size.toLocaleString()}-message chunks</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Stream Latency</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.performance_stats.avg_latency}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Average message processing latency</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">P99 Latency</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.performance_stats.p99_latency}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">99th percentile latency</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Throughput</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.performance_stats.throughput}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Messages streamed per second</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Memory Usage</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.performance_stats.memory_usage}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Current memory consumption</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Network I/O</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.performance_stats.network_io}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Network data transfer rate</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Buffer Utilization</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.stream_stats.buffer_utilization}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Output buffer usage percentage</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Last Updated</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Fira Code', monospace; color: #00ff88; font-weight: 600;">${data.last_updated}</td>
-                    <td style="padding: 0.8em 1em; border-bottom: 1px solid rgba(255,255,255,0.1);">Timestamp of last update</td>
-                </tr>
-            `;
-
-                document.getElementById('metricsTable').innerHTML = metricsHtml;
+            function deleteMonitoringConfig(configId) {
+                if (confirm('Are you sure you want to delete this monitoring configuration?')) {
+                    const index = window.PulseApp.monitoringConfigs.findIndex(c => c.id === configId);
+                    if (index !== -1) {
+                        window.PulseApp.monitoringConfigs.splice(index, 1);
+                        const card = document.querySelector('[data-config-id="' + configId + '"]') ||
+                                   document.querySelector('button[onclick*="deleteMonitoringConfig"]');
+                        if (card && card.closest) {
+                            card.closest('.datacard').remove();
+                        } else if (card) {
+                            card.remove();
+                        }
+                        showStatusMessage('Configuration deleted.', 'info');
+                    }
+                }
             }
 
-            // Real implementation would replace simulation with API calls:
-            // fetch(`/api/simulation`, { method: 'POST', body: JSON.stringify(config) })
-            // setInterval(() => fetch(`/api/simulation/${streamId}/progress`), 1000)
+            // Utility functions
+            function showStatusMessage(message, type = 'info') {
+                const statusDiv = document.getElementById('statusMessage');
+                if (statusDiv) {
+                    statusDiv.className = 'status-message ' + type;
+                    statusDiv.textContent = message;
+                    statusDiv.style.display = 'block';
+
+                    // Auto-hide after 5 seconds
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            function getSelectedOptions(selectId) {
+                const select = document.getElementById(selectId);
+                if (!select) return [];
+
+                return Array.from(select.selectedOptions).map(option => option.value);
+            }
+
+            function saveFormState() {
+                const form = document.getElementById('pulsePortfolioForm');
+                if (form) {
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+                    localStorage.setItem('pulse_portfolio_form', JSON.stringify(data));
+                }
+            }
+
+            function restoreFormState() {
+                const savedData = localStorage.getItem('pulse_portfolio_form');
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        Object.keys(data).forEach(key => {
+                            const input = document.getElementById(key);
+                            if (input && data[key]) {
+                                input.value = data[key];
+                            }
+                        });
+                    } catch (e) {
+                        console.warn('Could not restore form state:', e);
+                    }
+                }
+            }
+
+            function clearFormState() {
+                localStorage.removeItem('pulse_portfolio_form');
+            }
+
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            function populateFormsWithConfig(config) {
+                // This would populate the forms with the config data for editing
+                // Implementation would depend on the specific form structure
+                console.log('Populating forms with config:', config);
+                showStatusMessage('Configuration loaded. Modify settings and regenerate to update.', 'info');
+            }
+
+            // Global functions that need to be accessible from HTML onclick handlers
+            window.toggleSection = toggleSection;
+            window.generateMonitoringConfig = generateMonitoringConfig;
+            window.resetMonitoringConfig = resetMonitoringConfig;
+            window.previewConfiguration = previewConfiguration;
+            window.editMonitoringConfig = editMonitoringConfig;
+            window.duplicateMonitoringConfig = duplicateMonitoringConfig;
+            window.deleteMonitoringConfig = deleteMonitoringConfig;
+            window.closeConfigPreview = closeConfigPreview;
+
+            console.log('Pulse application JavaScript loaded successfully');
         </script>
     </body>
 

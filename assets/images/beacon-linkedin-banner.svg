@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1a2332"/>
+      <stop offset="30%" stop-color="#2a4a6b"/>
+      <stop offset="70%" stop-color="#3d5a7a"/>
+      <stop offset="100%" stop-color="#4a6b8a" stop-opacity="0.6"/>
+    </linearGradient>
+
+    <!-- Light beam -->
+    <linearGradient id="beam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c67630" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#d97841" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#3d5a7a" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1584" height="396" fill="url(#bg)"/>
+
+  <!-- Lighthouse (moved) -->
+  <g transform="translate(100, 120)">
+    <!-- Base -->
+    <rect x="35" y="120" width="30" height="40" fill="#2a4a6b" rx="2"/>
+    <!-- Tower -->
+    <polygon points="38,120 62,120 58,60 42,60" fill="#3d5a7a"/>
+    <!-- Light housing -->
+    <rect x="40" y="55" width="20" height="12" fill="#2a4a6b" rx="2"/>
+    <!-- Light source -->
+    <circle cx="50" cy="61" r="3" fill="#d97841"/>
+  </g>
+
+  <!-- Main light beam extending right -->
+  <polygon points="150,181 300,160 1500,180 1500,220 300,200 150,201" fill="url(#beam)" opacity="0.6"/>
+
+  <!-- Data flow lines -->
+  <path d="M 200 170 Q 400 160 800 175 Q 1200 180 1550 178" stroke="#6bb6ff" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 200 190 Q 450 185 850 195 Q 1250 200 1550 198" stroke="#6bb6ff" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M 200 150 Q 380 145 750 155 Q 1150 160 1550 158" stroke="#6bb6ff" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M 200 210 Q 500 205 900 215 Q 1300 220 1550 218" stroke="#6bb6ff" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Data points -->
+  <circle cx="400" cy="168" r="4" fill="#d97841" opacity="0.9"/>
+  <circle cx="600" cy="172" r="3" fill="#d97841" opacity="0.8"/>
+  <circle cx="800" cy="175" r="4" fill="#d97841" opacity="0.9"/>
+  <circle cx="1000" cy="177" r="3" fill="#d97841" opacity="0.8"/>
+  <circle cx="1200" cy="178" r="4" fill="#d97841" opacity="0.9"/>
+  <circle cx="1400" cy="179" r="3" fill="#d97841" opacity="0.8"/>
+
+  <!-- Company name blended into design -->
+  <text x="1020" y="345" fill="#1c3a5e" font-family="Arial, sans-serif" font-size="26" font-weight="bold" stroke="#ffffff" stroke-width="1.5" opacity="1">Beacon Financial Technologies</text>
+</svg>

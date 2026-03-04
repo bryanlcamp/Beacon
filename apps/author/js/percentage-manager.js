@@ -94,37 +94,28 @@ BeaconAuthor.modules.PercentageManager = {
     },
 
     /**
-     * Update allocation display with proper styling
+     * Update allocation display with simple text styling only
      */
     updateAllocationDisplay() {
-        const allocationDisplay = document.getElementById('allocationDisplay');
         const allocationPercentage = document.getElementById('allocationPercentage');
 
-        if (!allocationDisplay || !allocationPercentage) return 0;
+        if (!allocationPercentage) return 0;
 
         const total = this.calculateTotal();
         allocationPercentage.textContent = `${total}%`;
 
-        // Clear previous styling
-        allocationDisplay.classList.remove('over-allocated', 'under-allocated', 'perfectly-allocated', 'invalid');
-
-        // Apply appropriate styling
+        // Update color only - no box styling
         if (total === 100 && !this.hasZeroPercentProducts()) {
-            allocationDisplay.classList.add('perfectly-allocated');
-            allocationDisplay.style.background = 'rgba(88, 166, 88, 0.1)';
-            allocationDisplay.style.borderColor = '#58a658';
-            allocationDisplay.querySelector('span').style.color = '#58a658';
-        } else if (total > 100) {
-            allocationDisplay.classList.add('over-allocated');
-            allocationDisplay.style.background = 'rgba(255, 88, 88, 0.1)';
-            allocationDisplay.style.borderColor = '#ff5858';
-            allocationDisplay.querySelector('span').style.color = '#ff5858';
+            allocationPercentage.style.color = '#58a658'; // Green for 100%
         } else {
-            allocationDisplay.classList.add('under-allocated');
-            allocationDisplay.style.background = 'rgba(255, 165, 88, 0.1)';
-            allocationDisplay.style.borderColor = '#ffa558';
-            allocationDisplay.querySelector('span').style.color = '#ffa558';
+            allocationPercentage.style.color = '#ff5858'; // Red for anything else
         }
+
+        // Ensure no box styling
+        allocationPercentage.style.background = 'none';
+        allocationPercentage.style.border = 'none';
+        allocationPercentage.style.padding = '0';
+        allocationPercentage.style.margin = '0 0 0 8px';
 
         // Update generate button state
         BeaconAuthor.modules.UIManager.updateGenerateButtonState();

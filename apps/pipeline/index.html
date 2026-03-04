@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pipeline - Beacon Financial Technologies</title>
+
+        <!-- Self-contained Beacon Design System -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- Pipeline app specific styles -->
+        <style>
+            /* Base styling */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: linear-gradient(135deg, #0a0f1c 0%, #1a2332 50%, #0d1421 100%);
+                color: #ffffff;
+                min-height: 100vh;
+                line-height: 1.6;
+            }
+
+            /* Beacon Header Styles - Match Author exactly */
+            .beacon-page-header {
+                background: rgba(16, 22, 36, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 1em 2em;
+                border-bottom: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .beacon-page-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .beacon-brand-header {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+            }
+
+            .beacon-brand-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                padding: 4px;
+            }
+
+            .beacon-brand-icon:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(61, 90, 122, 0.3);
+                background: rgba(61, 90, 122, 0.1);
+            }
+
+            .beacon-brand-icon svg {
+                width: 100%;
+                height: 100%;
+                transition: all 0.3s ease;
+            }
+
+            .beacon-brand-main {
+                color: #6bb6ff;
+                text-decoration: none;
+                font-size: 1.5em;
+                font-weight: 900;
+            }
+
+            .beacon-brand-main:visited {
+                color: #6bb6ff;
+            }
+
+            .beacon-brand-separator {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .beacon-page-title {
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .beacon-nav-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.5em;
+            }
+
+            .beacon-nav-back {
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+
+            .beacon-nav-back:hover {
+                color: #6bb6ff;
+                text-shadow: 0 0 6px rgba(107, 182, 255, 0.3);
+            }
+
+            /* Color Variables */
+            :root {
+                --color-blue: #6bb6ff;
+                --color-green: #00ff88;
+                --color-orange: #d97841;
+                --pipeline-spacing: 1.5em;
+                --component-width: 400px;
+                --author-width: 350px;
+                --drop-zone-color: rgba(107, 182, 255, 0.2);
+                --attached-color: rgba(0, 255, 136, 0.1);
+            }
+
+            .pipeline-container {
+                display: flex;
+                min-height: calc(100vh - 150px);
+                gap: var(--pipeline-spacing);
+                padding: var(--pipeline-spacing);
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            /* Author Expandable Panel */
+            .author-sidebar {
+                flex: 0 0 var(--author-width);
+                transition: all 0.3s ease;
+            }
+
+            .author-sidebar.expanded {
+                flex: 0 0 500px;
+            }
+
+            .author-panel {
+                background: rgba(16, 22, 36, 0.8);
+                border-radius: 12px;
+                border: 2px solid rgba(107, 182, 255, 0.2);
+                backdrop-filter: blur(10px);
+                overflow: visible; /* Changed from hidden to visible */
+                height: fit-content;
+                position: relative;
+            }
+
+            .author-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1em 1.5em;
+                background: rgba(24, 31, 46, 0.6);
+                cursor: pointer;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .author-header:hover {
+                background: rgba(24, 31, 46, 0.8);
+            }
+
+            .author-title {
+                font-size: 1.2em;
+                font-weight: 600;
+                color: var(--color-blue);
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+            }
+
+            .expand-chevron {
+                transition: transform 0.3s ease;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 1.2em;
+                user-select: none;
+                cursor: pointer;
+                min-width: 20px;
+                text-align: center;
+            }
+
+            .expand-chevron.expanded {
+                transform: rotate(90deg);
+                color: var(--color-blue);
+            }
+
+            .author-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease, opacity 0.3s ease;
+                opacity: 0;
+                background: rgba(24, 31, 46, 0.3);
+            }
+
+            .author-content.expanded {
+                max-height: 900px !important;
+                opacity: 1 !important;
+                background: rgba(16, 22, 36, 0.9) !important;
+                border: 2px solid rgba(0, 255, 136, 0.5) !important;
+                display: block !important;
+                padding: 1em !important;
+            }
+
+            /* Ensure inner content is visible when expanded */
+            .author-content.expanded .author-inner {
+                display: block !important;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                padding: 0; /* Remove inner padding since iframe handles its own spacing */
+            }
+
+            .author-inner {
+                padding: 1.5em;
+                display: block;
+                position: relative;
+            }
+
+            /* Remove debug banner for iframe usage */
+            .author-content.expanded .author-inner {
+                padding: 0; /* No padding needed for iframe */
+            }
+
+            .pipeline-main {
+                flex: 1;
+                max-width: var(--component-width);
+            }
+
+            /* Author Component - Collapsed State */
+            .author-component {
+                background: rgba(16, 22, 36, 0.8);
+                border-radius: 12px;
+                padding: 1.5em;
+                border: 2px solid rgba(107, 182, 255, 0.2);
+                cursor: move;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+                margin-bottom: 1em;
+            }
+
+            .author-component:hover {
+                border-color: rgba(107, 182, 255, 0.4);
+                box-shadow: 0 0 20px rgba(107, 182, 255, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .author-component.dragging {
+                opacity: 0.5;
+                transform: rotate(5deg);
+            }
+
+            .author-component.attached {
+                border-color: rgba(0, 255, 136, 0.4);
+                background: var(--attached-color);
+            }
+
+            /* Author Panel Form Styling */
+            .author-form-group {
+                margin-bottom: 1.5em;
+            }
+
+            .author-form-group label {
+                display: block;
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 0.9em;
+                font-weight: 500;
+                margin-bottom: 0.5em;
+            }
+
+            .author-input, .author-select {
+                width: 100%;
+                background: rgba(24, 31, 46, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 6px;
+                padding: 0.75em;
+                color: rgba(255, 255, 255, 0.75);
+                font-family: inherit;
+                font-size: 0.9em;
+            }
+
+            .author-input:focus, .author-select:focus {
+                outline: none;
+                border-color: var(--color-blue);
+                box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.1);
+            }
+
+            .symbol-grid {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 0.5em;
+                margin-bottom: 0.5em;
+            }
+
+            .symbol-item {
+                display: flex;
+                align-items: center;
+                background: rgba(24, 31, 46, 0.6);
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                border-radius: 4px;
+                padding: 0.5em;
+                gap: 0.5em;
+            }
+
+            .symbol-name {
+                flex: 1;
+                color: rgba(255, 255, 255, 0.8);
+                font-weight: 600;
+            }
+
+            .symbol-remove {
+                background: rgba(255, 88, 88, 0.2);
+                border: 1px solid rgba(255, 88, 88, 0.3);
+                color: #ff5858;
+                border-radius: 3px;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .symbol-remove:hover {
+                background: rgba(255, 88, 88, 0.3);
+            }
+
+            .author-button {
+                background: var(--color-blue);
+                color: rgba(255, 255, 255, 0.95);
+                border: none;
+                border-radius: 6px;
+                padding: 0.75em 1.5em;
+                font-family: inherit;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                width: 100%;
+                margin-top: 1em;
+            }
+
+            .author-button:hover {
+                background: #5aa3e6;
+                transform: translateY(-1px);
+            }
+
+            .author-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .author-progress {
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+                height: 8px;
+                margin: 1em 0;
+                overflow: hidden;
+                display: none;
+            }
+
+            .author-progress.active {
+                display: block;
+            }
+
+            .author-progress-bar {
+                background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+                height: 100%;
+                width: 0%;
+                transition: width 0.3s ease;
+            }
+
+            /* Pipeline Stack */
+            .pipeline-stack {
+                background: rgba(16, 22, 36, 0.8);
+                border-radius: 12px;
+                overflow: hidden;
+                border: 2px solid rgba(107, 182, 255, 0.2);
+                backdrop-filter: blur(10px);
+            }
+
+            .pipeline-component {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .pipeline-component:last-child {
+                border-bottom: none;
+            }
+
+            .component-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5em;
+                background: rgba(24, 31, 46, 0.6);
+                cursor: pointer;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .component-header:hover {
+                background: rgba(24, 31, 46, 0.8);
+            }
+
+            .component-title {
+                font-size: 1.2em;
+                font-weight: 600;
+                color: var(--color-blue);
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+            }
+
+            .component-content {
+                padding: 1.5em;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .component-content.expanded {
+                max-height: 400px;
+            }
+
+            /* Drop Zone */
+            .drop-zone {
+                min-height: 60px;
+                border: 2px dashed transparent;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1em;
+                transition: all 0.3s ease;
+                background: rgba(24, 31, 46, 0.3);
+            }
+
+            .drop-zone.drag-over {
+                border-color: var(--drop-zone-color);
+                background: var(--drop-zone-color);
+            }
+
+            .drop-zone-text {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 0.9em;
+            }
+
+            .drop-zone.drag-over .drop-zone-text {
+                color: var(--color-blue);
+            }
+
+            /* Author Attached State */
+            .author-attached {
+                background: var(--attached-color);
+                border: 2px solid rgba(0, 255, 136, 0.4);
+                padding: 1.5em;
+                border-radius: 8px 8px 0 0;
+                position: relative;
+            }
+
+            .detach-button {
+                position: absolute;
+                top: 0.5em;
+                right: 0.5em;
+                background: rgba(255, 255, 255, 0.1);
+                border: none;
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                color: rgba(255, 255, 255, 0.7);
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .detach-button:hover {
+                background: rgba(255, 0, 0, 0.3);
+                color: #ff6b6b;
+            }
+
+            /* File Open Section */
+            .file-open-section {
+                background: rgba(24, 31, 46, 0.6);
+                border-radius: 8px;
+                padding: 1em;
+                margin-bottom: 1em;
+                border: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .file-input-wrapper {
+                position: relative;
+                display: inline-block;
+            }
+
+            .file-input {
+                position: absolute;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            .file-button {
+                background: rgba(107, 182, 255, 0.1);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                color: var(--color-blue);
+                padding: 0.5em 1em;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .file-button:hover {
+                background: rgba(107, 182, 255, 0.2);
+                border-color: rgba(107, 182, 255, 0.5);
+            }
+
+            /* Chevron Icons */
+            .chevron {
+                transition: transform 0.3s ease;
+            }
+
+            .chevron.expanded {
+                transform: rotate(90deg);
+            }
+
+            /* Data Flow Indicator */
+            .data-flow {
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                margin: 0.5em 0;
+                font-size: 0.8em;
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .flow-arrow {
+                color: rgba(0, 255, 136, 0.8);
+            }
+
+            /* Pipeline Status & Metrics */
+            .pipeline-status {
+                background: rgba(24, 31, 46, 0.8);
+                border-radius: 8px;
+                padding: 1em;
+                margin-top: 1em;
+                border: 1px solid rgba(107, 182, 255, 0.2);
+            }
+
+            .status-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1em;
+                margin-top: 1em;
+            }
+
+            .metric-card {
+                background: rgba(16, 22, 36, 0.6);
+                padding: 1em;
+                border-radius: 6px;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .metric-value {
+                font-size: 1.5em;
+                font-weight: 600;
+                color: var(--color-blue);
+                margin-bottom: 0.2em;
+            }
+
+            .metric-label {
+                font-size: 0.8em;
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            /* Progress Bars */
+            .progress-container {
+                background: rgba(0, 0, 0, 0.3);
+                height: 6px;
+                border-radius: 3px;
+                overflow: hidden;
+                margin: 0.5em 0;
+            }
+
+            .progress-bar {
+                height: 100%;
+                background: linear-gradient(90deg, var(--color-blue), rgba(0, 255, 136, 0.8));
+                width: 0%;
+                transition: width 0.3s ease;
+            }
+
+            /* Component Status Indicators */
+            .status-indicator {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                margin-left: 0.5em;
+                transition: all 0.2s ease;
+            }
+
+            .status-indicator.active {
+                background: rgba(0, 255, 136, 0.8);
+                box-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+            }
+
+            .status-indicator.processing {
+                background: var(--color-blue);
+                animation: pulse 1.5s infinite;
+                box-shadow: 0 0 8px rgba(107, 182, 255, 0.4);
+            }
+
+            .status-indicator.error {
+                background: #ff6b6b;
+                box-shadow: 0 0 8px rgba(255, 107, 107, 0.4);
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+
+            /* Real-time Stats Display */
+            .live-stats {
+                display: none;
+                background: rgba(0, 20, 40, 0.8);
+                border: 1px solid rgba(0, 255, 136, 0.3);
+                border-radius: 6px;
+                padding: 1em;
+                margin-top: 1em;
+                font-family: 'Courier New', monospace;
+            }
+
+            .live-stats.active {
+                display: block;
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .stat-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.3em;
+                font-size: 0.85em;
+            }
+
+            .stat-label {
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .stat-value {
+                color: rgba(0, 255, 136, 0.9);
+                font-weight: 600;
+            }
+
+            /* Pipeline Configuration Panel */
+            .config-panel {
+                background: rgba(24, 31, 46, 0.9);
+                border-radius: 8px;
+                padding: 1.5em;
+                margin-bottom: 1em;
+                border: 1px solid rgba(107, 182, 255, 0.2);
+                display: none;
+            }
+
+            .config-panel.active {
+                display: block;
+                animation: slideDown 0.3s ease;
+            }
+
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .config-row {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+                margin-bottom: 1em;
+            }
+
+            .config-label {
+                flex: 0 0 120px;
+                font-weight: 500;
+                color: var(--color-blue);
+            }
+
+            .config-input {
+                flex: 1;
+                padding: 0.5em;
+                background: rgba(16, 22, 36, 0.8);
+                border: 1px solid rgba(107, 182, 255, 0.3);
+                border-radius: 4px;
+                color: #fff;
+            }
+
+            .config-input:focus {
+                outline: none;
+                border-color: rgba(107, 182, 255, 0.6);
+                box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.1);
+            }
+
+            /* Additional Button and Form Styles */
+            button {
+                font-family: inherit;
+                cursor: pointer;
+            }
+
+            /* Notification Animation */
+            @keyframes slideInOut {
+                0% {
+                    transform: translateX(300px);
+                    opacity: 0;
+                }
+                10%, 90% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateX(300px);
+                    opacity: 0;
+                }
+            }
+                transition: all 0.2s ease;
+            }
+
+            button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .control-button {
+                background: rgba(107, 182, 255, 0.1);
+                border: 2px solid rgba(107, 182, 255, 0.3);
+                color: var(--color-blue);
+                padding: 0.8em 1.5em;
+                border-radius: 8px;
+                font-weight: 600;
+                margin: 0.5em;
+            }
+
+            .control-button:hover {
+                background: rgba(107, 182, 255, 0.2);
+                border-color: rgba(107, 182, 255, 0.5);
+            }
+
+            /* Status indicators */
+            .status-indicator {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .status-indicator.active {
+                background: var(--color-green);
+                box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+            }
+
+            .status-indicator.processing {
+                background: #ffa500;
+                box-shadow: 0 0 8px rgba(255, 165, 0, 0.5);
+                animation: pulse 2s infinite;
+            }
+
+            .status-indicator.error {
+                background: #ff6b6b;
+                box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+
+            /* Live stats styling */
+            .live-stats {
+                opacity: 0.3;
+                transition: opacity 0.3s ease;
+            }
+
+            .live-stats.active {
+                opacity: 1;
+            }
+
+            /* Progress bar styling */
+            .progress-container {
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+                height: 8px;
+                margin: 0.5em 0;
+                overflow: hidden;
+            }
+
+            .progress-bar {
+                background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+                height: 100%;
+                width: 0%;
+                transition: width 0.3s ease;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Beacon Title Header -->
+        <header class="beacon-page-header">
+            <div class="beacon-page-nav">
+                <div class="beacon-brand-header">
+                    <a href="/" class="beacon-brand-icon" title="Beacon Financial Technologies">
+                        <img src="/assets/images/beacon-brand-large.svg" alt="Beacon" style="width: 100%; height: 100%; object-fit: contain;">
+                    </a>
+                    <a href="/" class="beacon-brand-main">Beacon.</a>
+                    <span class="beacon-brand-separator" style="color: #d97841; text-shadow: 0 0 6px rgba(217, 120, 65, 0.3); font-weight: 600; margin: 0 1em;">|</span>
+                    <h1 class="beacon-page-title">Pipeline.</h1>
+                    <h3 style="color: lightgray;">Integrated Trading Workflow. </h3>
+                </div>
+                <div class="beacon-nav-actions">
+                    <a href="/" class="beacon-nav-back">
+                        <span class="nav-arrow">←</span>
+                        <span>Home</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Pipeline Container -->
+        <div class="pipeline-container">
+            <!-- Author Expandable Panel -->
+            <div class="author-sidebar" id="authorSidebar">
+                <div class="author-panel">
+                    <!-- Author Header - Click to Expand -->
+                    <div class="author-header" onclick="window.toggleAuthorPanel()" style="cursor: pointer;">
+                        <div class="author-title">
+                            <span>📊</span>
+                            <span>Author</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7em; margin-left: 0.5em;">(click to open)</small>
+                        </div>
+                        <div class="expand-chevron" id="authorChevron" style="font-size: 1.2em; user-select: none; color: var(--color-blue);">▶</div>
+                    </div>
+
+                    <!-- Expandable Author Content -->
+                    <div class="author-content" id="authorContent">
+                        <div class="author-inner">
+                            <!-- Author App Iframe -->
+                            <iframe
+                                id="authorAppFrame"
+                                src="/apps/author/index.html"
+                                style="
+                                    width: 100%;
+                                    height: 800px;
+                                    border: none;
+                                    border-radius: 8px;
+                                    background: rgba(16, 22, 36, 0.9);
+                                "
+                                title="Beacon Author App"
+                                loading="lazy">
+                            </iframe>
+
+                            <!-- Fallback if iframe doesn't work -->
+                            <div id="authorFallback" style="display: none; text-align: center; padding: 2em;">
+                                <h3>🚧 Loading Author App...</h3>
+                                <p>Opening Author in new window...</p>
+                                <button
+                                    onclick="window.open('/apps/author/index.html', '_blank')"
+                                    style="background: var(--color-blue); color: white; border: none; padding: 1em 2em; border-radius: 8px; cursor: pointer; margin-top: 1em;">
+                                    🚀 Launch Author App
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline Main -->
+            <div class="pipeline-main">
+                <!-- Drop Zone for Author -->
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-text">Drag Author here to create live data pipeline</div>
+                </div>
+
+                <!-- Author Attached Display -->
+                <div class="author-attached" id="authorAttached" style="display: none;">
+                    <button class="detach-button" onclick="detachAuthor()">×</button>
+                    <h3 class="component-title">
+                        <span>📊</span>
+                        <span>Author (Attached)</span>
+                    </h3>
+                    <div class="data-flow">
+                        <span>Live generation</span>
+                        <span class="flow-arrow">→</span>
+                        <span>Streaming to Pulse</span>
+                    </div>
+                </div>
+
+                <!-- Pipeline Stack -->
+                <div class="pipeline-stack">
+                    <!-- Pulse Component -->
+                    <div class="pipeline-component">
+                        <div class="component-header" onclick="toggleComponent('pulse')">
+                            <div class="component-title">
+                                <span>📡</span>
+                                <span>Pulse</span>
+                                <div class="status-indicator" id="pulseStatus"></div>
+                            </div>
+                            <div class="chevron" id="pulseChevron">▶</div>
+                        </div>
+                        <div class="component-content" id="pulseContent">
+                            <!-- File Open Section (shown when Author not attached) -->
+                            <div class="file-open-section" id="fileOpenSection">
+                                <div style="margin-bottom: 0.5em;">
+                                    <strong>Data Source:</strong>
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <input type="file" class="file-input" accept=".csv,.json" id="datasetFile" onchange="handleFileSelect()">
+                                    <div class="file-button">
+                                        📁 Choose Dataset File
+                                    </div>
+                                </div>
+                                <div id="selectedFile" style="margin-top: 0.5em; font-size: 0.8em; color: rgba(255, 255, 255, 0.6); display: none;"></div>
+                            </div>
+
+                            <!-- Pulse Configuration -->
+                            <div class="config-row">
+                                <div class="config-label">Streaming Speed:</div>
+                                <select class="config-input" id="pulseSpeed">
+                                    <option value="1x">1x Real-time</option>
+                                    <option value="10x">10x Speed</option>
+                                    <option value="100x">100x Speed</option>
+                                    <option value="1000x">1000x Speed</option>
+                                </select>
+                            </div>
+
+                            <div class="config-row">
+                                <div class="config-label">Messages/sec:</div>
+                                <input type="number" class="config-input" id="pulseRate" value="10000" placeholder="Message rate">
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div style="margin-top: 1em;">
+                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.3em;">
+                                    Streaming Progress
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="pulseProgress"></div>
+                                </div>
+                                <div style="font-size: 0.7em; color: rgba(255, 255, 255, 0.5); margin-top: 0.2em;" id="pulseProgressText">
+                                    Ready to stream
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strategy Component -->
+                    <div class="pipeline-component">
+                        <div class="component-header" onclick="toggleComponent('strategy')">
+                            <div class="component-title">
+                                <span>🧠</span>
+                                <span>Strategy</span>
+                                <div class="status-indicator" id="strategyStatus"></div>
+                            </div>
+                            <div class="chevron" id="strategyChevron">▶</div>
+                        </div>
+                        <div class="component-content" id="strategyContent">
+                            <div class="config-row">
+                                <div class="config-label">Algorithm Type:</div>
+                                <select class="config-input" id="strategyType">
+                                    <option value="pov">POV (Percentage of Volume)</option>
+                                    <option value="twap">TWAP (Time Weighted Average Price)</option>
+                                    <option value="vwap">VWAP (Volume Weighted Average Price)</option>
+                                    <option value="custom">Custom Algorithm</option>
+                                </select>
+                            </div>
+
+                            <div class="config-row">
+                                <div class="config-label">Target Symbol:</div>
+                                <input type="text" class="config-input" id="strategySymbol" value="AAPL" placeholder="Trading symbol">
+                            </div>
+
+                            <div class="config-row">
+                                <div class="config-label">Risk Limit:</div>
+                                <input type="number" class="config-input" id="strategyRisk" value="100000" placeholder="USD limit">
+                            </div>
+
+                            <!-- Strategy Stats -->
+                            <div class="live-stats" id="strategyStats">
+                                <div style="margin-bottom: 0.5em; font-weight: 600; color: var(--color-blue);">Live Strategy Metrics:</div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Messages Processed:</span>
+                                    <span class="stat-value" id="strategyMessages">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Orders Generated:</span>
+                                    <span class="stat-value" id="strategyOrders">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Avg Response Time:</span>
+                                    <span class="stat-value" id="strategyLatency">0.0μs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match Component -->
+                    <div class="pipeline-component">
+                        <div class="component-header" onclick="toggleComponent('match')">
+                            <div class="component-title">
+                                <span>⚡</span>
+                                <span>Match</span>
+                                <div class="status-indicator" id="matchStatus"></div>
+                            </div>
+                            <div class="chevron" id="matchChevron">▶</div>
+                        </div>
+                        <div class="component-content" id="matchContent">
+                            <div class="config-row">
+                                <div class="config-label">Execution Venue:</div>
+                                <select class="config-input" id="matchVenue">
+                                    <option value="simulated">Simulated Matching Engine</option>
+                                    <option value="cme">CME iLink 3.0</option>
+                                    <option value="nasdaq">NASDAQ OUCH</option>
+                                    <option value="nyse">NYSE Pillar</option>
+                                </select>
+                            </div>
+
+                            <div class="config-row">
+                                <div class="config-label">Latency Target:</div>
+                                <input type="text" class="config-input" id="matchLatency" value="3.1μs" placeholder="Target latency">
+                            </div>
+
+                            <!-- Match Stats -->
+                            <div class="live-stats" id="matchStats">
+                                <div style="margin-bottom: 0.5em; font-weight: 600; color: var(--color-blue);">Execution Metrics:</div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Orders Executed:</span>
+                                    <span class="stat-value" id="matchExecuted">0</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Fill Rate:</span>
+                                    <span class="stat-value" id="matchFillRate">0.0%</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Tick-to-Trade:</span>
+                                    <span class="stat-value" id="matchTickToTrade">3.1μs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Controls -->
+                <div style="margin-top: 2em; text-align: center;">
+                    <button style="background: linear-gradient(135deg, #00ff88, #00cc6a); color: #000; padding: 1em 2em; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 1em;" onclick="startPipeline()" id="startButton">
+                        ▶ Start Pipeline
+                    </button>
+                    <button style="background: rgba(255, 107, 107, 0.2); color: #ff6b6b; padding: 1em 2em; border: 1px solid #ff6b6b; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 1em;" onclick="stopPipeline()" id="stopButton" disabled>
+                        ⏹ Stop Pipeline
+                    </button>
+                    <button style="background: rgba(107, 182, 255, 0.2); color: var(--color-blue); padding: 1em 2em; border: 1px solid var(--color-blue); border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="toggleConfig()">
+                        ⚙️ Configure
+                    </button>
+                </div>
+
+                <!-- Pipeline Status Dashboard -->
+                <div class="pipeline-status" id="pipelineStatus" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em;">
+                        <h3 style="color: var(--color-blue); margin: 0;">Pipeline Status</h3>
+                        <div id="overallStatus" style="font-weight: 600; color: rgba(255, 255, 255, 0.7);">Ready</div>
+                    </div>
+
+                    <div class="status-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="totalMessages">0</div>
+                            <div class="metric-label">Messages Processed</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="avgLatency">0.0μs</div>
+                            <div class="metric-label">Avg Latency</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="throughput">0</div>
+                            <div class="metric-label">Msg/sec</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="uptime">00:00:00</div>
+                            <div class="metric-label">Uptime</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Configuration Panel -->
+                <div class="config-panel" id="advancedConfig">
+                    <h3 style="color: var(--color-blue); margin: 0 0 1em 0;">Advanced Pipeline Configuration</h3>
+
+                    <div class="config-row">
+                        <div class="config-label">Pipeline Mode:</div>
+                        <select class="config-input" id="pipelineMode">
+                            <option value="realtime">Real-time Processing</option>
+                            <option value="batch">Batch Processing</option>
+                            <option value="simulation">Pure Simulation</option>
+                        </select>
+                    </div>
+
+                    <div class="config-row">
+                        <div class="config-label">Performance Profile:</div>
+                        <select class="config-input" id="performanceProfile">
+                            <option value="ultra-low-latency">Ultra-low Latency (3.1μs)</option>
+                            <option value="high-throughput">High Throughput</option>
+                            <option value="balanced">Balanced</option>
+                        </select>
+                    </div>
+
+                    <div class="config-row">
+                        <div class="config-label">Risk Management:</div>
+                        <input type="checkbox" id="riskEnabled" style="margin-right: 0.5em;">
+                        <label for="riskEnabled">Enable automatic risk controls</label>
+                    </div>
+
+                    <div class="config-row">
+
+
+                        <div class="config-label">CPU Pinning:</div>
+                        <input type="text" class="config-input" id="cpuCores" placeholder="e.g., 0,2,4,6" value="0,2,4">
+                    </div>
+
+                    <div style="text-align: right; margin-top: 1em;">
+                        <button style="background: rgba(107, 182, 255, 0.2); color: var(--color-blue); padding: 0.5em 1em; border: 1px solid var(--color-blue); border-radius: 4px; cursor: pointer; margin-right: 0.5em;" onclick="saveConfig()">
+                            Save Config
+                        </button>
+                        <button style="background: transparent; color: rgba(255, 255, 255, 0.6); padding: 0.5em 1em; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 4px; cursor: pointer;" onclick="toggleConfig()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript for Enhanced Pipeline Functionality -->
+        <script>
+            // Ensure DOM is fully loaded before executing
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Pipeline app initializing...');
+
+                // Initialize drag and drop
+                setupDragAndDrop();
+
+                // Initialize performance metrics
+                initializeMetrics();
+
+                console.log('Pipeline app initialized successfully');
+            });
+
+            // Define Author panel toggle function FIRST - Global scope
+            let authorExpanded = false;
+
+            window.toggleAuthorPanel = function() {
+                console.log('🔧 toggleAuthorPanel called, current state:', authorExpanded);
+
+                authorExpanded = !authorExpanded;
+
+                try {
+                    const content = document.getElementById('authorContent');
+                    const chevron = document.getElementById('authorChevron');
+                    const sidebar = document.getElementById('authorSidebar');
+
+                    console.log('Elements found:', {
+                        content: !!content,
+                        chevron: !!chevron,
+                        sidebar: !!sidebar,
+                        authorExpanded: authorExpanded
+                    });
+
+                    if (!content || !chevron || !sidebar) {
+                        console.error('Missing elements for toggleAuthorPanel');
+                        showNotification('Panel elements not found. Check console for details.', 'error');
+                        return;
+                    }
+
+                    if (authorExpanded) {
+                        console.log('🟢 Opening Author app...');
+                        content.classList.add('expanded');
+                        chevron.classList.add('expanded');
+                        chevron.textContent = '▼';
+                        chevron.style.color = 'var(--color-green)';
+                        sidebar.classList.add('expanded');
+                        console.log('🟢 Author app opened');
+                    } else {
+                        console.log('🔴 Closing Author app...');
+                        content.classList.remove('expanded');
+                        chevron.classList.remove('expanded');
+                        chevron.textContent = '▶';
+                        chevron.style.color = 'var(--color-blue)';
+                        sidebar.classList.remove('expanded');
+                        console.log('🔴 Author app closed');
+                    }
+
+                    // Visual feedback that it worked
+                    console.log('Toggle completed successfully');
+
+                    // Use showNotification if available
+                    setTimeout(() => {
+                        if (typeof showNotification === 'function') {
+                            showNotification(authorExpanded ? 'Author app opened 🚀' : 'Author app closed', authorExpanded ? 'success' : 'info');
+                        }
+                    }, 100);
+
+                } catch (error) {
+                    console.error('Error in toggleAuthorPanel:', error);
+                    showNotification('Error toggling panel: ' + error.message, 'error');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--glass-bg);
+                    color: var(--text-primary);
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(107, 182, 255, 0.3);
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                    z-index: 9999;
+                    animation: slideInOut 3s ease-in-out forwards;
+                    font-weight: 500;
+                `;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+
+            // Enhanced pipeline state management
+            let pipelineState = {
+                authorAttached: false,
+                expandedComponents: new Set(['pulse']), // Start with Pulse expanded
+                running: false,
+                startTime: null,
+                metrics: {
+                    totalMessages: 0,
+                    avgLatency: 3.1,
+                    throughput: 0,
+                    uptime: 0
+                },
+                componentStatus: {
+                    pulse: 'inactive',
+                    strategy: 'inactive',
+                    match: 'inactive'
+                },
+                selectedFile: null,
+                configVisible: false
+            };
+
+            // Performance simulation intervals
+            let metricsInterval = null;
+            let uptimeInterval = null;
+
+            // DOM elements
+            let authorComponent = null; // Will be set dynamically since it can be hidden/shown
+            const dropZone = document.getElementById('dropZone');
+            const authorAttached = document.getElementById('authorAttached');
+            const fileOpenSection = document.getElementById('fileOpenSection');
+            const authorSidebar = document.getElementById('authorSidebar');
+
+            // Get Author component dynamically since it can be hidden/shown
+            function getAuthorComponent() {
+                return document.getElementById('authorComponent');
+            }
+
+            // Drag and Drop Enhanced - Set up dynamically
+            function setupDragAndDrop() {
+                const authorComp = getAuthorComponent();
+                if (!authorComp) return;
+
+                authorComp.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', 'author');
+                    authorComp.classList.add('dragging');
+                });
+
+                authorComp.addEventListener('dragend', () => {
+                    authorComp.classList.remove('dragging');
+                });
+            }
+
+            // Drop zone events
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+
+                if (e.dataTransfer.getData('text/plain') === 'author') {
+                    attachAuthor();
+                }
+            });
+
+            // Author Symbol Management
+            function addSymbolOnEnter(event) {
+                if (event.key === 'Enter') {
+                    addSymbol();
+                }
+            }
+
+            function addSymbol() {
+                const input = document.getElementById('symbolInput');
+                const symbol = input.value.trim().toUpperCase();
+
+                if (!symbol) {
+                    showNotification('Please enter a symbol', 'error');
+                    return;
+                }
+
+                // Check for duplicates
+                const existing = document.querySelectorAll('#symbolList .symbol-name');
+                for (let item of existing) {
+                    if (item.textContent === symbol) {
+                        showNotification('Symbol already added', 'error');
+                        return;
+                    }
+                }
+
+                // Add symbol
+                const symbolList = document.getElementById('symbolList');
+                const symbolItem = document.createElement('div');
+                symbolItem.className = 'symbol-item';
+                symbolItem.innerHTML = `
+                    <span class="symbol-name">${symbol}</span>
+                    <span class="symbol-remove" onclick="removeSymbol(this)">×</span>
+                `;
+                symbolList.appendChild(symbolItem);
+
+                input.value = '';
+                showNotification(`Symbol ${symbol} added`, 'success');
+            }
+
+            function removeSymbol(button) {
+                const symbolItem = button.closest('.symbol-item');
+                const symbolName = symbolItem.querySelector('.symbol-name').textContent;
+                symbolItem.remove();
+                showNotification(`Symbol ${symbolName} removed`, 'info');
+            }
+
+            function updateVolatilityDisplay() {
+                const range = document.getElementById('volatilityRange');
+                const display = document.getElementById('volatilityDisplay');
+                display.textContent = `${parseFloat(range.value).toFixed(1)}x`;
+            }
+
+            // Enhanced dataset generation with progress
+            function generateDatasetExpanded() {
+                const button = document.getElementById('authorGenerateBtn');
+                const progress = document.getElementById('authorProgress');
+                const progressBar = document.getElementById('authorProgressBar');
+
+                const exchange = document.getElementById('authorExchange').value;
+                const symbols = Array.from(document.querySelectorAll('#symbolList .symbol-name')).map(el => el.textContent);
+                const sessions = document.getElementById('tradingSessions').value;
+                const messages = document.getElementById('messagesPerSession').value;
+                const volatility = document.getElementById('volatilityRange').value;
+
+                if (symbols.length === 0) {
+                    showNotification('Please add at least one symbol', 'error');
+                    return;
+                }
+
+                button.disabled = true;
+                button.textContent = 'Generating...';
+                progress.classList.add('active');
+
+                showNotification(`Generating dataset: ${symbols.length} symbols, ${sessions} sessions, ${messages} messages`, 'info');
+
+                // Simulate progress
+                let progressValue = 0;
+                const progressInterval = setInterval(() => {
+                    progressValue += Math.random() * 15 + 5;
+                    if (progressValue >= 100) {
+                        progressValue = 100;
+                        clearInterval(progressInterval);
+
+                        // Complete
+                        setTimeout(() => {
+                            button.disabled = false;
+                            button.textContent = 'Generate Dataset';
+                            progress.classList.remove('active');
+                            progressBar.style.width = '0%';
+
+                            const filename = `${exchange}_${symbols.join('_')}_${Date.now()}.csv`;
+                            showNotification(`Dataset "${filename}" generated successfully!`, 'success');
+                        }, 500);
+                    }
+                    progressBar.style.width = `${Math.min(progressValue, 100)}%`;
+                }, 200);
+            }
+
+            // Enhanced Author attachment with expandable panel
+            function attachAuthor() {
+                pipelineState.authorAttached = true;
+
+                // Hide the draggable component and show attached state
+                document.getElementById('authorComponent').style.display = 'none';
+                authorAttached.style.display = 'block';
+                fileOpenSection.style.display = 'none';
+                dropZone.style.display = 'none';
+
+                // Show data flow indicator in Author panel
+                if (!document.getElementById('authorDataFlow')) {
+                    // Create data flow indicator in Author panel
+                    const authorInner = document.querySelector('.author-inner');
+                    const dataFlowDiv = document.createElement('div');
+                    dataFlowDiv.id = 'authorDataFlow';
+                    dataFlowDiv.className = 'data-flow';
+                    dataFlowDiv.style.cssText = 'display: flex; align-items: center; gap: 0.5em; margin: 1em 0; padding: 0.5em; background: rgba(0, 255, 136, 0.1); border-radius: 4px; border: 1px solid rgba(0, 255, 136, 0.3);';
+                    dataFlowDiv.innerHTML = `
+                        <span style="color: var(--color-green);">⚡ Live data streaming</span>
+                        <span class="flow-arrow" style="color: var(--color-green);">→</span>
+                        <span style="color: var(--color-green);">Pipeline</span>
+                    `;
+                    authorInner.appendChild(dataFlowDiv);
+                }
+                document.getElementById('authorDataFlow').style.display = 'flex';
+
+                // Auto-expand Pulse and show live data indicator
+                toggleComponent('pulse', true);
+                updateComponentStatus('pulse', 'active');
+
+                console.log('✅ Author attached - Live data pipeline ready');
+                showNotification('Author attached successfully! Live data pipeline enabled.', 'success');
+            }
+
+            function detachAuthor() {
+                pipelineState.authorAttached = false;
+
+                // Show the draggable component again
+                document.getElementById('authorComponent').style.display = 'block';
+                authorAttached.style.display = 'none';
+                fileOpenSection.style.display = 'block';
+                dropZone.style.display = 'flex';
+
+                // Hide data flow indicator
+                const dataFlow = document.getElementById('authorDataFlow');
+                if (dataFlow) {
+                    dataFlow.style.display = 'none';
+                }
+
+                updateComponentStatus('pulse', 'inactive');
+
+                console.log('❌ Author detached - Switched to file-based data source');
+                showNotification('Author detached. Switch to file-based data source.', 'info');
+            }
+
+            // Enhanced component expansion
+            function toggleComponent(componentName, forceExpand = false) {
+                const content = document.getElementById(componentName + 'Content');
+                const chevron = document.getElementById(componentName + 'Chevron');
+
+                if (forceExpand || !pipelineState.expandedComponents.has(componentName)) {
+                    content.classList.add('expanded');
+                    chevron.classList.add('expanded');
+                    pipelineState.expandedComponents.add(componentName);
+                } else {
+                    content.classList.remove('expanded');
+                    chevron.classList.remove('expanded');
+                    pipelineState.expandedComponents.delete(componentName);
+                }
+            }
+
+            // File handling
+            function handleFileSelect() {
+                const fileInput = document.getElementById('datasetFile');
+                const selectedFileDiv = document.getElementById('selectedFile');
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    pipelineState.selectedFile = file;
+                    selectedFileDiv.innerHTML = `📄 Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                    selectedFileDiv.style.display = 'block';
+                    updateComponentStatus('pulse', 'active');
+                    showNotification(`Dataset file "${file.name}" loaded successfully!`, 'success');
+                } else {
+                    selectedFileDiv.style.display = 'none';
+                    pipelineState.selectedFile = null;
+                    updateComponentStatus('pulse', 'inactive');
+                }
+            }
+
+            // Component status management
+            function updateComponentStatus(component, status) {
+                pipelineState.componentStatus[component] = status;
+                const indicator = document.getElementById(component + 'Status');
+
+                indicator.className = 'status-indicator';
+                if (status === 'active') {
+                    indicator.classList.add('active');
+                } else if (status === 'processing') {
+                    indicator.classList.add('processing');
+                } else if (status === 'error') {
+                    indicator.classList.add('error');
+                }
+            }
+
+            // Enhanced pipeline controls
+            function startPipeline() {
+                // Validate data source
+                if (!pipelineState.authorAttached && !pipelineState.selectedFile) {
+                    showNotification('Please attach Author component or select a dataset file before starting the pipeline.', 'error');
+                    return;
+                }
+
+                pipelineState.running = true;
+                pipelineState.startTime = Date.now();
+
+                // Update UI
+                document.getElementById('startButton').disabled = true;
+                document.getElementById('stopButton').disabled = false;
+                document.getElementById('pipelineStatus').style.display = 'block';
+                document.getElementById('overallStatus').textContent = 'Running';
+                document.getElementById('overallStatus').style.color = '#00ff88';
+
+                // Update component statuses
+                updateComponentStatus('pulse', 'processing');
+                updateComponentStatus('strategy', 'processing');
+                updateComponentStatus('match', 'processing');
+
+                // Show live stats
+                document.getElementById('strategyStats').classList.add('active');
+                document.getElementById('matchStats').classList.add('active');
+
+                // Start metrics simulation
+                startMetricsSimulation();
+
+                console.log('🚀 Pipeline started');
+                showNotification('Pipeline started successfully! Processing data through Pulse → Strategy → Match', 'success');
+            }
+
+            function stopPipeline() {
+                pipelineState.running = false;
+
+                // Update UI
+                document.getElementById('startButton').disabled = false;
+                document.getElementById('stopButton').disabled = true;
+                document.getElementById('overallStatus').textContent = 'Stopped';
+                document.getElementById('overallStatus').style.color = '#ff6b6b';
+
+                // Update component statuses
+                if (pipelineState.authorAttached || pipelineState.selectedFile) {
+                    updateComponentStatus('pulse', 'active');
+                } else {
+                    updateComponentStatus('pulse', 'inactive');
+                }
+                updateComponentStatus('strategy', 'inactive');
+                updateComponentStatus('match', 'inactive');
+
+                // Hide live stats
+                document.getElementById('strategyStats').classList.remove('active');
+                document.getElementById('matchStats').classList.remove('active');
+
+                // Stop metrics simulation
+                stopMetricsSimulation();
+
+                console.log('⏹ Pipeline stopped');
+                showNotification('Pipeline stopped.', 'info');
+            }
+
+            // Real-time metrics simulation
+            function startMetricsSimulation() {
+                // Reset metrics
+                pipelineState.metrics = { totalMessages: 0, avgLatency: 3.1, throughput: 0, uptime: 0 };
+
+                metricsInterval = setInterval(() => {
+                    if (!pipelineState.running) return;
+
+                    // Simulate performance metrics
+                    const messagesPerTick = Math.floor(Math.random() * 1000) + 500;
+                    pipelineState.metrics.totalMessages += messagesPerTick;
+                    pipelineState.metrics.throughput = messagesPerTick * (1000/100); // per second
+                    pipelineState.metrics.avgLatency = 3.0 + Math.random() * 0.4; // 3.0-3.4μs
+
+                    // Update dashboard
+                    document.getElementById('totalMessages').textContent = pipelineState.metrics.totalMessages.toLocaleString();
+                    document.getElementById('avgLatency').textContent = pipelineState.metrics.avgLatency.toFixed(2) + 'μs';
+                    document.getElementById('throughput').textContent = Math.floor(pipelineState.metrics.throughput).toLocaleString();
+
+                    // Update component-specific stats
+                    updateComponentStats(messagesPerTick);
+
+                    // Update progress bars
+                    updateProgressBars();
+
+                }, 100);
+
+                // Uptime counter
+                uptimeInterval = setInterval(() => {
+                    if (!pipelineState.running) return;
+
+                    const uptime = Date.now() - pipelineState.startTime;
+                    const hours = Math.floor(uptime / 3600000);
+                    const minutes = Math.floor((uptime % 3600000) / 60000);
+                    const seconds = Math.floor((uptime % 60000) / 1000);
+
+                    document.getElementById('uptime').textContent =
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                }, 1000);
+            }
+
+            function stopMetricsSimulation() {
+                if (metricsInterval) clearInterval(metricsInterval);
+                if (uptimeInterval) clearInterval(uptimeInterval);
+                metricsInterval = null;
+                uptimeInterval = null;
+            }
+
+            function updateComponentStats(messagesPerTick) {
+                // Strategy stats
+                const strategyMessages = Math.floor(messagesPerTick * 0.8); // Some filtering
+                const strategyOrders = Math.floor(strategyMessages * 0.05); // 5% generate orders
+                document.getElementById('strategyMessages').textContent = strategyMessages.toLocaleString();
+                document.getElementById('strategyOrders').textContent = strategyOrders;
+                document.getElementById('strategyLatency').textContent = (pipelineState.metrics.avgLatency * 0.7).toFixed(2) + 'μs';
+
+                // Match stats
+                const matchExecuted = Math.floor(strategyOrders * 0.95); // 95% fill rate
+                document.getElementById('matchExecuted').textContent = matchExecuted;
+                document.getElementById('matchFillRate').textContent = '95.0%';
+                document.getElementById('matchTickToTrade').textContent = pipelineState.metrics.avgLatency.toFixed(2) + 'μs';
+            }
+
+            function updateProgressBars() {
+                // Pulse progress (simulate streaming progress)
+                const pulseProgress = Math.min(100, (pipelineState.metrics.totalMessages / 100000) * 100);
+                document.getElementById('pulseProgress').style.width = pulseProgress + '%';
+                document.getElementById('pulseProgressText').textContent =
+                    `${pulseProgress.toFixed(1)}% - ${pipelineState.metrics.throughput.toLocaleString()} msg/sec`;
+            }
+
+            // Configuration management
+            function toggleConfig() {
+                pipelineState.configVisible = !pipelineState.configVisible;
+                const configPanel = document.getElementById('advancedConfig');
+
+                if (pipelineState.configVisible) {
+                    configPanel.classList.add('active');
+                } else {
+                    configPanel.classList.remove('active');
+                }
+            }
+
+            function saveConfig() {
+                const config = {
+                    pipelineMode: document.getElementById('pipelineMode').value,
+                    performanceProfile: document.getElementById('performanceProfile').value,
+                    riskEnabled: document.getElementById('riskEnabled').checked,
+                    cpuCores: document.getElementById('cpuCores').value
+                };
+
+                localStorage.setItem('beaconPipelineConfig', JSON.stringify(config));
+                showNotification('Configuration saved successfully!', 'success');
+                toggleConfig();
+
+                console.log('💾 Pipeline configuration saved:', config);
+            }
+
+            function loadConfig() {
+                const saved = localStorage.getItem('beaconPipelineConfig');
+                if (saved) {
+                    const config = JSON.parse(saved);
+                    document.getElementById('pipelineMode').value = config.pipelineMode || 'realtime';
+                    document.getElementById('performanceProfile').value = config.performanceProfile || 'ultra-low-latency';
+                    document.getElementById('riskEnabled').checked = config.riskEnabled || false;
+                    document.getElementById('cpuCores').value = config.cpuCores || '0,2,4';
+                }
+            }
+
+            // Generate dataset (standalone Author mode)
+            function generateDataset() {
+                showNotification('Generating synthetic dataset...', 'info');
+
+                setTimeout(() => {
+                    const datasetName = `synthetic_${Date.now()}.csv`;
+                    showNotification(`Dataset "${datasetName}" generated successfully! Ready for use in Pipeline.`, 'success');
+                    console.log('📊 Dataset generated:', datasetName);
+                }, 1500);
+            }
+
+            // Notification system
+            function showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1em 1.5em;
+                    border-radius: 8px;
+                    color: #fff;
+                    font-weight: 500;
+                    z-index: 10000;
+                    max-width: 400px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    animation: slideIn 0.3s ease;
+                `;
+
+                // Set colors based on type
+                if (type === 'success') {
+                    notification.style.background = 'rgba(0, 255, 136, 0.9)';
+                    notification.style.color = '#000';
+                } else if (type === 'error') {
+                    notification.style.background = 'rgba(255, 107, 107, 0.9)';
+                } else {
+                    notification.style.background = 'rgba(107, 182, 255, 0.9)';
+                    notification.style.color = '#000';
+                }
+
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Remove after 4 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => document.body.removeChild(notification), 300);
+                }, 4000);
+            }
+
+            // Add CSS for notifications
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Initialization
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🚀 DOM loaded, initializing...');
+
+                // Set up Author panel click handler as backup
+                const authorHeader = document.querySelector('.author-header');
+                if (authorHeader) {
+                    console.log('✅ Author header found, adding click listener');
+                    authorHeader.addEventListener('click', function(e) {
+                        console.log('🖱️ Author header clicked');
+                        toggleAuthorPanel();
+                    });
+                } else {
+                    console.error('❌ Author header not found');
+                }
+
+                // Load saved configuration
+                loadConfig();
+
+                // Initialize with Pulse expanded
+                toggleComponent('pulse', true);
+
+                // Don't auto-expand Author panel - let user test the toggle
+                // setTimeout(() => {
+                //     console.log('🔄 Auto-expanding Author panel...');
+                //     toggleAuthorPanel();
+                //     // Set up drag and drop after Author panel is expanded
+                //     setTimeout(() => {
+                //         setupDragAndDrop();
+                //     }, 200);
+                // }, 500);
+
+                // Set up drag and drop immediately
+                setTimeout(() => {
+                    setupDragAndDrop();
+                }, 100);
+
+                console.log('🎯 Beacon Pipeline initialized');
+                if (typeof showNotification === 'function') {
+                    showNotification('Beacon Pipeline ready! Click Author panel header to expand.', 'info');
+                } else {
+                    console.log('showNotification not available during init');
+                }
+            });
+
+            // Initialize performance metrics simulation
+            function initializeMetrics() {
+                // Start performance monitoring simulation
+                startPerformanceMetrics();
+                console.log('Performance metrics initialized');
+            }
+
+            // Iframe error handling for Author app
+            document.addEventListener('DOMContentLoaded', function() {
+                const authorIframe = document.getElementById('authorAppFrame');
+                const authorFallback = document.getElementById('authorFallback');
+
+                if (authorIframe && authorFallback) {
+                    // Check if iframe loads successfully
+                    authorIframe.addEventListener('load', function() {
+                        console.log('✅ Author app loaded successfully in iframe');
+                        authorFallback.style.display = 'none';
+                    });
+
+                    authorIframe.addEventListener('error', function() {
+                        console.warn('❌ Failed to load Author app in iframe, showing fallback');
+                        authorIframe.style.display = 'none';
+                        authorFallback.style.display = 'block';
+                    });
+
+                    // Timeout fallback
+                    setTimeout(() => {
+                        try {
+                            // Try to access iframe content to test if it loaded
+                            const iframeDoc = authorIframe.contentDocument || authorIframe.contentWindow.document;
+                            if (!iframeDoc || iframeDoc.body.children.length === 0) {
+                                throw new Error('Iframe appears empty');
+                            }
+                        } catch (e) {
+                            console.warn('Author app may not have loaded properly, showing fallback option');
+                            authorFallback.style.display = 'block';
+                        }
+                    }, 3000);
+                }
+            });
+        </script>
+    </body>
+</html>

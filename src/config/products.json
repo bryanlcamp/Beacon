@@ -1,0 +1,49 @@
+{
+  "symbols": {
+    "ES": {
+      "assetClass": "FUTURES",
+      "exchange": "CME",
+      "ticksPerSecond": 8000,
+      "description": "E-mini S&P 500"
+    },
+    "NQ": {
+      "assetClass": "FUTURES",
+      "exchange": "CME",
+      "ticksPerSecond": 7500,
+      "description": "E-mini Nasdaq 100"
+    },
+    "AAPL": {
+      "assetClass": "EQUITY",
+      "exchange": "NASDAQ",
+      "ticksPerSecond": 2500,
+      "description": "Apple Inc."
+    },
+    "SPY": {
+      "assetClass": "EQUITY",
+      "exchange": "NYSE",
+      "ticksPerSecond": 4000,
+      "description": "SPDR S&P 500 ETF"
+    }
+  },
+  "defaults": {
+    "FUTURES": {
+      "ticksPerSecond": 5000,
+      "exchange": "CME"
+    },
+    "EQUITY": {
+      "ticksPerSecond": 2000,
+      "exchange": "NYSE"
+    }
+  },
+  "assetClassification": {
+    "patterns": {
+      "FUTURES": {
+        "regex": ["^[A-Z]{2,3}$"],
+        "exact": ["ES", "NQ", "YM", "GC", "ZN", "6E"]
+      },
+      "EQUITY": {
+        "default": true
+      }
+    }
+  }
+}

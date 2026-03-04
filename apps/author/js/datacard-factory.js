@@ -1,5 +1,5 @@
 // =============================================================================
-// BEACON AUTHOR - DATACARD FACTORY MODULE
+// BEACON AUTHOR - DATACARD FACTORY MODULE - Updated with Collapse Buttons
 // =============================================================================
 
 export const DatacardFactory = {
@@ -71,6 +71,9 @@ export const DatacardFactory = {
                         <span class="exchange-prefix">${exchange}:</span>
                         <span class="symbol-name">${symbol}</span>
                     </span>
+                </div>
+                <div class="datacard-center">
+                    <button class="collapse-button" onclick="toggleDatacardCollapse(this)" title="Collapse/Expand">▼</button>
                 </div>
                 <div class="datacard-controls">
                     <input type="number" class="percentage-input" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}" placeholder="%">
