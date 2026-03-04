@@ -1,0 +1,69 @@
+{
+  "symbolInput": 
+  {
+    "rules": 
+    {
+      "required": 
+      {
+        "enabled": true,
+        "message": "No symbol specified.",
+        "disableButton": true
+      },
+      "duplicateCheck": 
+      {
+        "enabled": true,
+        "message": "Dataset contains symbol.",
+        "caseSensitive": false,
+        "disableButton": true,
+        "visualFeedback": 
+        {
+          "adorner": "duplicate",
+          "borderColor": "#ff4444",
+          "boxShadow": "0 0 0 2px rgba(255, 68, 68, 0.2)"
+        }
+      },
+      "format": 
+      {
+        "enabled": false,
+        "maxLength": 10,
+        "allowedCharacters": "^[A-Za-z0-9.-]+$",
+        "transform": "uppercase",
+        "message": "Invalid symbol format"
+      }
+    },
+    "events": 
+    {
+      "validateOn": ["input", "keydown", "paste"],
+      "submitOn":   ["click", "enter"]
+    },
+    "selectors": 
+    {
+      "input": "#symbolInput",
+      "button": "#addSymbol", 
+      "container": ".symbol-input-control",
+      "symbolsContainer": "#symbolsContainer",
+      "fallbackContainer": "#datacardContainer",
+      "symbolNameSelector": ".symbol-name"
+    },
+    "feedback": 
+    {
+      "successState": 
+      {
+        "borderColor": "",
+        "boxShadow": "",
+        "adorner": null,
+        "tooltip": ""
+      },
+      "defaultState": 
+      {
+        "buttonDisabled": true
+      }
+    }
+  },
+  "metadata": 
+  {
+    "version": "1.0.0",
+    "lastModified": "2026-01-31",
+    "description": "Symbol input validation rules configuration"
+  }
+}

@@ -1,0 +1,13 @@
+/* Navy Page Background Gradient */
+/* Copied from mockup-command-center.html for reuse across the site */
+
+body {
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a15 0%, #181f2e 100%);
+    color: #fff;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    overflow: hidden;
+} 
+
