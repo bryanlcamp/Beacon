@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Cache Bust: EXCHANGE-FIX-202603050405 -->
+<!-- Cache Bust: JS-CACHE-FORCE-REFRESH-202603051350 -->
 <html lang="en">
 
     <head>
@@ -8,7 +8,8 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
-        <title>Author - Beacon Financial Technologies [COMPONENT-REFRESH-202603050409]</title>
+        <meta name="cache-bust" content="PORTFOLIO-FORCE-REFRESH-20260305160500">
+        <title>Author - Beacon Financial Technologies [PORTFOLIO-FORCE-REFRESH-202603051455]</title>
 
         <!-- Author-Specific CSS -->
         <link rel="stylesheet" href="styles/author-specific/base/navy-page-gradient.css?v=202603050405">
@@ -17,12 +18,19 @@
         <link rel="stylesheet" href="styles/author-specific/components/interactive-icons.css?v=202603050405">
         <link rel="stylesheet" href="styles/author-specific/components/typography.css?v=202603050405">
         <link rel="stylesheet" href="styles/author-specific/components/dropdowns.css?v=202603050405">
-        <link rel="stylesheet" href="styles/author-specific/components/add-new-symbol.css?v=202603050595">
-        <link rel="stylesheet" href="styles/author-specific/components/global-dataset-parameter-update.css?v=202603050605">
+        <link rel="stylesheet" href="styles/author-specific/components/datacard-header-layout.css?v=202603051255">
+        <link rel="stylesheet" href="styles/author-specific/components/add-new-symbol.css?v=20260305172000&align=portfolio-left">
+        <link rel="stylesheet" href="styles/author-specific/components/global-dataset-parameter-update.css?v=20260305172000&align=perfect">
+        <link rel="stylesheet" href="styles/author-specific/components/sync-range-slider-edit-input.css?v=202603050630">
+        <link rel="stylesheet" href="styles/author-specific/components/range-control-grid-layout.css?v=202603051200">
+        <link rel="stylesheet" href="styles/author-specific/components/red-remove-button.css?v=202603051240">
+        <link rel="stylesheet" href="styles/author-specific/components/exchange-product-display.css?v=202603050630">
+        <link rel="stylesheet" href="styles/author-specific/components/price-mode-spread-direct-selector.css?v=202603050630">
+        <link rel="stylesheet" href="styles/author-specific/components/dataset-percentage-input.css?v=202603050700">
         <link rel="stylesheet" href="styles/author-specific/animations/core-animations.css?v=202603050405">
-        <link rel="stylesheet" href="styles/author-specific/pages/command-center-utilities.css?v=202603050405">
+        <link rel="stylesheet" href="styles/author-specific/pages/command-center-utilities.css?v=20260305164500&align=portfolio-left">
         <link rel="stylesheet" href="styles/author-specific/pages/command-center-base.css?v=202603050405">
-        <link rel="stylesheet" href="styles/author-specific/author-main.css?v=202603050405&spacing=fixed">
+        <link rel="stylesheet" href="styles/author-specific/author-main.css?v=20260305172000&portfolio=final&bust=force">
         <link rel="stylesheet" href="styles/author-specific/responsive-controls.css?v=202603050605&global-params=css-clean">
 
         <!-- Page styling (Control widths handled by responsive-controls.css) -->
@@ -92,12 +100,8 @@
 
             /* Clean main content styling */
             #main-content {
-                background: var(--glass-panel) !important;
-                border: 1px solid var(--border-blue) !important;
-                border-radius: 12px !important;
                 padding: 1.5em !important;
                 box-sizing: border-box !important;
-                backdrop-filter: blur(10px) !important;
                 min-height: fit-content !important;
                 overflow: visible !important;
             }
@@ -255,7 +259,7 @@
 
             .beacon-page-content {
                 max-width: 1600px;
-                margin: 0.25em auto 2em auto;
+                margin: 1em auto 2em auto;
                 padding: 0 2em;
             }
 
@@ -277,10 +281,6 @@
             }
 
             .main-content {
-                background: rgba(16, 22, 36, 0.8);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(107, 182, 255, 0.2);
-                border-radius: 12px;
                 padding: 1.5em;
             }
 
@@ -510,6 +510,12 @@
                 transition: all 0.3s ease;
                 max-width: 320px;
                 box-sizing: border-box;
+                overflow: visible !important;
+            }
+
+            .datacard-content {
+                overflow: visible !important;
+                position: relative !important;
             }
 
             .datacard.has-micro-periods {
@@ -530,9 +536,10 @@
             }
 
             .datacard:not(.collapsed) .datacard-content {
-                max-height: 1000px;
+                max-height: 2000px;
                 opacity: 1;
                 transition: all 0.4s ease;
+                overflow: visible !important;
             }
 
             .datacard-header {
@@ -1529,43 +1536,161 @@
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
             }
 
-            /* Product grid range-input sliders - thin and subtle */
+            /* OVERRIDE GLOBAL RANGE WIDTH FOR DATACARDS - STABLE VERSION */
+            .datacard .range-control-group input[type="range"] {
+                width: 100% !important;
+                min-width: auto !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                margin: 4px 0 !important;
+            }
+
+            /* Product grid range-input sliders - STABLE VERSION */
             .datacard input[type="range"] {
                 -webkit-appearance: none !important;
                 appearance: none !important;
-                background: linear-gradient(to right, #ffffff 0%, #ffffff 100%) !important;
+                background: linear-gradient(to right, #666666 0%, #666666 100%) !important;
                 height: 1px !important;
-                border-radius: 1px !important;
+                border-radius: 0px !important;
                 outline: none !important;
+                width: 100% !important;
+                margin: 4px 0 !important;
             }
 
             .datacard input[type="range"]::-webkit-slider-track {
-                background: #ffffff !important;
+                background: #666666 !important;
                 height: 1px !important;
-                border-radius: 1px !important;
+                border-radius: 0px !important;
                 border: none !important;
                 -webkit-appearance: none !important;
-                box-shadow: inset 0 0 0 1px #ffffff !important;
+                box-shadow: inset 0 0 0 1px #666666 !important;
             }
 
             .datacard input[type="range"]::-moz-range-track {
-                background: #ffffff !important;
+                background: #666666 !important;
                 height: 1px !important;
-                border-radius: 1px !important;
+                border-radius: 0px !important;
                 border: none !important;
-                box-shadow: inset 0 0 0 1px #ffffff !important;
+                box-shadow: inset 0 0 0 1px #666666 !important;
             }
 
             .datacard input[type="range"]::-webkit-slider-thumb {
                 -webkit-appearance: none !important;
                 appearance: none !important;
                 background: #6bb6ff !important;
-                height: 14px !important;
-                width: 14px !important;
+                height: 10px !important;
+                width: 10px !important;
                 border-radius: 50% !important;
-                border: 2px solid rgba(16, 22, 36, 1) !important;
+                border: 1px solid rgba(16, 22, 36, 1) !important;
                 cursor: pointer !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+            }
+
+            /* Simple datacard range control layout - STABLE VERSION */
+            .datacard .range-control-group {
+                width: 95% !important;
+                max-width: 95% !important;
+                box-sizing: border-box !important;
+                padding: 0 !important;
+                margin: 0 2.5% 4px 2.5% !important;
+                display: flex !important;
+                gap: 6% !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+            }
+
+            .datacard .range-control.half-width {
+                width: 47% !important;
+                max-width: 47% !important;
+                flex: 0 0 47% !important;
+                padding: 2px 0 !important;
+                box-sizing: border-box !important;
+                min-width: 0 !important;
+            }
+
+            .datacard input[type="range"]::-webkit-slider-track {
+                background: #666666 !important;
+                height: 1px !important;
+                border-radius: 0px !important;
+                border: none !important;
+                -webkit-appearance: none !important;
+                box-shadow: inset 0 0 0 1px #666666 !important;
+            }
+
+            .datacard input[type="range"]::-moz-range-track {
+                background: #666666 !important;
+                height: 1px !important;
+                border-radius: 0px !important;
+                border: none !important;
+                box-shadow: inset 0 0 0 1px #666666 !important;
+            }
+
+            .datacard input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none !important;
+                appearance: none !important;
+                background: #6bb6ff !important;
+                height: 10px !important;
+                width: 10px !important;
+                border-radius: 50% !important;
+                border: 1px solid rgba(16, 22, 36, 1) !important;
+                cursor: pointer !important;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+            }
+
+            /* Ensure datacard range controls stay within bounds - TINY VERSION */
+            .datacard .range-control-group {
+                width: 95% !important;
+                max-width: 95% !important;
+                box-sizing: border-box !important;
+                padding: 0 !important;
+                margin: 0 2.5% 1px 2.5% !important;
+                display: flex !important;
+                gap: 6% !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+            }
+
+            .datacard .range-control.half-width {
+                width: 47% !important;
+                max-width: 47% !important;
+                flex: 0 0 47% !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                min-width: 0 !important;
+            }
+
+            /* FORCE NUMBER INPUTS BELOW SLIDERS IN DATACARDS - MINIMAL SPACING */
+            .datacard .range-control.half-width .range-input-group {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                margin-bottom: 0px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .datacard .range-control.half-width .range-input-group input[type="range"] {
+                order: 1 !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .datacard .range-control.half-width .range-input-group input[type="number"] {
+                order: 3 !important;
+                margin-top: 2px !important;
+                width: 45px !important;
+                font-size: 0.55em !important;
+                height: 14px !important;
+                padding: 1px 3px !important;
+            }
+
+            /* Add spacing between labels and sliders - TINY VERSION */
+            .datacard .range-label {
+                margin-bottom: 1px !important;
+                font-size: 0.7em !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
             }
 
             /* ========== AUTHOR REFACTOR OVERRIDES ========== */
@@ -1677,17 +1802,13 @@
         <!-- Modern Modular JavaScript Architecture -->
 
         <!-- Component Loader Utility -->
-        <script src="js/utils/component-loader.js?v=202603050409"></script>
+        <script src="js/utils/component-loader.js?v=202603051435"></script>
 
         <!-- Core Application Modules -->
-        <script src="js/modules/symbol-manager.js?v=202603050620"></script>
-        <script src="js/modules/portfolio-controls.js?v=202603050409"></script>
-        <script src="js/modules/component-init.js?v=202603050409"></script>
-        <script src="js/modules/author-app.js?v=202603050409"></script>
-
-        <script>
-        console.log('🚀 Loading Author App with modular architecture...');
-        </script>
+        <script src="js/modules/symbol-manager.js?v=202603051430"></script>
+        <script src="js/modules/portfolio-controls.js?v=202603051425"></script>
+        <script src="js/modules/component-init.js?v=202603051425"></script>
+        <script src="js/modules/author-app.js?v=202603051425"></script>
 
     </body>
 </html>
