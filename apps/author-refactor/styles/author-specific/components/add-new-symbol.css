@@ -1,0 +1,44 @@
+/* Add New Symbol Control - Reusable Component */
+/* Exchange dropdown + Symbol input + Add button */
+
+.exchange-symbol-container {
+    display: flex !important;
+    margin-bottom: 1.25em !important;
+    align-items: stretch !important;
+}
+
+.exchange-symbol-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    flex: none !important;
+}
+
+.exchange-symbol-input {
+    box-sizing: border-box !important;
+    flex: none !important;
+}
+
+.exchange-symbol-button {
+    flex: none !important;
+}
+
+.exchange-option {
+    background: #1e293b !important;
+    color: white !important;
+}
+
+/*
+Usage:
+<div class="exchange-symbol-container">
+    <select id="exchangeSelect" class="form-select form-control-standard form-select-white exchange-symbol-select">
+        <option value="CME" class="exchange-option">CME</option>
+        <option value="NASDAQ" class="exchange-option">NSDQ</option>
+        <option value="NYSE" class="exchange-option">NYSE</option>
+    </select>
+    <input type="text" id="symbolInput" class="symbol-input form-control-standard exchange-symbol-input" placeholder="Symbol">
+    <button type="button" id="addSymbol" class="btn btn-secondary btn-control btn-disabled exchange-symbol-button" disabled>Add</button>
+</div>
+*/

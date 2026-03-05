@@ -1,0 +1,210 @@
+/* Responsive Controls - Target Dynamic JavaScript-Generated Elements */
+/* Version: 3.8.2 - EXCHANGE DROPDOWN FIX */
+
+/* ULTRA HIGH SPECIFICITY - Override author-main.css completely */
+body .portfolio-sidebar input[type="range"],
+body .datacard input[type="range"],
+body main input[type="range"],
+body .range-input-group input[type="range"] {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+body .portfolio-sidebar input[type="number"],
+body .datacard input[type="number"],
+body main input[type="number"],
+body .range-input-group input[type="number"] {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
+
+body .portfolio-sidebar input[type="text"],
+body .datacard input[type="text"],
+body main input[type="text"]:not(.search-input):not(.tiny-input) {
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+}
+
+/* Ultra-specific class targeting */
+body .portfolio-sidebar .flex-1,
+body .datacard .flex-1,
+body main .flex-1 {
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+}
+
+body .portfolio-sidebar .thin-slider,
+body .datacard .thin-slider,
+body main .thin-slider {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+/* Container centering with ultra-high specificity */
+body .portfolio-sidebar .range-input-group,
+body .datacard .range-input-group,
+body main .range-input-group,
+body .portfolio-sidebar .control-group,
+body .datacard .control-group,
+body main .control-group {
+    width: 100% !important;
+    max-width: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+body .portfolio-sidebar .flex-row,
+body .datacard .flex-row,
+body main .flex-row {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+/* Universal input targeting for all dynamically created controls */
+input[type="range"] {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+input[type="number"] {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
+
+input[type="text"]:not(.search-input):not(.tiny-input) {
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+}
+
+/* Class-specific overrides for known JavaScript class names */
+.symbol-input,
+.spinner-input,
+.duration-input {
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+}
+
+.range-input,
+.thin-slider,
+.param-slider {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+.range-number-input,
+.param-number,
+.value-input {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
+
+/* Container adjustments to accommodate wider controls */
+.range-input-group,
+.control-group,
+.input-group {
+    width: 100% !important;
+    max-width: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+/* Ensure flex containers allow proper width distribution */
+.flex-1 {
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+}
+
+.flex-row,
+.control-row {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+/* Portfolio parameter container specific adjustments */
+#portfolioParamsContainer input[type="range"],
+#portfolioControls input[type="range"] {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+#portfolioParamsContainer input[type="number"],
+#portfolioControls input[type="number"] {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
+
+/* Data card controls */
+.datacard input[type="range"] {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+}
+
+.datacard input[type="number"] {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
+
+/* =================
+   EXCHANGE DROPDOWN WITH WHITE ARROW
+   ================= */
+
+/* Target exchange dropdown directly by ID for maximum specificity */
+#exchangeSelect {
+    background-image: linear-gradient(45deg, transparent 50%, white 50%),
+                      linear-gradient(135deg, white 50%, transparent 50%) !important;
+    background-position: calc(100% - 20px) calc(1em + 2px),
+                         calc(100% - 15px) calc(1em + 2px) !important;
+    background-size: 5px 5px, 5px 5px !important;
+    background-repeat: no-repeat !important;
+    border-radius: 2px 0 0 2px !important;
+    border-right: none !important;
+    max-width: 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+}
+
+/* Symbol input - no left/right borders */
+#symbolInput {
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    max-width: 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+}
+
+/* Add button - right rounded corners */
+#addSymbol {
+    border-radius: 0 2px 2px 0 !important;
+    border-left: none !important;
+    max-width: 100px !important;
+    width: 100px !important;
+    min-width: 90px !important;
+}
+

@@ -1,0 +1,125 @@
+                        <!-- Left Side: Portfolio Controls -->
+                        <div class="portfolio-sidebar">
+                            <h2 class="portfolio-title">Portfolio</h2>
+
+                            <!-- Add Product Section -->
+                            <div class="config-section">
+                                <div class="form-group">
+                                    <div class="exchange-symbol-container">
+                                        <select id="exchangeSelect" class="form-select form-control-standard form-select-white exchange-symbol-select">
+                                                <option value="CME" class="exchange-option">CME</option>
+                                                <option value="NASDAQ" class="exchange-option">NSDQ</option>
+                                                <option value="NYSE" class="exchange-option">NYSE</option>
+                                            </select><input type="text" id="symbolInput" class="symbol-input form-control-standard exchange-symbol-input"
+                                               placeholder="Symbol"><button type="button" id="addSymbol" class="btn btn-secondary btn-control btn-disabled exchange-symbol-button"
+                                                disabled>
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Blue Separator - Separates Add Product from Portfolio Controls -->
+                            <div class="section-separator"></div>
+
+                            <!-- Update Portfolio Controls -->
+                            <div class="config-section">
+                                <div class="form-group">
+                                    <div class="flex-row">
+                                    <!-- ROLLBACK VERSION - WORKING INLINE STYLES - UNCOMMENT IF CSS VERSION BREAKS -->
+                                    <!--
+                                        <button type="button" id="togglePortfolioParams" class="btn btn-secondary"
+                                            style="flex: 1; padding: 0.75em; font-size: 0.9em; height: 2.8em; display: flex; align-items: center; justify-content: space-between; color: white;">
+                                            <span style="font-weight: 600;">Update All</span>
+                                            <span id="portfolioToggleIcon" style="font-size: 0.8em; transition: transform 0.2s ease;">▼</span>
+                                        </button>
+                                    -->
+
+                                    <!-- CSS VERSION - COMMENT OUT AND UNCOMMENT ABOVE IF THIS BREAKS -->
+                                    <button type="button" id="togglePortfolioParams" class="btn btn-secondary global-update-toggle">
+                                        <span class="global-update-text">Update All</span>
+                                        <span id="portfolioToggleIcon" class="global-update-icon">▼</span>
+                                    </button>
+                                </div>
+
+                                    <!-- ROLLBACK VERSION - WORKING INLINE STYLES - UNCOMMENT IF CSS VERSION BREAKS -->
+                                    <!--
+                                    <div id="portfolioParamsContainer" style="display: none; margin-top: 8px; padding: 1em; background: rgba(24, 31, 46, 0.8); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 6px; position: absolute; left: 0; right: 0; z-index: 30;">
+                                    -->
+
+                                    <!-- CSS VERSION - COMMENT OUT AND UNCOMMENT ABOVE IF THIS BREAKS -->
+                                    <div id="portfolioParamsContainer" class="global-params-container">
+                                        <!-- Spread & Vol -->
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Spread%</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalSpreadPercent" value="0.25" min="0.05" max="2.00" step="0.05" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="0.25" min="0.05" max="2.00" step="0.05">
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="text-label">Vol</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalVolatility" value="2" min="1" max="4" step="1" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="2" min="1" max="4" step="1">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Bid Qty & Weight -->
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Bid Qty</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalBidQty" value="100" min="10" max="1000" step="10" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="100" min="10" max="1000" step="10">
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="text-label">Bid Weight</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalBidWeight" value="0.50" min="0.10" max="1.00" step="0.05" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="0.50" min="0.10" max="1.00" step="0.05">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Ask Qty & Weight -->
+                                        <div class="flex-row-wide">
+                                            <div class="flex-1">
+                                                <label class="text-label">Ask Qty</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalAskQty" value="100" min="10" max="1000" step="10" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="100" min="10" max="1000" step="10">
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="text-label">Ask Weight</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalAskWeight" value="0.50" min="0.10" max="1.00" step="0.05" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="0.50" min="0.10" max="1.00" step="0.05">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Trend -->
+                                        <!-- ROLLBACK VERSION - WORKING INLINE STYLES - UNCOMMENT IF CSS VERSION BREAKS -->
+                                        <!--
+                                        <div style="display: flex; gap: 16px;">
+                                        -->
+
+                                        <!-- CSS VERSION - COMMENT OUT AND UNCOMMENT ABOVE IF THIS BREAKS -->
+                                        <div class="global-trend-section">
+                                            <div class="flex-1">
+                                                <label class="text-label">Trend</label>
+                                                <div class="range-input-group">
+                                                    <input type="range" id="globalTrend" value="0" min="-1" max="1" step="1" class="thin-slider">
+                                                    <input type="number" class="range-number-input" value="0" min="-1" max="1" step="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>

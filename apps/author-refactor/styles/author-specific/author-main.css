@@ -1,8 +1,11 @@
-/* Author-Specific Custom Styles */
+/* Author-Specific Custom Styles - Cache Bust v6.0 MAXIMUM WIDTH CONTROLS */
 
 /* ========== LAYOUT UTILITIES ========== */
 .flex-1 {
-    flex: 1 !important;
+    width: 85% !important;
+    min-width: 250px !important;
+    max-width: 500px !important;
+    margin: 0 auto !important;
 }
 
 .flex-row {
@@ -231,7 +234,7 @@
 }
 
 .portfolio-sidebar {
-    flex: 0 0 280px !important;
+    flex: 0 0 360px !important;
     position: relative !important;
     z-index: 10 !important;
     pointer-events: auto !important;
@@ -258,9 +261,9 @@
 }
 
 .portfolio-title {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 600 !important;
-    font-size: 1.1em !important;
+    color: #6bb6ff !important;
+    font-weight: 900 !important;
+    font-size: 1.5em !important;
     margin: 0 0 1.5em 0 !important;
     padding-bottom: 0.75em !important;
     border-bottom: 1px solid rgba(107, 182, 255, 0.3) !important;
@@ -283,6 +286,109 @@
     border-radius: 8px !important;
     font-weight: 600 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+/* ========== RANGE SLIDERS & INPUTS ========== */
+.range-input-group {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+.thin-slider {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+    height: 6px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 3px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    margin: 0 auto !important;
+}
+
+/* Center controls properly in their panels */
+.flex-center-gap {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+/* Move everything upward */
+.beacon-page-nav {
+    margin-bottom: 1em !important;
+}
+
+#main-content {
+    margin-top: -1em !important;
+}
+
+.thin-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 16px !important;
+    height: 16px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.thin-slider::-webkit-slider-thumb:hover {
+    background: #5aa3ff !important;
+    transform: scale(1.1) !important;
+}
+
+.thin-slider::-moz-range-thumb {
+    width: 16px !important;
+    height: 16px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.range-number-input {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+    flex: 0 0 45px !important;
+    padding: 4px 6px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(107, 182, 255, 0.3) !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 0.75em !important;
+    text-align: center !important;
+    font-family: 'SF Mono', monospace !important;
+}
+
+.range-number-input:focus {
+    outline: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #6bb6ff !important;
+}
+
+.text-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 0.8em !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+}
+
+/* Portfolio dropdown container */
+#portfolioParamsContainer {
+    min-width: 280px !important;
+    box-sizing: border-box !important;
+}
+
+#portfolioParamsContainer .flex-row-wide:last-child {
+    margin-bottom: 8px !important;
 }
 
 /* ========== BRAND ELEMENTS ========== */
