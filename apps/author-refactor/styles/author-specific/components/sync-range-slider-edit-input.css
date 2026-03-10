@@ -1,0 +1,128 @@
+/* Thin Slider + Sync Number Box - Reusable Component */
+/* Configurable range slider that stays synchronized with editable number input */
+
+.sync-slider-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    width: 100% !important;
+}
+
+.sync-slider-label {
+    font-size: 0.8em !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+}
+
+.sync-slider-group {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+/* Thin Slider Styling */
+.sync-thin-slider {
+    width: 80% !important;
+    min-width: 200px !important;
+    max-width: 450px !important;
+    height: 6px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 3px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+.sync-thin-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 16px !important;
+    height: 16px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.sync-thin-slider::-webkit-slider-thumb:hover {
+    background: #5aa3ff !important;
+    transform: scale(1.1) !important;
+}
+
+.sync-thin-slider::-moz-range-thumb {
+    width: 16px !important;
+    height: 16px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Synchronized Number Input */
+.sync-number-input {
+    width: 80px !important;
+    min-width: 60px !important;
+    max-width: 100px !important;
+    flex: 0 0 80px !important;
+    padding: 4px 6px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(107, 182, 255, 0.3) !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 0.75em !important;
+    text-align: center !important;
+    font-family: 'SF Mono', monospace !important;
+    transition: all 0.2s ease !important;
+}
+
+.sync-number-input:focus {
+    outline: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #6bb6ff !important;
+    box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.2) !important;
+}
+
+/* Range Control Group Layout */
+.range-control-duo {
+    display: flex !important;
+    gap: 16px !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+}
+
+.range-control-half {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+/*
+Usage:
+<div class="range-control-duo">
+    <div class="range-control-half">
+        <div class="sync-slider-container">
+            <label class="sync-slider-label">Base Price</label>
+            <div class="sync-slider-group">
+                <input type="range" class="sync-thin-slider" min="1" max="1000" value="175">
+                <input type="number" class="sync-number-input" min="1" max="1000" value="175">
+            </div>
+        </div>
+    </div>
+    <div class="range-control-half">
+        <div class="sync-slider-container">
+            <label class="sync-slider-label">Spread</label>
+            <div class="sync-slider-group">
+                <input type="range" class="sync-thin-slider" min="0.1" max="10" value="0.5">
+                <input type="number" class="sync-number-input" min="0.1" max="10" value="0.5">
+            </div>
+        </div>
+    </div>
+</div>
+*/

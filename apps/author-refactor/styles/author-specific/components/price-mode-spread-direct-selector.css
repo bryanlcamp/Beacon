@@ -1,0 +1,105 @@
+/* Pricing Mode Toggle - Reusable Component */
+/* Toggle control for switching between pricing modes (Spread/Manual/etc.) */
+
+.pricing-mode-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+    padding: 8px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.pricing-mode-label {
+    font-size: 0.85em !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+.pricing-mode-toggle-button {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 4px 8px !important;
+    background: rgba(107, 182, 255, 0.1) !important;
+    border: 1px solid rgba(107, 182, 255, 0.3) !important;
+    border-radius: 4px !important;
+    color: #6bb6ff !important;
+    font-size: 0.8em !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+}
+
+.pricing-mode-toggle-button:hover {
+    background: rgba(107, 182, 255, 0.15) !important;
+    border-color: rgba(107, 182, 255, 0.4) !important;
+    color: #7dd3fc !important;
+}
+
+.pricing-mode-toggle-button:active {
+    background: rgba(107, 182, 255, 0.2) !important;
+    transform: scale(0.98) !important;
+}
+
+.pricing-mode-toggle-button:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(107, 182, 255, 0.3) !important;
+}
+
+/* Mode Text Styling */
+.pricing-mode-text {
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+/* State Variants */
+.pricing-mode-toggle-button.active {
+    background: rgba(107, 182, 255, 0.25) !important;
+    border-color: rgba(107, 182, 255, 0.5) !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(107, 182, 255, 0.2) !important;
+}
+
+.pricing-mode-toggle-button.disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+/* Size Variants */
+.pricing-mode-container.compact {
+    padding: 6px !important;
+    margin-bottom: 8px !important;
+}
+
+.pricing-mode-container.compact .pricing-mode-label {
+    font-size: 0.75em !important;
+}
+
+.pricing-mode-container.compact .pricing-mode-toggle-button {
+    padding: 3px 6px !important;
+    font-size: 0.7em !important;
+}
+
+/*
+Usage:
+<div class="pricing-mode-container">
+    <span class="pricing-mode-label">Price Mode:</span>
+    <button class="pricing-mode-toggle-button active">
+        <span class="pricing-mode-text">Spread</span>
+    </button>
+</div>
+
+<div class="pricing-mode-container compact">
+    <span class="pricing-mode-label">Mode:</span>
+    <button class="pricing-mode-toggle-button">
+        <span class="pricing-mode-text">Manual</span>
+    </button>
+</div>
+*/

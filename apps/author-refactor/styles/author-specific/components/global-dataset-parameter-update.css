@@ -2,7 +2,7 @@
 /* Toggle button + dropdown panel for global parameter updates */
 
 .global-update-toggle {
-    flex: 1 !important;
+    flex: none !important;
     padding: 0.75em !important;
     font-size: 0.9em !important;
     height: 2.8em !important;
@@ -10,9 +10,22 @@
     align-items: center !important;
     justify-content: space-between !important;
     color: white !important;
-    margin-left: -4em !important;
+    margin-left: 0 !important;
     position: relative !important;
-    left: -1.5em !important;
+    left: 0 !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+}
+
+#togglePortfolioParams.global-update-toggle {
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    overflow: hidden !important;
 }
 
 .global-update-text {
@@ -24,17 +37,38 @@
     transition: transform 0.2s ease !important;
 }
 
+/* Dropdown positioning — all other styling comes from .datacard class */
 .global-params-container {
-    display: none !important;
-    margin-top: 8px !important;
-    padding: 0.8em !important;
-    background: rgba(24, 31, 46, 0.8) !important;
-    border: 1px solid rgba(107, 182, 255, 0.3) !important;
-    border-radius: 1px !important;
+    display: none;
     position: absolute !important;
-    left: 0 !important;
-    right: 0 !important;
     z-index: 30 !important;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+}
+
+/* Override responsive-controls.css broad selectors that force min-width: 200px on range inputs.
+   The dropdown is ~320px wide, so each half-width control is ~150px — we need range inputs
+   to stay at 100% of their container, not break out with a 200px min-width. */
+body #portfolioParamsContainer.datacard input[type="range"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+body #portfolioParamsContainer.datacard input[type="number"] {
+    width: 45px !important;
+    min-width: 0 !important;
+    max-width: 50px !important;
+}
+
+body #portfolioParamsContainer.datacard .range-control.half-width {
+    min-width: 0 !important;
 }
 
 .global-trend-section {
@@ -45,7 +79,7 @@
 /*
 Usage:
 <button id="togglePortfolioParams" class="btn btn-secondary global-update-toggle">
-    <span class="global-update-text">Update All</span>
+    <span class="global-update-text">Apply to Portfolio</span>
     <span id="portfolioToggleIcon" class="global-update-icon">▼</span>
 </button>
 

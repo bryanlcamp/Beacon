@@ -3,8 +3,13 @@
 
 .exchange-symbol-container {
     display: flex !important;
-    margin-bottom: 1.25em !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
     align-items: stretch !important;
+    position: relative !important;
+    left: 0 !important;
+    gap: 0px !important;
 }
 
 .exchange-symbol-select {
@@ -14,15 +19,25 @@
     box-sizing: border-box !important;
     cursor: pointer !important;
     flex: none !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
 }
 
 .exchange-symbol-input {
     box-sizing: border-box !important;
     flex: none !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
 }
 
 .exchange-symbol-button {
     flex: none !important;
+    border-radius: 2px !important;
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
 }
 
 .exchange-option {

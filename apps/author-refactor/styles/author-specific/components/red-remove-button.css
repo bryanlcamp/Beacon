@@ -1,0 +1,68 @@
+/* Red X Remove Button - Reusable Component */
+/* Standardized remove/delete button for datacards, lists, etc. */
+
+.red-remove-button {
+    width: 22px !important;
+    height: 22px !important;
+    background: transparent !important;
+    color: #ff4757 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    line-height: 1 !important;
+    flex: 0 0 22px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.red-remove-button:hover {
+    color: #ff3742 !important;
+    text-shadow: 0 0 8px rgba(255, 71, 87, 0.6), 0 0 16px rgba(255, 71, 87, 0.3) !important;
+    filter: drop-shadow(0 0 4px rgba(255, 71, 87, 0.4)) !important;
+}
+
+.red-remove-button:active {
+    color: #e63946 !important;
+    text-shadow: 0 0 6px rgba(255, 71, 87, 0.8) !important;
+    filter: drop-shadow(0 0 2px rgba(255, 71, 87, 0.6)) !important;
+}
+
+.red-remove-button:focus {
+    outline: none !important;
+    text-shadow: 0 0 6px rgba(255, 71, 87, 0.5) !important;
+}
+
+/* Variants */
+.red-remove-button.small {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 12px !important;
+}
+
+.red-remove-button.large {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 20px !important;
+}
+
+/* Different contexts */
+.red-remove-button.in-header {
+    margin-left: auto !important;
+}
+
+.red-remove-button.in-list {
+    margin-left: 8px !important;
+}
+
+/*
+Usage:
+<button class="red-remove-button" aria-label="Remove item">×</button>
+<button class="red-remove-button small" aria-label="Remove">×</button>
+<button class="red-remove-button in-header" aria-label="Remove ${symbol}">×</button>
+*/

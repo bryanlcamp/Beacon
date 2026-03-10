@@ -31,8 +31,10 @@
     width: 60%;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(193, 200, 209, 0.3), transparent);
-    margin: 1em auto;
+    margin: 1em auto 1em -3.5em;
     border-radius: 1px;
+    position: relative;
+    left: -1.3em;
 }
 
 /* Info dropdown styling - slide out right */

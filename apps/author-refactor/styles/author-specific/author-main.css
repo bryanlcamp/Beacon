@@ -223,9 +223,8 @@
 }
 
 .content-layout {
-    display: flex !important;
-    gap: 1.5em !important;
-    margin-top: 0px !important;
+    display: block !important;
+    overflow: visible !important;
     min-height: 400px !important;
     max-width: 2400px !important;
     margin: 0 0 0 2em !important;
@@ -233,14 +232,29 @@
     box-sizing: border-box !important;
 }
 
+#portfolio-sidebar-container {
+    float: left !important;
+}
+
+#vertical-separator-container {
+    float: left !important;
+    width: 1px !important;
+    margin: 0 1.5em 0 0 !important;
+}
+
+#main-data-area-container {
+    overflow: hidden !important;  /* BFC - fills remaining width after floats */
+}
+
 .portfolio-sidebar {
-    flex: 0 0 320px !important;
+    width: 320px !important;
+    display: block !important;
     position: relative !important;
-    z-index: 10 !important;
+    z-index: 10001 !important;
     pointer-events: auto !important;
-    padding: 1.2em 1.2em 1.6em 0.4em !important;
+    padding: 1.2em 0.3em 1.6em 0.4em !important;
     margin-top: 0em !important;
-    margin-left: -1em !important;
+    margin-left: 0 !important;
     overflow: visible !important;
 }
 
@@ -268,6 +282,252 @@
 .panel-header {
     padding: 0.2em 1em 0.8em 1em !important;
     border-bottom: 1px solid rgba(107, 182, 255, 0.2) !important;
+}
+
+/* ========== SECTION HEADER ROW ========== */
+/* Portfolio label left, controls right — horizontal rule sits BELOW as full-width divider */
+
+/* Override command-center-base.css align-items: flex-start so children stretch full width */
+.main-content {
+    align-items: stretch !important;
+    --portfolio-header-width: 320px;
+    --portfolio-control-width: 300px;
+    --portfolio-control-offset: -0.4em;
+    --section-separator-gap: 1em;
+}
+
+.section-header-layout {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    padding-bottom: 8px !important;
+}
+
+.portfolio-header-cell {
+    flex: 0 0 var(--portfolio-header-width) !important;
+    box-sizing: border-box !important;
+    padding-left: 0 !important;
+}
+
+.section-header-gap {
+    flex: 0 0 var(--section-separator-gap) !important;
+}
+
+.section-header-vertical-separator,
+.panel-vertical-separator {
+    width: 1px !important;
+    flex: 0 0 1px !important;
+    background: linear-gradient(to bottom,
+                rgba(107, 182, 255, 0.6) 0%,
+                rgba(107, 182, 255, 0.5) 15%,
+                rgba(107, 182, 255, 0.4) 40%,
+                rgba(107, 182, 255, 0.2) 70%,
+                rgba(107, 182, 255, 0.05) 90%,
+                transparent 100%) !important;
+}
+
+.section-header-vertical-separator {
+    height: 44px !important;
+    background: transparent !important;
+}
+
+.section-header-main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Hover glow on editable duration panel */
+#durationTooltipContainer {
+    background: rgba(107, 182, 255, 0.06) !important;
+    border: 1px solid rgba(107, 182, 255, 0.3) !important;
+    -webkit-transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: text !important;
+}
+
+#durationTooltipContainer:hover {
+    border-color: rgba(107, 182, 255, 1.0) !important;
+    -webkit-box-shadow: 0 0 20px rgba(107, 182, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(107, 182, 255, 0.5) !important;
+    background: rgba(107, 182, 255, 0.15) !important;
+}
+
+#durationTooltipContainer:focus-within {
+    border-color: rgba(107, 182, 255, 0.8) !important;
+    -webkit-box-shadow: 0 0 12px rgba(107, 182, 255, 0.2) !important;
+    box-shadow: 0 0 12px rgba(107, 182, 255, 0.2) !important;
+}
+
+.section-header-time-block {
+    flex: 0 0 auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.section-header-time-card {
+    margin: 0 !important;
+}
+
+.section-header-actions {
+    margin-left: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+.section-header-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 0 8px 0 !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+}
+
+.section-header-label {
+    color: #6bb6ff !important;
+    font-weight: 900 !important;
+    font-size: 1.5em !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+}
+
+.section-header-line {
+    display: block !important;
+    width: 100% !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, rgba(107, 182, 255, 0.4), rgba(107, 182, 255, 0.15), rgba(107, 182, 255, 0.4)) !important;
+    margin: 0 0 8px 0 !important;
+    flex: none !important;
+}
+
+.section-header-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+.portfolio-control-section {
+    margin: 0 0 1.2em 0 !important;
+    padding: 0 !important;
+}
+
+.portfolio-control-group {
+    width: var(--portfolio-control-width) !important;
+    margin-left: var(--portfolio-control-offset) !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.portfolio-control-group-update {
+    position: relative !important;
+    margin-bottom: 1.75em !important;
+}
+
+.portfolio-control-row {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.portfolio-control-divider {
+    width: 200px !important;
+    height: 1px !important;
+    margin: 1.6em 0 1.6em calc(50% - 100px) !important;
+    background: linear-gradient(90deg, rgba(107, 182, 255, 0.22), rgba(107, 182, 255, 0.08), rgba(107, 182, 255, 0.22)) !important;
+}
+
+.exchange-symbol-container {
+    display: flex !important;
+    width: fit-content !important;
+    max-width: var(--portfolio-control-width) !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    left: 0 !important;
+}
+
+/* Subtle hover glow on the Add Symbol row */
+.exchange-symbol-container:hover .exchange-symbol-select,
+.exchange-symbol-container:hover .exchange-symbol-input,
+.exchange-symbol-container:hover .exchange-symbol-button {
+    border-color: rgba(107, 182, 255, 0.5) !important;
+}
+
+.exchange-symbol-container:focus-within .exchange-symbol-select,
+.exchange-symbol-container:focus-within .exchange-symbol-input,
+.exchange-symbol-container:focus-within .exchange-symbol-button {
+    border-color: rgba(107, 182, 255, 0.7) !important;
+}
+
+.exchange-symbol-select {
+    flex: 0 0 92px !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
+}
+
+.exchange-symbol-input {
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+}
+
+.exchange-symbol-button,
+.portfolio-update-button {
+    height: 44px !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+}
+
+.exchange-symbol-button {
+    flex: 0 0 88px !important;
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
+}
+
+.portfolio-update-button {
+    flex: 0 0 280px !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+}
+
+.portfolio-update-row {
+    display: block !important;
+    width: var(--portfolio-control-width) !important;
+}
+
+.portfolio-update-button {
+    justify-content: space-between !important;
+}
+
+#togglePortfolioParams {
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    overflow: hidden !important;
+}
+
+.panel-vertical-separator {
+    margin: -12px 0 0 -40px !important;
+    height: calc(75vh + 12px) !important;
+    align-self: flex-start !important;
+    display: none !important;
 }
 
 /* ========== DEMO BANNER ========== */
@@ -349,24 +609,24 @@
 }
 
 .range-number-input {
-    width: 80px !important;
-    min-width: 60px !important;
-    max-width: 100px !important;
-    flex: 0 0 45px !important;
-    padding: 4px 6px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(107, 182, 255, 0.3) !important;
-    border-radius: 4px !important;
-    color: white !important;
-    font-size: 0.75em !important;
-    text-align: center !important;
+    width: 13px !important;
+    min-width: 10px !important;
+    max-width: 18px !important;
+    padding: 1px 2px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    color: #6bb6ff !important;
+    font-size: 0.8em !important;
+    font-weight: 600 !important;
+    text-align: right !important;
     font-family: 'SF Mono', monospace !important;
 }
 
 .range-number-input:focus {
     outline: none !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: #6bb6ff !important;
+    background: rgba(107, 182, 255, 0.08) !important;
+    border-color: rgba(107, 182, 255, 0.4) !important;
 }
 
 .text-label {
@@ -377,14 +637,18 @@
     display: block !important;
 }
 
-/* Portfolio dropdown container */
+/* Portfolio dropdown container - uses .datacard class for styling */
 #portfolioParamsContainer {
+    position: absolute !important;
+    z-index: 30 !important;
+    display: none;
+    margin-top: 8px !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 280px !important;
     min-width: 280px !important;
+    max-width: 280px !important;
     box-sizing: border-box !important;
-}
-
-#portfolioParamsContainer .flex-row-wide:last-child {
-    margin-bottom: 8px !important;
 }
 
 /* ========== BRAND ELEMENTS ========== */

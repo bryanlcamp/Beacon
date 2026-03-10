@@ -66,7 +66,7 @@ async function initializeComponents() {
 
         // Initialize any component-specific behavior after loading
         if (successful === components.length) {
-            console.log('🎯 All components loaded successfully');
+            console.log('All components loaded successfully');
 
             // Dispatch custom event to signal components are ready
             const event = new CustomEvent('componentsReady', {

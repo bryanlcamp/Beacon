@@ -1,16 +1,68 @@
                 <!-- Main Content Section -->
-                <section id="main-content" class="main-content" aria-labelledby="main-title">
-                    <!-- Main Content: Controls and Data Cards Side by Side -->
-                    <div class="content-layout">
+                <section id="main-content" class="main-content" style="width:100%; box-sizing:border-box; display:flex; flex-direction:column; align-items:stretch;" aria-labelledby="main-title">
 
-                        <!-- Portfolio Sidebar Component Placeholder -->
-                        <div id="portfolio-sidebar-container"></div>
+                    <!-- Section header mirrors content-layout column structure:
+                         [Generate - 320px] [gap 1em] [separator 1px] [gap 1em] [Trading ---- Allocation%] -->
+                    <div class="section-header-layout">
 
-                        <!-- Vertical Separator Component Placeholder -->
-                        <div id="vertical-separator-container"></div>
+                        <!-- Left cell: Generate button (matches portfolio-sidebar width) -->
+                        <div class="portfolio-header-cell" style="display: flex; align-items: center; justify-content: center;">
+                            <div class="tooltip-container" id="generateTooltipContainer" style="position: relative;">
+                                <button type="button" id="generateDataset" class="btn btn-primary btn-disabled"
+                                    disabled style="padding: 0.6em 2.4em; font-size: 0.9em; height: 44px; background: rgba(107, 182, 255, 0.2); border: 1px solid rgba(107, 182, 255, 0.3); color: rgba(107, 182, 255, 0.6); border-radius: 4px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap;">
+                                    Generate Dataset
+                                </button>
+                                <div class="tooltip" id="generateDemoTooltip" style="min-width: 220px; left: 50%; transform: translateX(-50%); top: 50px;">
+                                    <p style="margin: 0;">Datasets cannot be generated in Demo Mode.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                        <!-- Main Data Area Component Placeholder -->
-                        <div id="main-data-area-container"></div>
+                        <div class="section-header-gap" aria-hidden="true"></div>
+                        <div class="section-header-vertical-separator" aria-hidden="true"></div>
+                        <div class="section-header-gap" aria-hidden="true"></div>
 
+                        <!-- Right cell: Duration + Allocation status panels -->
+                        <div class="section-header-main" style="justify-content: flex-start; gap: 8px; padding-left: 25px; flex-wrap: nowrap;">
+
+                            <!-- Duration + File Size -->
+                            <div class="tooltip-container" id="durationTooltipContainer" style="display: inline-flex; align-items: center; flex-shrink: 0; position: relative; gap: 0; border-radius: 4px; padding: 4px 10px 4px 8px; box-sizing: border-box; height: 44px; width: 320px;">
+                                <input type="text" id="durationPicker" value="00:00:01" maxlength="8" size="1" placeholder="HH:MM:SS" style="color: #d97841; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 2.38em; font-weight: 900; background: transparent; border: none; outline: none; text-align: left; padding: 0; cursor: text; line-height: 1; box-sizing: border-box; width: 5.5ch;">
+                                <div id="fileSizeBlock" style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 6px; gap: 1px;">
+                                    <span style="color: rgba(255, 255, 255, 0.3); font-size: 0.55em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; white-space: nowrap;">FILE SIZE</span>
+                                    <span id="detailFileSize" style="color: rgba(107, 182, 255, 0.8); font-size: 0.85em; font-weight: 600; white-space: nowrap; line-height: 1;">256kb</span>
+                                </div>
+                            </div>
+
+                            <!-- Allocation % -->
+                            <div class="tooltip-container" id="allocationTooltipContainer" style="position: relative; margin-left: 4px; flex-shrink: 0;">
+                                <div id="allocationBlock" style="display: inline-flex; align-items: center; gap: 0; background: rgba(107, 182, 255, 0.06); border: 1px solid rgba(107, 182, 255, 0.3); border-radius: 4px; padding: 4px 20px 4px 14px; box-sizing: border-box; width: 320px; height: 44px;">
+                                    <span id="allocationStatus" class="allocation-percentage under-allocated" style="line-height: 1; font-size: 2.8em; font-weight: 900;">0%</span>
+                                    <div style="display: flex; flex-direction: column; align-items: center; padding-left: 10px; gap: 1px;">
+                                        <span id="allocationLabel" style="color: rgba(255, 255, 255, 0.3); font-size: 0.55em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; white-space: nowrap;">REMAINS</span>
+                                        <span id="allocationRemaining" style="color: #ff5858; font-size: 0.85em; font-weight: 600; white-space: nowrap; line-height: 1;">100%</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; margin-left: auto; gap: 1px;">
+                                        <span style="color: rgba(255, 255, 255, 0.3); font-size: 0.55em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; white-space: nowrap;">SYM CNT</span>
+                                        <span id="allocationProductCount" style="color: rgba(107, 182, 255, 0.8); font-size: 0.85em; font-weight: 600; white-space: nowrap; line-height: 1;">0</span>
+                                    </div>
+                                </div>
+                                <div class="tooltip" id="allocationTooltip" style="min-width: 280px; left: 50%; transform: translateX(-50%); top: 52px;">
+                                    <p style="margin: 0;">The total percentage of all symbols allocated to the dataset. This number must be 100% to proceed.</p>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
+                    <!-- Full-width horizontal rule below the header row -->
+                    <div class="section-header-line"></div>
+
+                    <!-- Content body: sidebar | vertical separator | datacards -->
+                    <div class="content-layout">
+                        <div id="portfolio-sidebar-container"></div>
+                        <div id="vertical-separator-container"></div>
+                        <div id="main-data-area-container"></div>
+                    </div>
+
                 </section>

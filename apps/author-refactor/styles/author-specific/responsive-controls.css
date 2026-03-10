@@ -69,6 +69,71 @@ body main .flex-row {
     gap: 8px !important;
 }
 
+body .portfolio-sidebar .portfolio-control-group,
+body .portfolio-sidebar .portfolio-control-divider,
+body .portfolio-sidebar .exchange-symbol-container,
+body .portfolio-sidebar .portfolio-update-row {
+    margin-left: -1.75em !important;
+}
+
+body .portfolio-sidebar .exchange-symbol-container {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    justify-content: flex-start !important;
+}
+
+body .portfolio-sidebar .exchange-symbol-select {
+    flex: 0 0 92px !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
+    margin: 0 !important;
+}
+
+body .portfolio-sidebar input.exchange-symbol-input[type="text"] {
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    margin: 0 !important;
+}
+
+body .portfolio-sidebar .exchange-symbol-button {
+    flex: 0 0 88px !important;
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
+    margin: 0 !important;
+}
+
+body .portfolio-sidebar .portfolio-update-row {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    justify-content: flex-start !important;
+    margin-left: -1.75em !important;
+}
+
+body .portfolio-sidebar .portfolio-update-button,
+body .portfolio-sidebar .global-update-toggle {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    justify-content: space-between !important;
+}
+
+body .portfolio-sidebar #togglePortfolioParams {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    box-sizing: border-box !important;
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    overflow: hidden !important;
+}
+
 /* Universal input targeting for all dynamically created controls */
 input[type="range"] {
     width: 80% !important;

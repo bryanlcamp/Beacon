@@ -1,0 +1,86 @@
+/* Exchange:Product Display - Reusable Component */
+/* Standardized format for showing "CME:MSFT" style exchange and symbol pairs */
+
+.exchange-product-display {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+.exchange-prefix {
+    color: #6bb6ff !important;
+    font-weight: 600 !important;
+    margin-right: 0 !important;
+}
+
+.exchange-separator {
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin: 0 !important;
+    font-weight: 400 !important;
+}
+
+.symbol-name {
+    color: white !important;
+    font-weight: 700 !important;
+    margin-left: 0 !important;
+}
+
+/* Size Variants */
+.exchange-product-display.small {
+    font-size: 0.85rem !important;
+}
+
+.exchange-product-display.large {
+    font-size: 1.2rem !important;
+}
+
+.exchange-product-display.xl {
+    font-size: 1.4rem !important;
+}
+
+/* Context Variants */
+.exchange-product-display.in-header {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.exchange-product-display.in-list {
+    flex: none !important;
+    min-width: 100px !important;
+}
+
+.exchange-product-display.in-card {
+    flex: 1 !important;
+}
+
+/* Dark/Light Variants */
+.exchange-product-display.muted {
+    opacity: 0.7 !important;
+}
+
+.exchange-product-display.bright .exchange-prefix {
+    color: #7dd3fc !important;
+}
+
+.exchange-product-display.bright .symbol-name {
+    color: #f0f9ff !important;
+}
+
+/*
+Usage:
+<span class="exchange-product-display">
+    <span class="exchange-prefix">CME</span><span class="exchange-separator">:</span><span class="symbol-name">MSFT</span>
+</span>
+
+<span class="exchange-product-display small in-list">
+    <span class="exchange-prefix">NYSE</span><span class="exchange-separator">:</span><span class="symbol-name">AAPL</span>
+</span>
+
+<span class="exchange-product-display large bright">
+    <span class="exchange-prefix">NASDAQ</span><span class="exchange-separator">:</span><span class="symbol-name">GOOGL</span>
+</span>
+*/

@@ -1,0 +1,71 @@
+/* Allocation Percentage Display - Clean Color-Changing Number */
+/* Replaces the ugly red box with dynamic colored percentage */
+
+.allocation-display-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5em !important;
+    padding: 0.6em !important;
+    font-size: 0.85em !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+}
+
+.allocation-label {
+    font-size: 0.75em !important;
+    text-transform: uppercase !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600 !important;
+}
+
+.allocation-percentage {
+    font-size: 2.8em !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    transition: color 0.3s ease !important;
+}
+
+/* Color states for allocation percentage */
+.allocation-percentage.under-allocated {
+    color: #ff5858 !important; /* Red for 0-79% */
+}
+
+.allocation-percentage.approaching-target {
+    color: #ffa558 !important; /* Orange for 80-99% */
+}
+
+.allocation-percentage.perfectly-allocated {
+    color: #58a658 !important; /* Green for exactly 100% */
+}
+
+.allocation-percentage.over-allocated {
+    color: #ff5858 !important; /* Red for 100%+ */
+}
+
+/*
+Usage:
+<div class="allocation-display-container">
+    <span class="allocation-label">Allocated:</span>
+    <span id="allocationStatus" class="allocation-percentage under-allocated">0%</span>
+</div>
+
+JavaScript usage:
+// Update percentage and color
+const elem = document.getElementById('allocationStatus');
+const percentage = 75;
+elem.textContent = `${percentage}%`;
+
+// Remove existing state classes
+elem.classList.remove('under-allocated', 'approaching-target', 'perfectly-allocated', 'over-allocated');
+
+// Apply new state class
+if (percentage === 100) {
+    elem.classList.add('perfectly-allocated');
+} else if (percentage > 100) {
+    elem.classList.add('over-allocated');
+} else if (percentage >= 80) {
+    elem.classList.add('approaching-target');
+} else {
+    elem.classList.add('under-allocated');
+}
+*/

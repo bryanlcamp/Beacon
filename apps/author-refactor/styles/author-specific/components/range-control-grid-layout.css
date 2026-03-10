@@ -1,0 +1,172 @@
+/* Range Control Grid Layout - Two Controls Per Row */
+/* Optimized 48% width sliders with 4% gap between them */
+
+.range-control-group {
+    display: flex !important;
+    gap: 4% !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+}
+
+.range-control.half-width {
+    flex: 0 0 48% !important;
+    width: 48% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    position: relative !important;
+}
+
+.range-label {
+    font-size: 0.85em !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+    position: relative !important;
+    top: 12px !important;
+}
+
+.range-input-group {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+.range-input.thin-slider {
+    width: 100% !important;
+    height: 6px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 3px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+.range-input.thin-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 14px !important;
+    height: 14px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.range-input.thin-slider::-webkit-slider-thumb:hover {
+    background: #5aa3ff !important;
+    transform: scale(1.1) !important;
+}
+
+.range-input.thin-slider::-moz-range-thumb {
+    width: 14px !important;
+    height: 14px !important;
+    background: #6bb6ff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.range-number-input {
+    position: absolute !important;
+    top: -12px !important;
+    right: 10px !important;
+    width: 13px !important;
+    min-width: 10px !important;
+    max-width: 18px !important;
+    height: 16px !important;
+    padding: 1px 2px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    color: #6bb6ff !important;
+    font-size: 0.8em !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    text-align: right !important;
+    outline: none !important;
+    z-index: 2 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield !important;
+}
+
+.range-number-input:hover {
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    border-color: rgba(107, 182, 255, 0.3) !important;
+    background: rgba(107, 182, 255, 0.05) !important;
+}
+
+.range-number-input:focus {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    cursor: text !important;
+    border-color: rgba(107, 182, 255, 0.5) !important;
+    background: rgba(107, 182, 255, 0.1) !important;
+    box-shadow: none !important;
+}
+
+/* Vol/Trend values inside tooltip-container wrappers - parent handles positioning */
+.tooltip-container > .range-number-input {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+}
+
+.range-number-input::-webkit-outer-spin-button,
+.range-number-input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    display: none !important;
+}
+
+.range-number-input {
+    -moz-appearance: textfield !important;
+}
+
+/* Micro-periods indicator */
+.periods-indicator {
+    color: #d97841 !important;
+    font-size: 0.8em !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.periods-indicator.disabled {
+    color: rgba(255, 255, 255, 0.25) !important;
+    cursor: default !important;
+}
+
+.periods-indicator:not(.disabled):hover {
+    background: rgba(217, 120, 65, 0.1) !important;
+    border-color: rgba(217, 120, 65, 0.3) !important;
+}
+
+.periods-indicator.active {
+    background: rgba(217, 120, 65, 0.3) !important;
+    border-color: #d97841 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .range-control-group {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .range-control.half-width {
+        flex: none !important;
+        width: 100% !important;
+    }
+}
