@@ -1,0 +1,38 @@
+/* Centralized Glow System — Single source of truth for all hover effects */
+/* Usage: Apply .glow-interactive to any clickable/editable element */
+
+:root {
+    /* Glow color palette */
+    --glow-blue: 107, 182, 255;
+    --glow-orange: 255, 145, 77;
+    --glow-red: 255, 71, 87;
+    --glow-green: 77, 255, 136;
+
+    /* Standardized transition */
+    --glow-transition: 0.2s ease;
+
+    /* Glow tiers — subtle → medium → strong */
+    --glow-subtle-shadow: 0 0 8px rgba(var(--glow-blue), 0.12);
+    --glow-subtle-border: rgba(var(--glow-blue), 0.25);
+    --glow-subtle-bg: rgba(var(--glow-blue), 0.04);
+
+    --glow-medium-shadow: 0 0 12px rgba(var(--glow-blue), 0.25);
+    --glow-medium-border: rgba(var(--glow-blue), 0.4);
+    --glow-medium-bg: rgba(var(--glow-blue), 0.08);
+
+    --glow-strong-shadow: 0 0 16px rgba(var(--glow-blue), 0.35);
+    --glow-strong-border: rgba(var(--glow-blue), 0.6);
+    --glow-strong-bg: rgba(var(--glow-blue), 0.12);
+}
+
+/* Reusable glow class — subtle tier for inline editable fields */
+.glow-interactive {
+    transition: box-shadow var(--glow-transition),
+                border-color var(--glow-transition),
+                background var(--glow-transition) !important;
+}
+
+.glow-interactive:hover {
+    box-shadow: var(--glow-subtle-shadow) !important;
+    background: var(--glow-subtle-bg) !important;
+}

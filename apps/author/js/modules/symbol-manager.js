@@ -165,6 +165,7 @@ class SymbolManager {
                 </div>
                 <div class="datacard-allocation-center" onclick="this.querySelector('.percentage-input-hidden').focus()">
                     <div class="allocation-percentage-display">${percentage.value}%</div>
+                    <span class="allocation-label">alloc</span>
                     <input type="number" class="percentage-input-hidden" min="${percentage.min}" max="${percentage.max}" step="${percentage.step}" value="${percentage.value}">
                 </div>
                 <div class="datacard-controls">

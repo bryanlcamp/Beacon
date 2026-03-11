@@ -1,72 +1,70 @@
-/* Datacard Header Layout - Three Section Layout */
-/* Left: Symbol info, Center: Allocation percentage, Right: remove button */
+/* Datacard Header Layout - Flex Row */
+/* Left: Symbol info, Right: Allocation + controls */
 
 .datacard-header {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
     padding: 4px 8px !important;
     background: rgba(255, 255, 255, 0.02) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     min-height: 24px !important;
-    position: relative !important;
+    gap: 8px !important;
 }
 
 .datacard-symbol-info {
-    flex: 1 !important;
+    flex: 1 1 auto !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    margin-right: 30px !important;
+    min-width: 0 !important;
 }
 
 .datacard-allocation-center {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    flex: 0 0 auto !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding: 4px 8px !important;
-    background: transparent !important;
+    gap: 5px !important;
+    padding: 2px 8px !important;
     border-radius: 4px !important;
-    border: none !important;
-    transition: all 0.2s ease !important;
-    min-width: 60px !important;
-    z-index: 1 !important;
+    cursor: pointer !important;
+    position: relative !important;
+    transition: box-shadow var(--glow-transition),
+                background var(--glow-transition) !important;
 }
 
 .datacard-allocation-center:hover {
-    background: rgba(107, 182, 255, 0.05) !important;
-    border-radius: 4px !important;
-    cursor: pointer !important;
+    box-shadow: var(--glow-subtle-shadow) !important;
+    background: var(--glow-subtle-bg) !important;
+}
+
+.allocation-percentage-display {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #6bb6ff !important;
+    transition: opacity var(--glow-transition) !important;
+    white-space: nowrap !important;
+}
+
+.allocation-label {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+    white-space: nowrap !important;
+    transition: opacity var(--glow-transition) !important;
 }
 
 .datacard-allocation-center:hover .percentage-input-hidden {
     opacity: 1 !important;
     pointer-events: auto !important;
-    background: transparent !important;
-    color: #6bb6ff !important;
-    border: 1px solid rgba(107, 182, 255, 0.3) !important;
-    border-radius: 3px !important;
-    padding: 2px 4px !important;
-    text-align: center !important;
-    width: 50px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
+    border-color: var(--glow-subtle-border) !important;
 }
 
 .datacard-allocation-center:hover .allocation-percentage-display {
     opacity: 0 !important;
 }
 
-.allocation-percentage-display {
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    color: #6bb6ff !important;
-    transition: opacity 0.2s ease !important;
+.datacard-allocation-center:hover .allocation-label {
+    opacity: 0 !important;
 }
 
 /* Per-card allocation percentage - always blue */
@@ -89,11 +87,7 @@
 .datacard-controls {
     flex: 0 0 auto !important;
     display: flex !important;
-    align-items: flex-start !important;
-    justify-content: flex-end !important;
-    position: absolute !important;
-    top: 2px !important;
-    right: 2px !important;
+    align-items: center !important;
     gap: 2px !important;
 }
 
@@ -142,6 +136,7 @@
     gap: 0px !important;
     font-size: 18px !important;
     font-weight: 600 !important;
+    white-space: nowrap !important;
 }
 
 .exchange-prefix {
@@ -159,10 +154,21 @@
     position: absolute !important;
     opacity: 0 !important;
     pointer-events: none !important;
-    transition: all 0.2s ease !important;
+    transition: opacity var(--glow-transition),
+                border-color var(--glow-transition) !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
+    width: 50px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    background: transparent !important;
+    color: #6bb6ff !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    padding: 2px 4px !important;
+    outline: none !important;
 }
 
 /* Responsive adjustments */
@@ -173,10 +179,5 @@
 
     .datacard-header {
         padding: 3px 6px !important;
-    }
-
-    .datacard-controls {
-        top: 1px !important;
-        right: 1px !important;
     }
 }
