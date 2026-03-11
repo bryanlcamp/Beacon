@@ -42,6 +42,7 @@
     display: none;
     position: absolute !important;
     z-index: 30 !important;
+    top: 100% !important;
     margin-top: 8px !important;
     margin-bottom: 0 !important;
     margin-right: 0 !important;

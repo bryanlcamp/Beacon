@@ -4,35 +4,71 @@
       "assetClass": "FUTURES",
       "exchange": "CME",
       "ticksPerSecond": 8000,
-      "description": "E-mini S&P 500"
+      "description": "E-mini S&P 500",
+      "spreadRange": "0-4",
+      "spreadRangeDecimalIncrement": "2",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     },
     "NQ": {
       "assetClass": "FUTURES",
       "exchange": "CME",
       "ticksPerSecond": 7500,
-      "description": "E-mini Nasdaq 100"
+      "description": "E-mini Nasdaq 100",
+      "spreadRange": "0-4",
+      "spreadRangeDecimalIncrement": "2",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     },
     "AAPL": {
       "assetClass": "EQUITY",
       "exchange": "NASDAQ",
       "ticksPerSecond": 2500,
-      "description": "Apple Inc."
+      "description": "Apple Inc.",
+      "spreadRange": "0-2",
+      "spreadRangeDecimalIncrement": "3",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     },
     "SPY": {
       "assetClass": "EQUITY",
       "exchange": "NYSE",
       "ticksPerSecond": 4000,
-      "description": "SPDR S&P 500 ETF"
+      "description": "SPDR S&P 500 ETF",
+      "spreadRange": "0-2",
+      "spreadRangeDecimalIncrement": "3",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     }
   },
   "defaults": {
     "FUTURES": {
       "ticksPerSecond": 5000,
-      "exchange": "CME"
+      "exchange": "CME",
+      "spreadRange": "0-4",
+      "spreadRangeDecimalIncrement": "2",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     },
     "EQUITY": {
       "ticksPerSecond": 2000,
-      "exchange": "NYSE"
+      "exchange": "NYSE",
+      "spreadRange": "0-2",
+      "spreadRangeDecimalIncrement": "3",
+      "volRange": "0-100",
+      "volRangeDecimalIncrement": "0",
+      "trendRange": "-100-100",
+      "trendRangeDecimalIncrement": "0"
     }
   },
   "assetClassification": {
@@ -42,7 +78,8 @@
         "exact": ["ES", "NQ", "YM", "GC", "ZN", "6E"]
       },
       "EQUITY": {
-        "default": true
+        "default": true,
+        "spreadRange": "0-2"
       }
     }
   }

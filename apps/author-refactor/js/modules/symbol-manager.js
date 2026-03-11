@@ -198,8 +198,8 @@ class SymbolManager {
         }
 
         // Special handling for Volatility and Trend controls with micro-periods
-        if (label === 'Volatility' || label === 'Vol %' || label === 'Trend') {
-            const dataType = label === 'Trend' ? 'trend' : 'volatility';
+        if (label === 'Volatility' || label === 'Vol %' || label === 'Trend' || label === 'Trend %') {
+            const dataType = (label === 'Trend' || label === 'Trend %') ? 'trend' : 'volatility';
             return `
                 <div class="range-control half-width">
                     <div class="range-label">${label}</div>
@@ -233,6 +233,24 @@ class SymbolManager {
                 ${template2}
             </div>
         `;
+    }
+
+    // Brief orange flash on an input to signal value was clamped
+    flashClampWarning(element) {
+        element.style.setProperty('background-color', 'rgba(255, 165, 88, 0.35)', 'important');
+        element.style.setProperty('border-color', 'rgba(255, 165, 88, 0.8)', 'important');
+        element.style.setProperty('transition', 'none', 'important');
+        // Force reflow so the instant color is painted before the transition
+        void element.offsetWidth;
+        element.style.setProperty('transition', 'background-color 0.6s ease, border-color 0.6s ease', 'important');
+        element.style.setProperty('background-color', 'transparent', 'important');
+        element.style.setProperty('border-color', 'transparent', 'important');
+        // Clean up inline styles after transition completes
+        setTimeout(() => {
+            element.style.removeProperty('background-color');
+            element.style.removeProperty('border-color');
+            element.style.removeProperty('transition');
+        }, 650);
     }
 
     // Helper method to get appropriate tick size for crossed market protection
@@ -274,6 +292,39 @@ class SymbolManager {
     getSliderConfigurationSet(symbol, assetData) {
         const sliderConfig = window.validationConfig?.sliderConfig || {};
 
+        // Parse a range string like "0-4" or "-100-100" into {min, max}
+        function parseRange(rangeStr, defaultMin, defaultMax) {
+            if (!rangeStr) return { min: defaultMin, max: defaultMax };
+            // Match optional negative number, dash, then second number
+            const match = rangeStr.match(/^(-?\d+\.?\d*)-(\d+\.?\d*)$/);
+            if (match) {
+                return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
+            }
+            return { min: defaultMin, max: defaultMax };
+        }
+
+        // Read a range config from products.json for the given symbol
+        function getProductRange(configField, decimalField, defaultMin, defaultMax, defaultDecimals) {
+            let min = defaultMin, max = defaultMax;
+            let step = 1 / Math.pow(10, defaultDecimals);
+            if (window.productConfigManager) {
+                try {
+                    const prodConfig = window.productConfigManager.getSymbolConfig(symbol);
+                    if (prodConfig && prodConfig[configField]) {
+                        const parsed = parseRange(prodConfig[configField], defaultMin, defaultMax);
+                        min = parsed.min;
+                        max = parsed.max;
+                    }
+                    if (prodConfig && prodConfig[decimalField]) {
+                        const decimals = parseInt(prodConfig[decimalField], 10);
+                        if (!isNaN(decimals)) step = 1 / Math.pow(10, decimals);
+                    }
+                } catch (e) { /* use defaults */ }
+            }
+            const defaultValue = Math.round((min + max) / 2 * 1000) / 1000;
+            return { min, max, step, value: defaultValue };
+        }
+
         function getSliderAttrs(configKey, fallbackMin = 1, fallbackMax = 100, fallbackStep = 1, fallbackDefault = 50) {
             const config = sliderConfig[configKey];
 
@@ -305,13 +356,13 @@ class SymbolManager {
                 };
             }
             if (assetData && configKey === 'spread') {
-                const baseSpread = assetData.spreadPercent || 0.02;
-                return {
-                    min: Math.max(0.001, baseSpread * 0.1),
-                    max: baseSpread * 10,
-                    step: 0.001,
-                    value: Math.round(baseSpread * 1000) / 1000
-                };
+                return getProductRange('spreadRange', 'spreadRangeDecimalIncrement', 0, 2, 3);
+            }
+            if (configKey === 'volatility') {
+                return getProductRange('volRange', 'volRangeDecimalIncrement', 0, 100, 0);
+            }
+            if (configKey === 'trend') {
+                return getProductRange('trendRange', 'trendRangeDecimalIncrement', -100, 100, 0);
             }
 
             if (config) {
@@ -459,6 +510,7 @@ class SymbolManager {
                 if (slider && numberInput) {
                     slider.addEventListener('input', () => {
                         let sliderValue = parseFloat(slider.value);
+                        let wasClamped = false;
 
                         // Prevent crossed markets for slider input too
                         const labelElement = group.closest('.range-control').querySelector('.range-label');
@@ -479,6 +531,7 @@ class SymbolManager {
                                             const minSpread = this.getMinimumSpread(symbol);
                                             sliderValue = Math.max(parseFloat(slider.min), askValue - minSpread);
                                             slider.value = sliderValue;
+                                            wasClamped = true;
                                         }
                                     }
                                 }
@@ -496,6 +549,7 @@ class SymbolManager {
                                             const minSpread = this.getMinimumSpread(symbol);
                                             sliderValue = Math.min(parseFloat(slider.max), bidValue + minSpread);
                                             slider.value = sliderValue;
+                                            wasClamped = true;
                                         }
                                     }
                                 }
@@ -503,6 +557,7 @@ class SymbolManager {
                         }
 
                         numberInput.value = sliderValue;
+                        if (wasClamped) this.flashClampWarning(numberInput);
                     });
 
                     numberInput.addEventListener('input', () => {
@@ -535,8 +590,6 @@ class SymbolManager {
                                 const label = labelElement.textContent.trim();
 
                                 if (label === 'Bid Price') {
-                                    // Find ask price control in the same datacard
-                                    const askPriceControl = card.querySelector('.range-label');
                                     const askControls = Array.from(card.querySelectorAll('.range-label'))
                                         .filter(label => label.textContent.trim() === 'Ask Price');
 
@@ -548,13 +601,11 @@ class SymbolManager {
                                                 const symbolElement = card.querySelector('.symbol');
                                                 const symbol = symbolElement ? symbolElement.textContent.trim() : null;
                                                 const minSpread = this.getMinimumSpread(symbol);
-                                                clampedValue = Math.max(min, askValue - minSpread); // Keep bid slightly below ask
-                                                console.warn('Bid price adjusted to prevent crossed market');
+                                                clampedValue = Math.max(min, askValue - minSpread);
                                             }
                                         }
                                     }
                                 } else if (label === 'Ask Price') {
-                                    // Find bid price control in the same datacard
                                     const bidControls = Array.from(card.querySelectorAll('.range-label'))
                                         .filter(label => label.textContent.trim() === 'Bid Price');
 
@@ -566,16 +617,17 @@ class SymbolManager {
                                                 const symbolElement = card.querySelector('.symbol');
                                                 const symbol = symbolElement ? symbolElement.textContent.trim() : null;
                                                 const minSpread = this.getMinimumSpread(symbol);
-                                                clampedValue = Math.min(max, bidValue + minSpread); // Keep ask slightly above bid
-                                                console.warn('Ask price adjusted to prevent crossed market');
+                                                clampedValue = Math.min(max, bidValue + minSpread);
                                             }
                                         }
                                     }
                                 }
                             }
 
+                            const wasClamped = clampedValue !== numValue;
                             slider.value = clampedValue;
                             numberInput.value = clampedValue;
+                            if (wasClamped) this.flashClampWarning(numberInput);
                         }
                     });
 
@@ -624,8 +676,8 @@ class SymbolManager {
 
         // Same groups as datacard
         const bidAskWeights = this.createRangeControlGroupTemplate(
-            'Bid Weight', sliderConfigs.bidWeight, 'globalBidWeight',
-            'Ask Weight', sliderConfigs.askWeight, 'globalAskWeight', ''
+            'Bid Wt %', sliderConfigs.bidWeight, 'globalBidWeight',
+            'Ask Wt %', sliderConfigs.askWeight, 'globalAskWeight', ''
         );
 
         const bidAskQty = this.createRangeControlGroupTemplate(
@@ -635,7 +687,7 @@ class SymbolManager {
 
         const volTrend = this.createRangeControlGroupTemplate(
             'Vol %', sliderConfigs.volatility, 'globalVolatility',
-            'Trend', sliderConfigs.trend, 'globalTrend', ''
+            'Trend %', sliderConfigs.trend, 'globalTrend', ''
         );
 
         // Wrap in datacard-content to match datacard inner structure
@@ -665,9 +717,9 @@ class SymbolManager {
             const pricingModeTemplate = this.createPricingModeTemplate();
             const group1 = this.createRangeControlGroupTemplate('Base Price', sliderConfigs.basePrice, null, 'Spread %', sliderConfigs.spread, null, symbolSuffix);
             const directPriceGroup = this.createRangeControlGroupTemplate('Bid Price', sliderConfigs.bidPrice, null, 'Ask Price', sliderConfigs.askPrice, null, symbolSuffix);
-            const group2 = this.createRangeControlGroupTemplate('Bid Weight', sliderConfigs.bidWeight, null, 'Ask Weight', sliderConfigs.askWeight, null, symbolSuffix);
+            const group2 = this.createRangeControlGroupTemplate('Bid Wt %', sliderConfigs.bidWeight, null, 'Ask Wt %', sliderConfigs.askWeight, null, symbolSuffix);
             const group3 = this.createRangeControlGroupTemplate('Bid Qty', sliderConfigs.bidQuantity, null, 'Ask Qty', sliderConfigs.askQuantity, null, symbolSuffix);
-            const group4 = this.createRangeControlGroupTemplate('Vol %', sliderConfigs.volatility, null, 'Trend', sliderConfigs.trend, null, symbolSuffix);
+            const group4 = this.createRangeControlGroupTemplate('Vol %', sliderConfigs.volatility, null, 'Trend %', sliderConfigs.trend, null, symbolSuffix);
 
             card.innerHTML = `
                 ${headerTemplate}

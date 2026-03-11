@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="styles/author-specific/components/dropdowns.css?v=202603050405">
         <link rel="stylesheet" href="styles/author-specific/components/datacard-header-layout.css?v=20260310b">
         <link rel="stylesheet" href="styles/author-specific/components/add-new-symbol.css?v=20260305172000&align=portfolio-left">
-        <link rel="stylesheet" href="styles/author-specific/components/global-dataset-parameter-update.css?v=20260310b">
+        <link rel="stylesheet" href="styles/author-specific/components/global-dataset-parameter-update.css?v=20260311a">
         <link rel="stylesheet" href="styles/author-specific/components/sync-range-slider-edit-input.css?v=202603050630">
         <link rel="stylesheet" href="styles/author-specific/components/range-control-grid-layout.css?v=202603091620">
         <link rel="stylesheet" href="styles/author-specific/components/red-remove-button.css?v=20260310a">
@@ -32,7 +32,7 @@
         <link rel="stylesheet" href="styles/author-specific/pages/command-center-utilities.css?v=20260305164500&align=portfolio-left">
         <link rel="stylesheet" href="styles/author-specific/pages/command-center-base.css?v=202603050405">
         <link rel="stylesheet" href="styles/author-specific/author-main.css?v=20260310q">
-        <link rel="stylesheet" href="styles/author-specific/responsive-controls.css?v=20260310c&global-params=css-clean">
+        <link rel="stylesheet" href="styles/author-specific/responsive-controls.css?v=20260311a&global-params=css-clean">
 
         <!-- Page styling (Control widths handled by responsive-controls.css) -->
         <style>
@@ -1868,12 +1868,17 @@
             <div class="demo-content">
                 <span class="demo-text">Interactive demo mode. No datasets will be created.</span>
             </div>
-            <div class="tooltip" id="demoBannerTooltip" style="width: 360px; max-width: 360px; left: 2em; transform: none; top: 52px; padding: 24px 32px;">
-                <h4 style="font-size: 16px; margin-bottom: 12px;">Demo Mode</h4>
+            <div class="tooltip" id="demoBannerTooltip" style="width: 420px; max-width: 420px; left: 2em; transform: none; top: 52px; padding: 24px 32px;">
+                <h4 style="font-size: 16px; margin-bottom: 12px;">Demo Mode — Try Before You Buy</h4>
                 <div style="border-top: 1px solid rgba(107, 182, 255, 0.25); margin-bottom: 12px;"></div>
-                <p style="margin: 0 0 12px 0; line-height: 1.6;">This is a live demo of Beacon's Author product.<br>The user interface used to create synthetic market data.<br><p>This demo offers you the chance to interact with the real product, and to explore the features that Author has to offer.<br>Should you decide to purchase Beacon, this is the product with which you will be provided.</p>
-                <div style="border-top: 1px solid rgba(107, 182, 255, 0.25); margin-bottom: 12px;"></div>
-                <p style="margin: 0; line-height: 1.6; color: rgba(255, 255, 255, 0.7);">There will be some additional text here...</p>
+                <p style="margin: 0 0 12px 0; line-height: 1.7;">This is the real product — <strong>Beacon Author</strong> — with dataset generation disabled. Everything you see here is exactly what ships to customers.</p>
+                <p style="margin: 0 0 12px 0; line-height: 1.7;">Author generates <strong>synthetic market data in native exchange formats</strong> (CME, NYSE, NASDAQ). Configure datasets by file size, volatility, trend bias, spread distribution, and more — with micro-period control over volatility and trend changes within a single session.</p>
+                <div style="border-top: 1px solid rgba(107, 182, 255, 0.15); margin-bottom: 12px;"></div>
+                <p style="margin: 0 0 8px 0; line-height: 1.7; font-weight: 600; color: rgba(107, 182, 255, 0.9);">Why synthetic data?</p>
+                <p style="margin: 0 0 6px 0; line-height: 1.7; color: rgba(255, 255, 255, 0.8);">&#8226; <strong>Stop buying expensive tick data.</strong> Generate unlimited datasets on demand.</p>
+                <p style="margin: 0 0 6px 0; line-height: 1.7; color: rgba(255, 255, 255, 0.8);">&#8226; <strong>Create any market scenario.</strong> Unlimited FOMC days, flash crashes, low-vol grinds — not just the handful that actually happened.</p>
+                <p style="margin: 0 0 6px 0; line-height: 1.7; color: rgba(255, 255, 255, 0.8);">&#8226; <strong>Stress-test your strategies.</strong> Discover weak points, edge cases, and bugs before they cost real money.</p>
+                <p style="margin: 0 0 0 0; line-height: 1.7; color: rgba(255, 255, 255, 0.8);">&#8226; <strong>Iterate faster.</strong> No waiting for market hours or historical data vendors.</p>
             </div>
         </div>
 
@@ -1895,7 +1900,7 @@
         <script src="js/utils/component-loader.js?v=202603051435"></script>
 
         <!-- Core Application Modules -->
-        <script src="js/modules/symbol-manager.js?v=20260309x15"></script>
+        <script src="js/modules/symbol-manager.js?v=20260311d"></script>
         <script src="js/modules/portfolio-controls.js?v=20260310f"></script>
         <script src="js/modules/component-init.js?v=202603051425"></script>
         <script src="js/modules/author-app.js?v=20260310d"></script>
