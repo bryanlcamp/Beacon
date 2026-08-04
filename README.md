@@ -38,28 +38,9 @@ beacon-web/
 
 | Feature | Capabilities |
 | :--- | :--- |
-| <nobr>🗃️ **Datasets</nobr> | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
+| <nobr>🗃️ **Datasets**</nobr> | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
 | <nobr>🖥️ **Dashboard**</nobr> | Monitor real-time market data and execution metrics through a visual management interface. |
 | <nobr>🔌 **Strategy**</nobr> | Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure. |
 | <nobr>🔍 **Diagnostics**</nobr> | Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets. |
 | <nobr>📊 **Performance**</nobr> | Track real-time profitability and exposure using interactive PnL, risk, and latency charts. |
-| <nobr>🔀 **True Matching**</nobr> | Process high-performance buy and sell orders natively through a true, deterministic matching architecture. |
-
-## C++ Back-end Processes
-
-* ⚙️ `orchestrator` — Coordinates startup of the Beacon ecosystem components.
-* 📝 `author` — Creates user datasets.
-* 📡 `pulse` — Broadcasts user datasets via UDP Multicast.
-* 📈 `strategy` — Consumes market data from pulse and forwards to the user's strategy.
-* 🎯 `match` — The matching engines for each product contained in pulse.
-  
-## Key Features
-
-- **Create datasets with highly granular settings, persisted in native exchange format. Save dataset creation settings and edit later.
-- **Real-time Market Data and Execution Dashboards.**
-- **Easily plug in your trading strategy with minimal coding. Take advantage of Beacon's provided HFT infrastructure.**
-- **Market data playback monitoring, including dropped, out of order, and malformed packets.**
-- **Performance Analytics, including PnL, Risk, and Latency charts.**
-- **A true bidirectional matching engine.**
-
----
+| <nobr>🔀 **Matching**</nobr> | Process high-performance buy and sell orders natively through a true, deterministic matching architecture. |
