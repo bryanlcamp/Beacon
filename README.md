@@ -3,8 +3,6 @@
 - **An intuitive way to interact with the Beacon ecosystem. Index.html navigates you everywhere.**<br>
 - **Built with HTML, CSS, JavaScript. Communicates with back-end processes using Python Flask.**<br>
 - **Intended to run on your localhost or behind a firewall. No internet connection required.**<br>
-- **This is simply Beacon's UI, and no additional code is intended to belong here. Customize at your own risk.**<br>
-
 
 ## 📁 Project Structure
 
