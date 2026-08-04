@@ -39,7 +39,7 @@ beacon-web/
 | Feature | Capabilities |
 | :--- | :--- |
 | <nobr>🗃️ **Datasets**&nbsp;</nobr> | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
-| 🖥️ **Dashboard**&nbsp;&nbsp;</nobr> | Monitor real-time market data and execution metrics through a visual management interface. |
+| 🖥️ **Metrics**&nbsp;&nbsp;</nobr> | Monitor real-time market data and execution metrics through a visual management interface. |
 | <nobr>🔌 **Strategy**&nbsp;</nobr> | Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure. |
 | 🔍 **Monitor**&nbsp;&nbsp; | Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets. |
 | <nobr>📊 **Analytics**&nbsp;</nobr> | Track real-time profitability and exposure using interactive PnL, risk, and latency charts. |
