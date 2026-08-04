@@ -38,12 +38,12 @@ beacon-web/
 
 | Feature | Capabilities |
 | :--- | :--- |
-| <nobr>🗃️ **Dataset Creation**</nobr> | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
-| <nobr>🖥️ **Live Dashboard**</nobr> | Monitor real-time market data and execution metrics through a visual management interface. |
-| <nobr>🔌 **Strategy Plug-in**</nobr> | Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure. |
+| <nobr>🗃️ **Datasets</nobr> | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
+| <nobr>🖥️ **Dashboard**</nobr> | Monitor real-time market data and execution metrics through a visual management interface. |
+| <nobr>🔌 **Strategy**</nobr> | Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure. |
 | <nobr>🔍 **Diagnostics**</nobr> | Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets. |
 | <nobr>📊 **Performance**</nobr> | Track real-time profitability and exposure using interactive PnL, risk, and latency charts. |
-| <nobr>🔀 **Matching Engine**</nobr> | Process high-performance buy and sell orders natively through a true, deterministic matching architecture. |
+| <nobr>🔀 **True Matching**</nobr> | Process high-performance buy and sell orders natively through a true, deterministic matching architecture. |
 
 ## C++ Back-end Processes
 
