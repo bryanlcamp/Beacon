@@ -4,7 +4,7 @@
 - **Built with HTML, CSS, JavaScript. Communicates with back-end processes using Python Flask.**<br>
 - **Intended to run on your localhost or behind a firewall. No internet connection required.**<br>
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 beacon-web/
