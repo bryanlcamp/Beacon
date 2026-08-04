@@ -31,7 +31,8 @@ beacon-web/
 - ![pulse](https://shields.io) Broadcasts user datasets via UDP Multicast.
 - ![strategy](https://shields.io) Consumes market data from pulse and forwards to the user's strategy.
 - ![match](https://shields.io) The matching engines for each product contained in pulse.
-- 
+
+-  
 - **orchestrator:**  Coordinates startup of the Beacon ecosystem components. <br>
 - **author:**        Creates user datasets. <br>
 - **pulse:**         Broadcasts user datasets via UDP Multicast. <br>
