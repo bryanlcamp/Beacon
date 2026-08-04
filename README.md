@@ -1,8 +1,8 @@
 # Beacon's User Interface
 
-- **An intuitive way to interact with the Beacon ecosystem.**<br>
-- **Built with HTML, CSS, JavaScript, and Python Flask.**<br>
-- **Intended to run on your localhost, or behind a firewall.**<br>
+- **An intuitive way to interact with the Beacon ecosystem. Index.html navigates you everywhere.**<br>
+- **Built with HTML, CSS, JavaScript. Communicates with back-end processes using Python Flask.**<br>
+- **Intended to run on your localhost, or behind a firewall. No internet connection required.**<br>
 
 ## 📁 Project Structure
 
