@@ -32,6 +32,10 @@ beacon-web/
 - ![strategy](https://shields.io) Consumes market data from pulse and forwards to the user's strategy.
 - ![match](https://shields.io) The matching engines for each product contained in pulse.
 
+
+
+
+
 -  
 - **orchestrator:**  Coordinates startup of the Beacon ecosystem components. <br>
 - **author:**        Creates user datasets. <br>
