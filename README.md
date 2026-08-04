@@ -1,12 +1,8 @@
-# Beacon Platform - Web UI
+# Beacon's User Interface
 
-**Financial Trading Platform Frontend** - Modern web interface for the Beacon trading system built with HTML, CSS, and JavaScript.
-
-## Quick Start
-
-1. **Open Local Server**: Run the "Open Beacon Web (Local)" task
-2. **View Issues**: Check the terminal for your current GitHub issues
-3. **Start Development**: Edit files and refresh browser to see changes
+**An intuitive way to interact with the Beacon ecosystem.**<br>
+**Built with HTML, CSS, JavaScript, and Python Flask.**<br>
+**Intended to run on your localhost, or behind a firewall.**<br>
 
 ## 📁 Project Structure
 
