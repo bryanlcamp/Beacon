@@ -33,16 +33,6 @@ beacon-web/
 - ![match](https://shields.io) The matching engines for each product contained in pulse.
 
 
-
-
-
--  
-- **orchestrator:**  Coordinates startup of the Beacon ecosystem components. <br>
-- **author:**        Creates user datasets. <br>
-- **pulse:**         Broadcasts user datasets via UDP Multicast. <br>
-- **strategy:**      Consumes market data from pulse and forwards to the user's strategy. <br>
-- **match:**         The matching engines for each product contained in pulse. <br>
-
 ## Key Features
 
 - **Real-time Trading Dashboard**
