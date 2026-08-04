@@ -26,21 +26,24 @@ beacon-web/
 
 ## C++ Back-end Processes
 
-* ⚙️ `orchestrator` &mdash; Coordinates startup of the Beacon ecosystem components.
-* 📝 `author` &mdash;&mdash;&mdash;&mdash; Creates user datasets.
-* 📡 `pulse` &mdash;&mdash;&mdash;&mdash;&mdash; Broadcasts user datasets via UDP Multicast.
-* 📈 `strategy` &mdash;&mdash; Consumes market data from pulse and forwards to the user's strategy.
-* 🎯 `match` &mdash;&mdash;&mdash;&mdash;&mdash; The matching engines for each product contained in pulse.
+| Component | Responsibility |
+| :--- | :--- |
+| ⚙️ `orchestrator` | Coordinates startup of the Beacon ecosystem components. |
+| 📝 `author` | Creates user datasets. |
+| 📡 `pulse` | Broadcasts user datasets via UDP Multicast. |
+| 📈 `strategy` | Consumes market data from pulse and forwards to the user's strategy. |
+| 🎯 `match` | The matching engines for each product contained in pulse. |
   
 ## Key Features
 
-* 🗃️ **Granular Dataset Creation:** Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing.
-* 🖥️ **Real-Time Dashboards:** Monitor live market data and order execution dashboards through an intuitive visual interface.
-* 🔌 **Low-Code Strategy Integration:** Plug in your trading strategy instantly using minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure.
-* 🔍 **Market Data Diagnostics:** Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets.
-* 📊 **Performance Analytics:** Track real-time profitability and exposure using interactive PnL, risk, and latency charts.
-* 🔀 **True Bidirectional Architecture:** Process high-performance buy and sell orders natively through a deterministic matching engine pipeline.
-
+| Feature | Capabilities |
+| :--- | :--- |
+| 🗃️ **Dataset Creation** | Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing. |
+| 🖥️ **Live Dashboards** | Monitor real-time market data and execution metrics through a visual management interface. |
+| 🔌 **Strategy Integration** | Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure. |
+| 🔍 **Data Diagnostics** | Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets. |
+| 📊 **Performance Analytics**| Track real-time profitability and exposure using interactive PnL, risk, and latency charts. |
+| 🔀 **Bidirectional Engine** | Process high-performance buy and sell orders natively through a true, deterministic matching architecture. |
 
 
 ## C++ Back-end Processes
