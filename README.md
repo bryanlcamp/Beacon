@@ -26,11 +26,11 @@ beacon-web/
 
 ## C++ Back-end Processes
 
-- ![orchestrator](https://shields.io) Coordinates startup of the Beacon ecosystem components.
-- ![author](https://shields.io) Creates user datasets.
-- ![pulse](https://shields.io) Broadcasts user datasets via UDP Multicast.
-- ![strategy](https://shields.io) Consumes market data from pulse and forwards to the user's strategy.
-- ![match](https://shields.io) The matching engines for each product contained in pulse.
+- **orchestrator** Coordinates startup of the Beacon ecosystem components.
+- **author** Creates user datasets.
+- **pulse** Broadcasts user datasets via UDP Multicast.
+- **strategy** Consumes market data from pulse and forwards to the user's strategy.
+- **match** The matching engines for each product contained in pulse.
 
 
 ## Key Features
