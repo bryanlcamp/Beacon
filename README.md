@@ -38,13 +38,11 @@ beacon-web/
 
 ## C++ Back-end Processes
 
-<pre>
 - <b>orchestrator:</b>  Coordinates startup of the Beacon ecosystem components. <br>
 - **author:**        Creates user datasets. <br>
 - **pulse:**         Broadcasts user datasets via UDP Multicast. <br>
 - **strategy:**      Consumes market data from pulse and forwards to the user's strategy. <br>
 - **match:**         The matching engines for each product contained in pulse. <br>
-</pre>
 
 ## Key Features
 
