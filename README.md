@@ -26,14 +26,6 @@ beacon-web/
     └── images/                # Graphics
 ```
 
-## Development Tasks
-
-| Task | Description |
-|------|-------------|
-| Open Beacon Web (Local) | Start local development server on port 8080 |
-| List My Issues | Show your assigned GitHub issues |
-| Create Bug Issue (Web) | Create new frontend bug report |
-
 ## C++ Back-end Processes
 
 - **orchestrator:**  Coordinates startup of the Beacon ecosystem components. <br>
