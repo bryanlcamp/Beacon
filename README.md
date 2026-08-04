@@ -1,4 +1,4 @@
-# Beacon Platform - Web Frontend
+# Beacon Platform - Web UI
 
 **Financial Trading Platform Frontend** - Modern web interface for the Beacon trading system built with HTML, CSS, and JavaScript.
 
