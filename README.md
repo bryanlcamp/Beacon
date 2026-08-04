@@ -36,18 +36,13 @@ beacon-web/
 | List My Issues | Show your assigned GitHub issues |
 | Create Bug Issue (Web) | Create new frontend bug report |
 
-## C++ Back-end Processes.
+## C++ Back-end Processes
 
 | orchestrator | Coordinates startup of the Beacon ecosystem components.
 | author       | Creates user datasets.
 | pulse        | Broadcasts user datasets via UDP Multicast.
 | strategy     | Consumes market data from pulse and forwards to the user's strategy.
 | match        | The matching engines for each product contained in pulse.
-
-Bug Issue (Web) | Create new frontend bug report |
-
-- **beacon-platform**: C++ back-end: author, pulse, strategy, match
-- **D**: Market data feeds (CME, NASDAQ, NYSE, ICE)
 
 ## Key Features
 
