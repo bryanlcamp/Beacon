@@ -1,4 +1,4 @@
-# Beacon's User Interface
+# Beacon's Architecture
 
 - **An intuitive way to interact with the Beacon ecosystem. Index.html navigates you everywhere.**<br>
 - **Built with HTML, CSS, JavaScript. Communicates with back-end processes using Python Flask.**<br>
