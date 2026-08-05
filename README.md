@@ -39,7 +39,7 @@ beacon-web/
 | Features | Descriptions |
 | :--- | :--- |
 | <nobr>🗃️ `Creating Datasets`</nobr> | Build customizable datasets persisted in native exchange formats. Edit Later. |
-| <nobr>🔍 `Streaming `</nobr> | Play **your** datasets to **your strategy** and to the matching engine via UDP Multicast. |
+| <nobr>🔍 `Streaming Your Datasets`</nobr> | Play **your** datasets to **your strategy** and to the matching engine via UDP Multicast. |
 | <nobr>🔌 `Your Strategy`</nobr> | Plug in your trading strategy with minimal C++ code. |
 | <nobr>🔀 `Matching Engine `</nobr> | A TCP/IP-based bidirectional matching engine that broadcasts executions. |
 | <nobr>🖥️ `Real-Time Metrics`</nobr> | Monitor real-time market data speed and order execution metrics.. |
