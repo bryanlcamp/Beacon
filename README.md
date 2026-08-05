@@ -1,8 +1,8 @@
 # Beacon's Architecture
 
-- **An intuitive way to interact with the Beacon ecosystem. Index.html navigates you everywhere.**<br>
-- **Built with HTML, CSS, JavaScript. Communicates with back-end processes using Python Flask.**<br>
-- **Intended to run on your localhost or behind a firewall. No internet connection required.**<br>
+- **Beacon provides an intuitive user interface to configure settings and interact with with back-end components.**<br>
+- **The user interface is implemented with minimal dependencies, including HTML, CSS, JavaScript.
+- **All Beacon components run offline. No internet connection is required.**<br>
 
 ## Project Structure
 
@@ -24,13 +24,13 @@ beacon-web/
     └── images/                # Graphics
 ```
 
-## C++ Back-end Processes
+## Back-end Processes
 
 | Functionality |  |
 | :--- | :--- |
-| <nobr>⚙️ `orchestrator`</nobr> | Coordinates startup of the Beacon ecosystem components. |
-| <nobr>📝 `author`</nobr> | Creates user datasets. |
-| <nobr>📡 `pulse`</nobr> | Broadcasts user datasets via UDP Multicast. |
+| <nobr>⚙️ `orchestrator`</nobr> | Coordinates startup of the Beacon server components. Just press start.|
+| <nobr>📝 `author`</nobr> | Creates reusable and editable and use datasets. CME, NASDAQ, NYSE, ICE, and EUREX are supported.|
+| <nobr>📡 `pulse`</nobr> | Broadcasts user datasets to the Beacon ecosystem via UDP Multicast. |
 | <nobr>📈 `strategy`</nobr> | Consumes market data from pulse and forwards to the user's strategy. |
 | <nobr>🎯 `match`</nobr> | The matching engines for each product contained in pulse. |
   
