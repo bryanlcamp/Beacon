@@ -7,7 +7,7 @@
 ## Project Structure
 
 ```
-beacon-web/
+beacon-web/                    # User interface.
 ├── index.html                 # Main dashboard
 ├── apps/                      # Trading applications
 │   ├── author/                # Strategy authoring tool
@@ -22,6 +22,10 @@ beacon-web/
     ├── css/                   # Stylesheets
     ├── js/                    # JavaScript modules
     └── images/                # Graphics
+
+beacon-core/                   # All server processes.
+├── index.html                 # Available upon contract-signing.
+
 ```
   
 ## Key Features
