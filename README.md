@@ -26,7 +26,7 @@ beacon-web/
 
 ## Back-end Processes
 
-| Functionality |  |
+| Functionality | Purpose |
 | :--- | :--- |
 | <nobr>⚙️ `orchestrator`</nobr> | Coordinates startup of the Beacon server components. Just press start.|
 | <nobr>📝 `author`</nobr> | Creates reusable and editable and use datasets. CME, NASDAQ, NYSE, ICE, and EUREX are supported.|
