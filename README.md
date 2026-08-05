@@ -1,7 +1,7 @@
 # Beacon's Architecture
 
 - **Beacon provides an intuitive user interface to configure settings and interact with with back-end components.**<br>
-- **The user interface is implemented with minimal dependencies, including HTML, CSS, JavaScript.
+- **The user interface is implemented with minimal dependencies, including HTML, CSS, JavaScript.**.<br>
 - **All Beacon components run offline. No internet connection is required.**<br>
 
 ## Project Structure
