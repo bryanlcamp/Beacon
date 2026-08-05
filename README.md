@@ -38,9 +38,9 @@ beacon-web/
 
 | Features
 | :--- |
-| 🗃️ **Datasets**&nbsp;:Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing.<br>
-| 🖥️ **Metrics**&nbsp;:Monitor real-time market data and execution metrics through a visual management interface.<br>
-| 🔌 **Strategy**&nbsp;:Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure.<br>
-| 🔍 **Monitor**&nbsp;:Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets.<br>
-| 📊 **Analytics**&nbsp;:Track real-time profitability and exposure using interactive PnL, risk, and latency charts.<br>
-| 🔀 **Matching**&nbsp;:Process high-performance buy and sell orders natively through a true, deterministic matching architecture.<br>
+| 🗃️ **Datasets**&nbsp;Build highly customizable datasets persisted in native exchange formats, with configurations saved for future editing.<br>
+| 🖥️ **Metrics**&nbsp;Monitor real-time market data and execution metrics through a visual management interface.<br>
+| 🔌 **Strategy**&nbsp;Plug in your trading strategy instantly with minimal code to leverage Beacon's high-frequency trading (HFT) infrastructure.<br>
+| 🔍 **Monitor**&nbsp;Play back and monitor market data streams with automated detection for dropped, out-of-order, or malformed packets.<br>
+| 📊 **Analytics**&nbsp;Track real-time profitability and exposure using interactive PnL, risk, and latency charts.<br>
+| 🔀 **Matching**&nbsp;Process high-performance buy and sell orders natively through a true, deterministic matching architecture.<br>
