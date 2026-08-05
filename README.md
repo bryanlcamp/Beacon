@@ -39,12 +39,12 @@ beacon-web/
 | Features | Descriptions |
 | :--- | :--- |
 | <nobr>🗃️ `Creating Datasets`</nobr> | Build customizable datasets persisted in native exchange formats. Edit Later. |
-| <nobr>🔍 `Streaming Your Datasets`</nobr> | Play **your** datasets to **your strategy** via UDP Multicast. |
-| <nobr>🔍 `Streaming Your Datasets`</nobr> | Your strategy, all market participants. and the matching engine consume your dataset.|
-| <nobr>🔌 `Receiving Your Datasets`</nobr> | Plug in your trading strategy with minimal C++ code. |
-| <nobr>📈 `Receiving Your Datasets`</nobr> | Execute orders based on your strategy's signal. |
+| <nobr>👥 `Streaming Your Datasets`</nobr> | Play **your** datasets to **your strategy**, all participants, and the matching engine via UDP Multicast. |
+| <nobr>🔌 `Dataset Processing`</nobr> | Plug in your trading strategy with minimal C++ code. |
+| <nobr>⚡ `Core Infrastructure`</nobr> | Best in class infrastructure provided throughout to properly simulate trading in live markets.|
+| <nobr>⏩ `Competition`</nobr> | Trade multiple instances of your strategies and compete against others. |
+| <nobr>🚥 `Competition`</nobr> | Multiple layers of competition of your strategies don't get every fill. |
 | <nobr>🔀 `Matching Engine `</nobr> | Execute against a TCP/IP bi-directional engine that sends ACKs/REJECTs,FILLs. |
-| <nobr>🔀 `Matching Engine `</nobr> | The matching engine rebroadcasts FILLs to all market participants. |
+| <nobr>📢 `Matching Engine `</nobr> | The matching engine rebroadcasts FILLs to all market participants. |
 | <nobr>📊 `Real-Time Metrics`</nobr> | Control and monitor playback of market data per product and exchange. |
-| <nobr>📊 `Real-Time Analytics`</nobr> | Track real-time PnL, risk, and exchange market data errors.|
-| <nobr>⚙️ `Real-Time Analytics`</nobr> | Premier infrastructure provided throughout to properly simulate trading in live markets.|
+| <nobr>🏦 `Real-Time Analytics`</nobr> | Track real-time PnL, risk, and exchange market data errors.|
