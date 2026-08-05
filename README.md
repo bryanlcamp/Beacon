@@ -23,16 +23,6 @@ beacon-web/
     ├── js/                    # JavaScript modules
     └── images/                # Graphics
 ```
-
-## Back-end Processes
-
-| Functionality | Purpose |
-| :--- | :--- |
-| <nobr>⚙️ `orchestrator`</nobr> | Coordinates startup of the Beacon server components. Just press start.|
-| <nobr>📝 `author`</nobr> | Creates reusable and editable and use datasets. CME, NASDAQ, NYSE, ICE, and EUREX are supported.|
-| <nobr>📡 `pulse`</nobr> | Broadcasts user datasets to the Beacon ecosystem via UDP Multicast. |
-| <nobr>📈 `strategy`</nobr> | Consumes market data from pulse and forwards to the user's strategy. |
-| <nobr>🎯 `match`</nobr> | The matching engines for each product contained in pulse. |
   
 ## Key Features
 
@@ -48,3 +38,13 @@ beacon-web/
 | <nobr>📢 `Execution Reports `</nobr> | The matching engine rebroadcasts FILLs to all market participants. |
 | <nobr>📊 `Real-Time Metrics`</nobr> | Control and monitor playback of market data per product and exchange. |
 | <nobr>🏦 `Real-Time Analytics`</nobr> | Track real-time PnL, risk, and exchange market data errors.|
+
+## Back-end Processes
+
+| Functionality | Purpose |
+| :--- | :--- |
+| <nobr>⚙️ `orchestrator`</nobr> | Coordinates startup of the Beacon server components. Just press start.|
+| <nobr>📝 `author`</nobr> | Creates reusable and editable and use datasets. CME, NASDAQ, NYSE, ICE, and EUREX are supported.|
+| <nobr>📡 `pulse`</nobr> | Broadcasts user datasets to the Beacon ecosystem via UDP Multicast. |
+| <nobr>📈 `strategy`</nobr> | Consumes market data from pulse and forwards to the user's strategy. |
+| <nobr>🎯 `match`</nobr> | The matching engines for each product contained in pulse. |
