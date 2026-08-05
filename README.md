@@ -42,8 +42,9 @@ beacon-web/
 | <nobr>🔍 `Streaming Your Datasets`</nobr> | Play **your** datasets to **your strategy** via UDP Multicast. |
 | <nobr>🔍 `Streaming Your Datasets`</nobr> | Your strategy, all market participants. and the matching engine consume your dataset.|
 | <nobr>🔌 `Receiving Your Datasets`</nobr> | Plug in your trading strategy with minimal C++ code. |
-| <nobr>🔌 `Receiving Your Datasets`</nobr> | Execute orders based on your strategy's signal. |
+| <nobr>📈 `Receiving Your Datasets`</nobr> | Execute orders based on your strategy's signal. |
 | <nobr>🔀 `Matching Engine `</nobr> | Execute against a TCP/IP bi-directional engine that sends ACKs/REJECTs,FILLs. |
 | <nobr>🔀 `Matching Engine `</nobr> | The matching engine rebroadcasts FILLs to all market participants. |
 | <nobr>📊 `Real-Time Metrics`</nobr> | Control and monitor playback of market data per product and exchange. |
 | <nobr>📊 `Real-Time Analytics`</nobr> | Track real-time PnL, risk, and exchange market data errors.|
+| <nobr>⚙️ `Real-Time Analytics`</nobr> | Premier infrastructure provided throughout to properly simulate trading in live markets.|
