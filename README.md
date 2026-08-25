@@ -1,19 +1,14 @@
-    <!-- BRAND LOGO AND TYPOGRAPHY ANCHOR -->
-    <div style="display: flex; align-items: center; gap: 14px;">
-        <!-- Safari & GitHub Compliant Embedded Vector Logo (No Path Dependencies) -->
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyB3aWR0aD0nMjQnIGhlaWdodD0nMjQnPjxn fillPSdub25lJz48cmVjdCB4PSc1JyB5PScyNCcgd2lkdGg9JzkwJyBoZWlnaHQ9JzYnIHJ4PSczJyBmaWxsPScjQjg2NzNBJy8+PHJlY3QgeD0nMjUnIHk9JzgwJyB3aWR0aD0nNTAnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMxODFmMmUnLz48cmVjdCB4PSczNScgeT0nMzYnIHdpZHRoPSczMCcgaGVpZ2h0PSc0NCcgcng9JzEnIGZpbGw9JyMxODFmMmUnLz48cmVjdCB4PScyOCcgeT0nMzInIHdpZHRoPSc0NCcgaGVpZ2h0PSc0JyByeD0nMScgZmlsbD0nIzE4MWYyZScvPjxyZWN0IHg9JzQwJyB5PScxNCcgd2lkdGg9JzIwJyBoZWlnaHQ9JzE4JyBmaWxsPScjNmJiNmZmJy8+PGNpcmNsZSBjeD0nNTAnIGN5PScyMycgcj0nNCcgZmlsbD0nI3NmZmZmZicvPjxyZWN0IHg9JzM2JyB5PSc4JyB3aWR0aD0nMjgnIGhlaWhtdD0nNicgcng9JzEnIGZpbGw9JyM0QTJDNjYnLz48L2c+PC9zdmc+" width="24" height="24" alt="BEACON Core Logo" style="display: block; filter: drop-shadow(0 0 6px rgba(184, 103, 58, 0.4));">
-        <span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 22px; font-weight: 900; letter-spacing: 0.08em; color: #B8673A; text-transform: uppercase; text-shadow: 0 0 8px rgba(184, 103, 58, 0.25);">
-            Beacon
-        </span>
-    </div>
-
-    <!-- INSTITUTIONAL RUNTIME LIFE-CYCLE STATE BADGE -->
-    <div style="font-size: 11px; font-family: monospace; color: #6bb6ff; background: rgba(107, 182, 255, 0.05); border: 1px solid rgba(107, 182, 255, 0.25); padding: 5px 12px; border-radius: 4px; letter-spacing: 0.06em; font-weight: 600; text-shadow: 0 0 6px rgba(107, 182, 255, 0.2);">
-        SYSTEM STATE: INTEGRATED VALIDATION FLOW ACTIVE
-    </div>
-
-</div>
-<!-- END GLOBAL BRAND HEADER BANNER CONTAINER -->
+<table width="100%" cellpadding="16" cellspacing="0" border="0" style="background-color: #0f1527; border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 6px; width: 100%;">
+  <tr>
+    <td align="left" valign="middle" style="padding: 16px;">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyB3aWR0aD0nMjQnIGhlaWdodD0nMjQnPjxnIGZpbGw9J25vbmUnPjxyZWN0IHg9JzUnIHk9JzI0JyB3aWR0aD0nOTAnIGhlaWdodD0nNicgcng9JzMnIGZpbGw9JyNCODY3M0EnLz48cmVjdCB4PScyNScgeT0nODAnIHdpZHRoPSc1MCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzE4MWYyZScvPjxyZWN0IHg9JzM1JyB5PSczNicgd2lkdGg9JzMwJyBoZWlnaHQ9JzQ0JyByeD0nMScgZmlsbD0nIzE4MWYyZScvPjxyZWN0IHg9JScyOCcgeT0nMzInIHdpZHRoPSc0NCcgaGVpZ2h0PSc0JyByeD0nMScgZmlsbD0nIzE4MWYyZScvPjxyZWN0IHg9JzQwJyB5PScxNCcgd2lkdGg9JzIwJyBoZWlnaHQ9JzE4JyBmaWxsPScjNmJiNmZmJy8+PGNpcmNsZSBjeD0nNTAnIGN5PScyMycgcj0nNCcgZmlsbD0nI3NmZmZmZicvPjxyZWN0IHg9JzM2JyB5PSc4JyB3aWR0aD0nMjgnIGhlaWhtdD0nNicgcng9JzEnIGZpbGw9JyM0QTJDNjYnLz48L2g+PC9zdmc+" width="24" height="24" valign="middle" style="display:inline-block; margin-right:8px;" />
+      <b style="font-size: 24px; color: #B8673A; text-transform: uppercase; font-family: sans-serif; letter-spacing: 0.08em; valign: middle; display:inline-block;">BEACON</b>
+    </td>
+    <td align="right" valign="middle" style="padding: 16px;">
+      <code style="color: #6bb6ff; background: rgba(107, 182, 255, 0.05); border: 1px solid rgba(107, 182, 255, 0.25); padding: 5px 12px; border-radius: 4px; font-family: monospace; font-weight: 600; letter-spacing: 0.05em;">SYSTEM STATE: INTEGRATED VALIDATION FLOW ACTIVE</code>
+    </td>
+  </tr>
+</table>
 
 # Beacon: Algorithmic Simulation Core & Adversarial Validation Sandbox
 ### Institutional-Grade, Zero-Allocation C++23 Prototyping Framework for Fixed-Income & Quant Teams
@@ -26,13 +21,10 @@ Beacon is a commercial-grade low-latency simulation environment built to act as 
 
 Sophisticated algorithmic execution desks face two massive barriers when testing alpha durability: exorbitant exchange data licensing fees and look-back optimization traps. Beacon was engineered from the bare metal to systematically defeat both constraints natively.
 
-<!-- START GLOBAL BRAND HEADER BANNER CONTAINER -->
-<div style="width: 100%; min-height: 64px; background: linear-gradient(135deg, #0a0a15 0%, #181f2e 100%); border: 1px solid rgba(107, 182, 255, 0.15); border-radius: 6px; padding: 12px 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    
 ### 1. The Synthetic Microstructure Advantage (Zero Data Royalties)
 *   **The Problem:** Institutional market data feeds are tightly locked behind continuous exchange venue royalties and compliance audits. Quant teams waste massive capital and administrative time licensing historical tick logs that only represent a single static timeline.
 *   **The Beacon Solution:** Beacon operates as a **Pure Synthetic Generator Core**. Instead of parsing brittle, legacy CSV file logs, the engine synthesizes layout-pure, binary-aligned market data tracking structures directly to disk. It models mathematically precise liquidity spreads, top-of-book depth profiles, and message arrival distributions. 
-*   **The Business Case:** You gain zero-royalty, infinite simulation liquidity. Researchers get native access to high-fidelity microstructure data layers without paying a single dollar in exchange data licensing overhead.
+*   **The Business Case:** You gain zero-royalty, infinite simulation liquidity. Researchers get native access to high-fidelity microstructure data layers without paying a single dollar in exchange data licensing overhead. Customers pay no money for raw data, but they will license a platform that handles generation safely.
 
 ### 2. The Anti-Overfitting Isolation Chamber (Stochastic Seed Shuffling)
 *   **The Problem:** Model overfitting is the hidden killer of modern quantitative trading. A researcher tweaks an alpha model’s parameters over a specific historical file until the backtest curves look flawless—only for the model to experience immediate execution failure when deployed to live production order books.
