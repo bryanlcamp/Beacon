@@ -1,19 +1,6 @@
-<table width="100%" cellpadding="16" cellspacing="0" border="0" style="background-color: #0f1527; border: 1px solid rgba(107, 182, 255, 0.2); border-radius: 6px;">
-  <tr>
-    <td align="left" style="padding: 16px; vertical-align: middle;">
-      <b style="font-size: 24px; color: #B8673A; text-transform: uppercase; font-family: sans-serif; letter-spacing: 0.08em; display: inline-block; vertical-align: middle;">
-        <img src="https://githubusercontent.com" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" /> 
-        BEACON
-      </b>
-    </td>
-    <td align="right" style="padding: 16px; vertical-align: middle;">
-      <code style="color: #6bb6ff; background: rgba(107, 182, 255, 0.05); border: 1px solid rgba(107, 182, 255, 0.25); padding: 5px 12px; border-radius: 4px; font-family: monospace; font-weight: 600; letter-spacing: 0.05em;">SYSTEM STATE: CONTINUOUS MATCHING MODE</code>
-    </td>
-  </tr>
-</table>
+# <img src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><g fill='none'><rect x='5' y='24' width='90' height='6' rx='3' fill='%23B8673A'/><rect x='25' y='80' width='50' height='8' rx='2' fill='%23181f2e'/><rect x='35' y='36' width='30' height='44' rx='1' fill='%23181f2e'/><rect x='28' y='32' width='44' height='4' rx='1' fill='%23181f2e'/><rect x='40' y='14' width='20' height='18' fill='%236bb6ff'/><circle cx='50' cy='23' r='4' fill='%23ffffff'/><rect x='36' y='8' width='28' height='6' rx='1' fill='%234A2C66'/></g></svg>" width="28" height="28" align="center" valign="middle"> **BEACON** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `SYSTEM STATE: CONTINUOUS MATCHING MODE`
 
-
-&nbsp;
+***
 
 # Beacon: Algorithmic Simulation Core & Adversarial Validation Sandbox
 ### Institutional-Grade, Zero-Allocation C++23 Prototyping Framework for Fixed-Income & Quant Teams
