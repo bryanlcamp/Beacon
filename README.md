@@ -1,17 +1,3 @@
-# Beacon: Algorithmic Simulation Core & Adversarial Validation Sandbox
-### Institutional-Grade, Zero-Allocation C++23 Prototyping Framework for Fixed-Income & Quant Teams
-
-Beacon is a commercial-grade low-latency simulation environment built to act as a **Hyper-Realistic, Fail-Fast Validation Node**. Operating entirely over a single-machine shared memory plane to achieve sub-microsecond line-rate processing speeds, Beacon eliminates traditional networking stacks to let quant teams stress-test strategy execution at scale.
-
----
-
-## ⚡ Core Pillars: Strategic Architectural Advantages
-
-Sophisticated algorithmic execution desks face two massive barriers when testing alpha durability: exorbitant exchange data licensing fees and look-back optimization traps. Beacon was engineered from the bare metal to systematically defeat both constraints natively.
-
-<!-- START GLOBAL BRAND HEADER BANNER CONTAINER -->
-<div style="width: 100%; min-height: 64px; background: linear-gradient(135deg, #0a0a15 0%, #181f2e 100%); border: 1px solid rgba(107, 182, 255, 0.15); border-radius: 6px; padding: 12px 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    
     <!-- BRAND LOGO AND TYPOGRAPHY ANCHOR -->
     <div style="display: flex; align-items: center; gap: 14px;">
         <!-- Safari & GitHub Compliant Embedded Vector Logo (No Path Dependencies) -->
@@ -29,6 +15,20 @@ Sophisticated algorithmic execution desks face two massive barriers when testing
 </div>
 <!-- END GLOBAL BRAND HEADER BANNER CONTAINER -->
 
+# Beacon: Algorithmic Simulation Core & Adversarial Validation Sandbox
+### Institutional-Grade, Zero-Allocation C++23 Prototyping Framework for Fixed-Income & Quant Teams
+
+Beacon is a commercial-grade low-latency simulation environment built to act as a **Hyper-Realistic, Fail-Fast Validation Node**. Operating entirely over a single-machine shared memory plane to achieve sub-microsecond line-rate processing speeds, Beacon eliminates traditional networking stacks to let quant teams stress-test strategy execution at scale.
+
+---
+
+## ⚡ Core Pillars: Strategic Architectural Advantages
+
+Sophisticated algorithmic execution desks face two massive barriers when testing alpha durability: exorbitant exchange data licensing fees and look-back optimization traps. Beacon was engineered from the bare metal to systematically defeat both constraints natively.
+
+<!-- START GLOBAL BRAND HEADER BANNER CONTAINER -->
+<div style="width: 100%; min-height: 64px; background: linear-gradient(135deg, #0a0a15 0%, #181f2e 100%); border: 1px solid rgba(107, 182, 255, 0.15); border-radius: 6px; padding: 12px 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    
 ### 1. The Synthetic Microstructure Advantage (Zero Data Royalties)
 *   **The Problem:** Institutional market data feeds are tightly locked behind continuous exchange venue royalties and compliance audits. Quant teams waste massive capital and administrative time licensing historical tick logs that only represent a single static timeline.
 *   **The Beacon Solution:** Beacon operates as a **Pure Synthetic Generator Core**. Instead of parsing brittle, legacy CSV file logs, the engine synthesizes layout-pure, binary-aligned market data tracking structures directly to disk. It models mathematically precise liquidity spreads, top-of-book depth profiles, and message arrival distributions. 
