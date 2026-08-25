@@ -2,6 +2,7 @@
 
 ***
 
+
 # Beacon: Algorithmic Simulation Core & Adversarial Validation Sandbox
 ### Institutional-Grade, Zero-Allocation C++23 Prototyping Framework for Fixed-Income & Quant Teams
 
