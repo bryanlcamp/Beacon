@@ -57,42 +57,6 @@ BEACON is an uncompromised, low-latency execution simulation laboratory built en
         </li>
       </ul>
     </td>
-    
-    <!-- Column 2: Execution Fidelity -->
-    <td style="width: 33.33%; padding: 0 12px; vertical-align: top; border: none; border-left: 2px solid #d97841;">
-      <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #ffffff; margin-bottom: 6px;">
-        Execution Fidelity
-      </div>
-      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">The Expediter Queue Engine.</span> Models explicit data center queue competition against Tier-1 firms using physical co-location skews and fiber line transit intervals.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">True Wire Asynchronicity.</span> Replicate real-world market feedback edge cases, including fills printed on the global feed before the exchange return signal reaches your socket.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Unencrypted C++23 Source.</span> Distributed directly into your firm's architecture as an open, modular package. Compile natively and drop hard breakpoints straight into the hot path.
-        </li>
-      </ul>
-    </td>
-    
-    <!-- Column 3: Risk Hardening Suite -->
-    <td style="width: 33.33%; padding: 0 0 0 12px; vertical-align: top; border: none; border-left: 2px solid #81c784;">
-      <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #ffffff; margin-bottom: 6px;">
-        Risk Hardening Suite
-      </div>
-      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Transport-Layer Volatility.</span> Subject your ingest logic to non-deterministic spikes, burst volume shocks, packet drop profiles, and out-of-order sequencing.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Eradicate Model Overfitting.</span> Spawn hundreds of unique synthetic scenario variations so your fleet learns to manage dynamic conditions instead of hyper-tuning to static past logs.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Deterministic vs Random.</span> Run chaotic random session stress tests, or freeze performance anomalies down to cycle-locked replay for precise debugging on a local workstation.
-        </li>
-      </ul>
-    </td>
   </tr>
 </table>
 
