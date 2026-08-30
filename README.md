@@ -37,31 +37,6 @@ BEACON is an uncompromised, low-latency execution simulation laboratory built en
 
 <br>
 
-<!-- 3-BLURB STACCATO HORIZONTAL GRID -->
-<table style="width: 100%; border-collapse: collapse; border: none; margin-bottom: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
-  <tr style="border: none; background: transparent;">
-    <!-- Column 1: Generative Infrastructure -->
-    <td style="width: 33.33%; padding: 0 12px 0 0; vertical-align: top; border: none; border-left: 2px solid #3d5a7a;">
-      <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #ffffff; margin-bottom: 6px;">
-        Generative Laboratory
-      </div>
-      <ul style="list-style: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Six-Figure Feeds Not Needed.</span> Cut out infrastructure overhead and save your firm from an expanding multi-terabyte cloud storage bill on day one.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">No Bloated Datasets to Parse.</span> Stop cleaning corrupt historical log files. Synthesize interactive, high-fidelity microstructure data natively on the fly.
-        </li>
-        <li style="font-size: 11px; color: #8e9aa8; line-height: 1.3;">
-          <span style="color: #e5e7eb; font-weight: 600;">Create the Data You Want.</span> Instantly build multiple limit order books to evaluate real-time cross-asset arbitrage or fragmented venue tracking.
-        </li>
-      </ul>
-    </td>
-  </tr>
-</table>
-
-<br>
-
 <!-- PURE CSS/HTML STATIC PRODUCT CARD VECTOR FRAME -->
 <div align="center" style="width: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 16px 0;">
   <a href="https://beaconhft.com" target="_blank" style="text-decoration: none; display: inline-block;">
